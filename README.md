@@ -98,9 +98,10 @@ Demos
 *  [Live Online](https://tburleson-layouts-demos.firebaseapp.com/)
 *  [Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
 
-Templates
+StackBlitz Templates
 
-*  [Plunkr Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview)
+*  [Flex-Layout Template](https://stackblitz.com/edit/angular-flex-layout-seed)
+*  [Flex-Layout + Material](https://stackblitz.com/edit/angular-material-flex-layout-seed?file=app%2Fapp.module.ts)
 
 Quick Links
 
