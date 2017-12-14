@@ -45,7 +45,7 @@ function __extends(d, b) {
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new _angular_core.Version('2.0.0-beta.12-03a9706');
+var VERSION = new _angular_core.Version('2.0.0-beta.12-4cf50ca');
 
 /**
  * @fileoverview added by tsickle
