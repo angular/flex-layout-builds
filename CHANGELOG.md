@@ -1,7 +1,7 @@
-<a name="2.0.0-beta.12-4cf50ca"></a>
-# [2.0.0-beta.12-4cf50ca](https://github.com/angular/flex-layout/compare/2.0.0-beta.11...2.0.0-beta.12-4cf50ca) (2017-12-14)
+<a name="2.0.0-beta.12"></a>
+# [2.0.0-beta.12](https://github.com/angular/flex-layout/compare/2.0.0-beta.11...2.0.0-beta.12) (2017-12-14)
 
-The 2.0.0-beta.10 and beta.11 releases on npm accidentally glitched-out midway, so we resolved some release scripting issues and cut 2.0.0-beta.12-4cf50ca instead. oops :-)
+The 2.0.0-beta.10 and beta.11 releases on npm accidentally glitched-out midway, so we resolved some release scripting issues and cut 2.0.0-beta.12 instead. oops :-)
 
 ### Build Changes
 
