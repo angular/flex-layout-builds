@@ -7,12 +7,13 @@
  */
 import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
 import { DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators/map';
 import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-const VERSION = new Version('2.0.0-beta.11-b8a652d');
+const VERSION = new Version('2.0.0-beta.11-62457a5');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -214,7 +215,9 @@ class ResponsiveActivation {
                     change.property = this._options.baseKey;
                     return change;
                 };
-                subscriptions.push(this.mediaMonitor.observe(bp.alias).pipe(map(buildChanges))
+                subscriptions.push(this.mediaMonitor
+                    .observe(bp.alias)
+                    .pipe(map(buildChanges))
                     .subscribe(change => {
                     this._onMonitorEvents(change);
                 }));
@@ -724,20 +727,20 @@ LayoutDirective.ctorParameters = () => [
     { type: Renderer2, },
 ];
 LayoutDirective.propDecorators = {
-    'layout': [{ type: Input, args: ['fxLayout',] },],
-    'layoutXs': [{ type: Input, args: ['fxLayout.xs',] },],
-    'layoutSm': [{ type: Input, args: ['fxLayout.sm',] },],
-    'layoutMd': [{ type: Input, args: ['fxLayout.md',] },],
-    'layoutLg': [{ type: Input, args: ['fxLayout.lg',] },],
-    'layoutXl': [{ type: Input, args: ['fxLayout.xl',] },],
-    'layoutGtXs': [{ type: Input, args: ['fxLayout.gt-xs',] },],
-    'layoutGtSm': [{ type: Input, args: ['fxLayout.gt-sm',] },],
-    'layoutGtMd': [{ type: Input, args: ['fxLayout.gt-md',] },],
-    'layoutGtLg': [{ type: Input, args: ['fxLayout.gt-lg',] },],
-    'layoutLtSm': [{ type: Input, args: ['fxLayout.lt-sm',] },],
-    'layoutLtMd': [{ type: Input, args: ['fxLayout.lt-md',] },],
-    'layoutLtLg': [{ type: Input, args: ['fxLayout.lt-lg',] },],
-    'layoutLtXl': [{ type: Input, args: ['fxLayout.lt-xl',] },],
+    "layout": [{ type: Input, args: ['fxLayout',] },],
+    "layoutXs": [{ type: Input, args: ['fxLayout.xs',] },],
+    "layoutSm": [{ type: Input, args: ['fxLayout.sm',] },],
+    "layoutMd": [{ type: Input, args: ['fxLayout.md',] },],
+    "layoutLg": [{ type: Input, args: ['fxLayout.lg',] },],
+    "layoutXl": [{ type: Input, args: ['fxLayout.xl',] },],
+    "layoutGtXs": [{ type: Input, args: ['fxLayout.gt-xs',] },],
+    "layoutGtSm": [{ type: Input, args: ['fxLayout.gt-sm',] },],
+    "layoutGtMd": [{ type: Input, args: ['fxLayout.gt-md',] },],
+    "layoutGtLg": [{ type: Input, args: ['fxLayout.gt-lg',] },],
+    "layoutLtSm": [{ type: Input, args: ['fxLayout.lt-sm',] },],
+    "layoutLtMd": [{ type: Input, args: ['fxLayout.lt-md',] },],
+    "layoutLtLg": [{ type: Input, args: ['fxLayout.lt-lg',] },],
+    "layoutLtXl": [{ type: Input, args: ['fxLayout.lt-xl',] },],
 };
 
 class LayoutAlignDirective extends BaseFxDirective {
@@ -888,20 +891,20 @@ LayoutAlignDirective.ctorParameters = () => [
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
 ];
 LayoutAlignDirective.propDecorators = {
-    'align': [{ type: Input, args: ['fxLayoutAlign',] },],
-    'alignXs': [{ type: Input, args: ['fxLayoutAlign.xs',] },],
-    'alignSm': [{ type: Input, args: ['fxLayoutAlign.sm',] },],
-    'alignMd': [{ type: Input, args: ['fxLayoutAlign.md',] },],
-    'alignLg': [{ type: Input, args: ['fxLayoutAlign.lg',] },],
-    'alignXl': [{ type: Input, args: ['fxLayoutAlign.xl',] },],
-    'alignGtXs': [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
-    'alignGtSm': [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
-    'alignGtMd': [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
-    'alignGtLg': [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
-    'alignLtSm': [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
-    'alignLtMd': [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
-    'alignLtLg': [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
-    'alignLtXl': [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
+    "align": [{ type: Input, args: ['fxLayoutAlign',] },],
+    "alignXs": [{ type: Input, args: ['fxLayoutAlign.xs',] },],
+    "alignSm": [{ type: Input, args: ['fxLayoutAlign.sm',] },],
+    "alignMd": [{ type: Input, args: ['fxLayoutAlign.md',] },],
+    "alignLg": [{ type: Input, args: ['fxLayoutAlign.lg',] },],
+    "alignXl": [{ type: Input, args: ['fxLayoutAlign.xl',] },],
+    "alignGtXs": [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
+    "alignGtSm": [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
+    "alignGtMd": [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
+    "alignGtLg": [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
+    "alignLtSm": [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
+    "alignLtMd": [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
+    "alignLtLg": [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
+    "alignLtXl": [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
 };
 
 class LayoutGapDirective extends BaseFxDirective {
@@ -1038,20 +1041,20 @@ LayoutGapDirective.ctorParameters = () => [
     { type: NgZone, },
 ];
 LayoutGapDirective.propDecorators = {
-    'gap': [{ type: Input, args: ['fxLayoutGap',] },],
-    'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
-    'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
-    'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
-    'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
-    'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
-    'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
-    'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
-    'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
-    'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
-    'gapLtSm': [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
-    'gapLtMd': [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
-    'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
-    'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
+    "gap": [{ type: Input, args: ['fxLayoutGap',] },],
+    "gapXs": [{ type: Input, args: ['fxLayoutGap.xs',] },],
+    "gapSm": [{ type: Input, args: ['fxLayoutGap.sm',] },],
+    "gapMd": [{ type: Input, args: ['fxLayoutGap.md',] },],
+    "gapLg": [{ type: Input, args: ['fxLayoutGap.lg',] },],
+    "gapXl": [{ type: Input, args: ['fxLayoutGap.xl',] },],
+    "gapGtXs": [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
+    "gapGtSm": [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
+    "gapGtMd": [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
+    "gapGtLg": [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
+    "gapLtSm": [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
+    "gapLtMd": [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
+    "gapLtLg": [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
+    "gapLtXl": [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
 };
 
 class LayoutWrapDirective extends BaseFxDirective {
@@ -1147,20 +1150,20 @@ LayoutWrapDirective.ctorParameters = () => [
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
 ];
 LayoutWrapDirective.propDecorators = {
-    'wrap': [{ type: Input, args: ['fxLayoutWrap',] },],
-    'wrapXs': [{ type: Input, args: ['fxLayoutWrap.xs',] },],
-    'wrapSm': [{ type: Input, args: ['fxLayoutWrap.sm',] },],
-    'wrapMd': [{ type: Input, args: ['fxLayoutWrap.md',] },],
-    'wrapLg': [{ type: Input, args: ['fxLayoutWrap.lg',] },],
-    'wrapXl': [{ type: Input, args: ['fxLayoutWrap.xl',] },],
-    'wrapGtXs': [{ type: Input, args: ['fxLayoutWrap.gt-xs',] },],
-    'wrapGtSm': [{ type: Input, args: ['fxLayoutWrap.gt-sm',] },],
-    'wrapGtMd': [{ type: Input, args: ['fxLayoutWrap.gt-md',] },],
-    'wrapGtLg': [{ type: Input, args: ['fxLayoutWrap.gt-lg',] },],
-    'wrapLtSm': [{ type: Input, args: ['fxLayoutWrap.lt-sm',] },],
-    'wrapLtMd': [{ type: Input, args: ['fxLayoutWrap.lt-md',] },],
-    'wrapLtLg': [{ type: Input, args: ['fxLayoutWrap.lt-lg',] },],
-    'wrapLtXl': [{ type: Input, args: ['fxLayoutWrap.lt-xl',] },],
+    "wrap": [{ type: Input, args: ['fxLayoutWrap',] },],
+    "wrapXs": [{ type: Input, args: ['fxLayoutWrap.xs',] },],
+    "wrapSm": [{ type: Input, args: ['fxLayoutWrap.sm',] },],
+    "wrapMd": [{ type: Input, args: ['fxLayoutWrap.md',] },],
+    "wrapLg": [{ type: Input, args: ['fxLayoutWrap.lg',] },],
+    "wrapXl": [{ type: Input, args: ['fxLayoutWrap.xl',] },],
+    "wrapGtXs": [{ type: Input, args: ['fxLayoutWrap.gt-xs',] },],
+    "wrapGtSm": [{ type: Input, args: ['fxLayoutWrap.gt-sm',] },],
+    "wrapGtMd": [{ type: Input, args: ['fxLayoutWrap.gt-md',] },],
+    "wrapGtLg": [{ type: Input, args: ['fxLayoutWrap.gt-lg',] },],
+    "wrapLtSm": [{ type: Input, args: ['fxLayoutWrap.lt-sm',] },],
+    "wrapLtMd": [{ type: Input, args: ['fxLayoutWrap.lt-md',] },],
+    "wrapLtLg": [{ type: Input, args: ['fxLayoutWrap.lt-lg',] },],
+    "wrapLtXl": [{ type: Input, args: ['fxLayoutWrap.lt-xl',] },],
 };
 
 function validateBasis(basis, grow = '1', shrink = '1') {
@@ -1350,22 +1353,22 @@ FlexDirective.ctorParameters = () => [
     { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
 ];
 FlexDirective.propDecorators = {
-    'shrink': [{ type: Input, args: ['fxShrink',] },],
-    'grow': [{ type: Input, args: ['fxGrow',] },],
-    'flex': [{ type: Input, args: ['fxFlex',] },],
-    'flexXs': [{ type: Input, args: ['fxFlex.xs',] },],
-    'flexSm': [{ type: Input, args: ['fxFlex.sm',] },],
-    'flexMd': [{ type: Input, args: ['fxFlex.md',] },],
-    'flexLg': [{ type: Input, args: ['fxFlex.lg',] },],
-    'flexXl': [{ type: Input, args: ['fxFlex.xl',] },],
-    'flexGtXs': [{ type: Input, args: ['fxFlex.gt-xs',] },],
-    'flexGtSm': [{ type: Input, args: ['fxFlex.gt-sm',] },],
-    'flexGtMd': [{ type: Input, args: ['fxFlex.gt-md',] },],
-    'flexGtLg': [{ type: Input, args: ['fxFlex.gt-lg',] },],
-    'flexLtSm': [{ type: Input, args: ['fxFlex.lt-sm',] },],
-    'flexLtMd': [{ type: Input, args: ['fxFlex.lt-md',] },],
-    'flexLtLg': [{ type: Input, args: ['fxFlex.lt-lg',] },],
-    'flexLtXl': [{ type: Input, args: ['fxFlex.lt-xl',] },],
+    "shrink": [{ type: Input, args: ['fxShrink',] },],
+    "grow": [{ type: Input, args: ['fxGrow',] },],
+    "flex": [{ type: Input, args: ['fxFlex',] },],
+    "flexXs": [{ type: Input, args: ['fxFlex.xs',] },],
+    "flexSm": [{ type: Input, args: ['fxFlex.sm',] },],
+    "flexMd": [{ type: Input, args: ['fxFlex.md',] },],
+    "flexLg": [{ type: Input, args: ['fxFlex.lg',] },],
+    "flexXl": [{ type: Input, args: ['fxFlex.xl',] },],
+    "flexGtXs": [{ type: Input, args: ['fxFlex.gt-xs',] },],
+    "flexGtSm": [{ type: Input, args: ['fxFlex.gt-sm',] },],
+    "flexGtMd": [{ type: Input, args: ['fxFlex.gt-md',] },],
+    "flexGtLg": [{ type: Input, args: ['fxFlex.gt-lg',] },],
+    "flexLtSm": [{ type: Input, args: ['fxFlex.lt-sm',] },],
+    "flexLtMd": [{ type: Input, args: ['fxFlex.lt-md',] },],
+    "flexLtLg": [{ type: Input, args: ['fxFlex.lt-lg',] },],
+    "flexLtXl": [{ type: Input, args: ['fxFlex.lt-xl',] },],
 };
 
 class FlexAlignDirective extends BaseFxDirective {
@@ -1451,20 +1454,20 @@ FlexAlignDirective.ctorParameters = () => [
     { type: Renderer2, },
 ];
 FlexAlignDirective.propDecorators = {
-    'align': [{ type: Input, args: ['fxFlexAlign',] },],
-    'alignXs': [{ type: Input, args: ['fxFlexAlign.xs',] },],
-    'alignSm': [{ type: Input, args: ['fxFlexAlign.sm',] },],
-    'alignMd': [{ type: Input, args: ['fxFlexAlign.md',] },],
-    'alignLg': [{ type: Input, args: ['fxFlexAlign.lg',] },],
-    'alignXl': [{ type: Input, args: ['fxFlexAlign.xl',] },],
-    'alignLtSm': [{ type: Input, args: ['fxFlexAlign.lt-sm',] },],
-    'alignLtMd': [{ type: Input, args: ['fxFlexAlign.lt-md',] },],
-    'alignLtLg': [{ type: Input, args: ['fxFlexAlign.lt-lg',] },],
-    'alignLtXl': [{ type: Input, args: ['fxFlexAlign.lt-xl',] },],
-    'alignGtXs': [{ type: Input, args: ['fxFlexAlign.gt-xs',] },],
-    'alignGtSm': [{ type: Input, args: ['fxFlexAlign.gt-sm',] },],
-    'alignGtMd': [{ type: Input, args: ['fxFlexAlign.gt-md',] },],
-    'alignGtLg': [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
+    "align": [{ type: Input, args: ['fxFlexAlign',] },],
+    "alignXs": [{ type: Input, args: ['fxFlexAlign.xs',] },],
+    "alignSm": [{ type: Input, args: ['fxFlexAlign.sm',] },],
+    "alignMd": [{ type: Input, args: ['fxFlexAlign.md',] },],
+    "alignLg": [{ type: Input, args: ['fxFlexAlign.lg',] },],
+    "alignXl": [{ type: Input, args: ['fxFlexAlign.xl',] },],
+    "alignLtSm": [{ type: Input, args: ['fxFlexAlign.lt-sm',] },],
+    "alignLtMd": [{ type: Input, args: ['fxFlexAlign.lt-md',] },],
+    "alignLtLg": [{ type: Input, args: ['fxFlexAlign.lt-lg',] },],
+    "alignLtXl": [{ type: Input, args: ['fxFlexAlign.lt-xl',] },],
+    "alignGtXs": [{ type: Input, args: ['fxFlexAlign.gt-xs',] },],
+    "alignGtSm": [{ type: Input, args: ['fxFlexAlign.gt-sm',] },],
+    "alignGtMd": [{ type: Input, args: ['fxFlexAlign.gt-md',] },],
+    "alignGtLg": [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
 };
 
 const FLEX_FILL_CSS = {
@@ -1587,20 +1590,20 @@ FlexOffsetDirective.ctorParameters = () => [
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
 ];
 FlexOffsetDirective.propDecorators = {
-    'offset': [{ type: Input, args: ['fxFlexOffset',] },],
-    'offsetXs': [{ type: Input, args: ['fxFlexOffset.xs',] },],
-    'offsetSm': [{ type: Input, args: ['fxFlexOffset.sm',] },],
-    'offsetMd': [{ type: Input, args: ['fxFlexOffset.md',] },],
-    'offsetLg': [{ type: Input, args: ['fxFlexOffset.lg',] },],
-    'offsetXl': [{ type: Input, args: ['fxFlexOffset.xl',] },],
-    'offsetLtSm': [{ type: Input, args: ['fxFlexOffset.lt-sm',] },],
-    'offsetLtMd': [{ type: Input, args: ['fxFlexOffset.lt-md',] },],
-    'offsetLtLg': [{ type: Input, args: ['fxFlexOffset.lt-lg',] },],
-    'offsetLtXl': [{ type: Input, args: ['fxFlexOffset.lt-xl',] },],
-    'offsetGtXs': [{ type: Input, args: ['fxFlexOffset.gt-xs',] },],
-    'offsetGtSm': [{ type: Input, args: ['fxFlexOffset.gt-sm',] },],
-    'offsetGtMd': [{ type: Input, args: ['fxFlexOffset.gt-md',] },],
-    'offsetGtLg': [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
+    "offset": [{ type: Input, args: ['fxFlexOffset',] },],
+    "offsetXs": [{ type: Input, args: ['fxFlexOffset.xs',] },],
+    "offsetSm": [{ type: Input, args: ['fxFlexOffset.sm',] },],
+    "offsetMd": [{ type: Input, args: ['fxFlexOffset.md',] },],
+    "offsetLg": [{ type: Input, args: ['fxFlexOffset.lg',] },],
+    "offsetXl": [{ type: Input, args: ['fxFlexOffset.xl',] },],
+    "offsetLtSm": [{ type: Input, args: ['fxFlexOffset.lt-sm',] },],
+    "offsetLtMd": [{ type: Input, args: ['fxFlexOffset.lt-md',] },],
+    "offsetLtLg": [{ type: Input, args: ['fxFlexOffset.lt-lg',] },],
+    "offsetLtXl": [{ type: Input, args: ['fxFlexOffset.lt-xl',] },],
+    "offsetGtXs": [{ type: Input, args: ['fxFlexOffset.gt-xs',] },],
+    "offsetGtSm": [{ type: Input, args: ['fxFlexOffset.gt-sm',] },],
+    "offsetGtMd": [{ type: Input, args: ['fxFlexOffset.gt-md',] },],
+    "offsetGtLg": [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
 };
 
 class FlexOrderDirective extends BaseFxDirective {
@@ -1671,20 +1674,20 @@ FlexOrderDirective.ctorParameters = () => [
     { type: Renderer2, },
 ];
 FlexOrderDirective.propDecorators = {
-    'order': [{ type: Input, args: ['fxFlexOrder',] },],
-    'orderXs': [{ type: Input, args: ['fxFlexOrder.xs',] },],
-    'orderSm': [{ type: Input, args: ['fxFlexOrder.sm',] },],
-    'orderMd': [{ type: Input, args: ['fxFlexOrder.md',] },],
-    'orderLg': [{ type: Input, args: ['fxFlexOrder.lg',] },],
-    'orderXl': [{ type: Input, args: ['fxFlexOrder.xl',] },],
-    'orderGtXs': [{ type: Input, args: ['fxFlexOrder.gt-xs',] },],
-    'orderGtSm': [{ type: Input, args: ['fxFlexOrder.gt-sm',] },],
-    'orderGtMd': [{ type: Input, args: ['fxFlexOrder.gt-md',] },],
-    'orderGtLg': [{ type: Input, args: ['fxFlexOrder.gt-lg',] },],
-    'orderLtSm': [{ type: Input, args: ['fxFlexOrder.lt-sm',] },],
-    'orderLtMd': [{ type: Input, args: ['fxFlexOrder.lt-md',] },],
-    'orderLtLg': [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
-    'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
+    "order": [{ type: Input, args: ['fxFlexOrder',] },],
+    "orderXs": [{ type: Input, args: ['fxFlexOrder.xs',] },],
+    "orderSm": [{ type: Input, args: ['fxFlexOrder.sm',] },],
+    "orderMd": [{ type: Input, args: ['fxFlexOrder.md',] },],
+    "orderLg": [{ type: Input, args: ['fxFlexOrder.lg',] },],
+    "orderXl": [{ type: Input, args: ['fxFlexOrder.xl',] },],
+    "orderGtXs": [{ type: Input, args: ['fxFlexOrder.gt-xs',] },],
+    "orderGtSm": [{ type: Input, args: ['fxFlexOrder.gt-sm',] },],
+    "orderGtMd": [{ type: Input, args: ['fxFlexOrder.gt-md',] },],
+    "orderGtLg": [{ type: Input, args: ['fxFlexOrder.gt-lg',] },],
+    "orderLtSm": [{ type: Input, args: ['fxFlexOrder.lt-sm',] },],
+    "orderLtMd": [{ type: Input, args: ['fxFlexOrder.lt-md',] },],
+    "orderLtLg": [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
+    "orderLtXl": [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
 
 class RendererAdapter {
@@ -1823,21 +1826,21 @@ ClassDirective.ctorParameters = () => [
     { type: NgClass, decorators: [{ type: Optional }, { type: Self },] },
 ];
 ClassDirective.propDecorators = {
-    'ngClassBase': [{ type: Input, args: ['ngClass',] },],
-    'klazz': [{ type: Input, args: ['class',] },],
-    'ngClassXs': [{ type: Input, args: ['ngClass.xs',] },],
-    'ngClassSm': [{ type: Input, args: ['ngClass.sm',] },],
-    'ngClassMd': [{ type: Input, args: ['ngClass.md',] },],
-    'ngClassLg': [{ type: Input, args: ['ngClass.lg',] },],
-    'ngClassXl': [{ type: Input, args: ['ngClass.xl',] },],
-    'ngClassLtSm': [{ type: Input, args: ['ngClass.lt-sm',] },],
-    'ngClassLtMd': [{ type: Input, args: ['ngClass.lt-md',] },],
-    'ngClassLtLg': [{ type: Input, args: ['ngClass.lt-lg',] },],
-    'ngClassLtXl': [{ type: Input, args: ['ngClass.lt-xl',] },],
-    'ngClassGtXs': [{ type: Input, args: ['ngClass.gt-xs',] },],
-    'ngClassGtSm': [{ type: Input, args: ['ngClass.gt-sm',] },],
-    'ngClassGtMd': [{ type: Input, args: ['ngClass.gt-md',] },],
-    'ngClassGtLg': [{ type: Input, args: ['ngClass.gt-lg',] },],
+    "ngClassBase": [{ type: Input, args: ['ngClass',] },],
+    "klazz": [{ type: Input, args: ['class',] },],
+    "ngClassXs": [{ type: Input, args: ['ngClass.xs',] },],
+    "ngClassSm": [{ type: Input, args: ['ngClass.sm',] },],
+    "ngClassMd": [{ type: Input, args: ['ngClass.md',] },],
+    "ngClassLg": [{ type: Input, args: ['ngClass.lg',] },],
+    "ngClassXl": [{ type: Input, args: ['ngClass.xl',] },],
+    "ngClassLtSm": [{ type: Input, args: ['ngClass.lt-sm',] },],
+    "ngClassLtMd": [{ type: Input, args: ['ngClass.lt-md',] },],
+    "ngClassLtLg": [{ type: Input, args: ['ngClass.lt-lg',] },],
+    "ngClassLtXl": [{ type: Input, args: ['ngClass.lt-xl',] },],
+    "ngClassGtXs": [{ type: Input, args: ['ngClass.gt-xs',] },],
+    "ngClassGtSm": [{ type: Input, args: ['ngClass.gt-sm',] },],
+    "ngClassGtMd": [{ type: Input, args: ['ngClass.gt-md',] },],
+    "ngClassGtLg": [{ type: Input, args: ['ngClass.gt-lg',] },],
 };
 
 class NgStyleKeyValue {
@@ -2026,20 +2029,20 @@ StyleDirective.ctorParameters = () => [
     { type: NgStyle, decorators: [{ type: Optional }, { type: Self },] },
 ];
 StyleDirective.propDecorators = {
-    'ngStyleBase': [{ type: Input, args: ['ngStyle',] },],
-    'ngStyleXs': [{ type: Input, args: ['ngStyle.xs',] },],
-    'ngStyleSm': [{ type: Input, args: ['ngStyle.sm',] },],
-    'ngStyleMd': [{ type: Input, args: ['ngStyle.md',] },],
-    'ngStyleLg': [{ type: Input, args: ['ngStyle.lg',] },],
-    'ngStyleXl': [{ type: Input, args: ['ngStyle.xl',] },],
-    'ngStyleLtSm': [{ type: Input, args: ['ngStyle.lt-sm',] },],
-    'ngStyleLtMd': [{ type: Input, args: ['ngStyle.lt-md',] },],
-    'ngStyleLtLg': [{ type: Input, args: ['ngStyle.lt-lg',] },],
-    'ngStyleLtXl': [{ type: Input, args: ['ngStyle.lt-xl',] },],
-    'ngStyleGtXs': [{ type: Input, args: ['ngStyle.gt-xs',] },],
-    'ngStyleGtSm': [{ type: Input, args: ['ngStyle.gt-sm',] },],
-    'ngStyleGtMd': [{ type: Input, args: ['ngStyle.gt-md',] },],
-    'ngStyleGtLg': [{ type: Input, args: ['ngStyle.gt-lg',] },],
+    "ngStyleBase": [{ type: Input, args: ['ngStyle',] },],
+    "ngStyleXs": [{ type: Input, args: ['ngStyle.xs',] },],
+    "ngStyleSm": [{ type: Input, args: ['ngStyle.sm',] },],
+    "ngStyleMd": [{ type: Input, args: ['ngStyle.md',] },],
+    "ngStyleLg": [{ type: Input, args: ['ngStyle.lg',] },],
+    "ngStyleXl": [{ type: Input, args: ['ngStyle.xl',] },],
+    "ngStyleLtSm": [{ type: Input, args: ['ngStyle.lt-sm',] },],
+    "ngStyleLtMd": [{ type: Input, args: ['ngStyle.lt-md',] },],
+    "ngStyleLtLg": [{ type: Input, args: ['ngStyle.lt-lg',] },],
+    "ngStyleLtXl": [{ type: Input, args: ['ngStyle.lt-xl',] },],
+    "ngStyleGtXs": [{ type: Input, args: ['ngStyle.gt-xs',] },],
+    "ngStyleGtSm": [{ type: Input, args: ['ngStyle.gt-sm',] },],
+    "ngStyleGtMd": [{ type: Input, args: ['ngStyle.gt-md',] },],
+    "ngStyleGtLg": [{ type: Input, args: ['ngStyle.gt-lg',] },],
 };
 
 const FALSY = ['false', false, 0];
@@ -2167,34 +2170,34 @@ ShowHideDirective.ctorParameters = () => [
     { type: Renderer2, },
 ];
 ShowHideDirective.propDecorators = {
-    'show': [{ type: Input, args: ['fxShow',] },],
-    'showXs': [{ type: Input, args: ['fxShow.xs',] },],
-    'showSm': [{ type: Input, args: ['fxShow.sm',] },],
-    'showMd': [{ type: Input, args: ['fxShow.md',] },],
-    'showLg': [{ type: Input, args: ['fxShow.lg',] },],
-    'showXl': [{ type: Input, args: ['fxShow.xl',] },],
-    'showLtSm': [{ type: Input, args: ['fxShow.lt-sm',] },],
-    'showLtMd': [{ type: Input, args: ['fxShow.lt-md',] },],
-    'showLtLg': [{ type: Input, args: ['fxShow.lt-lg',] },],
-    'showLtXl': [{ type: Input, args: ['fxShow.lt-xl',] },],
-    'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
-    'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
-    'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
-    'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
-    'hide': [{ type: Input, args: ['fxHide',] },],
-    'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
-    'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
-    'hideMd': [{ type: Input, args: ['fxHide.md',] },],
-    'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
-    'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
-    'hideLtSm': [{ type: Input, args: ['fxHide.lt-sm',] },],
-    'hideLtMd': [{ type: Input, args: ['fxHide.lt-md',] },],
-    'hideLtLg': [{ type: Input, args: ['fxHide.lt-lg',] },],
-    'hideLtXl': [{ type: Input, args: ['fxHide.lt-xl',] },],
-    'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
-    'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
-    'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
-    'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
+    "show": [{ type: Input, args: ['fxShow',] },],
+    "showXs": [{ type: Input, args: ['fxShow.xs',] },],
+    "showSm": [{ type: Input, args: ['fxShow.sm',] },],
+    "showMd": [{ type: Input, args: ['fxShow.md',] },],
+    "showLg": [{ type: Input, args: ['fxShow.lg',] },],
+    "showXl": [{ type: Input, args: ['fxShow.xl',] },],
+    "showLtSm": [{ type: Input, args: ['fxShow.lt-sm',] },],
+    "showLtMd": [{ type: Input, args: ['fxShow.lt-md',] },],
+    "showLtLg": [{ type: Input, args: ['fxShow.lt-lg',] },],
+    "showLtXl": [{ type: Input, args: ['fxShow.lt-xl',] },],
+    "showGtXs": [{ type: Input, args: ['fxShow.gt-xs',] },],
+    "showGtSm": [{ type: Input, args: ['fxShow.gt-sm',] },],
+    "showGtMd": [{ type: Input, args: ['fxShow.gt-md',] },],
+    "showGtLg": [{ type: Input, args: ['fxShow.gt-lg',] },],
+    "hide": [{ type: Input, args: ['fxHide',] },],
+    "hideXs": [{ type: Input, args: ['fxHide.xs',] },],
+    "hideSm": [{ type: Input, args: ['fxHide.sm',] },],
+    "hideMd": [{ type: Input, args: ['fxHide.md',] },],
+    "hideLg": [{ type: Input, args: ['fxHide.lg',] },],
+    "hideXl": [{ type: Input, args: ['fxHide.xl',] },],
+    "hideLtSm": [{ type: Input, args: ['fxHide.lt-sm',] },],
+    "hideLtMd": [{ type: Input, args: ['fxHide.lt-md',] },],
+    "hideLtLg": [{ type: Input, args: ['fxHide.lt-lg',] },],
+    "hideLtXl": [{ type: Input, args: ['fxHide.lt-xl',] },],
+    "hideGtXs": [{ type: Input, args: ['fxHide.gt-xs',] },],
+    "hideGtSm": [{ type: Input, args: ['fxHide.gt-sm',] },],
+    "hideGtMd": [{ type: Input, args: ['fxHide.gt-md',] },],
+    "hideGtLg": [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
 
 class ImgSrcDirective extends BaseFxDirective {
@@ -2261,20 +2264,20 @@ ImgSrcDirective.ctorParameters = () => [
     { type: MediaMonitor, },
 ];
 ImgSrcDirective.propDecorators = {
-    'srcBase': [{ type: Input, args: ['src',] },],
-    'srcXs': [{ type: Input, args: ['src.xs',] },],
-    'srcSm': [{ type: Input, args: ['src.sm',] },],
-    'srcMd': [{ type: Input, args: ['src.md',] },],
-    'srcLg': [{ type: Input, args: ['src.lg',] },],
-    'srcXl': [{ type: Input, args: ['src.xl',] },],
-    'srcLtSm': [{ type: Input, args: ['src.lt-sm',] },],
-    'srcLtMd': [{ type: Input, args: ['src.lt-md',] },],
-    'srcLtLg': [{ type: Input, args: ['src.lt-lg',] },],
-    'srcLtXl': [{ type: Input, args: ['src.lt-xl',] },],
-    'srcGtXs': [{ type: Input, args: ['src.gt-xs',] },],
-    'srcGtSm': [{ type: Input, args: ['src.gt-sm',] },],
-    'srcGtMd': [{ type: Input, args: ['src.gt-md',] },],
-    'srcGtLg': [{ type: Input, args: ['src.gt-lg',] },],
+    "srcBase": [{ type: Input, args: ['src',] },],
+    "srcXs": [{ type: Input, args: ['src.xs',] },],
+    "srcSm": [{ type: Input, args: ['src.sm',] },],
+    "srcMd": [{ type: Input, args: ['src.md',] },],
+    "srcLg": [{ type: Input, args: ['src.lg',] },],
+    "srcXl": [{ type: Input, args: ['src.xl',] },],
+    "srcLtSm": [{ type: Input, args: ['src.lt-sm',] },],
+    "srcLtMd": [{ type: Input, args: ['src.lt-md',] },],
+    "srcLtLg": [{ type: Input, args: ['src.lt-lg',] },],
+    "srcLtXl": [{ type: Input, args: ['src.lt-xl',] },],
+    "srcGtXs": [{ type: Input, args: ['src.gt-xs',] },],
+    "srcGtSm": [{ type: Input, args: ['src.gt-sm',] },],
+    "srcGtMd": [{ type: Input, args: ['src.gt-md',] },],
+    "srcGtLg": [{ type: Input, args: ['src.gt-lg',] },],
 };
 
 const RESPONSIVE_ALIASES = [
@@ -2373,9 +2376,6 @@ const ORIENTATION_BREAKPOINTS = [
 ];
 
 class ObservableMedia {
-    isActive(query) { }
-    asObservable() { }
-    subscribe(next, error, complete) { }
 }
 class MediaService {
     constructor(breakpoints, mediaWatcher) {
