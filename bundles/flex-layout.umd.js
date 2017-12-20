@@ -45,13 +45,14 @@ function __extends(d, b) {
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new _angular_core.Version('2.0.0-beta.12-82ae74c');
+var VERSION = new _angular_core.Version('2.0.0-beta.12-b201845');
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 
+var INLINE = 'inline';
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
@@ -59,8 +60,8 @@ var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  * @return {?}
  */
 function buildLayoutCSS(value) {
-    var _a = validateValue(value), direction = _a[0], wrap = _a[1];
-    return buildCSS(direction, wrap);
+    var _a = validateValue(value), direction = _a[0], wrap = _a[1], isInline = _a[2];
+    return buildCSS(direction, wrap, isInline);
 }
 /**
  * Validate the value to be one of the acceptable value options
@@ -70,11 +71,16 @@ function buildLayoutCSS(value) {
  */
 function validateValue(value) {
     value = value ? value.toLowerCase() : '';
-    var _a = value.split(' '), direction = _a[0], wrap = _a[1];
+    var _a = value.split(' '), direction = _a[0], wrap = _a[1], inline = _a[2];
+    // First value must be the `flex-direction`
     if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
         direction = LAYOUT_VALUES[0];
     }
-    return [direction, validateWrapValue(wrap)];
+    if (wrap == INLINE) {
+        wrap = (inline != INLINE) ? inline : null;
+        inline = INLINE;
+    }
+    return [direction, validateWrapValue(wrap), !!inline];
 }
 /**
  * Determine if the validated, flex-direction value specifies
@@ -122,12 +128,14 @@ function validateWrapValue(value) {
  *  laid out and drawn inside that element's specified width and height.
  * @param {?} direction
  * @param {?=} wrap
+ * @param {?=} inline
  * @return {?}
  */
-function buildCSS(direction, wrap) {
+function buildCSS(direction, wrap, inline) {
     if (wrap === void 0) { wrap = null; }
+    if (inline === void 0) { inline = false; }
     return {
-        'display': 'flex',
+        'display': inline ? 'inline-flex' : 'flex',
         'box-sizing': 'border-box',
         'flex-direction': direction,
         'flex-wrap': !!wrap ? wrap : null
@@ -7168,6 +7176,7 @@ exports.MediaQueriesModule = MediaQueriesModule;
 exports.mergeAlias = mergeAlias;
 exports.applyCssPrefixes = applyCssPrefixes;
 exports.validateBasis = validateBasis;
+exports.INLINE = INLINE;
 exports.LAYOUT_VALUES = LAYOUT_VALUES;
 exports.buildLayoutCSS = buildLayoutCSS;
 exports.validateValue = validateValue;

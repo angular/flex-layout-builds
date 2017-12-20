@@ -1,3 +1,4 @@
+export declare const INLINE = "inline";
 export declare const LAYOUT_VALUES: string[];
 export declare function buildLayoutCSS(value: string): {
     'display': string;

@@ -23,13 +23,14 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.12-82ae74c');
+var VERSION = new Version('2.0.0-beta.12-b201845');
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 
+var INLINE = 'inline';
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
@@ -37,8 +38,8 @@ var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  * @return {?}
  */
 function buildLayoutCSS(value) {
-    var _a = validateValue(value), direction = _a[0], wrap = _a[1];
-    return buildCSS(direction, wrap);
+    var _a = validateValue(value), direction = _a[0], wrap = _a[1], isInline = _a[2];
+    return buildCSS(direction, wrap, isInline);
 }
 /**
  * Validate the value to be one of the acceptable value options
@@ -48,11 +49,16 @@ function buildLayoutCSS(value) {
  */
 function validateValue(value) {
     value = value ? value.toLowerCase() : '';
-    var _a = value.split(' '), direction = _a[0], wrap = _a[1];
+    var _a = value.split(' '), direction = _a[0], wrap = _a[1], inline = _a[2];
+    // First value must be the `flex-direction`
     if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
         direction = LAYOUT_VALUES[0];
     }
-    return [direction, validateWrapValue(wrap)];
+    if (wrap == INLINE) {
+        wrap = (inline != INLINE) ? inline : null;
+        inline = INLINE;
+    }
+    return [direction, validateWrapValue(wrap), !!inline];
 }
 /**
  * Determine if the validated, flex-direction value specifies
@@ -100,12 +106,14 @@ function validateWrapValue(value) {
  *  laid out and drawn inside that element's specified width and height.
  * @param {?} direction
  * @param {?=} wrap
+ * @param {?=} inline
  * @return {?}
  */
-function buildCSS(direction, wrap) {
+function buildCSS(direction, wrap, inline) {
     if (wrap === void 0) { wrap = null; }
+    if (inline === void 0) { inline = false; }
     return {
-        'display': 'flex',
+        'display': inline ? 'inline-flex' : 'flex',
         'box-sizing': 'border-box',
         'flex-direction': direction,
         'flex-wrap': !!wrap ? wrap : null
@@ -7122,5 +7130,5 @@ var FlexLayoutModule = /** @class */ (function () {
  * Generated bundle index. Do not edit.
  */
 
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.es5.js.map
