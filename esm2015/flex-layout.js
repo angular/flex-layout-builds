@@ -13,7 +13,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-const VERSION = new Version('2.0.0-beta.12-b201845');
+const VERSION = new Version('2.0.0-beta.12-5076b3b');
 
 const INLINE = 'inline';
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
