@@ -45,7 +45,7 @@ function __extends(d, b) {
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new _angular_core.Version('2.0.0-beta.12-5076b3b');
+var VERSION = new _angular_core.Version('2.0.0-beta.12-0c1bf4a');
 
 /**
  * @fileoverview added by tsickle
@@ -253,6 +253,7 @@ function applyStyleToElements(renderer, style, elements) {
 function applyMultiValueStyleToElement(styles, element, renderer) {
     Object.keys(styles).sort().forEach(function (key) {
         var /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+        values.sort();
         for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
             var value = values_1[_i];
             renderer.setStyle(element, key, value);
