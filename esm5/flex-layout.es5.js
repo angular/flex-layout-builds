@@ -23,7 +23,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.12-0c1bf4a');
+var VERSION = new Version('2.0.0-beta.12-b9745c6');
 
 /**
  * @fileoverview added by tsickle
