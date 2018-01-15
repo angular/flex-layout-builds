@@ -7,9 +7,10 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
     protected _renderer: Renderer2;
+    protected _platformId: Object;
     readonly hasMediaQueryListener: boolean;
     activatedValue: string | number;
-    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2);
+    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2, _platformId: Object);
     protected readonly parentElement: any;
     protected readonly nativeElement: any;
     protected _queryInput(key: any): any;

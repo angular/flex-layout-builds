@@ -5,15 +5,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
-import { DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
+import { Directive, ElementRef as ElementRef$1, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, PLATFORM_ID, Renderer2 as Renderer2$1, RendererFactory2, SecurityContext, Self, SimpleChange, SkipSelf, Version, ViewEncapsulation } from '@angular/core';
+import { DOCUMENT, NgClass, NgStyle, isPlatformBrowser } from '@angular/common';
 import { map } from 'rxjs/operators/map';
-import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { DomSanitizer } from '@angular/platform-browser';
 
-const VERSION = new Version('2.0.0-beta.12-b9745c6');
+const VERSION = new Version('2.0.0-beta.12-c0ea21f');
 
 const INLINE = 'inline';
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -137,21 +137,18 @@ function applyMultiValueStyleToElement(styles, element, renderer) {
     });
 }
 function lookupAttributeValue(element, attribute) {
-    return ɵgetDOM().getAttribute(element, attribute) || '';
+    return element.getAttribute(attribute) || '';
 }
 function lookupInlineStyle(element, styleName) {
-    return ɵgetDOM().getStyle(element, styleName);
+    return element.style[styleName];
 }
-function lookupStyle(element, styleName, inlineOnly = false) {
+function lookupStyle(_platformId, element, styleName, inlineOnly = false) {
     let value = '';
     if (element) {
-        try {
-            let immediateValue = value = lookupInlineStyle(element, styleName);
-            if (!inlineOnly) {
-                value = immediateValue || ɵgetDOM().getComputedStyle(element).getPropertyValue(styleName);
-            }
-        }
-        catch (e) {
+        let immediateValue = value = lookupInlineStyle(element, styleName);
+        if (!inlineOnly) {
+            value = immediateValue || (isPlatformBrowser(_platformId) &&
+                getComputedStyle(element).getPropertyValue(styleName)) || '';
         }
     }
     return value ? value.trim() : 'block';
@@ -277,10 +274,11 @@ class ResponsiveActivation {
 }
 
 class BaseFxDirective {
-    constructor(_mediaMonitor, _elementRef, _renderer) {
+    constructor(_mediaMonitor, _elementRef, _renderer, _platformId) {
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
         this._renderer = _renderer;
+        this._platformId = _platformId;
         this._inputMap = {};
         this._hasInitialized = false;
     }
@@ -328,7 +326,7 @@ class BaseFxDirective {
         return (hasDefaultVal && val !== '') ? val : fallbackVal;
     }
     _getDisplayStyle(source = this.nativeElement) {
-        return lookupStyle(source || this.nativeElement, 'display');
+        return lookupStyle(this._platformId, source || this.nativeElement, 'display');
     }
     _getAttributeValue(attribute, source = this.nativeElement) {
         return lookupAttributeValue(source || this.nativeElement, attribute);
@@ -336,7 +334,7 @@ class BaseFxDirective {
     _getFlowDirection(target, addIfMissing = false) {
         let value = 'row';
         if (target) {
-            value = lookupStyle(target, 'flex-direction') || 'row';
+            value = lookupStyle(this._platformId, target, 'flex-direction') || 'row';
             let hasInlineValue = lookupInlineStyle(target, 'flex-direction');
             if (!hasInlineValue && addIfMissing) {
                 applyStyleToElements(this._renderer, buildLayoutCSS(value), [target]);
@@ -390,14 +388,21 @@ class BaseFxDirective {
         return this._hasInitialized;
     }
 }
+BaseFxDirective.ctorParameters = () => [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+];
 
 class BaseFxDirectiveAdapter extends BaseFxDirective {
-    constructor(_baseKey, _mediaMonitor, _elementRef, _renderer) {
-        super(_mediaMonitor, _elementRef, _renderer);
+    constructor(_baseKey, _mediaMonitor, _elementRef, _renderer, _platformId) {
+        super(_mediaMonitor, _elementRef, _renderer, _platformId);
         this._baseKey = _baseKey;
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
         this._renderer = _renderer;
+        this._platformId = _platformId;
     }
     get activeKey() {
         let mqa = this._mqActivation;
@@ -455,6 +460,13 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
         this._inputMap[key] = source;
     }
 }
+BaseFxDirectiveAdapter.ctorParameters = () => [
+    null,
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+];
 
 const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
 
@@ -506,9 +518,11 @@ class MediaChange {
 }
 
 class MatchMedia {
-    constructor(_zone, _document) {
+    constructor(_zone, _rendererFactory, _document, _platformId) {
         this._zone = _zone;
+        this._rendererFactory = _rendererFactory;
         this._document = _document;
+        this._platformId = _platformId;
         this._registry = new Map();
         this._source = new BehaviorSubject(new MediaChange(true));
         this._observable$ = this._source.asObservable();
@@ -528,7 +542,7 @@ class MatchMedia {
     registerQuery(mediaQuery) {
         let list = normalizeQuery(mediaQuery);
         if (list.length > 0) {
-            prepareQueryCSS(list, this._document);
+            this._prepareQueryCSS(list, this._document);
             list.forEach(query => {
                 let mql = this._registry.get(query);
                 let onMQLEvent = (e) => {
@@ -549,7 +563,8 @@ class MatchMedia {
         }
     }
     _buildMQL(query) {
-        let canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
+        let canListen = isPlatformBrowser(this._platformId) &&
+            !!((window)).matchMedia('all').addListener;
         return canListen ? ((window)).matchMedia(query) : ({
             matches: query === 'all' || query === '',
             media: query,
@@ -559,41 +574,50 @@ class MatchMedia {
             }
         });
     }
+    _prepareQueryCSS(mediaQueries, _document) {
+        let list = mediaQueries.filter(it => !ALL_STYLES[it]);
+        if (list.length > 0) {
+            let query = list.join(', ');
+            try {
+                const renderer = this._rendererFactory.createRenderer(_document, RENDERER_TYPE);
+                let styleEl = renderer.createElement('style');
+                renderer.setAttribute(styleEl, 'type', 'text/css');
+                if (!styleEl['styleSheet']) {
+                    let cssText = `
+/*
+  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
+  see http://bit.ly/2sd4HMP
+*/
+@media ${query} {.fx-query-test{ }}
+`;
+                    renderer.appendChild(styleEl, renderer.createText(cssText));
+                }
+                renderer.appendChild(_document.head, styleEl);
+                list.forEach(mq => ALL_STYLES[mq] = styleEl);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+    }
 }
 MatchMedia.decorators = [
     { type: Injectable },
 ];
 MatchMedia.ctorParameters = () => [
     { type: NgZone, },
+    { type: RendererFactory2, },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
-function isBrowser() {
-    return ɵgetDOM().supportsDOMEvents();
-}
+const ɵ0 = {};
+const RENDERER_TYPE = {
+    id: '-1',
+    styles: [],
+    data: ɵ0,
+    encapsulation: ViewEncapsulation.None
+};
 const ALL_STYLES = {};
-function prepareQueryCSS(mediaQueries, _document) {
-    let list = mediaQueries.filter(it => !ALL_STYLES[it]);
-    if (list.length > 0) {
-        let query = list.join(', ');
-        try {
-            let styleEl = ɵgetDOM().createElement('style');
-            ɵgetDOM().setAttribute(styleEl, 'type', 'text/css');
-            if (!styleEl['styleSheet']) {
-                let cssText = `/*
-  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
-  see http://bit.ly/2sd4HMP
-*/
-@media ${query} {.fx-query-test{ }}`;
-                ɵgetDOM().appendChild(styleEl, ɵgetDOM().createTextNode(cssText));
-            }
-            ɵgetDOM().appendChild(_document.head, styleEl);
-            list.forEach(mq => ALL_STYLES[mq] = styleEl);
-        }
-        catch (e) {
-            console.error(e);
-        }
-    }
-}
 function normalizeQuery(mediaQuery) {
     return (typeof mediaQuery === 'undefined') ? [] :
         (typeof mediaQuery === 'string') ? [mediaQuery] : unique((mediaQuery));
@@ -612,7 +636,7 @@ function mergeAlias(dest, source) {
     } : {});
 }
 
-class MediaMonitor {
+class MediaMonitor$1 {
     constructor(_breakpoints, _matchMedia) {
         this._breakpoints = _breakpoints;
         this._matchMedia = _matchMedia;
@@ -655,17 +679,17 @@ class MediaMonitor {
         this._matchMedia.registerQuery(queries);
     }
 }
-MediaMonitor.decorators = [
+MediaMonitor$1.decorators = [
     { type: Injectable },
 ];
-MediaMonitor.ctorParameters = () => [
+MediaMonitor$1.ctorParameters = () => [
     { type: BreakPointRegistry, },
     { type: MatchMedia, },
 ];
 
 class LayoutDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this._announcer = new ReplaySubject(1);
         this.layout$ = this._announcer.asObservable();
     }
@@ -728,9 +752,10 @@ LayoutDirective.decorators = [
 ` },] },
 ];
 LayoutDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 LayoutDirective.propDecorators = {
     "layout": [{ type: Input, args: ['fxLayout',] },],
@@ -750,8 +775,8 @@ LayoutDirective.propDecorators = {
 };
 
 class LayoutAlignDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, container) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, container, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this._layout = 'row';
         if (container) {
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
@@ -891,10 +916,11 @@ LayoutAlignDirective.decorators = [
 ` },] },
 ];
 LayoutAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 LayoutAlignDirective.propDecorators = {
     "align": [{ type: Input, args: ['fxLayoutAlign',] },],
@@ -914,8 +940,8 @@ LayoutAlignDirective.propDecorators = {
 };
 
 class LayoutGapDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, container, _zone) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, container, _zone, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this._zone = _zone;
         this._layout = 'row';
         if (container) {
@@ -1040,11 +1066,12 @@ LayoutGapDirective.decorators = [
             },] },
 ];
 LayoutGapDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
     { type: NgZone, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 LayoutGapDirective.propDecorators = {
     "gap": [{ type: Input, args: ['fxLayoutGap',] },],
@@ -1061,115 +1088,6 @@ LayoutGapDirective.propDecorators = {
     "gapLtMd": [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
     "gapLtLg": [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
     "gapLtXl": [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
-};
-
-class LayoutWrapDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, container) {
-        super(monitor, elRef, renderer);
-        this._layout = 'row';
-        if (container) {
-            this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
-        }
-    }
-    set wrap(val) { this._cacheInput('wrap', val); }
-    set wrapXs(val) { this._cacheInput('wrapXs', val); }
-    set wrapSm(val) { this._cacheInput('wrapSm', val); }
-    ;
-    set wrapMd(val) { this._cacheInput('wrapMd', val); }
-    ;
-    set wrapLg(val) { this._cacheInput('wrapLg', val); }
-    ;
-    set wrapXl(val) { this._cacheInput('wrapXl', val); }
-    ;
-    set wrapGtXs(val) { this._cacheInput('wrapGtXs', val); }
-    ;
-    set wrapGtSm(val) { this._cacheInput('wrapGtSm', val); }
-    ;
-    set wrapGtMd(val) { this._cacheInput('wrapGtMd', val); }
-    ;
-    set wrapGtLg(val) { this._cacheInput('wrapGtLg', val); }
-    ;
-    set wrapLtSm(val) { this._cacheInput('wrapLtSm', val); }
-    ;
-    set wrapLtMd(val) { this._cacheInput('wrapLtMd', val); }
-    ;
-    set wrapLtLg(val) { this._cacheInput('wrapLtLg', val); }
-    ;
-    set wrapLtXl(val) { this._cacheInput('wrapLtXl', val); }
-    ;
-    ngOnChanges(changes) {
-        if (changes['wrap'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges('wrap', 'wrap', (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    ngOnDestroy() {
-        super.ngOnDestroy();
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    }
-    _onLayoutChange(direction) {
-        this._layout = (direction || '').toLowerCase().replace('-reverse', '');
-        if (!LAYOUT_VALUES.find(x => x === this._layout)) {
-            this._layout = 'row';
-        }
-        this._updateWithValue();
-    }
-    _updateWithValue(value) {
-        value = value || this._queryInput('wrap');
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        value = validateWrapValue(value || 'wrap');
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    _buildCSS(value) {
-        return {
-            'display': 'flex',
-            'flex-wrap': value,
-            'flex-direction': this.flowDirection
-        };
-    }
-    get flowDirection() {
-        let computeFlowDirection = () => this._getFlowDirection(this.nativeElement);
-        return this._layoutWatcher ? this._layout : computeFlowDirection();
-    }
-}
-LayoutWrapDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [fxLayoutWrap], [fxLayoutWrap.xs], [fxLayoutWrap.sm], [fxLayoutWrap.lg], [fxLayoutWrap.xl],
-  [fxLayoutWrap.gt-xs], [fxLayoutWrap.gt-sm], [fxLayoutWrap.gt-md], [fxLayoutWrap.gt-lg],
-  [fxLayoutWrap.lt-xs], [fxLayoutWrap.lt-sm], [fxLayoutWrap.lt-md], [fxLayoutWrap.lt-lg]
-` },] },
-];
-LayoutWrapDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-];
-LayoutWrapDirective.propDecorators = {
-    "wrap": [{ type: Input, args: ['fxLayoutWrap',] },],
-    "wrapXs": [{ type: Input, args: ['fxLayoutWrap.xs',] },],
-    "wrapSm": [{ type: Input, args: ['fxLayoutWrap.sm',] },],
-    "wrapMd": [{ type: Input, args: ['fxLayoutWrap.md',] },],
-    "wrapLg": [{ type: Input, args: ['fxLayoutWrap.lg',] },],
-    "wrapXl": [{ type: Input, args: ['fxLayoutWrap.xl',] },],
-    "wrapGtXs": [{ type: Input, args: ['fxLayoutWrap.gt-xs',] },],
-    "wrapGtSm": [{ type: Input, args: ['fxLayoutWrap.gt-sm',] },],
-    "wrapGtMd": [{ type: Input, args: ['fxLayoutWrap.gt-md',] },],
-    "wrapGtLg": [{ type: Input, args: ['fxLayoutWrap.gt-lg',] },],
-    "wrapLtSm": [{ type: Input, args: ['fxLayoutWrap.lt-sm',] },],
-    "wrapLtMd": [{ type: Input, args: ['fxLayoutWrap.lt-md',] },],
-    "wrapLtLg": [{ type: Input, args: ['fxLayoutWrap.lt-lg',] },],
-    "wrapLtXl": [{ type: Input, args: ['fxLayoutWrap.lt-xl',] },],
 };
 
 function validateBasis(basis, grow = '1', shrink = '1') {
@@ -1199,10 +1117,9 @@ function _validateCalcValue(calc) {
 }
 
 class FlexDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, _container, _wrap) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, _container, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this._container = _container;
-        this._wrap = _wrap;
         this._cacheInput('flex', '');
         this._cacheInput('shrink', 1);
         this._cacheInput('grow', 1);
@@ -1328,7 +1245,7 @@ class FlexDirective extends BaseFxDirective {
                 css = extendObject(clearStyles, {
                     'flex-grow': `${grow}`,
                     'flex-shrink': `${shrink}`,
-                    'flex-basis': (isValue || this._wrap) ? `${basis}` : '100%'
+                    'flex-basis': isValue ? `${basis}` : '100%'
                 });
                 break;
         }
@@ -1352,11 +1269,11 @@ FlexDirective.decorators = [
             },] },
 ];
 FlexDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 FlexDirective.propDecorators = {
     "shrink": [{ type: Input, args: ['fxShrink',] },],
@@ -1378,8 +1295,8 @@ FlexDirective.propDecorators = {
 };
 
 class FlexAlignDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, platformId) {
+        super(monitor, elRef, renderer, platformId);
     }
     set align(val) { this._cacheInput('align', val); }
     ;
@@ -1455,9 +1372,10 @@ FlexAlignDirective.decorators = [
             },] },
 ];
 FlexAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 FlexAlignDirective.propDecorators = {
     "align": [{ type: Input, args: ['fxFlexAlign',] },],
@@ -1484,8 +1402,8 @@ const FLEX_FILL_CSS = {
     'min-height': '100%'
 };
 class FlexFillDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this.elRef = elRef;
         this.renderer = renderer;
         this._applyStyleToElement(FLEX_FILL_CSS);
@@ -1498,14 +1416,15 @@ FlexFillDirective.decorators = [
 ` },] },
 ];
 FlexFillDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 
 class FlexOffsetDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, _container) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, _container, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this._container = _container;
         this._layout = 'row';
         this.watchParentFlow();
@@ -1590,10 +1509,11 @@ FlexOffsetDirective.decorators = [
 ` },] },
 ];
 FlexOffsetDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 FlexOffsetDirective.propDecorators = {
     "offset": [{ type: Input, args: ['fxFlexOffset',] },],
@@ -1613,8 +1533,8 @@ FlexOffsetDirective.propDecorators = {
 };
 
 class FlexOrderDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, elRef, renderer, platformId) {
+        super(monitor, elRef, renderer, platformId);
     }
     set order(val) { this._cacheInput('order', val); }
     set orderXs(val) { this._cacheInput('orderXs', val); }
@@ -1675,9 +1595,10 @@ FlexOrderDirective.decorators = [
 ` },] },
 ];
 FlexOrderDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: MediaMonitor$1, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 FlexOrderDirective.propDecorators = {
     "order": [{ type: Input, args: ['fxFlexOrder',] },],
@@ -1751,14 +1672,15 @@ function _notImplemented(methodName) {
 }
 
 class ClassDirective extends BaseFxDirective {
-    constructor(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer, _ngClassInstance) {
-        super(monitor, _ngEl, _renderer);
+    constructor(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer, _ngClassInstance, _platformId) {
+        super(monitor, _ngEl, _renderer, _platformId);
         this.monitor = monitor;
         this._iterableDiffers = _iterableDiffers;
         this._keyValueDiffers = _keyValueDiffers;
         this._ngEl = _ngEl;
         this._renderer = _renderer;
         this._ngClassInstance = _ngClassInstance;
+        this._platformId = _platformId;
         this._configureAdapters();
     }
     set ngClassBase(val) {
@@ -1800,7 +1722,7 @@ class ClassDirective extends BaseFxDirective {
         this._ngClassInstance = null;
     }
     _configureAdapters() {
-        this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._renderer);
+        this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._renderer, this._platformId);
         if (!this._ngClassInstance) {
             let adapter = new RendererAdapter(this._renderer);
             this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, (adapter));
@@ -1824,12 +1746,13 @@ ClassDirective.decorators = [
             },] },
 ];
 ClassDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
+    { type: MediaMonitor$1, },
     { type: IterableDiffers, },
     { type: KeyValueDiffers, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
     { type: NgClass, decorators: [{ type: Optional }, { type: Self },] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 ClassDirective.propDecorators = {
     "ngClassBase": [{ type: Input, args: ['ngClass',] },],
@@ -1916,14 +1839,15 @@ function keyValuesToMap(map$$1, entry) {
 }
 
 class StyleDirective extends BaseFxDirective {
-    constructor(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance) {
-        super(monitor, _ngEl, _renderer);
+    constructor(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance, _platformId) {
+        super(monitor, _ngEl, _renderer, _platformId);
         this.monitor = monitor;
         this._sanitizer = _sanitizer;
         this._ngEl = _ngEl;
         this._renderer = _renderer;
         this._differs = _differs;
         this._ngStyleInstance = _ngStyleInstance;
+        this._platformId = _platformId;
         this._configureAdapters();
     }
     set ngStyleBase(val) {
@@ -1972,7 +1896,7 @@ class StyleDirective extends BaseFxDirective {
         this._ngStyleInstance = null;
     }
     _configureAdapters() {
-        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._renderer);
+        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._renderer, this._platformId);
         if (!this._ngStyleInstance) {
             let adapter = new RendererAdapter(this._renderer);
             this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, (adapter));
@@ -2027,12 +1951,13 @@ StyleDirective.decorators = [
             },] },
 ];
 StyleDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
+    { type: MediaMonitor$1, },
     { type: DomSanitizer, },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
     { type: KeyValueDiffers, },
     { type: NgStyle, decorators: [{ type: Optional }, { type: Self },] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 StyleDirective.propDecorators = {
     "ngStyleBase": [{ type: Input, args: ['ngStyle',] },],
@@ -2057,11 +1982,12 @@ function negativeOf(hide) {
         ((hide === 'false') || (hide === 0)) ? true : !hide;
 }
 class ShowHideDirective extends BaseFxDirective {
-    constructor(monitor, _layout, elRef, renderer) {
-        super(monitor, elRef, renderer);
+    constructor(monitor, _layout, elRef, renderer, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this._layout = _layout;
         this.elRef = elRef;
         this.renderer = renderer;
+        this.platformId = platformId;
         if (_layout) {
             this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
         }
@@ -2170,10 +2096,11 @@ ShowHideDirective.decorators = [
             },] },
 ];
 ShowHideDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
+    { type: MediaMonitor$1, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: ElementRef, },
-    { type: Renderer2, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 ShowHideDirective.propDecorators = {
     "show": [{ type: Input, args: ['fxShow',] },],
@@ -2207,8 +2134,8 @@ ShowHideDirective.propDecorators = {
 };
 
 class ImgSrcDirective extends BaseFxDirective {
-    constructor(elRef, renderer, monitor) {
-        super(monitor, elRef, renderer);
+    constructor(elRef, renderer, monitor, platformId) {
+        super(monitor, elRef, renderer, platformId);
         this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
     }
     set srcBase(val) { this.cacheDefaultSrc(val); }
@@ -2265,9 +2192,10 @@ ImgSrcDirective.decorators = [
             },] },
 ];
 ImgSrcDirective.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: MediaMonitor, },
+    { type: ElementRef$1, },
+    { type: Renderer2$1, },
+    { type: MediaMonitor$1, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 ImgSrcDirective.propDecorators = {
     "srcBase": [{ type: Input, args: ['src',] },],
@@ -2517,12 +2445,12 @@ const OBSERVABLE_MEDIA_PROVIDER = {
 };
 
 function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
-    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
+    return parentMonitor || new MediaMonitor$1(breakpoints, matchMedia);
 }
 const MEDIA_MONITOR_PROVIDER = {
-    provide: MediaMonitor,
+    provide: MediaMonitor$1,
     deps: [
-        [new Optional(), new SkipSelf(), MediaMonitor],
+        [new Optional(), new SkipSelf(), MediaMonitor$1],
         BreakPointRegistry,
         MatchMedia,
     ],
@@ -2537,7 +2465,7 @@ MediaQueriesModule.decorators = [
                     DEFAULT_BREAKPOINTS_PROVIDER,
                     BreakPointRegistry,
                     MatchMedia,
-                    MediaMonitor,
+                    MediaMonitor$1,
                     OBSERVABLE_MEDIA_PROVIDER
                 ]
             },] },
@@ -2546,7 +2474,6 @@ MediaQueriesModule.ctorParameters = () => [];
 
 const ALL_DIRECTIVES = [
     LayoutDirective,
-    LayoutWrapDirective,
     LayoutGapDirective,
     LayoutAlignDirective,
     FlexDirective,
@@ -2583,5 +2510,5 @@ FlexLayoutModule.decorators = [
 ];
 FlexLayoutModule.ctorParameters = () => [];
 
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor$1 as MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.js.map

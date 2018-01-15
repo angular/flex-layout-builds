@@ -16,7 +16,7 @@ export declare class FlexOrderDirective extends BaseFxDirective implements OnIni
     orderLtMd: any;
     orderLtLg: any;
     orderLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     protected _updateWithValue(value?: string): void;

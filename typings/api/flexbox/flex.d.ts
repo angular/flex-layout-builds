@@ -3,11 +3,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
-import { LayoutWrapDirective } from './layout-wrap';
 export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';
 export declare class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     protected _container: LayoutDirective;
-    protected _wrap: LayoutWrapDirective;
     protected _layout: string;
     protected _layoutWatcher: Subscription;
     shrink: any;
@@ -26,7 +24,7 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     flexLtMd: any;
     flexLtLg: any;
     flexLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, _wrap: LayoutWrapDirective);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

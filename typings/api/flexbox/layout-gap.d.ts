@@ -22,7 +22,7 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
     gapLtMd: any;
     gapLtLg: any;
     gapLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective, _zone: NgZone);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective, _zone: NgZone, platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;

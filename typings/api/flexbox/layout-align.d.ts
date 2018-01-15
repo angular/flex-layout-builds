@@ -20,7 +20,7 @@ export declare class LayoutAlignDirective extends BaseFxDirective implements OnI
     alignLtMd: any;
     alignLtLg: any;
     alignLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective, platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

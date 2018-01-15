@@ -19,7 +19,7 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
     offsetGtSm: any;
     offsetGtMd: any;
     offsetGtLg: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     ngOnInit(): void;

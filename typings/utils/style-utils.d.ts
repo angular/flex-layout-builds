@@ -7,4 +7,4 @@ export declare function applyStyleToElements(renderer: Renderer2, style: StyleDe
 export declare function applyMultiValueStyleToElement(styles: {}, element: any, renderer: Renderer2): void;
 export declare function lookupAttributeValue(element: HTMLElement, attribute: string): string;
 export declare function lookupInlineStyle(element: HTMLElement, styleName: string): string;
-export declare function lookupStyle(element: HTMLElement, styleName: string, inlineOnly?: boolean): string;
+export declare function lookupStyle(_platformId: Object, element: HTMLElement, styleName: string, inlineOnly?: boolean): string;

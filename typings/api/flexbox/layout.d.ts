@@ -20,7 +20,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     layoutLtMd: any;
     layoutLtLg: any;
     layoutLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     protected _updateWithDirection(value?: string): void;

@@ -8,6 +8,7 @@ export declare class ShowHideDirective extends BaseFxDirective implements OnInit
     protected _layout: LayoutDirective;
     protected elRef: ElementRef;
     protected renderer: Renderer2;
+    protected platformId: Object;
     protected _layoutWatcher: Subscription;
     show: any;
     showXs: any;
@@ -37,7 +38,7 @@ export declare class ShowHideDirective extends BaseFxDirective implements OnInit
     hideGtSm: any;
     hideGtMd: any;
     hideGtLg: any;
-    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer2);
+    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer2, platformId: Object);
     protected _getDisplayStyle(): string;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;

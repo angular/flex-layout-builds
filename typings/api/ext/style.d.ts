@@ -12,6 +12,7 @@ export declare class StyleDirective extends BaseFxDirective implements DoCheck, 
     protected _renderer: Renderer2;
     protected _differs: KeyValueDiffers;
     private _ngStyleInstance;
+    protected _platformId: Object;
     ngStyleBase: NgStyleType;
     ngStyleXs: NgStyleType;
     ngStyleSm: NgStyleType;
@@ -26,7 +27,7 @@ export declare class StyleDirective extends BaseFxDirective implements DoCheck, 
     ngStyleGtSm: NgStyleType;
     ngStyleGtMd: NgStyleType;
     ngStyleGtLg: NgStyleType;
-    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _ngStyleInstance: NgStyle);
+    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _ngStyleInstance: NgStyle, _platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     ngDoCheck(): void;

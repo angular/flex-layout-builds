@@ -16,7 +16,7 @@ export declare class ImgSrcDirective extends BaseFxDirective implements OnInit, 
     srcGtSm: any;
     srcGtMd: any;
     srcGtLg: any;
-    constructor(elRef: ElementRef, renderer: Renderer2, monitor: MediaMonitor);
+    constructor(elRef: ElementRef, renderer: Renderer2, monitor: MediaMonitor, platformId: Object);
     ngOnInit(): void;
     ngOnChanges(): void;
     protected _updateSrcFor(): void;

@@ -16,7 +16,7 @@ export declare class FlexAlignDirective extends BaseFxDirective implements OnIni
     alignGtSm: any;
     alignGtMd: any;
     alignGtLg: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, platformId: Object);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     protected _updateWithValue(value?: string | number): void;
