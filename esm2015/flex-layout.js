@@ -13,7 +13,7 @@ import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { DomSanitizer } from '@angular/platform-browser';
 
-const VERSION = new Version('2.0.0-beta.12-c0ea21f');
+const VERSION = new Version('2.0.0-beta.12-fe877c9');
 
 const INLINE = 'inline';
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
