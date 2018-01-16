@@ -21,7 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * Current version of Angular Flex-Layout.
  */
-const VERSION = new Version('2.0.0-beta.12-061083d');
+const VERSION = new Version('2.0.0-beta.12-9214328');
 
 /**
  * @fileoverview added by tsickle
