@@ -13,30 +13,66 @@ import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { DomSanitizer } from '@angular/platform-browser';
 
-const VERSION = new Version('2.0.0-beta.12-fe877c9');
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Current version of Angular Flex-Layout.
+ */
+const VERSION = new Version('2.0.0-beta.12-061083d');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 
 const INLINE = 'inline';
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+/**
+ * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
+ * @param {?} value
+ * @return {?}
+ */
 function buildLayoutCSS(value) {
     let [direction, wrap, isInline] = validateValue(value);
     return buildCSS(direction, wrap, isInline);
 }
+/**
+ * Validate the value to be one of the acceptable value options
+ * Use default fallback of 'row'
+ * @param {?} value
+ * @return {?}
+ */
 function validateValue(value) {
     value = value ? value.toLowerCase() : '';
     let [direction, wrap, inline] = value.split(' ');
+    // First value must be the `flex-direction`
     if (!LAYOUT_VALUES.find(x => x === direction)) {
         direction = LAYOUT_VALUES[0];
     }
-    if (wrap == INLINE) {
-        wrap = (inline != INLINE) ? inline : null;
+    if (wrap === INLINE) {
+        wrap = (inline !== INLINE) ? inline : '';
         inline = INLINE;
     }
     return [direction, validateWrapValue(wrap), !!inline];
 }
+/**
+ * Determine if the validated, flex-direction value specifies
+ * a horizontal/row flow.
+ * @param {?} value
+ * @return {?}
+ */
 function isFlowHorizontal(value) {
-    let [flow, _] = validateValue(value);
+    let [flow,] = validateValue(value);
     return flow.indexOf('row') > -1;
 }
+/**
+ * Convert layout-wrap='<value>' to expected flex-wrap style
+ * @param {?} value
+ * @return {?}
+ */
 function validateWrapValue(value) {
     if (!!value) {
         switch (value.toLowerCase()) {
@@ -50,6 +86,7 @@ function validateWrapValue(value) {
             case 'nowrap':
                 value = 'nowrap';
                 break;
+            // All other values fallback to 'wrap'
             default:
                 value = 'wrap';
                 break;
@@ -57,6 +94,19 @@ function validateWrapValue(value) {
     }
     return value;
 }
+/**
+ * Build the CSS that should be assigned to the element instance
+ * BUG:
+ *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
+ *      Use height instead if possible; height : <xxx>vh;
+ *
+ *  This way any padding or border specified on the child elements are
+ *  laid out and drawn inside that element's specified width and height.
+ * @param {?} direction
+ * @param {?=} wrap
+ * @param {?=} inline
+ * @return {?}
+ */
 function buildCSS(direction, wrap = null, inline = false) {
     return {
         'display': inline ? 'inline-flex' : 'flex',
@@ -66,9 +116,28 @@ function buildCSS(direction, wrap = null, inline = false) {
     };
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Applies CSS prefixes to appropriate style keys.
+ *
+ * Note: `-ms-`, `-moz` and `-webkit-box` are no longer supported. e.g.
+ *    {
+ *      display: -webkit-flex;     NEW - Safari 6.1+. iOS 7.1+, BB10
+ *      display: flex;             NEW, Spec - Firefox, Chrome, Opera
+ *      // display: -webkit-box;   OLD - iOS 6-, Safari 3.1-6, BB7
+ *      // display: -ms-flexbox;   TWEENER - IE 10
+ *      // display: -moz-flexbox;  OLD - Firefox
+ *    }
+ * @param {?} target
+ * @return {?}
+ */
 function applyCssPrefixes(target) {
-    for (let key in target) {
-        let value = target[key] || '';
+    for (let /** @type {?} */ key in target) {
+        let /** @type {?} */ value = target[key] || '';
         switch (key) {
             case 'display':
                 if (value === 'flex') {
@@ -112,8 +181,20 @@ function applyCssPrefixes(target) {
     return target;
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Applies styles given via string pair or object map to the directive element.
+ * @param {?} renderer
+ * @param {?} element
+ * @param {?} style
+ * @param {?=} value
+ * @return {?}
+ */
 function applyStyleToElement(renderer, element, style, value) {
-    let styles = {};
+    let /** @type {?} */ styles = {};
     if (typeof style === 'string') {
         styles[style] = value;
         style = styles;
@@ -121,46 +202,97 @@ function applyStyleToElement(renderer, element, style, value) {
     styles = applyCssPrefixes(style);
     applyMultiValueStyleToElement(styles, element, renderer);
 }
+/**
+ * Applies styles given via string pair or object map to the directive's element.
+ * @param {?} renderer
+ * @param {?} style
+ * @param {?} elements
+ * @return {?}
+ */
 function applyStyleToElements(renderer, style, elements) {
-    let styles = applyCssPrefixes(style);
+    let /** @type {?} */ styles = applyCssPrefixes(style);
     elements.forEach(el => {
         applyMultiValueStyleToElement(styles, el, renderer);
     });
 }
+/**
+ * Applies the styles to the element. The styles object map may contain an array of values.
+ * Each value will be added as element style.
+ * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones.
+ * @param {?} styles
+ * @param {?} element
+ * @param {?} renderer
+ * @return {?}
+ */
 function applyMultiValueStyleToElement(styles, element, renderer) {
     Object.keys(styles).sort().forEach(key => {
-        const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+        const /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
         values.sort();
-        for (let value of values) {
+        for (let /** @type {?} */ value of values) {
             renderer.setStyle(element, key, value);
         }
     });
 }
+/**
+ * Find the DOM element's raw attribute value (if any)
+ * @param {?} element
+ * @param {?} attribute
+ * @return {?}
+ */
 function lookupAttributeValue(element, attribute) {
     return element.getAttribute(attribute) || '';
 }
+/**
+ * Find the DOM element's inline style value (if any)
+ * @param {?} element
+ * @param {?} styleName
+ * @return {?}
+ */
 function lookupInlineStyle(element, styleName) {
     return element.style[styleName];
 }
+/**
+ * Determine the inline or inherited CSS style
+ * \@TODO(CaerusKaru): platform-server has no implementation for getComputedStyle
+ * @param {?} _platformId
+ * @param {?} element
+ * @param {?} styleName
+ * @param {?=} inlineOnly
+ * @return {?}
+ */
 function lookupStyle(_platformId, element, styleName, inlineOnly = false) {
-    let value = '';
+    let /** @type {?} */ value = '';
     if (element) {
-        let immediateValue = value = lookupInlineStyle(element, styleName);
+        let /** @type {?} */ immediateValue = value = lookupInlineStyle(element, styleName);
         if (!inlineOnly) {
             value = immediateValue || (isPlatformBrowser(_platformId) &&
                 getComputedStyle(element).getPropertyValue(styleName)) || '';
         }
     }
+    // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
+    //       in which case getComputedStyle() should determine a valid value.
     return value ? value.trim() : 'block';
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Extends an object with the *enumerable* and *own* properties of one or more source objects,
+ * similar to Object.assign.
+ *
+ * @param {?} dest The object which will have properties copied to it.
+ * @param {...?} sources The source objects from which properties will be copied.
+ * @return {?}
+ */
 function extendObject(dest, ...sources) {
     if (dest == null) {
         throw TypeError('Cannot convert undefined or null to object');
     }
-    for (let source of sources) {
+    for (let /** @type {?} */ source of sources) {
         if (source != null) {
-            for (let key in source) {
+            for (let /** @type {?} */ key in source) {
                 if (source.hasOwnProperty(key)) {
                     dest[key] = source[key];
                 }
@@ -170,14 +302,45 @@ function extendObject(dest, ...sources) {
     return dest;
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @record
+ */
+
 class KeyOptions {
+    /**
+     * @param {?} baseKey
+     * @param {?} defaultValue
+     * @param {?} inputKeys
+     */
     constructor(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
         this.defaultValue = defaultValue;
         this.inputKeys = inputKeys;
     }
 }
+/**
+ * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
+ * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
+ * directive via the specified callback.
+ *
+ * - The MQA also determines which directive property should be used to determine the
+ *   current change 'value'... BEFORE the original `onMediaQueryChanges()` method is called.
+ * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the
+ *   MediaQueryServices.
+ *
+ * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
+ */
 class ResponsiveActivation {
+    /**
+     * Constructor
+     * @param {?} _options
+     * @param {?} _mediaMonitor
+     * @param {?} _onMediaChanges
+     */
     constructor(_options, _mediaMonitor, _onMediaChanges) {
         this._options = _options;
         this._mediaMonitor = _mediaMonitor;
@@ -186,34 +349,76 @@ class ResponsiveActivation {
         this._registryMap = this._buildRegistryMap();
         this._subscribers = this._configureChangeObservers();
     }
+    /**
+     * Get a readonly sorted list of the breakpoints corresponding to the directive properties
+     * defined in the HTML markup: the sorting is done from largest to smallest. The order is
+     * important when several media queries are 'registered' and from which, the browser uses the
+     * first matching media query.
+     * @return {?}
+     */
     get registryFromLargest() {
         return [...this._registryMap].reverse();
     }
+    /**
+     * Accessor to the DI'ed directive property
+     * Each directive instance has a reference to the MediaMonitor which is
+     * used HERE to subscribe to mediaQuery change notifications.
+     * @return {?}
+     */
     get mediaMonitor() {
         return this._mediaMonitor;
     }
+    /**
+     * Determine which directive \@Input() property is currently active (for the viewport size):
+     * The key must be defined (in use) or fallback to the 'closest' overlapping property key
+     * that is defined; otherwise the default property key will be used.
+     * e.g.
+     *      if `<div fxHide fxHide.gt-sm="false">` is used but the current activated mediaQuery alias
+     *      key is `.md` then `.gt-sm` should be used instead
+     * @return {?}
+     */
     get activatedInputKey() {
         return this._activatedInputKey || this._options.baseKey;
     }
+    /**
+     * Get the currently activated \@Input value or the fallback default \@Input value
+     * @return {?}
+     */
     get activatedInput() {
-        let key = this.activatedInputKey;
+        let /** @type {?} */ key = this.activatedInputKey;
         return this.hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
     }
+    /**
+     * Fast validator for presence of attribute on the host element
+     * @param {?} key
+     * @return {?}
+     */
     hasKeyValue(key) {
-        let value = this._options.inputKeys[key];
+        let /** @type {?} */ value = this._options.inputKeys[key];
         return typeof value !== 'undefined';
     }
+    /**
+     * Remove interceptors, restore original functions, and forward the onDestroy() call
+     * @return {?}
+     */
     destroy() {
         this._subscribers.forEach((link) => {
             link.unsubscribe();
         });
         this._subscribers = [];
     }
+    /**
+     * For each *defined* API property, register a callback to `_onMonitorEvents( )`
+     * Cache 1..n subscriptions for internal auto-unsubscribes when the the directive destructs
+     * @return {?}
+     */
     _configureChangeObservers() {
-        let subscriptions = [];
+        let /** @type {?} */ subscriptions = [];
         this._registryMap.forEach((bp) => {
             if (this._keyInUse(bp.key)) {
-                let buildChanges = (change) => {
+                // Inject directive default property key name: to let onMediaChange() calls
+                // know which property is being triggered...
+                let /** @type {?} */ buildChanges = (change) => {
                     change = change.clone();
                     change.property = this._options.baseKey;
                     return change;
@@ -228,130 +433,285 @@ class ResponsiveActivation {
         });
         return subscriptions;
     }
+    /**
+     * Build mediaQuery key-hashmap; only for the directive properties that are actually defined/used
+     * in the HTML markup
+     * @return {?}
+     */
     _buildRegistryMap() {
         return this.mediaMonitor.breakpoints
             .map(bp => {
-            return (extendObject({}, bp, {
+            return /** @type {?} */ (extendObject({}, bp, {
                 baseKey: this._options.baseKey,
-                key: this._options.baseKey + bp.suffix
+                // e.g. layout, hide, self-align, flex-wrap
+                key: this._options.baseKey + bp.suffix // e.g.  layoutGtSm, layoutMd, layoutGtLg
             }));
         })
             .filter(bp => this._keyInUse(bp.key));
     }
+    /**
+     * Synchronizes change notifications with the current mq-activated \@Input and calculates the
+     * mq-activated input value or the default value
+     * @param {?} change
+     * @return {?}
+     */
     _onMonitorEvents(change) {
         if (change.property == this._options.baseKey) {
             change.value = this._calculateActivatedValue(change);
             this._onMediaChanges(change);
         }
     }
+    /**
+     * Has the key been specified in the HTML markup and thus is intended
+     * to participate in activation processes.
+     * @param {?} key
+     * @return {?}
+     */
     _keyInUse(key) {
         return this._lookupKeyValue(key) !== undefined;
     }
+    /**
+     *  Map input key associated with mediaQuery activation to closest defined input key
+     *  then return the values associated with the targeted input property
+     *
+     *  !! change events may arrive out-of-order (activate before deactivate)
+     *     so make sure the deactivate is used ONLY when the keys match
+     *     (since a different activate may be in use)
+     * @param {?} current
+     * @return {?}
+     */
     _calculateActivatedValue(current) {
-        const currentKey = this._options.baseKey + current.suffix;
-        let newKey = this._activatedInputKey;
+        const /** @type {?} */ currentKey = this._options.baseKey + current.suffix; // e.g. suffix == 'GtSm',
+        let /** @type {?} */ newKey = this._activatedInputKey; // e.g. newKey == hideGtSm
         newKey = current.matches ? currentKey : ((newKey == currentKey) ? '' : newKey);
         this._activatedInputKey = this._validateInputKey(newKey);
         return this.activatedInput;
     }
+    /**
+     * For the specified input property key, validate it is defined (used in the markup)
+     * If not see if a overlapping mediaQuery-related input key fallback has been defined
+     *
+     * NOTE: scans in the order defined by activeOverLaps (largest viewport ranges -> smallest ranges)
+     * @param {?} inputKey
+     * @return {?}
+     */
     _validateInputKey(inputKey) {
-        let isMissingKey = (key) => !this._keyInUse(key);
+        let /** @type {?} */ isMissingKey = (key) => !this._keyInUse(key);
         if (isMissingKey(inputKey)) {
             this.mediaMonitor.activeOverlaps.some(bp => {
-                let key = this._options.baseKey + bp.suffix;
+                let /** @type {?} */ key = this._options.baseKey + bp.suffix;
                 if (!isMissingKey(key)) {
                     inputKey = key;
-                    return true;
+                    return true; // exit .some()
                 }
                 return false;
             });
         }
         return inputKey;
     }
+    /**
+     * Get the value (if any) for the directive instances \@Input property (aka key)
+     * @param {?} key
+     * @return {?}
+     */
     _lookupKeyValue(key) {
         return this._options.inputKeys[key];
     }
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Abstract base class for the Layout API styling directives.
+ * @abstract
+ */
 class BaseFxDirective {
+    /**
+     * Constructor
+     * @param {?} _mediaMonitor
+     * @param {?} _elementRef
+     * @param {?} _renderer
+     * @param {?} _platformId
+     */
     constructor(_mediaMonitor, _elementRef, _renderer, _platformId) {
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
         this._renderer = _renderer;
         this._platformId = _platformId;
+        /**
+         *  Dictionary of input keys with associated values
+         */
         this._inputMap = {};
+        /**
+         * Has the `ngOnInit()` method fired
+         *
+         * Used to allow *ngFor tasks to finish and support queries like
+         * getComputedStyle() during ngOnInit().
+         */
         this._hasInitialized = false;
     }
+    /**
+     * @return {?}
+     */
     get hasMediaQueryListener() {
         return !!this._mqActivation;
     }
+    /**
+     * Imperatively determine the current activated [input] value;
+     * if called before ngOnInit() this will return `undefined`
+     * @return {?}
+     */
     get activatedValue() {
         return this._mqActivation ? this._mqActivation.activatedInput : undefined;
     }
+    /**
+     * Change the currently activated input value and force-update
+     * the injected CSS (by-passing change detection).
+     *
+     * NOTE: Only the currently activated input value will be modified;
+     *       other input values will NOT be affected.
+     * @param {?} value
+     * @return {?}
+     */
     set activatedValue(value) {
-        let key = 'baseKey', previousVal;
+        let /** @type {?} */ key = 'baseKey', /** @type {?} */ previousVal;
         if (this._mqActivation) {
             key = this._mqActivation.activatedInputKey;
             previousVal = this._inputMap[key];
             this._inputMap[key] = value;
         }
-        let change = new SimpleChange(previousVal, value, false);
-        this.ngOnChanges(({ [key]: change }));
+        let /** @type {?} */ change = new SimpleChange(previousVal, value, false);
+        this.ngOnChanges(/** @type {?} */ ({ [key]: change }));
     }
+    /**
+     * Access to host element's parent DOM node
+     * @return {?}
+     */
     get parentElement() {
         return this._elementRef.nativeElement.parentNode;
     }
+    /**
+     * @return {?}
+     */
     get nativeElement() {
         return this._elementRef.nativeElement;
     }
+    /**
+     * Access the current value (if any) of the \@Input property.
+     * @param {?} key
+     * @return {?}
+     */
     _queryInput(key) {
         return this._inputMap[key];
     }
+    /**
+     * Use post-component-initialization event to perform extra
+     * querying such as computed Display style
+     * @return {?}
+     */
     ngOnInit() {
         this._display = this._getDisplayStyle();
         this._hasInitialized = true;
     }
+    /**
+     * @param {?} change
+     * @return {?}
+     */
     ngOnChanges(change) {
         throw new Error(`BaseFxDirective::ngOnChanges should be overridden in subclass: ${change}`);
     }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         if (this._mqActivation) {
             this._mqActivation.destroy();
         }
-        this._mediaMonitor = null;
+        delete this._mediaMonitor;
     }
+    /**
+     * Was the directive's default selector used ?
+     * If not, use the fallback value!
+     * @param {?} key
+     * @param {?} fallbackVal
+     * @return {?}
+     */
     _getDefaultVal(key, fallbackVal) {
-        let val = this._queryInput(key);
-        let hasDefaultVal = (val !== undefined && val !== null);
+        let /** @type {?} */ val = this._queryInput(key);
+        let /** @type {?} */ hasDefaultVal = (val !== undefined && val !== null);
         return (hasDefaultVal && val !== '') ? val : fallbackVal;
     }
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows use to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     * @param {?=} source
+     * @return {?}
+     */
     _getDisplayStyle(source = this.nativeElement) {
         return lookupStyle(this._platformId, source || this.nativeElement, 'display');
     }
+    /**
+     * Quick accessor to raw attribute value on the target DOM element
+     * @param {?} attribute
+     * @param {?=} source
+     * @return {?}
+     */
     _getAttributeValue(attribute, source = this.nativeElement) {
         return lookupAttributeValue(source || this.nativeElement, attribute);
     }
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction).
+     *
+     * Check inline style first then check computed (stylesheet) style.
+     * And optionally add the flow value to element's inline style.
+     * @param {?} target
+     * @param {?=} addIfMissing
+     * @return {?}
+     */
     _getFlowDirection(target, addIfMissing = false) {
-        let value = 'row';
+        let /** @type {?} */ value = 'row';
         if (target) {
             value = lookupStyle(this._platformId, target, 'flex-direction') || 'row';
-            let hasInlineValue = lookupInlineStyle(target, 'flex-direction');
+            let /** @type {?} */ hasInlineValue = lookupInlineStyle(target, 'flex-direction');
             if (!hasInlineValue && addIfMissing) {
                 applyStyleToElements(this._renderer, buildLayoutCSS(value), [target]);
             }
         }
         return value.trim();
     }
+    /**
+     * Applies styles given via string pair or object map to the directive element.
+     * @param {?} style
+     * @param {?=} value
+     * @param {?=} nativeElement
+     * @return {?}
+     */
     _applyStyleToElement(style, value, nativeElement = this.nativeElement) {
-        let element = nativeElement || this.nativeElement;
+        let /** @type {?} */ element = nativeElement || this.nativeElement;
         applyStyleToElement(this._renderer, element, style, value);
     }
+    /**
+     * Applies styles given via string pair or object map to the directive's element.
+     * @param {?} style
+     * @param {?} elements
+     * @return {?}
+     */
     _applyStyleToElements(style, elements) {
         applyStyleToElements(this._renderer, style, elements || []);
     }
+    /**
+     *  Save the property value; which may be a complex object.
+     *  Complex objects support property chains
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
     _cacheInput(key, source) {
         if (typeof source === 'object') {
-            for (let prop in source) {
+            for (let /** @type {?} */ prop in source) {
                 this._inputMap[prop] = source[prop];
             }
         }
@@ -361,33 +721,63 @@ class BaseFxDirective {
             }
         }
     }
+    /**
+     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
+     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
+     *  (or closest match).
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
     _listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
+        // tslint:disable-line:max-line-length
         if (!this._mqActivation) {
-            let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+            let /** @type {?} */ keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
             this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, (change) => onMediaQueryChange(change));
         }
         return this._mqActivation;
     }
+    /**
+     * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
+     * @return {?}
+     */
     get childrenNodes() {
-        const obj = this.nativeElement.children;
-        const buffer = [];
-        for (let i = obj.length; i--;) {
+        const /** @type {?} */ obj = this.nativeElement.children;
+        const /** @type {?} */ buffer = [];
+        // iterate backwards ensuring that length is an UInt32
+        for (let /** @type {?} */ i = obj.length; i--;) {
             buffer[i] = obj[i];
         }
         return buffer;
     }
+    /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @param {?} baseKey
+     * @return {?}
+     */
     hasResponsiveAPI(baseKey) {
-        const totalKeys = Object.keys(this._inputMap).length;
-        const baseValue = this._inputMap[baseKey];
+        const /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
+        const /** @type {?} */ baseValue = this._inputMap[baseKey];
         return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     }
+    /**
+     * Fast validator for presence of attribute on the host element
+     * @param {?} key
+     * @return {?}
+     */
     hasKeyValue(key) {
         return this._mqActivation.hasKeyValue(key);
     }
+    /**
+     * @return {?}
+     */
     get hasInitialized() {
         return this._hasInitialized;
     }
 }
+/** @nocollapse */
 BaseFxDirective.ctorParameters = () => [
     { type: MediaMonitor, },
     { type: ElementRef, },
@@ -395,8 +785,26 @@ BaseFxDirective.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Adapter to the BaseFxDirective abstract class so it can be used via composition.
+ * @see BaseFxDirective
+ */
 class BaseFxDirectiveAdapter extends BaseFxDirective {
-    constructor(_baseKey, _mediaMonitor, _elementRef, _renderer, _platformId) {
+    /**
+     * BaseFxDirectiveAdapter constructor
+     * @param {?} _baseKey
+     * @param {?} _mediaMonitor
+     * @param {?} _elementRef
+     * @param {?} _renderer
+     * @param {?} _platformId
+     */
+    constructor(_baseKey, // non-responsive @Input property name
+        // non-responsive @Input property name
+        _mediaMonitor, _elementRef, _renderer, _platformId) {
         super(_mediaMonitor, _elementRef, _renderer, _platformId);
         this._baseKey = _baseKey;
         this._mediaMonitor = _mediaMonitor;
@@ -404,23 +812,54 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
         this._renderer = _renderer;
         this._platformId = _platformId;
     }
+    /**
+     * Accessor to determine which \@Input property is "active"
+     * e.g. which property value will be used.
+     * @return {?}
+     */
     get activeKey() {
-        let mqa = this._mqActivation;
-        let key = mqa ? mqa.activatedInputKey : this._baseKey;
+        let /** @type {?} */ mqa = this._mqActivation;
+        let /** @type {?} */ key = mqa ? mqa.activatedInputKey : this._baseKey;
+        // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
         return (key === 'class') ? 'klazz' : key;
     }
+    /**
+     * Hash map of all \@Input keys/values defined/used
+     * @return {?}
+     */
     get inputMap() {
         return this._inputMap;
     }
+    /**
+     * @see BaseFxDirective._mqActivation
+     * @return {?}
+     */
     get mqActivation() {
         return this._mqActivation;
     }
+    /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @return {?}
+     */
     hasResponsiveAPI() {
         return super.hasResponsiveAPI(this._baseKey);
     }
+    /**
+     * @see BaseFxDirective._queryInput
+     * @param {?} key
+     * @return {?}
+     */
     queryInput(key) {
         return key ? this._queryInput(key) : undefined;
     }
+    /**
+     *  Save the property value.
+     * @param {?=} key
+     * @param {?=} source
+     * @param {?=} cacheRaw
+     * @return {?}
+     */
     cacheInput(key, source, cacheRaw = false) {
         if (cacheRaw) {
             this._cacheInputRaw(key, source);
@@ -438,28 +877,65 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
             throw new Error(`Invalid class value '${key}' provided. Did you want to cache the raw value?`);
         }
     }
+    /**
+     * @see BaseFxDirective._listenForMediaQueryChanges
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
     listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
         return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
     }
+    /**
+     * No implicit transforms of the source.
+     * Required when caching values expected later for KeyValueDiffers
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
     _cacheInputRaw(key, source) {
-        this._inputMap[key] = source;
+        if (key) {
+            this._inputMap[key] = source;
+        }
     }
+    /**
+     *  Save the property value for Array values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
     _cacheInputArray(key = '', source) {
-        this._inputMap[key] = source.join(' ');
+        this._inputMap[key] = source ? source.join(' ') : '';
     }
+    /**
+     *  Save the property value for key/value pair values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
     _cacheInputObject(key = '', source) {
-        let classes = [];
-        for (let prop in source) {
-            if (!!source[prop]) {
-                classes.push(prop);
+        let /** @type {?} */ classes = [];
+        if (source) {
+            for (let /** @type {?} */ prop in source) {
+                if (!!source[prop]) {
+                    classes.push(prop);
+                }
             }
         }
         this._inputMap[key] = classes.join(' ');
     }
+    /**
+     *  Save the property value for string values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
     _cacheInputString(key = '', source) {
         this._inputMap[key] = source;
     }
 }
+/** @nocollapse */
 BaseFxDirectiveAdapter.ctorParameters = () => [
     null,
     { type: MediaMonitor, },
@@ -468,32 +944,89 @@ BaseFxDirectiveAdapter.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ *  Injection token unique to the flex-layout library.
+ *  Use this token when build a custom provider (see below).
+ */
 const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Registry of 1..n MediaQuery breakpoint ranges
+ * This is published as a provider and may be overriden from custom, application-specific ranges
+ *
+ */
 class BreakPointRegistry {
+    /**
+     * @param {?} _registry
+     */
     constructor(_registry) {
         this._registry = _registry;
     }
+    /**
+     * Accessor to raw list
+     * @return {?}
+     */
     get items() {
         return [...this._registry];
     }
+    /**
+     * Accessor to sorted list used for registration with matchMedia API
+     *
+     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
+     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
+     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
+     * @return {?}
+     */
     get sortedItems() {
-        let overlaps = this._registry.filter(it => it.overlapping === true);
-        let nonOverlaps = this._registry.filter(it => it.overlapping !== true);
+        let /** @type {?} */ overlaps = this._registry.filter(it => it.overlapping === true);
+        let /** @type {?} */ nonOverlaps = this._registry.filter(it => it.overlapping !== true);
         return [...overlaps, ...nonOverlaps];
     }
+    /**
+     * Search breakpoints by alias (e.g. gt-xs)
+     * @param {?} alias
+     * @return {?}
+     */
     findByAlias(alias) {
         return this._registry.find(bp => bp.alias == alias) || null;
     }
+    /**
+     * @param {?} query
+     * @return {?}
+     */
     findByQuery(query) {
         return this._registry.find(bp => bp.mediaQuery == query) || null;
     }
+    /**
+     * Get all the breakpoints whose ranges could overlapping `normal` ranges;
+     * e.g. gt-sm overlaps md, lg, and xl
+     * @return {?}
+     */
     get overlappings() {
         return this._registry.filter(it => it.overlapping == true);
     }
+    /**
+     * Get list of all registered (non-empty) breakpoint aliases
+     * @return {?}
+     */
     get aliases() {
         return this._registry.map(it => it.alias);
     }
+    /**
+     * Aliases are mapped to properties using suffixes
+     * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
+     * for property layoutGtSM.
+     * @return {?}
+     */
     get suffixes() {
         return this._registry.map(it => !!it.suffix ? it.suffix : '');
     }
@@ -501,23 +1034,68 @@ class BreakPointRegistry {
 BreakPointRegistry.decorators = [
     { type: Injectable },
 ];
+/** @nocollapse */
 BreakPointRegistry.ctorParameters = () => [
     { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Class instances emitted [to observers] for each mql notification
+ */
 class MediaChange {
-    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '') {
+    /**
+     * @param {?=} matches
+     * @param {?=} mediaQuery
+     * @param {?=} mqAlias
+     * @param {?=} suffix
+     */
+    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '' // e.g.   GtSM, Md, GtLg
+    ) {
         this.matches = matches;
         this.mediaQuery = mediaQuery;
         this.mqAlias = mqAlias;
         this.suffix = suffix;
     }
+    /**
+     * @return {?}
+     */
     clone() {
         return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
     }
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * EventHandler callback with the mediaQuery [range] activates or deactivates
+ * @record
+ */
+
+/**
+ * EventDispatcher for a specific mediaQuery [range]
+ * @record
+ */
+
+/**
+ * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
+ * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
+ * performed within the ng Zone to trigger change detections and component updates.
+ *
+ * NOTE: both mediaQuery activations and de-activations are announced in notifications
+ */
 class MatchMedia {
+    /**
+     * @param {?} _zone
+     * @param {?} _rendererFactory
+     * @param {?} _document
+     * @param {?} _platformId
+     */
     constructor(_zone, _rendererFactory, _document, _platformId) {
         this._zone = _zone;
         this._rendererFactory = _rendererFactory;
@@ -527,10 +1105,25 @@ class MatchMedia {
         this._source = new BehaviorSubject(new MediaChange(true));
         this._observable$ = this._source.asObservable();
     }
+    /**
+     * For the specified mediaQuery?
+     * @param {?} mediaQuery
+     * @return {?}
+     */
     isActive(mediaQuery) {
-        let mql = this._registry.get(mediaQuery);
+        let /** @type {?} */ mql = this._registry.get(mediaQuery);
         return !!mql ? mql.matches : false;
     }
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * Typically used by the MediaQueryAdaptor; optionally available to components
+     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
+     *
+     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
+     *       be announced.
+     * @param {?=} mediaQuery
+     * @return {?}
+     */
     observe(mediaQuery) {
         if (mediaQuery) {
             this.registerQuery(mediaQuery);
@@ -539,15 +1132,21 @@ class MatchMedia {
             return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
         }));
     }
+    /**
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
+     * @param {?} mediaQuery
+     * @return {?}
+     */
     registerQuery(mediaQuery) {
-        let list = normalizeQuery(mediaQuery);
+        let /** @type {?} */ list = normalizeQuery(mediaQuery);
         if (list.length > 0) {
             this._prepareQueryCSS(list, this._document);
             list.forEach(query => {
-                let mql = this._registry.get(query);
-                let onMQLEvent = (e) => {
+                let /** @type {?} */ mql = this._registry.get(query);
+                let /** @type {?} */ onMQLEvent = (e) => {
                     this._zone.run(() => {
-                        let change = new MediaChange(e.matches, query);
+                        let /** @type {?} */ change = new MediaChange(e.matches, query);
                         this._source.next(change);
                     });
                 };
@@ -557,15 +1156,21 @@ class MatchMedia {
                     this._registry.set(query, mql);
                 }
                 if (mql.matches) {
-                    onMQLEvent(mql);
+                    onMQLEvent(mql); // Announce activate range for initial subscribers
                 }
             });
         }
     }
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
     _buildMQL(query) {
-        let canListen = isPlatformBrowser(this._platformId) &&
-            !!((window)).matchMedia('all').addListener;
-        return canListen ? ((window)).matchMedia(query) : ({
+        let /** @type {?} */ canListen = isPlatformBrowser(this._platformId) &&
+            !!(/** @type {?} */ (window)).matchMedia('all').addListener;
+        return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
             matches: query === 'all' || query === '',
             media: query,
             addListener: () => {
@@ -574,16 +1179,24 @@ class MatchMedia {
             }
         });
     }
+    /**
+     * For Webkit engines that only trigger the MediaQueryList Listener
+     * when there is at least one CSS selector for the respective media query.
+     *
+     * @param {?} mediaQueries
+     * @param {?} _document
+     * @return {?}
+     */
     _prepareQueryCSS(mediaQueries, _document) {
-        let list = mediaQueries.filter(it => !ALL_STYLES[it]);
+        let /** @type {?} */ list = mediaQueries.filter(it => !ALL_STYLES[it]);
         if (list.length > 0) {
-            let query = list.join(', ');
+            let /** @type {?} */ query = list.join(', ');
             try {
-                const renderer = this._rendererFactory.createRenderer(_document, RENDERER_TYPE);
-                let styleEl = renderer.createElement('style');
+                const /** @type {?} */ renderer = this._rendererFactory.createRenderer(_document, RENDERER_TYPE);
+                let /** @type {?} */ styleEl = renderer.createElement('style');
                 renderer.setAttribute(styleEl, 'type', 'text/css');
                 if (!styleEl['styleSheet']) {
-                    let cssText = `
+                    let /** @type {?} */ cssText = `
 /*
   @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
   see http://bit.ly/2sd4HMP
@@ -593,9 +1206,10 @@ class MatchMedia {
                     renderer.appendChild(styleEl, renderer.createText(cssText));
                 }
                 renderer.appendChild(_document.head, styleEl);
+                // Store in private global registry
                 list.forEach(mq => ALL_STYLES[mq] = styleEl);
             }
-            catch (e) {
+            catch (/** @type {?} */ e) {
                 console.error(e);
             }
         }
@@ -604,6 +1218,7 @@ class MatchMedia {
 MatchMedia.decorators = [
     { type: Injectable },
 ];
+/** @nocollapse */
 MatchMedia.ctorParameters = () => [
     { type: NgZone, },
     { type: RendererFactory2, },
@@ -611,24 +1226,55 @@ MatchMedia.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 const ɵ0 = {};
+/**
+ * Since `getDom()` is no longer supported,
+ * we will use a RendererFactory build and instance
+ * of a renderer for an element. Then the renderer will
+ * build the stylesheet(s)
+ */
 const RENDERER_TYPE = {
     id: '-1',
     styles: [],
     data: ɵ0,
     encapsulation: ViewEncapsulation.None
 };
+/**
+ * Private global registry for all dynamically-created, injected style tags
+ * @see prepare(query)
+ */
 const ALL_STYLES = {};
+/**
+ * Always convert to unique list of queries; for iteration in ::registerQuery()
+ * @param {?} mediaQuery
+ * @return {?}
+ */
 function normalizeQuery(mediaQuery) {
     return (typeof mediaQuery === 'undefined') ? [] :
-        (typeof mediaQuery === 'string') ? [mediaQuery] : unique((mediaQuery));
+        (typeof mediaQuery === 'string') ? [mediaQuery] : unique(/** @type {?} */ (mediaQuery));
 }
+/**
+ * Filter duplicate mediaQueries in the list
+ * @param {?} list
+ * @return {?}
+ */
 function unique(list) {
-    let seen = {};
+    let /** @type {?} */ seen = {};
     return list.filter(item => {
         return seen.hasOwnProperty(item) ? false : (seen[item] = true);
     });
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * For the specified MediaChange, make sure it contains the breakpoint alias
+ * and suffix (if available).
+ * @param {?} dest
+ * @param {?} source
+ * @return {?}
+ */
 function mergeAlias(dest, source) {
     return extendObject(dest, source ? {
         mqAlias: source.alias,
@@ -636,23 +1282,54 @@ function mergeAlias(dest, source) {
     } : {});
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
+ * deactivations). These changes are are published as MediaChange notifications.
+ *
+ * Note: all notifications will be performed within the
+ * ng Zone to trigger change detections and component updates.
+ *
+ * It is the MediaMonitor that:
+ *  - auto registers all known breakpoints
+ *  - injects alias information into each raw MediaChange event
+ *  - provides accessor to the currently active BreakPoint
+ *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
+ */
 class MediaMonitor$1 {
+    /**
+     * @param {?} _breakpoints
+     * @param {?} _matchMedia
+     */
     constructor(_breakpoints, _matchMedia) {
         this._breakpoints = _breakpoints;
         this._matchMedia = _matchMedia;
         this._registerBreakpoints();
     }
+    /**
+     * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
+     * @return {?}
+     */
     get breakpoints() {
         return [...this._breakpoints.items];
     }
+    /**
+     * @return {?}
+     */
     get activeOverlaps() {
-        let items = this._breakpoints.overlappings.reverse();
+        let /** @type {?} */ items = this._breakpoints.overlappings.reverse();
         return items.filter((bp) => {
             return this._matchMedia.isActive(bp.mediaQuery);
         });
     }
+    /**
+     * @return {?}
+     */
     get active() {
-        let found = null, items = this.breakpoints.reverse();
+        let /** @type {?} */ found = null, /** @type {?} */ items = this.breakpoints.reverse();
         items.forEach(bp => {
             if (bp.alias !== '') {
                 if (!found && this._matchMedia.isActive(bp.mediaQuery)) {
@@ -660,72 +1337,177 @@ class MediaMonitor$1 {
                 }
             }
         });
-        let first = this.breakpoints[0];
+        let /** @type {?} */ first = this.breakpoints[0];
         return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
     }
+    /**
+     * For the specified mediaQuery alias, is the mediaQuery range active?
+     * @param {?} alias
+     * @return {?}
+     */
     isActive(alias) {
-        let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        let /** @type {?} */ bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
         return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
     }
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * If specific breakpoint is observed, only return *activated* events
+     * otherwise return all events for BOTH activated + deactivated changes.
+     * @param {?=} alias
+     * @return {?}
+     */
     observe(alias) {
-        let bp = this._breakpoints.findByAlias(alias || '') ||
+        let /** @type {?} */ bp = this._breakpoints.findByAlias(alias || '') ||
             this._breakpoints.findByQuery(alias || '');
-        let hasAlias = (change) => (bp ? change.mqAlias !== '' : true);
-        let media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
+        let /** @type {?} */ hasAlias = (change) => (bp ? change.mqAlias !== '' : true);
+        // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
+        let /** @type {?} */ media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
         return media$.pipe(map(change => mergeAlias(change, bp)), filter(hasAlias));
     }
+    /**
+     * Immediate calls to matchMedia() to establish listeners
+     * and prepare for immediate subscription notifications
+     * @return {?}
+     */
     _registerBreakpoints() {
-        let queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
+        let /** @type {?} */ queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
         this._matchMedia.registerQuery(queries);
     }
 }
 MediaMonitor$1.decorators = [
     { type: Injectable },
 ];
+/** @nocollapse */
 MediaMonitor$1.ctorParameters = () => [
     { type: BreakPointRegistry, },
     { type: MatchMedia, },
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'layout' flexbox styling directive
+ * Defines the positioning flow direction for the child elements: row or column
+ * Optional values: column or row (default)
+ * @see https://css-tricks.com/almanac/properties/f/flex-direction/
+ *
+ */
 class LayoutDirective extends BaseFxDirective {
+    /**
+     *
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, platformId) {
         super(monitor, elRef, renderer, platformId);
         this._announcer = new ReplaySubject(1);
         this.layout$ = this._announcer.asObservable();
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layout(val) { this._cacheInput('layout', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutXs(val) { this._cacheInput('layoutXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutSm(val) { this._cacheInput('layoutSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutMd(val) { this._cacheInput('layoutMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutLg(val) { this._cacheInput('layoutLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutXl(val) { this._cacheInput('layoutXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutGtXs(val) { this._cacheInput('layoutGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutGtSm(val) { this._cacheInput('layoutGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutGtMd(val) { this._cacheInput('layoutGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutGtLg(val) { this._cacheInput('layoutGtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutLtSm(val) { this._cacheInput('layoutLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutLtMd(val) { this._cacheInput('layoutLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutLtLg(val) { this._cacheInput('layoutLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set layoutLtXl(val) { this._cacheInput('layoutLtXl', val); }
     ;
+    /**
+     * On changes to any \@Input properties...
+     * Default to use the non-responsive Input value ('fxLayout')
+     * Then conditionally override with the mq-activated Input's current value
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (changes['layout'] != null || this._mqActivation) {
             this._updateWithDirection();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
         this._listenForMediaQueryChanges('layout', 'row', (changes) => {
@@ -733,12 +1515,18 @@ class LayoutDirective extends BaseFxDirective {
         });
         this._updateWithDirection();
     }
+    /**
+     * Validate the direction value and then update the host's inline flexbox styles
+     * @param {?=} value
+     * @return {?}
+     */
     _updateWithDirection(value) {
         value = value || this._queryInput('layout') || 'row';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        let css = buildLayoutCSS(!!value ? value : '');
+        // Update styles and announce to subscribers the *new* direction
+        let /** @type {?} */ css = buildLayoutCSS(!!value ? value : '');
         this._applyStyleToElement(css);
         this._announcer.next(css['flex-direction']);
     }
@@ -751,6 +1539,7 @@ LayoutDirective.decorators = [
   [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]
 ` },] },
 ];
+/** @nocollapse */
 LayoutDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -774,45 +1563,131 @@ LayoutDirective.propDecorators = {
     "layoutLtXl": [{ type: Input, args: ['fxLayout.lt-xl',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'layout-align' flexbox styling directive
+ *  Defines positioning of child elements along main and cross axis in a layout container
+ *  Optional values: {main-axis} values or {main-axis cross-axis} value pairs
+ *
+ *  \@see https://css-tricks.com/almanac/properties/j/justify-content/
+ *  \@see https://css-tricks.com/almanac/properties/a/align-items/
+ *  \@see https://css-tricks.com/almanac/properties/a/align-content/
+ */
 class LayoutAlignDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} container
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, container, platformId) {
         super(monitor, elRef, renderer, platformId);
         this._layout = 'row';
         if (container) {
+            // Subscribe to layout direction changes
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
         }
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set align(val) { this._cacheInput('align', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignXs(val) { this._cacheInput('alignXs', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignSm(val) { this._cacheInput('alignSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignMd(val) { this._cacheInput('alignMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLg(val) { this._cacheInput('alignLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignXl(val) { this._cacheInput('alignXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtXs(val) { this._cacheInput('alignGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtSm(val) { this._cacheInput('alignGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtMd(val) { this._cacheInput('alignGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtLg(val) { this._cacheInput('alignGtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtSm(val) { this._cacheInput('alignLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtMd(val) { this._cacheInput('alignLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtLg(val) { this._cacheInput('alignLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtXl(val) { this._cacheInput('alignLtXl', val); }
     ;
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (changes['align'] != null || this._mqActivation) {
             this._updateWithValue();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
         this._listenForMediaQueryChanges('align', 'start stretch', (changes) => {
@@ -820,12 +1695,20 @@ class LayoutAlignDirective extends BaseFxDirective {
         });
         this._updateWithValue();
     }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         super.ngOnDestroy();
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
     }
+    /**
+     *
+     * @param {?=} value
+     * @return {?}
+     */
     _updateWithValue(value) {
         value = value || this._queryInput('align') || 'start stretch';
         if (this._mqActivation) {
@@ -834,19 +1717,29 @@ class LayoutAlignDirective extends BaseFxDirective {
         this._applyStyleToElement(this._buildCSS(value));
         this._allowStretching(value, !this._layout ? 'row' : this._layout);
     }
+    /**
+     * Cache the parent container 'flex-direction' and update the 'flex' styles
+     * @param {?} direction
+     * @return {?}
+     */
     _onLayoutChange(direction) {
         this._layout = (direction || '').toLowerCase();
         if (!LAYOUT_VALUES.find(x => x === this._layout)) {
             this._layout = 'row';
         }
-        let value = this._queryInput('align') || 'start stretch';
+        let /** @type {?} */ value = this._queryInput('align') || 'start stretch';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
         this._allowStretching(value, this._layout || 'row');
     }
+    /**
+     * @param {?} align
+     * @return {?}
+     */
     _buildCSS(align) {
-        let css = {}, [main_axis, cross_axis] = align.split(' ');
+        let /** @type {?} */ css = {}, [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
+        // Main axis
         switch (main_axis) {
             case 'center':
                 css['justify-content'] = 'center';
@@ -867,9 +1760,10 @@ class LayoutAlignDirective extends BaseFxDirective {
             case 'start':
             case 'flex-start':
             default:
-                css['justify-content'] = 'flex-start';
+                css['justify-content'] = 'flex-start'; // default main axis
                 break;
         }
+        // Cross-axis
         switch (cross_axis) {
             case 'start':
             case 'flex-start':
@@ -887,7 +1781,8 @@ class LayoutAlignDirective extends BaseFxDirective {
                 break;
             case 'stretch':
             default:
-                css['align-items'] = css['align-content'] = 'stretch';
+                // 'stretch'
+                css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
                 break;
         }
         return extendObject(css, {
@@ -896,9 +1791,17 @@ class LayoutAlignDirective extends BaseFxDirective {
             'box-sizing': 'border-box'
         });
     }
+    /**
+     * Update container element to 'stretch' as needed...
+     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
+     * @param {?} align
+     * @param {?} layout
+     * @return {?}
+     */
     _allowStretching(align, layout) {
-        let [, cross_axis] = align.split(' ');
+        let [, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
         if (cross_axis == 'stretch') {
+            // Use `null` values to remove style
             this._applyStyleToElement({
                 'box-sizing': 'border-box',
                 'max-width': !isFlowHorizontal(layout) ? '100%' : null,
@@ -915,6 +1818,7 @@ LayoutAlignDirective.decorators = [
   [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]
 ` },] },
 ];
+/** @nocollapse */
 LayoutAlignDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -939,46 +1843,128 @@ LayoutAlignDirective.propDecorators = {
     "alignLtXl": [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'layout-padding' styling directive
+ *  Defines padding of child elements in a layout container
+ */
 class LayoutGapDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} container
+     * @param {?} _zone
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, container, _zone, platformId) {
         super(monitor, elRef, renderer, platformId);
         this._zone = _zone;
         this._layout = 'row';
         if (container) {
+            // Subscribe to layout direction changes
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
         }
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gap(val) { this._cacheInput('gap', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapXs(val) { this._cacheInput('gapXs', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapSm(val) { this._cacheInput('gapSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapMd(val) { this._cacheInput('gapMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapLg(val) { this._cacheInput('gapLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapXl(val) { this._cacheInput('gapXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapGtXs(val) { this._cacheInput('gapGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapGtSm(val) { this._cacheInput('gapGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapGtMd(val) { this._cacheInput('gapGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapGtLg(val) { this._cacheInput('gapGtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapLtSm(val) { this._cacheInput('gapLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapLtMd(val) { this._cacheInput('gapLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapLtLg(val) { this._cacheInput('gapLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set gapLtXl(val) { this._cacheInput('gapLtXl', val); }
     ;
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (changes['gap'] != null || this._mqActivation) {
             this._updateWithValue();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngAfterContentInit() {
         this._watchContentChanges();
         this._listenForMediaQueryChanges('gap', '0', (changes) => {
@@ -986,6 +1972,9 @@ class LayoutGapDirective extends BaseFxDirective {
         });
         this._updateWithValue();
     }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         super.ngOnDestroy();
         if (this._layoutWatcher) {
@@ -995,14 +1984,20 @@ class LayoutGapDirective extends BaseFxDirective {
             this._observer.disconnect();
         }
     }
+    /**
+     * Watch for child nodes to be added... and apply the layout gap styles to each.
+     * NOTE: this does NOT! differentiate between viewChildren and contentChildren
+     * @return {?}
+     */
     _watchContentChanges() {
         this._zone.runOutsideAngular(() => {
             if (typeof MutationObserver !== 'undefined') {
                 this._observer = new MutationObserver((mutations) => {
-                    let validatedChanges = (it) => {
+                    let /** @type {?} */ validatedChanges = (it) => {
                         return (it.addedNodes && it.addedNodes.length > 0) ||
                             (it.removedNodes && it.removedNodes.length > 0);
                     };
+                    // update gap styles only for child 'added' or 'removed' events
                     if (mutations.some(validatedChanges)) {
                         this._updateWithValue();
                     }
@@ -1011,6 +2006,11 @@ class LayoutGapDirective extends BaseFxDirective {
             }
         });
     }
+    /**
+     * Cache the parent container 'flex-direction' and update the 'margin' styles
+     * @param {?} direction
+     * @return {?}
+     */
     _onLayoutChange(direction) {
         this._layout = (direction || '').toLowerCase();
         if (!LAYOUT_VALUES.find(x => x === this._layout)) {
@@ -1018,23 +2018,38 @@ class LayoutGapDirective extends BaseFxDirective {
         }
         this._updateWithValue();
     }
+    /**
+     *
+     * @param {?=} value
+     * @return {?}
+     */
     _updateWithValue(value) {
         value = value || this._queryInput('gap') || '0';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        let items = this.childrenNodes
+        // Gather all non-hidden Element nodes
+        let /** @type {?} */ items = this.childrenNodes
             .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none');
-        let numItems = items.length;
+        let /** @type {?} */ numItems = items.length;
         if (numItems > 0) {
-            let lastItem = items[numItems - 1];
+            let /** @type {?} */ lastItem = items[numItems - 1];
+            // For each `element` children EXCEPT the last,
+            // set the margin right/bottom styles...
             items = items.filter((_, j) => j < numItems - 1);
             this._applyStyleToElements(this._buildCSS(value), items);
+            // Clear all gaps for all visible elements
             this._applyStyleToElements(this._buildCSS(), [lastItem]);
         }
     }
+    /**
+     * Prepare margin CSS, remove any previous explicitly
+     * assigned margin assignments
+     * @param {?=} value
+     * @return {?}
+     */
     _buildCSS(value = null) {
-        let key, margins = {
+        let /** @type {?} */ key, /** @type {?} */ margins = {
             'margin-left': null,
             'margin-right': null,
             'margin-top': null,
@@ -1065,6 +2080,7 @@ LayoutGapDirective.decorators = [
 `
             },] },
 ];
+/** @nocollapse */
 LayoutGapDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -1090,12 +2106,26 @@ LayoutGapDirective.propDecorators = {
     "gapLtXl": [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * The flex API permits 3 or 1 parts of the value:
+ *    - `flex-grow flex-shrink flex-basis`, or
+ *    - `flex-basis`
+ * @param {?} basis
+ * @param {?=} grow
+ * @param {?=} shrink
+ * @return {?}
+ */
 function validateBasis(basis, grow = '1', shrink = '1') {
-    let parts = [grow, shrink, basis];
-    let j = basis.indexOf('calc');
+    let /** @type {?} */ parts = [grow, shrink, basis];
+    let /** @type {?} */ j = basis.indexOf('calc');
     if (j > 0) {
         parts[2] = _validateCalcValue(basis.substring(j).trim());
-        let matches = basis.substr(0, j).trim().split(' ');
+        let /** @type {?} */ matches = basis.substr(0, j).trim().split(' ');
         if (matches.length == 2) {
             parts[0] = matches[0];
             parts[1] = matches[1];
@@ -1105,18 +2135,47 @@ function validateBasis(basis, grow = '1', shrink = '1') {
         parts[2] = _validateCalcValue(basis.trim());
     }
     else {
-        let matches = basis.split(' ');
+        let /** @type {?} */ matches = basis.split(' ');
         parts = (matches.length === 3) ? matches : [
             grow, shrink, basis
         ];
     }
     return parts;
 }
+/**
+ * Calc expressions require whitespace before & after any expression operators
+ * This is a simple, crude whitespace padding solution.
+ *   - '3 3 calc(15em + 20px)'
+ *   - calc(100% / 7 * 2)
+ *   - 'calc(15em + 20px)'
+ *   - 'calc(15em+20px)'
+ *   - '37px'
+ *   = '43%'
+ * @param {?} calc
+ * @return {?}
+ */
 function _validateCalcValue(calc) {
     return calc.replace(/[\s]/g, '').replace(/[\/\*\+\-]/g, ' $& ');
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
+ * Corresponds to the css `flex` shorthand property.
+ *
+ * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+ */
 class FlexDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} _container
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, _container, platformId) {
         super(monitor, elRef, renderer, platformId);
         this._container = _container;
@@ -1124,48 +2183,125 @@ class FlexDirective extends BaseFxDirective {
         this._cacheInput('shrink', 1);
         this._cacheInput('grow', 1);
         if (_container) {
+            // If this flex item is inside of a flex container marked with
+            // Subscribe to layout immediate parent direction changes
             this._layoutWatcher = _container.layout$.subscribe((direction) => {
+                // `direction` === null if parent container does not have a `fxLayout`
                 this._onLayoutChange(direction);
             });
         }
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set shrink(val) { this._cacheInput('shrink', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set grow(val) { this._cacheInput('grow', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flex(val) { this._cacheInput('flex', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexXs(val) { this._cacheInput('flexXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexSm(val) { this._cacheInput('flexSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexMd(val) { this._cacheInput('flexMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexLg(val) { this._cacheInput('flexLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexXl(val) { this._cacheInput('flexXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexGtXs(val) { this._cacheInput('flexGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexGtSm(val) { this._cacheInput('flexGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexGtMd(val) { this._cacheInput('flexGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexGtLg(val) { this._cacheInput('flexGtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexLtSm(val) { this._cacheInput('flexLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexLtMd(val) { this._cacheInput('flexLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexLtLg(val) { this._cacheInput('flexLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set flexLtXl(val) { this._cacheInput('flexLtXl', val); }
     ;
+    /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (changes['flex'] != null || this._mqActivation) {
             this._updateStyle();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
         this._listenForMediaQueryChanges('flex', '', (changes) => {
@@ -1173,32 +2309,65 @@ class FlexDirective extends BaseFxDirective {
         });
         this._updateStyle();
     }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         super.ngOnDestroy();
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
     }
+    /**
+     * Caches the parent container's 'flex-direction' and updates the element's style.
+     * Used as a handler for layout change events from the parent flex container.
+     * @param {?=} direction
+     * @return {?}
+     */
     _onLayoutChange(direction) {
         this._layout = direction || this._layout || 'row';
         this._updateStyle();
     }
+    /**
+     * @param {?=} value
+     * @return {?}
+     */
     _updateStyle(value) {
-        let flexBasis = value || this._queryInput('flex') || '';
+        let /** @type {?} */ flexBasis = value || this._queryInput('flex') || '';
         if (this._mqActivation) {
             flexBasis = this._mqActivation.activatedInput;
         }
-        let basis = String(flexBasis).replace(';', '');
-        let parts = validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
+        let /** @type {?} */ basis = String(flexBasis).replace(';', '');
+        let /** @type {?} */ parts = validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
         this._applyStyleToElement(this._validateValue.apply(this, parts));
     }
+    /**
+     * Validate the value to be one of the acceptable value options
+     * Use default fallback of 'row'
+     * @param {?} grow
+     * @param {?} shrink
+     * @param {?} basis
+     * @return {?}
+     */
     _validateValue(grow, shrink, basis) {
-        let layout = this._getFlowDirection(this.parentElement, true);
-        let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
-        let css, isValue;
+        // The flex-direction of this element's flex container. Defaults to 'row'.
+        let /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
+        let /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
+        let /** @type {?} */ css, /** @type {?} */ isValue;
         grow = (grow == '0') ? 0 : grow;
         shrink = (shrink == '0') ? 0 : shrink;
-        let clearStyles = {
+        // flex-basis allows you to specify the initial/starting main-axis size of the element,
+        // before anything else is computed. It can either be a percentage or an absolute value.
+        // It is, however, not the breaking point for flex-grow/shrink properties
+        //
+        // flex-grow can be seen as this:
+        //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
+        //   1: (Default value). Stretch; will be the same size to all other flex items on
+        //       the same row since they have a default value of 1.
+        //   ≥2 (integer n): Stretch. Will be n times the size of other elements
+        //      with 'flex-grow: 1' on the same row.
+        // Use `null` to clear existing styles.
+        let /** @type {?} */ clearStyles = {
             'max-width': null,
             'max-height': null,
             'min-width': null,
@@ -1208,7 +2377,7 @@ class FlexDirective extends BaseFxDirective {
             case '':
                 css = extendObject(clearStyles, { 'flex': `${grow} ${shrink} 0.000000001px` });
                 break;
-            case 'initial':
+            case 'initial': // default
             case 'nogrow':
                 grow = 0;
                 css = extendObject(clearStyles, { 'flex': '0 1 auto' });
@@ -1229,31 +2398,36 @@ class FlexDirective extends BaseFxDirective {
                 css = extendObject(clearStyles, { 'flex': '0 0 auto' });
                 break;
             default:
-                let hasCalc = String(basis).indexOf('calc') > -1;
-                let isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
+                let /** @type {?} */ hasCalc = String(basis).indexOf('calc') > -1;
+                let /** @type {?} */ isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
                 isValue = hasCalc ||
                     String(basis).indexOf('px') > -1 ||
                     String(basis).indexOf('em') > -1 ||
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;
-                if (!isValue && !isPercent && !isNaN((basis))) {
+                // Defaults to percentage sizing unless `px` is explicitly set
+                if (!isValue && !isPercent && !isNaN(/** @type {?} */ (basis))) {
                     basis = basis + '%';
                 }
                 if (basis === '0px') {
                     basis = '0%';
                 }
                 css = extendObject(clearStyles, {
+                    // fix issue #5345
                     'flex-grow': `${grow}`,
                     'flex-shrink': `${shrink}`,
                     'flex-basis': isValue ? `${basis}` : '100%'
                 });
                 break;
         }
-        let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
-        let min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
-        let usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
-        let isPx = String(basis).indexOf('px') > -1 || usingCalc;
-        let isFixed = !grow && !shrink;
+        let /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
+        let /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
+        let /** @type {?} */ usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
+        let /** @type {?} */ isPx = String(basis).indexOf('px') > -1 || usingCalc;
+        // make box inflexible when shrink and grow are both zero
+        // should not set a min when the grow is zero
+        // should not set a max when the shrink is zero
+        let /** @type {?} */ isFixed = !grow && !shrink;
         css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
         css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
         return extendObject(css, { 'box-sizing': 'border-box' });
@@ -1268,6 +2442,7 @@ FlexDirective.decorators = [
 `
             },] },
 ];
+/** @nocollapse */
 FlexDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -1294,43 +2469,124 @@ FlexDirective.propDecorators = {
     "flexLtXl": [{ type: Input, args: ['fxFlex.lt-xl',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'flex-align' flexbox styling directive
+ * Allows element-specific overrides for cross-axis alignments in a layout container
+ * @see https://css-tricks.com/almanac/properties/a/align-self/
+ */
 class FlexAlignDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, platformId) {
         super(monitor, elRef, renderer, platformId);
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set align(val) { this._cacheInput('align', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignXs(val) { this._cacheInput('alignXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignSm(val) { this._cacheInput('alignSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignMd(val) { this._cacheInput('alignMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLg(val) { this._cacheInput('alignLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignXl(val) { this._cacheInput('alignXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtSm(val) { this._cacheInput('alignLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtMd(val) { this._cacheInput('alignLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtLg(val) { this._cacheInput('alignLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignLtXl(val) { this._cacheInput('alignLtXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtXs(val) { this._cacheInput('alignGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtSm(val) { this._cacheInput('alignGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtMd(val) { this._cacheInput('alignGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set alignGtLg(val) { this._cacheInput('alignGtLg', val); }
     ;
+    /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (changes['align'] != null || this._mqActivation) {
             this._updateWithValue();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
         this._listenForMediaQueryChanges('align', 'stretch', (changes) => {
@@ -1338,6 +2594,10 @@ class FlexAlignDirective extends BaseFxDirective {
         });
         this._updateWithValue();
     }
+    /**
+     * @param {?=} value
+     * @return {?}
+     */
     _updateWithValue(value) {
         value = value || this._queryInput('align') || 'stretch';
         if (this._mqActivation) {
@@ -1345,8 +2605,13 @@ class FlexAlignDirective extends BaseFxDirective {
         }
         this._applyStyleToElement(this._buildCSS(value));
     }
+    /**
+     * @param {?} align
+     * @return {?}
+     */
     _buildCSS(align) {
-        let css = {};
+        let /** @type {?} */ css = {};
+        // Cross-axis
         switch (align) {
             case 'start':
                 css['align-self'] = 'flex-start';
@@ -1371,6 +2636,7 @@ FlexAlignDirective.decorators = [
 `
             },] },
 ];
+/** @nocollapse */
 FlexAlignDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -1394,6 +2660,10 @@ FlexAlignDirective.propDecorators = {
     "alignGtLg": [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 const FLEX_FILL_CSS = {
     'margin': 0,
     'width': '100%',
@@ -1401,7 +2671,19 @@ const FLEX_FILL_CSS = {
     'min-width': '100%',
     'min-height': '100%'
 };
+/**
+ * 'fxFill' flexbox styling directive
+ *  Maximizes width and height of element in a layout container
+ *
+ *  NOTE: fxFill is NOT responsive API!!
+ */
 class FlexFillDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, platformId) {
         super(monitor, elRef, renderer, platformId);
         this.elRef = elRef;
@@ -1415,6 +2697,7 @@ FlexFillDirective.decorators = [
   [fxFlexFill]
 ` },] },
 ];
+/** @nocollapse */
 FlexFillDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -1422,67 +2705,175 @@ FlexFillDirective.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'flex-offset' flexbox styling directive
+ * Configures the 'margin-left' of the element in a layout container
+ */
 class FlexOffsetDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} _container
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, _container, platformId) {
         super(monitor, elRef, renderer, platformId);
         this._container = _container;
+        /**
+         * The flex-direction of this element's host container. Defaults to 'row'.
+         */
         this._layout = 'row';
         this.watchParentFlow();
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offset(val) { this._cacheInput('offset', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetXs(val) { this._cacheInput('offsetXs', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetSm(val) { this._cacheInput('offsetSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetMd(val) { this._cacheInput('offsetMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetLg(val) { this._cacheInput('offsetLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetXl(val) { this._cacheInput('offsetXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetLtSm(val) { this._cacheInput('offsetLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetLtMd(val) { this._cacheInput('offsetLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetLtLg(val) { this._cacheInput('offsetLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetLtXl(val) { this._cacheInput('offsetLtXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetGtXs(val) { this._cacheInput('offsetGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetGtSm(val) { this._cacheInput('offsetGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetGtMd(val) { this._cacheInput('offsetGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); }
     ;
+    /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (changes['offset'] != null || this._mqActivation) {
             this._updateWithValue();
         }
     }
+    /**
+     * Cleanup
+     * @return {?}
+     */
     ngOnDestroy() {
         super.ngOnDestroy();
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
         this._listenForMediaQueryChanges('offset', 0, (changes) => {
             this._updateWithValue(changes.value);
         });
     }
+    /**
+     * If parent flow-direction changes, then update the margin property
+     * used to offset
+     * @return {?}
+     */
     watchParentFlow() {
         if (this._container) {
+            // Subscribe to layout immediate parent direction changes (if any)
             this._layoutWatcher = this._container.layout$.subscribe((direction) => {
+                // `direction` === null if parent container does not have a `fxLayout`
                 this._onLayoutChange(direction);
             });
         }
     }
+    /**
+     * Caches the parent container's 'flex-direction' and updates the element's style.
+     * Used as a handler for layout change events from the parent flex container.
+     * @param {?=} direction
+     * @return {?}
+     */
     _onLayoutChange(direction) {
         this._layout = direction || this._layout || 'row';
         this._updateWithValue();
     }
+    /**
+     * Using the current fxFlexOffset value, update the inline CSS
+     * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
+     *       otherwise `margin-top` is used for the offset.
+     * @param {?=} value
+     * @return {?}
+     */
     _updateWithValue(value) {
         value = value || this._queryInput('offset') || 0;
         if (this._mqActivation) {
@@ -1490,13 +2881,18 @@ class FlexOffsetDirective extends BaseFxDirective {
         }
         this._applyStyleToElement(this._buildCSS(value));
     }
+    /**
+     * @param {?} offset
+     * @return {?}
+     */
     _buildCSS(offset) {
-        let isPercent = String(offset).indexOf('%') > -1;
-        let isPx = String(offset).indexOf('px') > -1;
+        let /** @type {?} */ isPercent = String(offset).indexOf('%') > -1;
+        let /** @type {?} */ isPx = String(offset).indexOf('px') > -1;
         if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
         }
-        let layout = this._getFlowDirection(this.parentElement, true);
+        // The flex-direction of this element's flex container. Defaults to 'row'.
+        let /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
         return isFlowHorizontal(layout) ? { 'margin-left': `${offset}` } : { 'margin-top': `${offset}` };
     }
 }
@@ -1508,6 +2904,7 @@ FlexOffsetDirective.decorators = [
   [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]
 ` },] },
 ];
+/** @nocollapse */
 FlexOffsetDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -1532,41 +2929,122 @@ FlexOffsetDirective.propDecorators = {
     "offsetGtLg": [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'flex-order' flexbox styling directive
+ * Configures the positional ordering of the element in a sorted layout container
+ * @see https://css-tricks.com/almanac/properties/o/order/
+ */
 class FlexOrderDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} platformId
+     */
     constructor(monitor, elRef, renderer, platformId) {
         super(monitor, elRef, renderer, platformId);
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set order(val) { this._cacheInput('order', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderXs(val) { this._cacheInput('orderXs', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderSm(val) { this._cacheInput('orderSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderMd(val) { this._cacheInput('orderMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderLg(val) { this._cacheInput('orderLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderXl(val) { this._cacheInput('orderXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderGtXs(val) { this._cacheInput('orderGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderGtSm(val) { this._cacheInput('orderGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderGtMd(val) { this._cacheInput('orderGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderGtLg(val) { this._cacheInput('orderGtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderLtSm(val) { this._cacheInput('orderLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderLtMd(val) { this._cacheInput('orderLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderLtLg(val) { this._cacheInput('orderLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set orderLtXl(val) { this._cacheInput('orderLtXl', val); }
     ;
+    /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (changes['order'] != null || this._mqActivation) {
             this._updateWithValue();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
         this._listenForMediaQueryChanges('order', '0', (changes) => {
@@ -1574,6 +3052,10 @@ class FlexOrderDirective extends BaseFxDirective {
         });
         this._updateWithValue();
     }
+    /**
+     * @param {?=} value
+     * @return {?}
+     */
     _updateWithValue(value) {
         value = value || this._queryInput('order') || '0';
         if (this._mqActivation) {
@@ -1581,6 +3063,10 @@ class FlexOrderDirective extends BaseFxDirective {
         }
         this._applyStyleToElement(this._buildCSS(value));
     }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
     _buildCSS(value) {
         value = parseInt(value, 10);
         return { order: isNaN(value) ? 0 : value };
@@ -1594,6 +3080,7 @@ FlexOrderDirective.decorators = [
   [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]
 ` },] },
 ];
+/** @nocollapse */
 FlexOrderDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: ElementRef$1, },
@@ -1617,10 +3104,28 @@ FlexOrderDirective.propDecorators = {
     "orderLtXl": [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
+ * This is required for older versions of NgStyle and NgClass that require
+ * the v1 API (but should use the v2 instances)
+ */
 class RendererAdapter {
+    /**
+     * @param {?} _renderer
+     */
     constructor(_renderer) {
         this._renderer = _renderer;
     }
+    /**
+     * @param {?} el
+     * @param {?} className
+     * @param {?} isAdd
+     * @return {?}
+     */
     setElementClass(el, className, isAdd) {
         if (isAdd) {
             this._renderer.addClass(el, className);
@@ -1629,6 +3134,12 @@ class RendererAdapter {
             this._renderer.removeClass(el, className);
         }
     }
+    /**
+     * @param {?} el
+     * @param {?} styleName
+     * @param {?} styleValue
+     * @return {?}
+     */
     setElementStyle(el, styleName, styleValue) {
         if (styleValue) {
             this._renderer.setStyle(el, styleName, styleValue);
@@ -1637,41 +3148,137 @@ class RendererAdapter {
             this._renderer.removeStyle(el, styleName);
         }
     }
+    /**
+     * @param {?} el
+     * @param {?} name
+     * @return {?}
+     */
     addClass(el, name) {
         this._renderer.addClass(el, name);
     }
+    /**
+     * @param {?} el
+     * @param {?} name
+     * @return {?}
+     */
     removeClass(el, name) {
         this._renderer.removeClass(el, name);
     }
+    /**
+     * @param {?} el
+     * @param {?} style
+     * @param {?} value
+     * @param {?=} flags
+     * @return {?}
+     */
     setStyle(el, style, value, flags) {
         this._renderer.setStyle(el, style, value, flags);
     }
+    /**
+     * @param {?} el
+     * @param {?} style
+     * @param {?=} flags
+     * @return {?}
+     */
     removeStyle(el, style, flags) {
         this._renderer.removeStyle(el, style, flags);
     }
+    /**
+     * @return {?}
+     */
     animate() { throw _notImplemented('animate'); }
+    /**
+     * @return {?}
+     */
     attachViewAfter() { throw _notImplemented('attachViewAfter'); }
+    /**
+     * @return {?}
+     */
     detachView() { throw _notImplemented('detachView'); }
+    /**
+     * @return {?}
+     */
     destroyView() { throw _notImplemented('destroyView'); }
+    /**
+     * @return {?}
+     */
     createElement() { throw _notImplemented('createElement'); }
+    /**
+     * @return {?}
+     */
     createViewRoot() { throw _notImplemented('createViewRoot'); }
+    /**
+     * @return {?}
+     */
     createTemplateAnchor() { throw _notImplemented('createTemplateAnchor'); }
+    /**
+     * @return {?}
+     */
     createText() { throw _notImplemented('createText'); }
+    /**
+     * @return {?}
+     */
     invokeElementMethod() { throw _notImplemented('invokeElementMethod'); }
+    /**
+     * @return {?}
+     */
     projectNodes() { throw _notImplemented('projectNodes'); }
+    /**
+     * @return {?}
+     */
     selectRootElement() { throw _notImplemented('selectRootElement'); }
+    /**
+     * @return {?}
+     */
     setBindingDebugInfo() { throw _notImplemented('setBindingDebugInfo'); }
+    /**
+     * @return {?}
+     */
     setElementProperty() { throw _notImplemented('setElementProperty'); }
+    /**
+     * @return {?}
+     */
     setElementAttribute() { throw _notImplemented('setElementAttribute'); }
+    /**
+     * @return {?}
+     */
     setText() { throw _notImplemented('setText'); }
+    /**
+     * @return {?}
+     */
     listen() { throw _notImplemented('listen'); }
+    /**
+     * @return {?}
+     */
     listenGlobal() { throw _notImplemented('listenGlobal'); }
 }
+/**
+ * @param {?} methodName
+ * @return {?}
+ */
 function _notImplemented(methodName) {
     return new Error(`The method RendererAdapter::${methodName}() has not been implemented`);
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Directive to add responsive support for ngClass.
+ * This maintains the core functionality of 'ngClass' and adds responsive API
+ *
+ */
 class ClassDirective extends BaseFxDirective {
+    /**
+     * @param {?} monitor
+     * @param {?} _iterableDiffers
+     * @param {?} _keyValueDiffers
+     * @param {?} _ngEl
+     * @param {?} _renderer
+     * @param {?} _ngClassInstance
+     * @param {?} _platformId
+     */
     constructor(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer, _ngClassInstance, _platformId) {
         super(monitor, _ngEl, _renderer, _platformId);
         this.monitor = monitor;
@@ -1683,53 +3290,148 @@ class ClassDirective extends BaseFxDirective {
         this._platformId = _platformId;
         this._configureAdapters();
     }
+    /**
+     * Intercept ngClass assignments so we cache the default classes
+     * which are merged with activated styles or used as fallbacks.
+     * Note: Base ngClass values are applied during ngDoCheck()
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassBase(val) {
-        const key = 'ngClass';
+        const /** @type {?} */ key = 'ngClass';
         this._base.cacheInput(key, val, true);
         this._ngClassInstance.ngClass = this._base.queryInput(key);
     }
+    /**
+     * Capture class assignments so we cache the default classes
+     * which are merged with activated styles and used as fallbacks.
+     * @param {?} val
+     * @return {?}
+     */
     set klazz(val) {
-        const key = 'class';
+        const /** @type {?} */ key = 'class';
         this._base.cacheInput(key, val);
         this._ngClassInstance.klass = val;
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassXs(val) { this._base.cacheInput('ngClassXs', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassSm(val) { this._base.cacheInput('ngClassSm', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassMd(val) { this._base.cacheInput('ngClassMd', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassLg(val) { this._base.cacheInput('ngClassLg', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassXl(val) { this._base.cacheInput('ngClassXl', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassLtSm(val) { this._base.cacheInput('ngClassLtSm', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassLtMd(val) { this._base.cacheInput('ngClassLtMd', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassLtLg(val) { this._base.cacheInput('ngClassLtLg', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassLtXl(val) { this._base.cacheInput('ngClassLtXl', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassGtXs(val) { this._base.cacheInput('ngClassGtXs', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassGtSm(val) { this._base.cacheInput('ngClassGtSm', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassGtMd(val) { this._base.cacheInput('ngClassGtMd', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngClassGtLg(val) { this._base.cacheInput('ngClassGtLg', val, true); }
+    /**
+     * For \@Input changes on the current mq activation property
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (this._base.activeKey in changes) {
             this._ngClassInstance.ngClass = this._base.mqActivation.activatedInput || '';
         }
     }
+    /**
+     * @return {?}
+     */
     ngOnInit() {
         this._configureMQListener();
     }
+    /**
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
+     * @return {?}
+     */
     ngDoCheck() {
         this._ngClassInstance.ngDoCheck();
     }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         this._base.ngOnDestroy();
-        this._ngClassInstance = null;
+        delete this._ngClassInstance;
     }
+    /**
+     * Configure adapters (that delegate to an internal ngClass instance) if responsive
+     * keys have been defined.
+     * @return {?}
+     */
     _configureAdapters() {
         this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._renderer, this._platformId);
         if (!this._ngClassInstance) {
-            let adapter = new RendererAdapter(this._renderer);
-            this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, (adapter));
+            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
+            // the same host element; since the responsive variations may be defined...
+            let /** @type {?} */ adapter = new RendererAdapter(this._renderer);
+            this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, /** @type {?} */ (adapter));
         }
     }
+    /**
+     * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers
+     * NOTE: We delegate subsequent activity to the NgClass logic
+     *       Identify the activated input value and update the ngClass iterables...
+     *       Use ngDoCheck() to actually apply the values to the element
+     * @param {?=} baseKey
+     * @return {?}
+     */
     _configureMQListener(baseKey = 'ngClass') {
-        const fallbackValue = this._base.queryInput(baseKey);
+        const /** @type {?} */ fallbackValue = this._base.queryInput(baseKey);
         this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes) => {
             this._ngClassInstance.ngClass = changes.value || '';
             this._ngClassInstance.ngDoCheck();
@@ -1745,6 +3447,7 @@ ClassDirective.decorators = [
   `
             },] },
 ];
+/** @nocollapse */
 ClassDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: IterableDiffers, },
@@ -1772,7 +3475,20 @@ ClassDirective.propDecorators = {
     "ngClassGtLg": [{ type: Input, args: ['ngClass.gt-lg',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * NgStyle allowed inputs
+ */
 class NgStyleKeyValue {
+    /**
+     * @param {?} key
+     * @param {?} value
+     * @param {?=} noQuotes
+     */
     constructor(key, value, noQuotes = true) {
         this.key = key;
         this.value = value;
@@ -1781,20 +3497,34 @@ class NgStyleKeyValue {
         this.value = this.value.replace(/;/, '');
     }
 }
+/**
+ * Transform Operators for \@angular/flex-layout NgStyle Directive
+ */
 const ngStyleUtils = {
     getType,
     buildRawList,
     buildMapFromList,
     buildMapFromSet
 };
+/**
+ * @param {?} target
+ * @return {?}
+ */
 function getType(target) {
-    let what = typeof target;
+    let /** @type {?} */ what = typeof target;
     if (what === 'object') {
         return (target.constructor === Array) ? 'array' :
             (target.constructor === Set) ? 'set' : 'object';
     }
     return what;
 }
+/**
+ * Split string of key:value pairs into Array of k-v pairs
+ * e.g.  'key:value; key:value; key:value;' -> ['key:value',...]
+ * @param {?} source
+ * @param {?=} delimiter
+ * @return {?}
+ */
 function buildRawList(source, delimiter = ';') {
     return String(source)
         .trim()
@@ -1802,8 +3532,14 @@ function buildRawList(source, delimiter = ';') {
         .map((val) => val.trim())
         .filter(val => val !== '');
 }
+/**
+ * Convert array of key:value strings to a iterable map object
+ * @param {?} styles
+ * @param {?=} sanitize
+ * @return {?}
+ */
 function buildMapFromList(styles, sanitize) {
-    let sanitizeValue = (it) => {
+    let /** @type {?} */ sanitizeValue = (it) => {
         if (sanitize) {
             it.value = sanitize(it.value);
         }
@@ -1815,22 +3551,40 @@ function buildMapFromList(styles, sanitize) {
         .map(sanitizeValue)
         .reduce(keyValuesToMap, {});
 }
+/**
+ * Convert Set<string> or raw Object to an iterable NgStyleMap
+ * @param {?} source
+ * @param {?=} sanitize
+ * @return {?}
+ */
 function buildMapFromSet(source, sanitize) {
-    let list = new Array();
+    let /** @type {?} */ list = new Array();
     if (getType(source) == 'set') {
         source.forEach(entry => list.push(entry));
     }
     else {
+        // simple hashmap
         Object.keys(source).forEach(key => {
             list.push(`${key}:${source[key]}`);
         });
     }
     return buildMapFromList(list, sanitize);
 }
+/**
+ * Convert 'key:value' -> [key, value]
+ * @param {?} it
+ * @return {?}
+ */
 function stringToKeyValue(it) {
     let [key, val] = it.split(':');
     return val ? new NgStyleKeyValue(key, val) : null;
 }
+/**
+ * Convert [ [key,value] ] -> { key : value }
+ * @param {?} map
+ * @param {?} entry
+ * @return {?}
+ */
 function keyValuesToMap(map$$1, entry) {
     if (!!entry.key) {
         map$$1[entry.key] = entry.value;
@@ -1838,7 +3592,26 @@ function keyValuesToMap(map$$1, entry) {
     return map$$1;
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Directive to add responsive support for ngStyle.
+ *
+ */
 class StyleDirective extends BaseFxDirective {
+    /**
+     *  Constructor for the ngStyle subclass; which adds selectors and
+     *  a MediaQuery Activation Adapter
+     * @param {?} monitor
+     * @param {?} _sanitizer
+     * @param {?} _ngEl
+     * @param {?} _renderer
+     * @param {?} _differs
+     * @param {?} _ngStyleInstance
+     * @param {?} _platformId
+     */
     constructor(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance, _platformId) {
         super(monitor, _ngEl, _renderer, _platformId);
         this.monitor = monitor;
@@ -1850,91 +3623,194 @@ class StyleDirective extends BaseFxDirective {
         this._platformId = _platformId;
         this._configureAdapters();
     }
+    /**
+     * Intercept ngStyle assignments so we cache the default styles
+     * which are merged with activated styles or used as fallbacks.
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleBase(val) {
-        const key = 'ngStyle';
-        this._base.cacheInput(key, val, true);
+        const /** @type {?} */ key = 'ngStyle';
+        this._base.cacheInput(key, val, true); // convert val to hashmap
         this._ngStyleInstance.ngStyle = this._base.queryInput(key);
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleXs(val) { this._base.cacheInput('ngStyleXs', val, true); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleSm(val) { this._base.cacheInput('ngStyleSm', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleMd(val) { this._base.cacheInput('ngStyleMd', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleLg(val) { this._base.cacheInput('ngStyleLg', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleXl(val) { this._base.cacheInput('ngStyleXl', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleLtSm(val) { this._base.cacheInput('ngStyleLtSm', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleLtMd(val) { this._base.cacheInput('ngStyleLtMd', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleLtLg(val) { this._base.cacheInput('ngStyleLtLg', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleLtXl(val) { this._base.cacheInput('ngStyleLtXl', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleGtXs(val) { this._base.cacheInput('ngStyleGtXs', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleGtSm(val) { this._base.cacheInput('ngStyleGtSm', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleGtMd(val) { this._base.cacheInput('ngStyleGtMd', val, true); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set ngStyleGtLg(val) { this._base.cacheInput('ngStyleGtLg', val, true); }
     ;
+    /**
+     * For \@Input changes on the current mq activation property
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (this._base.activeKey in changes) {
             this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
         }
     }
+    /**
+     * @return {?}
+     */
     ngOnInit() {
         this._configureMQListener();
     }
+    /**
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
+     * @return {?}
+     */
     ngDoCheck() {
         this._ngStyleInstance.ngDoCheck();
     }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         this._base.ngOnDestroy();
-        this._ngStyleInstance = null;
+        delete this._ngStyleInstance;
     }
+    /**
+     * Configure adapters (that delegate to an internal ngClass instance) if responsive
+     * keys have been defined.
+     * @return {?}
+     */
     _configureAdapters() {
         this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._renderer, this._platformId);
         if (!this._ngStyleInstance) {
-            let adapter = new RendererAdapter(this._renderer);
-            this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, (adapter));
+            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // defined on the same host element; since the responsive variations may be defined...
+            let /** @type {?} */ adapter = new RendererAdapter(this._renderer);
+            this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, /** @type {?} */ (adapter));
         }
         this._buildCacheInterceptor();
         this._fallbackToStyle();
     }
+    /**
+     * Build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @param {?=} baseKey
+     * @return {?}
+     */
     _configureMQListener(baseKey = 'ngStyle') {
-        const fallbackValue = this._base.queryInput(baseKey);
+        const /** @type {?} */ fallbackValue = this._base.queryInput(baseKey);
         this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes) => {
             this._ngStyleInstance.ngStyle = changes.value || '';
             this._ngStyleInstance.ngDoCheck();
         });
     }
+    /**
+     * Build intercept to convert raw strings to ngStyleMap
+     * @return {?}
+     */
     _buildCacheInterceptor() {
-        let cacheInput = this._base.cacheInput.bind(this._base);
+        let /** @type {?} */ cacheInput = this._base.cacheInput.bind(this._base);
         this._base.cacheInput = (key, source, cacheRaw = false, merge = true) => {
-            let styles = this._buildStyleMap(source);
+            let /** @type {?} */ styles = this._buildStyleMap(source);
             if (merge) {
                 styles = extendObject({}, this._base.inputMap['ngStyle'], styles);
             }
             cacheInput(key, styles, cacheRaw);
         };
     }
+    /**
+     * Convert raw strings to ngStyleMap; which is required by ngStyle
+     * NOTE: Raw string key-value pairs MUST be delimited by `;`
+     *       Comma-delimiters are not supported due to complexities of
+     *       possible style values such as `rgba(x,x,x,x)` and others
+     * @param {?} styles
+     * @return {?}
+     */
     _buildStyleMap(styles) {
-        let sanitizer = (val) => {
-            return this._sanitizer.sanitize(SecurityContext.STYLE, val);
+        let /** @type {?} */ sanitizer = (val) => {
+            // Always safe-guard (aka sanitize) style property values
+            return this._sanitizer.sanitize(SecurityContext.STYLE, val) || '';
         };
         if (styles) {
             switch (ngStyleUtils.getType(styles)) {
                 case 'string': return ngStyleUtils.buildMapFromList(ngStyleUtils.buildRawList(styles), sanitizer);
-                case 'array': return ngStyleUtils.buildMapFromList((styles), sanitizer);
+                case 'array': return ngStyleUtils.buildMapFromList(/** @type {?} */ (styles), sanitizer);
                 case 'set': return ngStyleUtils.buildMapFromSet(styles, sanitizer);
                 default: return ngStyleUtils.buildMapFromSet(styles, sanitizer);
             }
         }
         return styles;
     }
+    /**
+     * Initial lookup of raw 'class' value (if any)
+     * @return {?}
+     */
     _fallbackToStyle() {
         if (!this._base.queryInput('ngStyle')) {
             this.ngStyleBase = this._getAttributeValue('style') || '';
@@ -1950,6 +3826,7 @@ StyleDirective.decorators = [
   `
             },] },
 ];
+/** @nocollapse */
 StyleDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: DomSanitizer, },
@@ -1976,12 +3853,36 @@ StyleDirective.propDecorators = {
     "ngStyleGtLg": [{ type: Input, args: ['ngStyle.gt-lg',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 const FALSY = ['false', false, 0];
+/**
+ * For fxHide selectors, we invert the 'value'
+ * and assign to the equivalent fxShow selector cache
+ *  - When 'hide' === '' === true, do NOT show the element
+ *  - When 'hide' === false or 0... we WILL show the element
+ * @param {?} hide
+ * @return {?}
+ */
 function negativeOf(hide) {
     return (hide === '') ? false :
         ((hide === 'false') || (hide === 0)) ? true : !hide;
 }
+/**
+ * 'show' Layout API directive
+ *
+ */
 class ShowHideDirective extends BaseFxDirective {
+    /**
+     *
+     * @param {?} monitor
+     * @param {?} _layout
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} platformId
+     */
     constructor(monitor, _layout, elRef, renderer, platformId) {
         super(monitor, elRef, renderer, platformId);
         this._layout = _layout;
@@ -1989,94 +3890,247 @@ class ShowHideDirective extends BaseFxDirective {
         this.renderer = renderer;
         this.platformId = platformId;
         if (_layout) {
+            /**
+                   * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+                   * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+                   */
             this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
         }
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set show(val) { this._cacheInput('show', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showXs(val) { this._cacheInput('showXs', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showSm(val) { this._cacheInput('showSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showMd(val) { this._cacheInput('showMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showLg(val) { this._cacheInput('showLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showXl(val) { this._cacheInput('showXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showLtSm(val) { this._cacheInput('showLtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showLtMd(val) { this._cacheInput('showLtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showLtLg(val) { this._cacheInput('showLtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showLtXl(val) { this._cacheInput('showLtXl', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showGtXs(val) { this._cacheInput('showGtXs', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showGtSm(val) { this._cacheInput('showGtSm', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showGtMd(val) { this._cacheInput('showGtMd', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set showGtLg(val) { this._cacheInput('showGtLg', val); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hide(val) { this._cacheInput('show', negativeOf(val)); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideXs(val) { this._cacheInput('showXs', negativeOf(val)); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideSm(val) { this._cacheInput('showSm', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideMd(val) { this._cacheInput('showMd', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideLg(val) { this._cacheInput('showLg', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideXl(val) { this._cacheInput('showXl', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideLtSm(val) { this._cacheInput('showLtSm', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideLtMd(val) { this._cacheInput('showLtMd', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideLtLg(val) { this._cacheInput('showLtLg', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideLtXl(val) { this._cacheInput('showLtXl', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideGtXs(val) { this._cacheInput('showGtXs', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideGtSm(val) { this._cacheInput('showGtSm', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideGtMd(val) { this._cacheInput('showGtMd', negativeOf(val)); }
     ;
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set hideGtLg(val) { this._cacheInput('showGtLg', negativeOf(val)); }
     ;
+    /**
+     * Override accessor to the current HTMLElement's `display` style
+     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+     * unless it was already explicitly specified inline or in a CSS stylesheet.
+     * @return {?}
+     */
     _getDisplayStyle() {
         return this._layout ? 'flex' : super._getDisplayStyle();
     }
+    /**
+     * On changes to any \@Input properties...
+     * Default to use the non-responsive Input value ('fxShow')
+     * Then conditionally override with the mq-activated Input's current value
+     * @param {?} changes
+     * @return {?}
+     */
     ngOnChanges(changes) {
         if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
             this._updateWithValue();
         }
     }
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
-        let value = this._getDefaultVal('show', true);
+        let /** @type {?} */ value = this._getDefaultVal('show', true);
+        // Build _mqActivation controller
         this._listenForMediaQueryChanges('show', value, (changes) => {
             this._updateWithValue(changes.value);
         });
         this._updateWithValue();
     }
+    /**
+     * @return {?}
+     */
     ngOnDestroy() {
         super.ngOnDestroy();
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
     }
+    /**
+     * Validate the visibility value and then update the host's inline display style
+     * @param {?=} value
+     * @return {?}
+     */
     _updateWithValue(value) {
         value = value || this._getDefaultVal('show', true);
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        let shouldShow = this._validateTruthy(value);
+        let /** @type {?} */ shouldShow = this._validateTruthy(value);
         this._applyStyleToElement(this._buildCSS(shouldShow));
     }
+    /**
+     * Build the CSS that should be assigned to the element instance
+     * @param {?} show
+     * @return {?}
+     */
     _buildCSS(show) {
         return { 'display': show ? this._display : 'none' };
     }
+    /**
+     * Validate the to be not FALSY
+     * @param {?} show
+     * @return {?}
+     */
     _validateTruthy(show) {
         return (FALSY.indexOf(show) == -1);
     }
@@ -2095,6 +4149,7 @@ ShowHideDirective.decorators = [
 `
             },] },
 ];
+/** @nocollapse */
 ShowHideDirective.ctorParameters = () => [
     { type: MediaMonitor$1, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
@@ -2133,51 +4188,161 @@ ShowHideDirective.propDecorators = {
     "hideGtLg": [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * This directive provides a responsive API for the HTML <img> 'src' attribute
+ * and will update the img.src property upon each responsive activation.
+ *
+ * e.g.
+ *      <img src="defaultScene.jpg" src.xs="mobileScene.jpg"></img>
+ *
+ * @see https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-src/
+ */
 class ImgSrcDirective extends BaseFxDirective {
+    /**
+     * @param {?} elRef
+     * @param {?} renderer
+     * @param {?} monitor
+     * @param {?} platformId
+     */
     constructor(elRef, renderer, monitor, platformId) {
         super(monitor, elRef, renderer, platformId);
         this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
     }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcBase(val) { this.cacheDefaultSrc(val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcXs(val) { this._cacheInput('srcXs', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcSm(val) { this._cacheInput('srcSm', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcMd(val) { this._cacheInput('srcMd', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcLg(val) { this._cacheInput('srcLg', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcXl(val) { this._cacheInput('srcXl', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcLtSm(val) { this._cacheInput('srcLtSm', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcLtMd(val) { this._cacheInput('srcLtMd', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcLtLg(val) { this._cacheInput('srcLtLg', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcLtXl(val) { this._cacheInput('srcLtXl', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcGtXs(val) { this._cacheInput('srcGtXs', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcGtSm(val) { this._cacheInput('srcGtSm', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcGtMd(val) { this._cacheInput('srcGtMd', val); }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
     set srcGtLg(val) { this._cacheInput('srcGtLg', val); }
+    /**
+     * Listen for responsive changes to update the img.src attribute
+     * @return {?}
+     */
     ngOnInit() {
         super.ngOnInit();
         if (this.hasResponsiveKeys) {
+            // Listen for responsive changes
             this._listenForMediaQueryChanges('src', this.defaultSrc, () => {
                 this._updateSrcFor();
             });
         }
         this._updateSrcFor();
     }
+    /**
+     * Update the 'src' property of the host <img> element
+     * @return {?}
+     */
     ngOnChanges() {
         if (this.hasInitialized) {
             this._updateSrcFor();
         }
     }
+    /**
+     * Use the [responsively] activated input value to update
+     * the host img src attribute or assign a default `img.src=''`
+     * if the src has not been defined.
+     *
+     * Do nothing to standard `<img src="">` usages, only when responsive
+     * keys are present do we actually call `setAttribute()`
+     * @return {?}
+     */
     _updateSrcFor() {
         if (this.hasResponsiveKeys) {
-            let url = this.activatedValue || this.defaultSrc;
+            let /** @type {?} */ url = this.activatedValue || this.defaultSrc;
             this._renderer.setAttribute(this.nativeElement, 'src', String(url));
         }
     }
+    /**
+     * Cache initial value of 'src', this will be used as fallback when breakpoint
+     * activations change.
+     * NOTE: The default 'src' property is not bound using \@Input(), so perform
+     * a post-ngOnInit() lookup of the default src value (if any).
+     * @param {?=} value
+     * @return {?}
+     */
     cacheDefaultSrc(value) {
         this._cacheInput('src', value || '');
     }
+    /**
+     * Empty values are maintained, undefined values are exposed as ''
+     * @return {?}
+     */
     get defaultSrc() {
         return this._queryInput('src') || '';
     }
+    /**
+     * Does the <img> have 1 or more src.<xxx> responsive inputs
+     * defined... these will be mapped to activated breakpoints.
+     * @return {?}
+     */
     get hasResponsiveKeys() {
         return Object.keys(this._inputMap).length > 1;
     }
@@ -2191,6 +4356,7 @@ ImgSrcDirective.decorators = [
 `
             },] },
 ];
+/** @nocollapse */
 ImgSrcDirective.ctorParameters = () => [
     { type: ElementRef$1, },
     { type: Renderer2$1, },
@@ -2214,6 +4380,15 @@ ImgSrcDirective.propDecorators = {
     "srcGtLg": [{ type: Input, args: ['src.gt-lg',] },],
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 const RESPONSIVE_ALIASES = [
     'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
 ];
@@ -2280,6 +4455,12 @@ const DEFAULT_BREAKPOINTS = [
     }
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/* tslint:disable */
 const HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
 const HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
 const TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
@@ -2297,6 +4478,9 @@ const ScreenTypes = {
     'TABLET_LANDSCAPE': `${TABLET_LANDSCAPE}`,
     'WEB_LANDSCAPE': `${WEB_LANDSCAPE}`
 };
+/**
+ * Extended Breakpoints for handset/tablets with landscape or portrait orientations
+ */
 const ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
     { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
@@ -2309,70 +4493,193 @@ const ORIENTATION_BREAKPOINTS = [
     { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Base class for MediaService and pseudo-token for
+ * @abstract
+ */
 class ObservableMedia {
 }
+/**
+ * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
+ * This an Observable with that exposes a feature to subscribe to mediaQuery
+ * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
+ * currently active.
+ *
+ * !! Only mediaChange activations (not de-activations) are announced by the ObservableMedia
+ *
+ * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
+ * notification. For custom mediaQuery notifications, alias information will not be injected and
+ * those fields will be ''.
+ *
+ * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
+ * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
+ * `.asObservable()` with syntax like media.asObservable().map(....).
+ *
+ *  \@usage
+ *
+ *  // RxJS
+ *  import {filter} from 'rxjs/operators/filter';
+ *  import { ObservableMedia } from '\@angular/flex-layout';
+ *
+ *  \@Component({ ... })
+ *  export class AppComponent {
+ *    status : string = '';
+ *
+ *    constructor(  media:ObservableMedia ) {
+ *      let onChange = (change:MediaChange) => {
+ *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
+ *      };
+ *
+ *      // Subscribe directly or access observable to use filter/map operators
+ *      // e.g.
+ *      //      media.subscribe(onChange);
+ *
+ *      media.asObservable()
+ *        .pipe(
+ *          filter((change:MediaChange) => true)   // silly noop filter
+ *        ).subscribe(onChange);
+ *    }
+ *  }
+ */
 class MediaService {
+    /**
+     * @param {?} breakpoints
+     * @param {?} mediaWatcher
+     */
     constructor(breakpoints, mediaWatcher) {
         this.breakpoints = breakpoints;
         this.mediaWatcher = mediaWatcher;
+        /**
+         * Should we announce gt-<xxx> breakpoint activations ?
+         */
         this.filterOverlaps = true;
         this._registerBreakPoints();
         this.observable$ = this._buildObservable();
     }
+    /**
+     * Test if specified query/alias is active.
+     * @param {?} alias
+     * @return {?}
+     */
     isActive(alias) {
-        let query = this._toMediaQuery(alias);
+        let /** @type {?} */ query = this._toMediaQuery(alias);
         return this.mediaWatcher.isActive(query);
     }
+    /**
+     * Proxy to the Observable subscribe method
+     * @param {?=} next
+     * @param {?=} error
+     * @param {?=} complete
+     * @return {?}
+     */
     subscribe(next, error, complete) {
         return this.observable$.subscribe(next, error, complete);
     }
+    /**
+     * Access to observable for use with operators like
+     * .filter(), .map(), etc.
+     * @return {?}
+     */
     asObservable() {
         return this.observable$;
     }
+    /**
+     * Register all the mediaQueries registered in the BreakPointRegistry
+     * This is needed so subscribers can be auto-notified of all standard, registered
+     * mediaQuery activations
+     * @return {?}
+     */
     _registerBreakPoints() {
-        let queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
+        let /** @type {?} */ queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
         this.mediaWatcher.registerQuery(queries);
     }
+    /**
+     * Prepare internal observable
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
+     * @return {?}
+     */
     _buildObservable() {
-        const self = this;
-        const media$ = this.mediaWatcher.observe();
-        const activationsOnly = (change) => {
+        const /** @type {?} */ self = this;
+        const /** @type {?} */ media$ = this.mediaWatcher.observe();
+        const /** @type {?} */ activationsOnly = (change) => {
             return change.matches === true;
         };
-        const addAliasInformation = (change) => {
+        const /** @type {?} */ addAliasInformation = (change) => {
             return mergeAlias(change, this._findByQuery(change.mediaQuery));
         };
-        const excludeOverlaps = (change) => {
-            let bp = this.breakpoints.findByQuery(change.mediaQuery);
+        const /** @type {?} */ excludeOverlaps = (change) => {
+            let /** @type {?} */ bp = this.breakpoints.findByQuery(change.mediaQuery);
             return !bp ? true : !(self.filterOverlaps && bp.overlapping);
         };
+        /**
+             * Only pass/announce activations (not de-activations)
+             * Inject associated (if any) alias information into the MediaChange event
+             * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+             */
         return media$.pipe(filter(activationsOnly), filter(excludeOverlaps), map(addAliasInformation));
     }
+    /**
+     * Breakpoint locator by alias
+     * @param {?} alias
+     * @return {?}
+     */
     _findByAlias(alias) {
         return this.breakpoints.findByAlias(alias);
     }
+    /**
+     * Breakpoint locator by mediaQuery
+     * @param {?} query
+     * @return {?}
+     */
     _findByQuery(query) {
         return this.breakpoints.findByQuery(query);
     }
+    /**
+     * Find associated breakpoint (if any)
+     * @param {?} query
+     * @return {?}
+     */
     _toMediaQuery(query) {
-        let bp = this._findByAlias(query) || this._findByQuery(query);
+        let /** @type {?} */ bp = this._findByAlias(query) || this._findByQuery(query);
         return bp ? bp.mediaQuery : query;
     }
 }
 MediaService.decorators = [
     { type: Injectable },
 ];
+/** @nocollapse */
 MediaService.ctorParameters = () => [
     { type: BreakPointRegistry, },
     { type: MatchMedia, },
 ];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
 const ALIAS_DELIMITERS = /(\.|-|_)/g;
+/**
+ * @param {?} part
+ * @return {?}
+ */
 function firstUpperCase(part) {
-    let first = part.length > 0 ? part.charAt(0) : '';
-    let remainder = (part.length > 1) ? part.slice(1) : '';
+    let /** @type {?} */ first = part.length > 0 ? part.charAt(0) : '';
+    let /** @type {?} */ remainder = (part.length > 1) ? part.slice(1) : '';
     return first.toUpperCase() + remainder;
 }
+/**
+ * Converts snake-case to SnakeCase.
+ * @param {?} name Text to UpperCamelCase
+ * @return {?}
+ */
 function camelCase(name) {
     return name
         .replace(ALIAS_DELIMITERS, '|')
@@ -2380,22 +4687,37 @@ function camelCase(name) {
         .map(firstUpperCase)
         .join('');
 }
+/**
+ * For each breakpoint, ensure that a Suffix is defined;
+ * fallback to UpperCamelCase the unique Alias value
+ * @param {?} list
+ * @return {?}
+ */
 function validateSuffixes(list) {
     list.forEach((bp) => {
         if (!bp.suffix || bp.suffix === '') {
-            bp.suffix = camelCase(bp.alias);
-            bp.overlapping = bp.overlapping || false;
+            bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
+            bp.overlapping = bp.overlapping || false; // ensure default value
         }
     });
     return list;
 }
+/**
+ * Merge a custom breakpoint list with the default list based on unique alias values
+ *  - Items are added if the alias is not in the default list
+ *  - Items are merged with the custom override if the alias exists in the default list
+ * @param {?} defaults
+ * @param {?=} custom
+ * @return {?}
+ */
 function mergeByAlias(defaults, custom = []) {
-    const merged = defaults.map((bp) => extendObject({}, bp));
-    const findByAlias = (alias) => merged.reduce((result, bp) => {
+    const /** @type {?} */ merged = defaults.map((bp) => extendObject({}, bp));
+    const /** @type {?} */ findByAlias = (alias) => merged.reduce((result, bp) => {
         return result || ((bp.alias === alias) ? bp : null);
     }, null);
+    // Merge custom breakpoints
     custom.forEach((bp) => {
-        let target = findByAlias(bp.alias);
+        let /** @type {?} */ target = findByAlias(bp.alias);
         if (target) {
             extendObject(target, bp);
         }
@@ -2406,24 +4728,63 @@ function mergeByAlias(defaults, custom = []) {
     return validateSuffixes(merged);
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Options to identify which breakpoint types to include as part of
+ * a BreakPoint provider
+ * @record
+ */
+
+/**
+ * Add new custom items to the default list or override existing default with custom overrides
+ * @param {?=} _custom
+ * @param {?=} options
+ * @return {?}
+ */
 function buildMergedBreakPoints(_custom, options) {
     options = extendObject({}, {
         defaults: true,
-        orientation: false
+        // exclude pre-configured, internal default breakpoints
+        orientation: false // exclude pre-configured, internal orientations breakpoints
     }, options || {});
     return () => {
-        let defaults = options.orientations ? ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) :
-            DEFAULT_BREAKPOINTS;
-        return options.defaults ? mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom);
+        // Order so the defaults are loaded last; so ObservableMedia will report these last!
+        let /** @type {?} */ defaults = (options && options.orientations) ?
+            ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) : DEFAULT_BREAKPOINTS;
+        return (options && options.defaults) ?
+            mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom || []);
     };
 }
+/**
+ *  Ensure that only a single global BreakPoint list is instantiated...
+ * @return {?}
+ */
 function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
     return validateSuffixes(DEFAULT_BREAKPOINTS);
 }
+/**
+ * Default Provider that does not support external customization nor provide
+ * the extra extended breakpoints:   "handset", "tablet", and "web"
+ *
+ *  NOTE: !! breakpoints are considered to have unique 'alias' properties,
+ *        custom breakpoints matching existing breakpoints will override the properties
+ *        of the existing (and not be added as an extra breakpoint entry).
+ *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
+ */
 const DEFAULT_BREAKPOINTS_PROVIDER = {
+    // tslint:disable-line:variable-name
     provide: BREAKPOINTS,
     useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
 };
+/**
+ * Use with FlexLayoutModule.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY!
+ * @param {?=} _custom
+ * @param {?=} options
+ * @return {?}
+ */
 function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
     return {
         provide: BREAKPOINTS,
@@ -2431,10 +4792,25 @@ function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
     };
 }
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Ensure a single global ObservableMedia service provider
+ * @param {?} parentService
+ * @param {?} matchMedia
+ * @param {?} breakpoints
+ * @return {?}
+ */
 function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
     return parentService || new MediaService(breakpoints, matchMedia);
 }
+/**
+ *  Provider to return global service for observable service for all MediaQuery activations
+ */
 const OBSERVABLE_MEDIA_PROVIDER = {
+    // tslint:disable-line:variable-name
     provide: ObservableMedia,
     deps: [
         [new Optional(), new SkipSelf(), ObservableMedia],
@@ -2444,9 +4820,23 @@ const OBSERVABLE_MEDIA_PROVIDER = {
     useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Ensure a single global service provider
+ * @param {?} parentMonitor
+ * @param {?} breakpoints
+ * @param {?} matchMedia
+ * @return {?}
+ */
 function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
     return parentMonitor || new MediaMonitor$1(breakpoints, matchMedia);
 }
+/**
+ * Export provider that uses a global service factory (above)
+ */
 const MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor$1,
     deps: [
@@ -2457,6 +4847,15 @@ const MEDIA_MONITOR_PROVIDER = {
     useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
 };
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * *****************************************************************
+ * Define module for the MediaQuery API
+ * *****************************************************************
+ */
 class MediaQueriesModule {
 }
 MediaQueriesModule.decorators = [
@@ -2470,8 +4869,31 @@ MediaQueriesModule.decorators = [
                 ]
             },] },
 ];
+/** @nocollapse */
 MediaQueriesModule.ctorParameters = () => [];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Since the equivalent results are easily achieved with a css class attached to each
+ * layout child, these have been deprecated and removed from the API.
+ *
+ *  import {LayoutPaddingDirective} from './api/flexbox/layout-padding';
+ *  import {LayoutMarginDirective} from './api/flexbox/layout-margin';
+ */
 const ALL_DIRECTIVES = [
     LayoutDirective,
     LayoutGapDirective,
@@ -2486,7 +4908,20 @@ const ALL_DIRECTIVES = [
     StyleDirective,
     ImgSrcDirective
 ];
+/**
+ *
+ */
 class FlexLayoutModule {
+    /**
+     * External uses can easily add custom breakpoints AND include internal orientations
+     * breakpoints; which are not available by default.
+     *
+     * !! Selector aliases are not auto-configured. Developers must subclass
+     * the API directives to support extra selectors for the orientations breakpoints !!
+     * @param {?} breakpoints
+     * @param {?=} options
+     * @return {?}
+     */
     static provideBreakPoints(breakpoints, options) {
         return {
             ngModule: FlexLayoutModule,
@@ -2508,7 +4943,27 @@ FlexLayoutModule.decorators = [
                 ]
             },] },
 ];
+/** @nocollapse */
 FlexLayoutModule.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @module
+ * @description
+ * Entry point for all public APIs of Angular Flex-Layout.
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Generated bundle index. Do not edit.
+ */
 
 export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor$1 as MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.js.map

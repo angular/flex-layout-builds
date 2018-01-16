@@ -45,7 +45,7 @@ function __extends(d, b) {
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new _angular_core.Version('2.0.0-beta.12-fe877c9');
+var VERSION = new _angular_core.Version('2.0.0-beta.12-061083d');
 
 /**
  * @fileoverview added by tsickle
@@ -76,8 +76,8 @@ function validateValue(value) {
     if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
         direction = LAYOUT_VALUES[0];
     }
-    if (wrap == INLINE) {
-        wrap = (inline != INLINE) ? inline : null;
+    if (wrap === INLINE) {
+        wrap = (inline !== INLINE) ? inline : '';
         inline = INLINE;
     }
     return [direction, validateWrapValue(wrap), !!inline];
@@ -89,7 +89,7 @@ function validateValue(value) {
  * @return {?}
  */
 function isFlowHorizontal(value) {
-    var _a = validateValue(value), flow = _a[0], _ = _a[1];
+    var flow = validateValue(value)[0];
     return flow.indexOf('row') > -1;
 }
 /**
@@ -655,7 +655,6 @@ var ResponsiveActivation = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Abstract base class for the Layout API styling directives.
  * @abstract
@@ -819,7 +818,7 @@ var BaseFxDirective = /** @class */ (function () {
         if (this._mqActivation) {
             this._mqActivation.destroy();
         }
-        this._mediaMonitor = null;
+        delete this._mediaMonitor;
     };
     // *********************************************
     // Protected Methods
@@ -1282,7 +1281,9 @@ var BaseFxDirectiveAdapter = /** @class */ (function (_super) {
      * @return {?}
      */
     function (key, source) {
-        this._inputMap[key] = source;
+        if (key) {
+            this._inputMap[key] = source;
+        }
     };
     /**
      *  Save the property value for Array values.
@@ -1301,7 +1302,7 @@ var BaseFxDirectiveAdapter = /** @class */ (function (_super) {
      */
     function (key, source) {
         if (key === void 0) { key = ''; }
-        this._inputMap[key] = source.join(' ');
+        this._inputMap[key] = source ? source.join(' ') : '';
     };
     /**
      *  Save the property value for key/value pair values.
@@ -1321,9 +1322,11 @@ var BaseFxDirectiveAdapter = /** @class */ (function (_super) {
     function (key, source) {
         if (key === void 0) { key = ''; }
         var /** @type {?} */ classes = [];
-        for (var /** @type {?} */ prop in source) {
-            if (!!source[prop]) {
-                classes.push(prop);
+        if (source) {
+            for (var /** @type {?} */ prop in source) {
+                if (!!source[prop]) {
+                    classes.push(prop);
+                }
             }
         }
         this._inputMap[key] = classes.join(' ');
@@ -1363,8 +1366,6 @@ var BaseFxDirectiveAdapter = /** @class */ (function (_super) {
  * @suppress {checkTypes} checked by tsc
  */
 
-// @TODO - remove after updating to TS v2.4
-// tslint:disable:no-unused-variable
 /**
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
@@ -1375,7 +1376,6 @@ var BREAKPOINTS = new _angular_core.InjectionToken('Token (@angular/flex-layout)
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overriden from custom, application-specific ranges
@@ -1543,7 +1543,6 @@ var MediaChange = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * EventHandler callback with the mediaQuery [range] activates or deactivates
  * @record
@@ -1809,7 +1808,6 @@ function mergeAlias(dest, source) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
  * deactivations). These changes are are published as MediaChange notifications.
@@ -4811,7 +4809,7 @@ var ClassDirective = /** @class */ (function (_super) {
      */
     function () {
         this._base.ngOnDestroy();
-        this._ngClassInstance = null;
+        delete this._ngClassInstance;
     };
     // ******************************************************************
     // Internal Methods
@@ -5243,7 +5241,7 @@ var StyleDirective = /** @class */ (function (_super) {
      */
     function () {
         this._base.ngOnDestroy();
-        this._ngStyleInstance = null;
+        delete this._ngStyleInstance;
     };
     // ******************************************************************
     // Internal Methods
@@ -5351,7 +5349,7 @@ var StyleDirective = /** @class */ (function (_super) {
         var _this = this;
         var /** @type {?} */ sanitizer = function (val) {
             // Always safe-guard (aka sanitize) style property values
-            return _this._sanitizer.sanitize(_angular_core.SecurityContext.STYLE, val);
+            return _this._sanitizer.sanitize(_angular_core.SecurityContext.STYLE, val) || '';
         };
         if (styles) {
             switch (ngStyleUtils.getType(styles)) {
@@ -6334,7 +6332,6 @@ var ORIENTATION_BREAKPOINTS = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Base class for MediaService and pseudo-token for
  * @abstract
@@ -6650,9 +6647,10 @@ function buildMergedBreakPoints(_custom, options) {
     }, options || {});
     return function () {
         // Order so the defaults are loaded last; so ObservableMedia will report these last!
-        var /** @type {?} */ defaults = options.orientations ? ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) :
-            DEFAULT_BREAKPOINTS;
-        return options.defaults ? mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom);
+        var /** @type {?} */ defaults = (options && options.orientations) ?
+            ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) : DEFAULT_BREAKPOINTS;
+        return (options && options.defaults) ?
+            mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom || []);
     };
 }
 /**
@@ -6693,7 +6691,6 @@ function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Ensure a single global ObservableMedia service provider
  * @param {?} parentService
@@ -6722,7 +6719,6 @@ var OBSERVABLE_MEDIA_PROVIDER = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Ensure a single global service provider
  * @param {?} parentMonitor
@@ -6750,7 +6746,6 @@ var MEDIA_MONITOR_PROVIDER = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * *****************************************************************
  * Define module for the MediaQuery API
