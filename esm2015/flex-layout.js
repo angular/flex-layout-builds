@@ -21,7 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * Current version of Angular Flex-Layout.
  */
-const VERSION = new Version('2.0.0-beta.12-8f45f21');
+const VERSION = new Version('2.0.0-beta.12-71e2dae');
 
 /**
  * @fileoverview added by tsickle
@@ -249,7 +249,7 @@ function lookupAttributeValue(element, attribute) {
  * @return {?}
  */
 function lookupInlineStyle(element, styleName) {
-    return element.style[styleName];
+    return element.style[styleName] || element.style.getPropertyValue(styleName);
 }
 /**
  * Determine the inline or inherited CSS style
