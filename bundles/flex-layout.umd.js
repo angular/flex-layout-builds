@@ -45,7 +45,7 @@ function __extends(d, b) {
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new _angular_core.Version('2.0.0-beta.12-843a68d');
+var VERSION = new _angular_core.Version('2.0.0-beta.12-7699957');
 
 /**
  * @fileoverview added by tsickle
@@ -2598,6 +2598,56 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+
+/**
+ * Injection token used to inject the document into Directionality.
+ * This is used so that the value can be faked in tests.
+ *
+ * We can't use the real document in tests because changing the real `dir` causes geometry-based
+ * tests in Safari to fail.
+ *
+ * We also can't re-provide the DOCUMENT token from platform-brower because the unit tests
+ * themselves use things like `querySelector` in test code.
+ */
+var DIR_DOCUMENT = new _angular_core.InjectionToken('cdk-dir-doc');
+/**
+ * The directionality (LTR / RTL) context for the application (or a subtree of it).
+ * Exposes the current direction and a stream of direction changes.
+ */
+var Directionality = /** @class */ (function () {
+    function Directionality(_document) {
+        /**
+         * The current 'ltr' or 'rtl' value.
+         */
+        this.value = 'ltr';
+        /**
+         * Stream that emits whenever the 'ltr' / 'rtl' state changes.
+         */
+        this.change = new _angular_core.EventEmitter();
+        if (_document) {
+            // TODO: handle 'auto' value -
+            // We still need to account for dir="auto".
+            // It looks like HTMLElemenet.dir is also "auto" when that's set to the attribute,
+            // but getComputedStyle return either "ltr" or "rtl". avoiding getComputedStyle for now
+            var /** @type {?} */ bodyDir = _document.body ? _document.body.dir : null;
+            var /** @type {?} */ htmlDir = _document.documentElement ? _document.documentElement.dir : null;
+            this.value = /** @type {?} */ ((bodyDir || htmlDir || 'ltr'));
+        }
+    }
+    Directionality.decorators = [
+        { type: _angular_core.Injectable },
+    ];
+    /** @nocollapse */
+    Directionality.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Inject, args: [DIR_DOCUMENT,] },] },
+    ]; };
+    return Directionality;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
@@ -2605,14 +2655,17 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
 var LayoutGapDirective = /** @class */ (function (_super) {
     __extends(LayoutGapDirective, _super);
     /* tslint:enable */
-    function LayoutGapDirective(monitor, elRef, renderer, container, _zone, platformId) {
+    function LayoutGapDirective(monitor, elRef, renderer, container, _zone, platformId, _directionality) {
         var _this = _super.call(this, monitor, elRef, renderer, platformId) || this;
         _this._zone = _zone;
+        _this._directionality = _directionality;
         _this._layout = 'row';
         if (container) {
             // Subscribe to layout direction changes
             _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
         }
+        _this._directionWatcher =
+            _this._directionality.change.subscribe(_this._updateWithValue.bind(_this));
         return _this;
     }
     Object.defineProperty(LayoutGapDirective.prototype, "gap", {
@@ -2805,6 +2858,9 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         if (this._observer) {
             this._observer.disconnect();
         }
+        if (this._directionWatcher) {
+            this._directionWatcher.unsubscribe();
+        }
     };
     // *********************************************
     // Protected methods
@@ -2923,7 +2979,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             case 'row':
             case 'row-reverse':
             default:
-                key = 'margin-right';
+                key = this._directionality.value === 'rtl' ? 'margin-left' : 'margin-right';
                 break;
         }
         margins[key] = value;
@@ -2942,6 +2998,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
         { type: _angular_core.NgZone, },
         { type: Object, decorators: [{ type: _angular_core.Inject, args: [_angular_core.PLATFORM_ID,] },] },
+        { type: Directionality, },
     ]; };
     LayoutGapDirective.propDecorators = {
         "gap": [{ type: _angular_core.Input, args: ['fxLayoutGap',] },],
@@ -3756,13 +3813,16 @@ var FlexFillDirective = /** @class */ (function (_super) {
 var FlexOffsetDirective = /** @class */ (function (_super) {
     __extends(FlexOffsetDirective, _super);
     /* tslint:enable */
-    function FlexOffsetDirective(monitor, elRef, renderer, _container, platformId) {
+    function FlexOffsetDirective(monitor, elRef, renderer, _container, platformId, _directionality) {
         var _this = _super.call(this, monitor, elRef, renderer, platformId) || this;
         _this._container = _container;
+        _this._directionality = _directionality;
         /**
          * The flex-direction of this element's host container. Defaults to 'row'.
          */
         _this._layout = 'row';
+        _this._directionWatcher =
+            _this._directionality.change.subscribe(_this._updateWithValue.bind(_this));
         _this.watchParentFlow();
         return _this;
     }
@@ -3941,6 +4001,9 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
+        if (this._directionWatcher) {
+            this._directionWatcher.unsubscribe();
+        }
     };
     /**
      * After the initial onChanges, build an mqActivation object that bridges
@@ -4048,9 +4111,12 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
         }
+        var /** @type {?} */ horizontalLayoutKey = this._directionality.value === 'rtl' ? 'margin-right' : 'margin-left';
         // The flex-direction of this element's flex container. Defaults to 'row'.
         var /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
-        return isFlowHorizontal(layout) ? { 'margin-left': "" + offset } : { 'margin-top': "" + offset };
+        return isFlowHorizontal(layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) :
+            { 'margin-top': "" + offset };
+        var _a;
     };
     FlexOffsetDirective.decorators = [
         { type: _angular_core.Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" },] },
@@ -4062,6 +4128,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         { type: _angular_core.Renderer2, },
         { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.SkipSelf },] },
         { type: Object, decorators: [{ type: _angular_core.Inject, args: [_angular_core.PLATFORM_ID,] },] },
+        { type: Directionality, },
     ]; };
     FlexOffsetDirective.propDecorators = {
         "offset": [{ type: _angular_core.Input, args: ['fxFlexOffset',] },],
@@ -6786,6 +6853,120 @@ var MediaQueriesModule = /** @class */ (function () {
  */
 
 /**
+ * Directive to listen for changes of direction of part of the DOM.
+ *
+ * Provides itself as Directionality such that descendant directives only need to ever inject
+ * Directionality to get the closest direction.
+ */
+var Dir = /** @class */ (function () {
+    function Dir() {
+        this._dir = 'ltr';
+        /**
+         * Whether the `value` has been set to its initial value.
+         */
+        this._isInitialized = false;
+        /**
+         * Event emitted when the direction changes.
+         */
+        this.change = new _angular_core.EventEmitter();
+    }
+    Object.defineProperty(Dir.prototype, "dir", {
+        get: /**
+         * \@docs-private
+         * @return {?}
+         */
+        function () { return this._dir; },
+        set: /**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) {
+            var /** @type {?} */ old = this._dir;
+            this._dir = v;
+            if (old !== this._dir && this._isInitialized) {
+                this.change.emit(this._dir);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Dir.prototype, "value", {
+        /** Current layout direction of the element. */
+        get: /**
+         * Current layout direction of the element.
+         * @return {?}
+         */
+        function () { return this.dir; },
+        enumerable: true,
+        configurable: true
+    });
+    /** Initialize once default value has been set. */
+    /**
+     * Initialize once default value has been set.
+     * @return {?}
+     */
+    Dir.prototype.ngAfterContentInit = /**
+     * Initialize once default value has been set.
+     * @return {?}
+     */
+    function () {
+        this._isInitialized = true;
+    };
+    /**
+     * @return {?}
+     */
+    Dir.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this.change.complete();
+    };
+    Dir.decorators = [
+        { type: _angular_core.Directive, args: [{
+                    selector: '[dir]',
+                    providers: [{ provide: Directionality, useExisting: Dir }],
+                    host: { '[dir]': 'dir' },
+                    exportAs: 'dir',
+                },] },
+    ];
+    /** @nocollapse */
+    Dir.ctorParameters = function () { return []; };
+    Dir.propDecorators = {
+        "change": [{ type: _angular_core.Output, args: ['dirChange',] },],
+        "dir": [{ type: _angular_core.Input },],
+    };
+    return Dir;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+var BidiModule = /** @class */ (function () {
+    function BidiModule() {
+    }
+    BidiModule.decorators = [
+        { type: _angular_core.NgModule, args: [{
+                    exports: [Dir],
+                    declarations: [Dir],
+                    providers: [
+                        { provide: DIR_DOCUMENT, useExisting: _angular_common.DOCUMENT },
+                        Directionality,
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    BidiModule.ctorParameters = function () { return []; };
+    return BidiModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
  * Since the equivalent results are easily achieved with a css class attached to each
  * layout child, these have been deprecated and removed from the API.
  *
@@ -6849,7 +7030,7 @@ var FlexLayoutModule = /** @class */ (function () {
     };
     FlexLayoutModule.decorators = [
         { type: _angular_core.NgModule, args: [{
-                    imports: [MediaQueriesModule],
+                    imports: [MediaQueriesModule, BidiModule],
                     exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
                     declarations: ALL_DIRECTIVES.slice(),
                     providers: [
@@ -6917,6 +7098,10 @@ exports.extendObject = extendObject;
 exports.NgStyleKeyValue = NgStyleKeyValue;
 exports.ngStyleUtils = ngStyleUtils;
 exports.FlexLayoutModule = FlexLayoutModule;
+exports.ɵc = BidiModule;
+exports.ɵd = Dir;
+exports.ɵa = DIR_DOCUMENT;
+exports.ɵb = Directionality;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

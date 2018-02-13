@@ -8,6 +8,7 @@
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from '../core/base';
+import { Directionality } from '../../bidi/directionality';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
 /**
@@ -16,6 +17,8 @@ import { LayoutDirective } from './layout';
  */
 export declare class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     protected _container: LayoutDirective;
+    private _directionality;
+    private _directionWatcher;
     offset: any;
     offsetXs: any;
     offsetSm: any;
@@ -30,7 +33,7 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
     offsetGtSm: any;
     offsetGtMd: any;
     offsetGtLg: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, platformId: Object);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, platformId: Object, _directionality: Directionality);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -68,8 +71,6 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
      */
     protected _updateWithValue(value?: string | number): void;
     protected _buildCSS(offset: any): {
-        'margin-left': string;
-    } | {
-        'margin-top': string;
+        [x: string]: string;
     };
 }

@@ -9,6 +9,7 @@ import { ElementRef, OnChanges, Renderer2, SimpleChanges, AfterContentInit, OnDe
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from '../core/base';
 import { LayoutDirective } from './layout';
+import { Directionality } from '../../bidi/directionality';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
  * 'layout-padding' styling directive
@@ -16,9 +17,11 @@ import { MediaMonitor } from '../../media-query/media-monitor';
  */
 export declare class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges, OnDestroy {
     private _zone;
+    private _directionality;
     protected _layout: string;
     protected _layoutWatcher: Subscription;
     protected _observer: MutationObserver;
+    private _directionWatcher;
     gap: any;
     gapXs: any;
     gapSm: any;
@@ -33,7 +36,7 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
     gapLtMd: any;
     gapLtLg: any;
     gapLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective, _zone: NgZone, platformId: Object);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective, _zone: NgZone, platformId: Object, _directionality: Directionality);
     ngOnChanges(changes: SimpleChanges): void;
     /**
      * After the initial onChanges, build an mqActivation object that bridges

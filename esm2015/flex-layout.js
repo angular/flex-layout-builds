@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef as ElementRef$1, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, PLATFORM_ID, Renderer2 as Renderer2$1, RendererFactory2, SecurityContext, Self, SimpleChange, SkipSelf, Version, ViewEncapsulation } from '@angular/core';
+import { Directive, ElementRef as ElementRef$1, EventEmitter, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Output, PLATFORM_ID, Renderer2 as Renderer2$1, RendererFactory2, SecurityContext, Self, SimpleChange, SkipSelf, Version, ViewEncapsulation } from '@angular/core';
 import { DOCUMENT, NgClass, NgStyle, isPlatformBrowser } from '@angular/common';
 import { map } from 'rxjs/operators/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -21,7 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * Current version of Angular Flex-Layout.
  */
-const VERSION = new Version('2.0.0-beta.12-843a68d');
+const VERSION = new Version('2.0.0-beta.12-7699957');
 
 /**
  * @fileoverview added by tsickle
@@ -1847,6 +1847,58 @@ LayoutAlignDirective.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+
+/**
+ * Injection token used to inject the document into Directionality.
+ * This is used so that the value can be faked in tests.
+ *
+ * We can't use the real document in tests because changing the real `dir` causes geometry-based
+ * tests in Safari to fail.
+ *
+ * We also can't re-provide the DOCUMENT token from platform-brower because the unit tests
+ * themselves use things like `querySelector` in test code.
+ */
+const DIR_DOCUMENT = new InjectionToken('cdk-dir-doc');
+/**
+ * The directionality (LTR / RTL) context for the application (or a subtree of it).
+ * Exposes the current direction and a stream of direction changes.
+ */
+class Directionality {
+    /**
+     * @param {?=} _document
+     */
+    constructor(_document) {
+        /**
+         * The current 'ltr' or 'rtl' value.
+         */
+        this.value = 'ltr';
+        /**
+         * Stream that emits whenever the 'ltr' / 'rtl' state changes.
+         */
+        this.change = new EventEmitter();
+        if (_document) {
+            // TODO: handle 'auto' value -
+            // We still need to account for dir="auto".
+            // It looks like HTMLElemenet.dir is also "auto" when that's set to the attribute,
+            // but getComputedStyle return either "ltr" or "rtl". avoiding getComputedStyle for now
+            const /** @type {?} */ bodyDir = _document.body ? _document.body.dir : null;
+            const /** @type {?} */ htmlDir = _document.documentElement ? _document.documentElement.dir : null;
+            this.value = /** @type {?} */ ((bodyDir || htmlDir || 'ltr'));
+        }
+    }
+}
+Directionality.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+Directionality.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [DIR_DOCUMENT,] },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
@@ -1859,15 +1911,19 @@ class LayoutGapDirective extends BaseFxDirective {
      * @param {?} container
      * @param {?} _zone
      * @param {?} platformId
+     * @param {?} _directionality
      */
-    constructor(monitor, elRef, renderer, container, _zone, platformId) {
+    constructor(monitor, elRef, renderer, container, _zone, platformId, _directionality) {
         super(monitor, elRef, renderer, platformId);
         this._zone = _zone;
+        this._directionality = _directionality;
         this._layout = 'row';
         if (container) {
             // Subscribe to layout direction changes
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
         }
+        this._directionWatcher =
+            this._directionality.change.subscribe(this._updateWithValue.bind(this));
     }
     /**
      * @param {?} val
@@ -1983,6 +2039,9 @@ class LayoutGapDirective extends BaseFxDirective {
         if (this._observer) {
             this._observer.disconnect();
         }
+        if (this._directionWatcher) {
+            this._directionWatcher.unsubscribe();
+        }
     }
     /**
      * Watch for child nodes to be added... and apply the layout gap styles to each.
@@ -2063,7 +2122,7 @@ class LayoutGapDirective extends BaseFxDirective {
             case 'row':
             case 'row-reverse':
             default:
-                key = 'margin-right';
+                key = this._directionality.value === 'rtl' ? 'margin-left' : 'margin-right';
                 break;
         }
         margins[key] = value;
@@ -2088,6 +2147,7 @@ LayoutGapDirective.ctorParameters = () => [
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
     { type: NgZone, },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: Directionality, },
 ];
 LayoutGapDirective.propDecorators = {
     "gap": [{ type: Input, args: ['fxLayoutGap',] },],
@@ -2720,14 +2780,18 @@ class FlexOffsetDirective extends BaseFxDirective {
      * @param {?} renderer
      * @param {?} _container
      * @param {?} platformId
+     * @param {?} _directionality
      */
-    constructor(monitor, elRef, renderer, _container, platformId) {
+    constructor(monitor, elRef, renderer, _container, platformId, _directionality) {
         super(monitor, elRef, renderer, platformId);
         this._container = _container;
+        this._directionality = _directionality;
         /**
          * The flex-direction of this element's host container. Defaults to 'row'.
          */
         this._layout = 'row';
+        this._directionWatcher =
+            this._directionality.change.subscribe(this._updateWithValue.bind(this));
         this.watchParentFlow();
     }
     /**
@@ -2831,6 +2895,9 @@ class FlexOffsetDirective extends BaseFxDirective {
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
+        if (this._directionWatcher) {
+            this._directionWatcher.unsubscribe();
+        }
     }
     /**
      * After the initial onChanges, build an mqActivation object that bridges
@@ -2891,9 +2958,11 @@ class FlexOffsetDirective extends BaseFxDirective {
         if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
         }
+        const /** @type {?} */ horizontalLayoutKey = this._directionality.value === 'rtl' ? 'margin-right' : 'margin-left';
         // The flex-direction of this element's flex container. Defaults to 'row'.
         let /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
-        return isFlowHorizontal(layout) ? { 'margin-left': `${offset}` } : { 'margin-top': `${offset}` };
+        return isFlowHorizontal(layout) ? { [horizontalLayoutKey]: `${offset}` } :
+            { 'margin-top': `${offset}` };
     }
 }
 FlexOffsetDirective.decorators = [
@@ -2911,6 +2980,7 @@ FlexOffsetDirective.ctorParameters = () => [
     { type: Renderer2$1, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: Directionality, },
 ];
 FlexOffsetDirective.propDecorators = {
     "offset": [{ type: Input, args: ['fxFlexOffset',] },],
@@ -4888,6 +4958,99 @@ MediaQueriesModule.ctorParameters = () => [];
  */
 
 /**
+ * Directive to listen for changes of direction of part of the DOM.
+ *
+ * Provides itself as Directionality such that descendant directives only need to ever inject
+ * Directionality to get the closest direction.
+ */
+class Dir {
+    constructor() {
+        this._dir = 'ltr';
+        /**
+         * Whether the `value` has been set to its initial value.
+         */
+        this._isInitialized = false;
+        /**
+         * Event emitted when the direction changes.
+         */
+        this.change = new EventEmitter();
+    }
+    /**
+     * \@docs-private
+     * @return {?}
+     */
+    get dir() { return this._dir; }
+    /**
+     * @param {?} v
+     * @return {?}
+     */
+    set dir(v) {
+        const /** @type {?} */ old = this._dir;
+        this._dir = v;
+        if (old !== this._dir && this._isInitialized) {
+            this.change.emit(this._dir);
+        }
+    }
+    /**
+     * Current layout direction of the element.
+     * @return {?}
+     */
+    get value() { return this.dir; }
+    /**
+     * Initialize once default value has been set.
+     * @return {?}
+     */
+    ngAfterContentInit() {
+        this._isInitialized = true;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.change.complete();
+    }
+}
+Dir.decorators = [
+    { type: Directive, args: [{
+                selector: '[dir]',
+                providers: [{ provide: Directionality, useExisting: Dir }],
+                host: { '[dir]': 'dir' },
+                exportAs: 'dir',
+            },] },
+];
+/** @nocollapse */
+Dir.ctorParameters = () => [];
+Dir.propDecorators = {
+    "change": [{ type: Output, args: ['dirChange',] },],
+    "dir": [{ type: Input },],
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+class BidiModule {
+}
+BidiModule.decorators = [
+    { type: NgModule, args: [{
+                exports: [Dir],
+                declarations: [Dir],
+                providers: [
+                    { provide: DIR_DOCUMENT, useExisting: DOCUMENT },
+                    Directionality,
+                ]
+            },] },
+];
+/** @nocollapse */
+BidiModule.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
  * Since the equivalent results are easily achieved with a css class attached to each
  * layout child, these have been deprecated and removed from the API.
  *
@@ -4933,7 +5096,7 @@ class FlexLayoutModule {
 }
 FlexLayoutModule.decorators = [
     { type: NgModule, args: [{
-                imports: [MediaQueriesModule],
+                imports: [MediaQueriesModule, BidiModule],
                 exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
                 declarations: [...ALL_DIRECTIVES],
                 providers: [
@@ -4965,5 +5128,5 @@ FlexLayoutModule.ctorParameters = () => [];
  * Generated bundle index. Do not edit.
  */
 
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor$1 as MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor$1 as MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule, BidiModule as ɵc, Dir as ɵd, DIR_DOCUMENT as ɵa, Directionality as ɵb };
 //# sourceMappingURL=flex-layout.js.map
