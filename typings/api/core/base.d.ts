@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnDestroy, SimpleChanges, OnChanges, Renderer2 } from '@angular/core';
-import { StyleDefinition } from '../../utils/style-utils';
+import { ElementRef, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
+import { StyleDefinition, StyleUtils } from '../../utils/styling/style-utils';
 import { ResponsiveActivation } from '../core/responsive-activation';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
@@ -14,8 +14,7 @@ import { MediaQuerySubscriber } from '../../media-query/media-change';
 export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
-    protected _renderer: Renderer2;
-    protected _platformId: Object;
+    protected _styler: StyleUtils;
     readonly hasMediaQueryListener: boolean;
     /**
      * Imperatively determine the current activated [input] value;
@@ -32,12 +31,12 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     /**
      * Constructor
      */
-    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2, _platformId: Object);
+    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils);
     /**
      * Access to host element's parent DOM node
      */
     protected readonly parentElement: any;
-    protected readonly nativeElement: any;
+    protected readonly nativeElement: HTMLElement;
     /**
      * Access the current value (if any) of the @Input property.
      */
@@ -56,7 +55,7 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     protected _getDefaultVal(key: string, fallbackVal: any): string | boolean;
     /**
      * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows use to preserve the original style
+     * Note: this allows us to preserve the original style
      * and optional restore it when the mediaQueries deactivate
      */
     protected _getDisplayStyle(source?: HTMLElement): string;
@@ -70,11 +69,11 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
      * Check inline style first then check computed (stylesheet) style.
      * And optionally add the flow value to element's inline style.
      */
-    protected _getFlowDirection(target: any, addIfMissing?: boolean): string;
+    protected _getFlowDirection(target: HTMLElement, addIfMissing?: boolean): string;
     /**
      * Applies styles given via string pair or object map to the directive element.
      */
-    protected _applyStyleToElement(style: StyleDefinition, value?: string | number, nativeElement?: any): void;
+    protected _applyStyleToElement(style: StyleDefinition, value?: string | number, element?: HTMLElement): void;
     /**
      * Applies styles given via string pair or object map to the directive's element.
      */

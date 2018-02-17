@@ -5,9 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, Renderer2 } from '@angular/core';
+import { ElementRef, OnInit, OnChanges } from '@angular/core';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
  * and will update the img.src property upon each responsive activation.
@@ -18,6 +19,11 @@ import { MediaMonitor } from '../../media-query/media-monitor';
  * @see https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-src/
  */
 export declare class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChanges {
+    protected _elRef: ElementRef;
+    protected _monitor: MediaMonitor;
+    protected _styler: StyleUtils;
+    protected _platformId: Object;
+    protected _serverModuleLoaded: boolean;
     srcBase: any;
     srcXs: any;
     srcSm: any;
@@ -32,7 +38,7 @@ export declare class ImgSrcDirective extends BaseFxDirective implements OnInit, 
     srcGtSm: any;
     srcGtMd: any;
     srcGtLg: any;
-    constructor(elRef: ElementRef, renderer: Renderer2, monitor: MediaMonitor, platformId: Object);
+    constructor(_elRef: ElementRef, _monitor: MediaMonitor, _styler: StyleUtils, _platformId: Object, _serverModuleLoaded: boolean);
     /**
      * Listen for responsive changes to update the img.src attribute
      */

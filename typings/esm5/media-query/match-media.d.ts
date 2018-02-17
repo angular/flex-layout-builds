@@ -5,25 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { NgZone, RendererFactory2 } from '@angular/core';
+import { NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { MediaChange } from './media-change';
-/**
- * EventHandler callback with the mediaQuery [range] activates or deactivates
- */
-export interface MediaQueryListListener {
-    (mql: MediaQueryList): void;
-}
-/**
- * EventDispatcher for a specific mediaQuery [range]
- */
-export interface MediaQueryList {
-    readonly matches: boolean;
-    readonly media: string;
-    addListener(listener: MediaQueryListListener): void;
-    removeListener(listener: MediaQueryListListener): void;
-}
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
  * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
@@ -33,13 +18,11 @@ export interface MediaQueryList {
  */
 export declare class MatchMedia {
     protected _zone: NgZone;
-    protected _rendererFactory: RendererFactory2;
     protected _document: any;
-    protected _platformId: Object;
     protected _registry: Map<string, MediaQueryList>;
     protected _source: BehaviorSubject<MediaChange>;
     protected _observable$: Observable<MediaChange>;
-    constructor(_zone: NgZone, _rendererFactory: RendererFactory2, _document: any, _platformId: Object);
+    constructor(_zone: NgZone, _document: any);
     /**
      * For the specified mediaQuery?
      */
@@ -70,5 +53,5 @@ export declare class MatchMedia {
      * @param query string The mediaQuery used to create a faux CSS selector
      *
      */
-    protected _prepareQueryCSS(mediaQueries: string[], _document: any): void;
+    protected _prepareQueryCSS(mediaQueries: string[], _document: Document): void;
 }

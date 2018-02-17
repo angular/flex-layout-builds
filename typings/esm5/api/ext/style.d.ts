@@ -7,11 +7,12 @@
  */
 import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer2, SimpleChanges, OnInit } from '@angular/core';
 import { NgStyle } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BaseFxDirective } from '../core/base';
 import { BaseFxDirectiveAdapter } from '../core/base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { DomSanitizer } from '@angular/platform-browser';
-import { NgStyleType } from '../../utils/style-transforms';
+import { NgStyleType } from '../../utils/styling/style-transforms';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -23,7 +24,7 @@ export declare class StyleDirective extends BaseFxDirective implements DoCheck, 
     protected _renderer: Renderer2;
     protected _differs: KeyValueDiffers;
     private _ngStyleInstance;
-    protected _platformId: Object;
+    protected _styler: StyleUtils;
     /**
      * Intercept ngStyle assignments so we cache the default styles
      * which are merged with activated styles or used as fallbacks.
@@ -46,7 +47,7 @@ export declare class StyleDirective extends BaseFxDirective implements DoCheck, 
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter
      */
-    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _ngStyleInstance: NgStyle, _platformId: Object);
+    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _ngStyleInstance: NgStyle, _styler: StyleUtils);
     /**
      * For @Input changes on the current mq activation property
      */

@@ -5,11 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -45,7 +46,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     /**
      *
      */
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, platformId: Object);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils);
     /**
      * On changes to any @Input properties...
      * Default to use the non-responsive Input value ('fxLayout')

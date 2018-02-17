@@ -5,11 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /** Built-in aliases for different flex-basis values. */
 export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';
 /**
@@ -20,6 +21,7 @@ export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nog
  */
 export declare class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     protected _container: LayoutDirective;
+    protected styleUtils: StyleUtils;
     /** The flex-direction of this element's flex container. Defaults to 'row'. */
     protected _layout: string;
     /**
@@ -43,7 +45,7 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     flexLtMd: any;
     flexLtLg: any;
     flexLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, platformId: Object);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, _container: LayoutDirective, styleUtils: StyleUtils);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */

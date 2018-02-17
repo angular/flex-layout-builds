@@ -5,11 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, Renderer2 } from '@angular/core';
+import { ElementRef } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { ResponsiveActivation } from './responsive-activation';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
 import { MediaMonitor } from '../../media-query/media-monitor';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * Adapter to the BaseFxDirective abstract class so it can be used via composition.
  * @see BaseFxDirective
@@ -18,8 +19,7 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
     protected _baseKey: string;
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
-    protected _renderer: Renderer2;
-    protected _platformId: Object;
+    protected _styler: StyleUtils;
     /**
      * Accessor to determine which @Input property is "active"
      * e.g. which property value will be used.
@@ -34,7 +34,7 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
     /**
      * BaseFxDirectiveAdapter constructor
      */
-    constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2, _platformId: Object);
+    constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils);
     /**
       * Does this directive have 1 or more responsive keys defined
       * Note: we exclude the 'baseKey' key (which is NOT considered responsive)

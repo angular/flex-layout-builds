@@ -12,6 +12,7 @@ import { BreakPointProviderOptions } from './media-query/breakpoints/break-point
  *
  */
 export declare class FlexLayoutModule {
+    constructor(serverModuleLoaded: boolean, platformId: Object);
     /**
      * External uses can easily add custom breakpoints AND include internal orientations
      * breakpoints; which are not available by default.

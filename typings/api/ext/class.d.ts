@@ -10,6 +10,7 @@ import { NgClass } from '@angular/common';
 import { BaseFxDirective } from '../core/base';
 import { BaseFxDirectiveAdapter } from '../core/base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /** NgClass allowed inputs **/
 export declare type NgClassType = string | string[] | Set<string> | {
     [klass: string]: any;
@@ -17,7 +18,7 @@ export declare type NgClassType = string | string[] | Set<string> | {
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
- *
+ * Note: this class is a no-op when rendered on the server
  */
 export declare class ClassDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
     protected monitor: MediaMonitor;
@@ -26,7 +27,7 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     protected _ngEl: ElementRef;
     protected _renderer: Renderer2;
     private _ngClassInstance;
-    protected _platformId: Object;
+    protected _styler: StyleUtils;
     /**
      * Intercept ngClass assignments so we cache the default classes
      * which are merged with activated styles or used as fallbacks.
@@ -51,7 +52,7 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     ngClassGtSm: NgClassType;
     ngClassGtMd: NgClassType;
     ngClassGtLg: NgClassType;
-    constructor(monitor: MediaMonitor, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer2, _ngClassInstance: NgClass, _platformId: Object);
+    constructor(monitor: MediaMonitor, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer2, _ngClassInstance: NgClass, _styler: StyleUtils);
     /**
      * For @Input changes on the current mq activation property
      */

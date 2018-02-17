@@ -5,11 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * 'layout-align' flexbox styling directive
  *  Defines positioning of child elements along main and cross axis in a layout container
@@ -36,7 +37,7 @@ export declare class LayoutAlignDirective extends BaseFxDirective implements OnI
     alignLtMd: any;
     alignLtLg: any;
     alignLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective, platformId: Object);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, container: LayoutDirective, styleUtils: StyleUtils);
     ngOnChanges(changes: SimpleChanges): void;
     /**
      * After the initial onChanges, build an mqActivation object that bridges

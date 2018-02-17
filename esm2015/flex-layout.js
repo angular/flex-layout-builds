@@ -5,9 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef as ElementRef$1, EventEmitter, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Output, PLATFORM_ID, Renderer2 as Renderer2$1, RendererFactory2, SecurityContext, Self, SimpleChange, SkipSelf, Version, ViewEncapsulation } from '@angular/core';
-import { DOCUMENT, NgClass, NgStyle, isPlatformBrowser } from '@angular/common';
+import { APP_BOOTSTRAP_LISTENER, Directive, ElementRef, EventEmitter, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Output, PLATFORM_ID, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
 import { map } from 'rxjs/operators/map';
+import { DOCUMENT, NgClass, NgStyle, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -21,7 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * Current version of Angular Flex-Layout.
  */
-const VERSION = new Version('2.0.0-beta.12-04b9bfd');
+const VERSION = new Version('2.0.0-beta.12-cf5266a');
 
 /**
  * @fileoverview added by tsickle
@@ -114,164 +114,6 @@ function buildCSS(direction, wrap = null, inline = false) {
         'flex-direction': direction,
         'flex-wrap': !!wrap ? wrap : null
     };
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-
-/**
- * Applies CSS prefixes to appropriate style keys.
- *
- * Note: `-ms-`, `-moz` and `-webkit-box` are no longer supported. e.g.
- *    {
- *      display: -webkit-flex;     NEW - Safari 6.1+. iOS 7.1+, BB10
- *      display: flex;             NEW, Spec - Firefox, Chrome, Opera
- *      // display: -webkit-box;   OLD - iOS 6-, Safari 3.1-6, BB7
- *      // display: -ms-flexbox;   TWEENER - IE 10
- *      // display: -moz-flexbox;  OLD - Firefox
- *    }
- * @param {?} target
- * @return {?}
- */
-function applyCssPrefixes(target) {
-    for (let /** @type {?} */ key in target) {
-        let /** @type {?} */ value = target[key] || '';
-        switch (key) {
-            case 'display':
-                if (value === 'flex') {
-                    target['display'] = [
-                        '-webkit-flex',
-                        'flex'
-                    ];
-                }
-                else if (value === 'inline-flex') {
-                    target['display'] = [
-                        '-webkit-inline-flex',
-                        'inline-flex'
-                    ];
-                }
-                else {
-                    target['display'] = value;
-                }
-                break;
-            case 'align-items':
-            case 'align-self':
-            case 'align-content':
-            case 'flex':
-            case 'flex-basis':
-            case 'flex-flow':
-            case 'flex-grow':
-            case 'flex-shrink':
-            case 'flex-wrap':
-            case 'justify-content':
-                target['-webkit-' + key] = value;
-                break;
-            case 'flex-direction':
-                value = value || 'row';
-                target['-webkit-flex-direction'] = value;
-                target['flex-direction'] = value;
-                break;
-            case 'order':
-                target['order'] = target['-webkit-' + key] = isNaN(value) ? '0' : value;
-                break;
-        }
-    }
-    return target;
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Applies styles given via string pair or object map to the directive element.
- * @param {?} renderer
- * @param {?} element
- * @param {?} style
- * @param {?=} value
- * @return {?}
- */
-function applyStyleToElement(renderer, element, style, value) {
-    let /** @type {?} */ styles = {};
-    if (typeof style === 'string') {
-        styles[style] = value;
-        style = styles;
-    }
-    styles = applyCssPrefixes(style);
-    applyMultiValueStyleToElement(styles, element, renderer);
-}
-/**
- * Applies styles given via string pair or object map to the directive's element.
- * @param {?} renderer
- * @param {?} style
- * @param {?} elements
- * @return {?}
- */
-function applyStyleToElements(renderer, style, elements) {
-    let /** @type {?} */ styles = applyCssPrefixes(style);
-    elements.forEach(el => {
-        applyMultiValueStyleToElement(styles, el, renderer);
-    });
-}
-/**
- * Applies the styles to the element. The styles object map may contain an array of values.
- * Each value will be added as element style.
- * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones.
- * @param {?} styles
- * @param {?} element
- * @param {?} renderer
- * @return {?}
- */
-function applyMultiValueStyleToElement(styles, element, renderer) {
-    Object.keys(styles).sort().forEach(key => {
-        const /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
-        values.sort();
-        for (let /** @type {?} */ value of values) {
-            renderer.setStyle(element, key, value);
-        }
-    });
-}
-/**
- * Find the DOM element's raw attribute value (if any)
- * @param {?} element
- * @param {?} attribute
- * @return {?}
- */
-function lookupAttributeValue(element, attribute) {
-    return element.getAttribute(attribute) || '';
-}
-/**
- * Find the DOM element's inline style value (if any)
- * @param {?} element
- * @param {?} styleName
- * @return {?}
- */
-function lookupInlineStyle(element, styleName) {
-    return element.style[styleName] || element.style.getPropertyValue(styleName);
-}
-/**
- * Determine the inline or inherited CSS style
- * \@TODO(CaerusKaru): platform-server has no implementation for getComputedStyle
- * @param {?} _platformId
- * @param {?} element
- * @param {?} styleName
- * @param {?=} inlineOnly
- * @return {?}
- */
-function lookupStyle(_platformId, element, styleName, inlineOnly = false) {
-    let /** @type {?} */ value = '';
-    if (element) {
-        let /** @type {?} */ immediateValue = value = lookupInlineStyle(element, styleName);
-        if (!inlineOnly) {
-            value = immediateValue || (isPlatformBrowser(_platformId) &&
-                getComputedStyle(element).getPropertyValue(styleName)) || '';
-        }
-    }
-    // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
-    //       in which case getComputedStyle() should determine a valid value.
-    return value ? value.trim() : 'block';
 }
 
 /**
@@ -532,14 +374,12 @@ class BaseFxDirective {
      * Constructor
      * @param {?} _mediaMonitor
      * @param {?} _elementRef
-     * @param {?} _renderer
-     * @param {?} _platformId
+     * @param {?} _styler
      */
-    constructor(_mediaMonitor, _elementRef, _renderer, _platformId) {
+    constructor(_mediaMonitor, _elementRef, _styler) {
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
-        this._renderer = _renderer;
-        this._platformId = _platformId;
+        this._styler = _styler;
         /**
          *  Dictionary of input keys with associated values
          */
@@ -645,13 +485,14 @@ class BaseFxDirective {
     }
     /**
      * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows use to preserve the original style
+     * Note: this allows us to preserve the original style
      * and optional restore it when the mediaQueries deactivate
      * @param {?=} source
      * @return {?}
      */
     _getDisplayStyle(source = this.nativeElement) {
-        return lookupStyle(this._platformId, source || this.nativeElement, 'display');
+        const /** @type {?} */ query = 'display';
+        return this._styler.lookupStyle(source, query);
     }
     /**
      * Quick accessor to raw attribute value on the target DOM element
@@ -660,7 +501,7 @@ class BaseFxDirective {
      * @return {?}
      */
     _getAttributeValue(attribute, source = this.nativeElement) {
-        return lookupAttributeValue(source || this.nativeElement, attribute);
+        return this._styler.lookupAttributeValue(source, attribute);
     }
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -673,25 +514,26 @@ class BaseFxDirective {
      */
     _getFlowDirection(target, addIfMissing = false) {
         let /** @type {?} */ value = 'row';
+        let /** @type {?} */ hasInlineValue = '';
         if (target) {
-            value = lookupStyle(this._platformId, target, 'flex-direction') || 'row';
-            let /** @type {?} */ hasInlineValue = lookupInlineStyle(target, 'flex-direction');
+            [value, hasInlineValue] = this._styler.getFlowDirection(target);
             if (!hasInlineValue && addIfMissing) {
-                applyStyleToElements(this._renderer, buildLayoutCSS(value), [target]);
+                const /** @type {?} */ style = buildLayoutCSS(value);
+                const /** @type {?} */ elements = [target];
+                this._styler.applyStyleToElements(style, elements);
             }
         }
-        return value.trim();
+        return value.trim() || 'row';
     }
     /**
      * Applies styles given via string pair or object map to the directive element.
      * @param {?} style
      * @param {?=} value
-     * @param {?=} nativeElement
+     * @param {?=} element
      * @return {?}
      */
-    _applyStyleToElement(style, value, nativeElement = this.nativeElement) {
-        let /** @type {?} */ element = nativeElement || this.nativeElement;
-        applyStyleToElement(this._renderer, element, style, value);
+    _applyStyleToElement(style, value, element = this.nativeElement) {
+        this._styler.applyStyleToElement(element, style, value);
     }
     /**
      * Applies styles given via string pair or object map to the directive's element.
@@ -700,7 +542,7 @@ class BaseFxDirective {
      * @return {?}
      */
     _applyStyleToElements(style, elements) {
-        applyStyleToElements(this._renderer, style, elements || []);
+        this._styler.applyStyleToElements(style, elements);
     }
     /**
      *  Save the property value; which may be a complex object.
@@ -777,13 +619,6 @@ class BaseFxDirective {
         return this._hasInitialized;
     }
 }
-/** @nocollapse */
-BaseFxDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
-];
 
 /**
  * @fileoverview added by tsickle
@@ -799,18 +634,16 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
      * @param {?} _baseKey
      * @param {?} _mediaMonitor
      * @param {?} _elementRef
-     * @param {?} _renderer
-     * @param {?} _platformId
+     * @param {?} _styler
      */
     constructor(_baseKey, // non-responsive @Input property name
         // non-responsive @Input property name
-        _mediaMonitor, _elementRef, _renderer, _platformId) {
-        super(_mediaMonitor, _elementRef, _renderer, _platformId);
+        _mediaMonitor, _elementRef, _styler) {
+        super(_mediaMonitor, _elementRef, _styler);
         this._baseKey = _baseKey;
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
-        this._renderer = _renderer;
-        this._platformId = _platformId;
+        this._styler = _styler;
     }
     /**
      * Accessor to determine which \@Input property is "active"
@@ -935,14 +768,6 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
         this._inputMap[key] = source;
     }
 }
-/** @nocollapse */
-BaseFxDirectiveAdapter.ctorParameters = () => [
-    null,
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
-];
 
 /**
  * @fileoverview added by tsickle
@@ -1073,16 +898,6 @@ class MediaChange {
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * EventHandler callback with the mediaQuery [range] activates or deactivates
- * @record
- */
-
-/**
- * EventDispatcher for a specific mediaQuery [range]
- * @record
- */
-
-/**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
  * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
  * performed within the ng Zone to trigger change detections and component updates.
@@ -1092,15 +907,11 @@ class MediaChange {
 class MatchMedia {
     /**
      * @param {?} _zone
-     * @param {?} _rendererFactory
      * @param {?} _document
-     * @param {?} _platformId
      */
-    constructor(_zone, _rendererFactory, _document, _platformId) {
+    constructor(_zone, _document) {
         this._zone = _zone;
-        this._rendererFactory = _rendererFactory;
         this._document = _document;
-        this._platformId = _platformId;
         this._registry = new Map();
         this._source = new BehaviorSubject(new MediaChange(true));
         this._observable$ = this._source.asObservable();
@@ -1168,8 +979,7 @@ class MatchMedia {
      * @return {?}
      */
     _buildMQL(query) {
-        let /** @type {?} */ canListen = isPlatformBrowser(this._platformId) &&
-            !!(/** @type {?} */ (window)).matchMedia('all').addListener;
+        let /** @type {?} */ canListen = !!(/** @type {?} */ (window)).matchMedia('all').addListener;
         return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
             matches: query === 'all' || query === '',
             media: query,
@@ -1192,9 +1002,8 @@ class MatchMedia {
         if (list.length > 0) {
             let /** @type {?} */ query = list.join(', ');
             try {
-                const /** @type {?} */ renderer = this._rendererFactory.createRenderer(_document, RENDERER_TYPE);
-                let /** @type {?} */ styleEl = renderer.createElement('style');
-                renderer.setAttribute(styleEl, 'type', 'text/css');
+                let /** @type {?} */ styleEl = _document.createElement('style');
+                styleEl.setAttribute('type', 'text/css');
                 if (!styleEl['styleSheet']) {
                     let /** @type {?} */ cssText = `
 /*
@@ -1203,9 +1012,9 @@ class MatchMedia {
 */
 @media ${query} {.fx-query-test{ }}
 `;
-                    renderer.appendChild(styleEl, renderer.createText(cssText));
+                    styleEl.appendChild(_document.createTextNode(cssText));
                 }
-                renderer.appendChild(_document.head, styleEl);
+                _document.head.appendChild(styleEl);
                 // Store in private global registry
                 list.forEach(mq => ALL_STYLES[mq] = styleEl);
             }
@@ -1221,23 +1030,8 @@ MatchMedia.decorators = [
 /** @nocollapse */
 MatchMedia.ctorParameters = () => [
     { type: NgZone, },
-    { type: RendererFactory2, },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
-const ɵ0 = {};
-/**
- * Since `getDom()` is no longer supported,
- * we will use a RendererFactory build and instance
- * of a renderer for an element. Then the renderer will
- * build the stylesheet(s)
- */
-const RENDERER_TYPE = {
-    id: '-1',
-    styles: [],
-    data: ɵ0,
-    encapsulation: ViewEncapsulation.None
-};
 /**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
@@ -1299,7 +1093,7 @@ function mergeAlias(dest, source) {
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  */
-class MediaMonitor$1 {
+class MediaMonitor {
     /**
      * @param {?} _breakpoints
      * @param {?} _matchMedia
@@ -1374,14 +1168,286 @@ class MediaMonitor$1 {
         this._matchMedia.registerQuery(queries);
     }
 }
-MediaMonitor$1.decorators = [
+MediaMonitor.decorators = [
     { type: Injectable },
 ];
 /** @nocollapse */
-MediaMonitor$1.ctorParameters = () => [
+MediaMonitor.ctorParameters = () => [
     { type: BreakPointRegistry, },
     { type: MatchMedia, },
 ];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * Applies CSS prefixes to appropriate style keys.
+ *
+ * Note: `-ms-`, `-moz` and `-webkit-box` are no longer supported. e.g.
+ *    {
+ *      display: -webkit-flex;     NEW - Safari 6.1+. iOS 7.1+, BB10
+ *      display: flex;             NEW, Spec - Firefox, Chrome, Opera
+ *      // display: -webkit-box;   OLD - iOS 6-, Safari 3.1-6, BB7
+ *      // display: -ms-flexbox;   TWEENER - IE 10
+ *      // display: -moz-flexbox;  OLD - Firefox
+ *    }
+ * @param {?} target
+ * @return {?}
+ */
+function applyCssPrefixes(target) {
+    for (let /** @type {?} */ key in target) {
+        let /** @type {?} */ value = target[key] || '';
+        switch (key) {
+            case 'display':
+                if (value === 'flex') {
+                    target['display'] = [
+                        '-webkit-flex',
+                        'flex'
+                    ];
+                }
+                else if (value === 'inline-flex') {
+                    target['display'] = [
+                        '-webkit-inline-flex',
+                        'inline-flex'
+                    ];
+                }
+                else {
+                    target['display'] = value;
+                }
+                break;
+            case 'align-items':
+            case 'align-self':
+            case 'align-content':
+            case 'flex':
+            case 'flex-basis':
+            case 'flex-flow':
+            case 'flex-grow':
+            case 'flex-shrink':
+            case 'flex-wrap':
+            case 'justify-content':
+                target['-webkit-' + key] = value;
+                break;
+            case 'flex-direction':
+                value = value || 'row';
+                target['-webkit-flex-direction'] = value;
+                target['flex-direction'] = value;
+                break;
+            case 'order':
+                target['order'] = target['-webkit-' + key] = isNaN(value) ? '0' : value;
+                break;
+        }
+    }
+    return target;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Utility to emulate a CSS stylesheet
+ *
+ * This stores all of the styles for a given HTML element
+ * and returns them later
+ */
+class ServerStylesheet {
+    constructor() {
+        this.stylesheet = new Map();
+    }
+    /**
+     * Add an individual style to an HTML element
+     * @param {?} element
+     * @param {?} style
+     * @param {?} value
+     * @return {?}
+     */
+    addStyleToElement(element, style, value) {
+        const /** @type {?} */ stylesheet = this.stylesheet.get(element);
+        if (stylesheet) {
+            stylesheet.set(style, value);
+        }
+        else {
+            this.stylesheet.set(element, new Map([[style, value]]));
+        }
+    }
+    /**
+     * Clear the virtual stylesheet
+     * @return {?}
+     */
+    clearStyles() {
+        this.stylesheet.clear();
+    }
+    /**
+     * Retrieve a given style for an HTML element
+     * @param {?} el
+     * @param {?} styleName
+     * @return {?}
+     */
+    getStyleForElement(el, styleName) {
+        const /** @type {?} */ styles = this.stylesheet.get(el);
+        return (styles && styles.get(styleName)) || '';
+    }
+}
+ServerStylesheet.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ServerStylesheet.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Token that is provided to tell whether the FlexLayoutServerModule
+ * has been included in the bundle
+ *
+ * NOTE: This can be manually provided to disable styles when using SSR
+ */
+const SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+class StyleUtils {
+    /**
+     * @param {?} _serverStylesheet
+     * @param {?} _serverModuleLoaded
+     * @param {?} _platformId
+     */
+    constructor(_serverStylesheet, _serverModuleLoaded, _platformId) {
+        this._serverStylesheet = _serverStylesheet;
+        this._serverModuleLoaded = _serverModuleLoaded;
+        this._platformId = _platformId;
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive element
+     * @param {?} element
+     * @param {?} style
+     * @param {?=} value
+     * @return {?}
+     */
+    applyStyleToElement(element, style, value) {
+        let /** @type {?} */ styles = {};
+        if (typeof style === 'string') {
+            styles[style] = value;
+            style = styles;
+        }
+        styles = applyCssPrefixes(style);
+        this._applyMultiValueStyleToElement(styles, element);
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive's element
+     * @param {?} style
+     * @param {?=} elements
+     * @return {?}
+     */
+    applyStyleToElements(style, elements = []) {
+        const /** @type {?} */ styles = applyCssPrefixes(style);
+        elements.forEach(el => {
+            this._applyMultiValueStyleToElement(styles, el);
+        });
+    }
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction)
+     *
+     * Check inline style first then check computed (stylesheet) style
+     * @param {?} target
+     * @return {?}
+     */
+    getFlowDirection(target) {
+        const /** @type {?} */ query = 'flex-direction';
+        let /** @type {?} */ value = this.lookupStyle(target, query);
+        if (value === FALLBACK_STYLE) {
+            value = '';
+        }
+        const /** @type {?} */ hasInlineValue = this.lookupInlineStyle(target, query) ||
+            (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
+        return [value || 'row', hasInlineValue];
+    }
+    /**
+     * Find the DOM element's raw attribute value (if any)
+     * @param {?} element
+     * @param {?} attribute
+     * @return {?}
+     */
+    lookupAttributeValue(element, attribute) {
+        return element.getAttribute(attribute) || '';
+    }
+    /**
+     * Find the DOM element's inline style value (if any)
+     * @param {?} element
+     * @param {?} styleName
+     * @return {?}
+     */
+    lookupInlineStyle(element, styleName) {
+        return element.style[styleName] || element.style.getPropertyValue(styleName);
+    }
+    /**
+     * Determine the inline or inherited CSS style
+     * NOTE: platform-server has no implementation for getComputedStyle
+     * @param {?} element
+     * @param {?} styleName
+     * @param {?=} inlineOnly
+     * @return {?}
+     */
+    lookupStyle(element, styleName, inlineOnly = false) {
+        let /** @type {?} */ value = '';
+        if (element) {
+            let /** @type {?} */ immediateValue = value = this.lookupInlineStyle(element, styleName);
+            if (!immediateValue) {
+                if (isPlatformBrowser(this._platformId)) {
+                    if (!inlineOnly) {
+                        value = getComputedStyle(element).getPropertyValue(styleName);
+                    }
+                }
+                else {
+                    if (this._serverModuleLoaded) {
+                        value = `${this._serverStylesheet.getStyleForElement(element, styleName)}`;
+                    }
+                }
+            }
+        }
+        // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
+        //       in which case getComputedStyle() should determine a valid value.
+        return value ? value.trim() : FALLBACK_STYLE;
+    }
+    /**
+     * Applies the styles to the element. The styles object map may contain an array of values
+     * Each value will be added as element style
+     * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     * @param {?} styles
+     * @param {?} element
+     * @return {?}
+     */
+    _applyMultiValueStyleToElement(styles, element) {
+        Object.keys(styles).sort().forEach(key => {
+            const /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+            values.sort();
+            for (let /** @type {?} */ value of values) {
+                if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
+                    element.style.setProperty(key, value);
+                }
+                else {
+                    this._serverStylesheet.addStyleToElement(element, key, value);
+                }
+            }
+        });
+    }
+}
+StyleUtils.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+StyleUtils.ctorParameters = () => [
+    { type: ServerStylesheet, decorators: [{ type: Optional },] },
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
+    { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+];
+const FALLBACK_STYLE = 'block';
 
 /**
  * @fileoverview added by tsickle
@@ -1399,11 +1465,10 @@ class LayoutDirective extends BaseFxDirective {
      *
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
-     * @param {?} platformId
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, platformId) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, styleUtils) {
+        super(monitor, elRef, styleUtils);
         this._announcer = new ReplaySubject(1);
         this.layout$ = this._announcer.asObservable();
     }
@@ -1541,10 +1606,9 @@ LayoutDirective.decorators = [
 ];
 /** @nocollapse */
 LayoutDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: StyleUtils, },
 ];
 LayoutDirective.propDecorators = {
     "layout": [{ type: Input, args: ['fxLayout',] },],
@@ -1580,12 +1644,11 @@ class LayoutAlignDirective extends BaseFxDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
      * @param {?} container
-     * @param {?} platformId
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, container, platformId) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, container, styleUtils) {
+        super(monitor, elRef, styleUtils);
         this._layout = 'row';
         if (container) {
             // Subscribe to layout direction changes
@@ -1820,11 +1883,10 @@ LayoutAlignDirective.decorators = [
 ];
 /** @nocollapse */
 LayoutAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: StyleUtils, },
 ];
 LayoutAlignDirective.propDecorators = {
     "align": [{ type: Input, args: ['fxLayoutAlign',] },],
@@ -1907,14 +1969,13 @@ class LayoutGapDirective extends BaseFxDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
      * @param {?} container
      * @param {?} _zone
-     * @param {?} platformId
      * @param {?} _directionality
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, container, _zone, platformId, _directionality) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, container, _zone, _directionality, styleUtils) {
+        super(monitor, elRef, styleUtils);
         this._zone = _zone;
         this._directionality = _directionality;
         this._layout = 'row';
@@ -2141,13 +2202,12 @@ LayoutGapDirective.decorators = [
 ];
 /** @nocollapse */
 LayoutGapDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
     { type: NgZone, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
     { type: Directionality, },
+    { type: StyleUtils, },
 ];
 LayoutGapDirective.propDecorators = {
     "gap": [{ type: Input, args: ['fxLayoutGap',] },],
@@ -2232,13 +2292,13 @@ class FlexDirective extends BaseFxDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
      * @param {?} _container
-     * @param {?} platformId
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, _container, platformId) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, _container, styleUtils) {
+        super(monitor, elRef, styleUtils);
         this._container = _container;
+        this.styleUtils = styleUtils;
         this._cacheInput('flex', '');
         this._cacheInput('shrink', 1);
         this._cacheInput('grow', 1);
@@ -2474,9 +2534,7 @@ class FlexDirective extends BaseFxDirective {
                 }
                 css = extendObject(clearStyles, {
                     // fix issue #5345
-                    'flex-grow': `${grow}`,
-                    'flex-shrink': `${shrink}`,
-                    'flex-basis': isValue ? `${basis}` : '100%'
+                    'flex': `${grow} ${shrink} ${isValue ? basis : '100%'}`
                 });
                 break;
         }
@@ -2504,11 +2562,10 @@ FlexDirective.decorators = [
 ];
 /** @nocollapse */
 FlexDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: StyleUtils, },
 ];
 FlexDirective.propDecorators = {
     "shrink": [{ type: Input, args: ['fxShrink',] },],
@@ -2542,11 +2599,10 @@ class FlexAlignDirective extends BaseFxDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
-     * @param {?} platformId
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, platformId) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, styleUtils) {
+        super(monitor, elRef, styleUtils);
     }
     /**
      * @param {?} val
@@ -2698,10 +2754,9 @@ FlexAlignDirective.decorators = [
 ];
 /** @nocollapse */
 FlexAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: StyleUtils, },
 ];
 FlexAlignDirective.propDecorators = {
     "align": [{ type: Input, args: ['fxFlexAlign',] },],
@@ -2741,13 +2796,11 @@ class FlexFillDirective extends BaseFxDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
-     * @param {?} platformId
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, platformId) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, styleUtils) {
+        super(monitor, elRef, styleUtils);
         this.elRef = elRef;
-        this.renderer = renderer;
         this._applyStyleToElement(FLEX_FILL_CSS);
     }
 }
@@ -2759,10 +2812,9 @@ FlexFillDirective.decorators = [
 ];
 /** @nocollapse */
 FlexFillDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: StyleUtils, },
 ];
 
 /**
@@ -2777,13 +2829,12 @@ class FlexOffsetDirective extends BaseFxDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
      * @param {?} _container
-     * @param {?} platformId
      * @param {?} _directionality
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, _container, platformId, _directionality) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, _container, _directionality, styleUtils) {
+        super(monitor, elRef, styleUtils);
         this._container = _container;
         this._directionality = _directionality;
         /**
@@ -2975,12 +3026,11 @@ FlexOffsetDirective.decorators = [
 ];
 /** @nocollapse */
 FlexOffsetDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
     { type: Directionality, },
+    { type: StyleUtils, },
 ];
 FlexOffsetDirective.propDecorators = {
     "offset": [{ type: Input, args: ['fxFlexOffset',] },],
@@ -3012,11 +3062,10 @@ class FlexOrderDirective extends BaseFxDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
-     * @param {?} renderer
-     * @param {?} platformId
+     * @param {?} styleUtils
      */
-    constructor(monitor, elRef, renderer, platformId) {
-        super(monitor, elRef, renderer, platformId);
+    constructor(monitor, elRef, styleUtils) {
+        super(monitor, elRef, styleUtils);
     }
     /**
      * @param {?} val
@@ -3152,10 +3201,9 @@ FlexOrderDirective.decorators = [
 ];
 /** @nocollapse */
 FlexOrderDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: StyleUtils, },
 ];
 FlexOrderDirective.propDecorators = {
     "order": [{ type: Input, args: ['fxFlexOrder',] },],
@@ -3337,7 +3385,7 @@ function _notImplemented(methodName) {
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
- *
+ * Note: this class is a no-op when rendered on the server
  */
 class ClassDirective extends BaseFxDirective {
     /**
@@ -3347,17 +3395,17 @@ class ClassDirective extends BaseFxDirective {
      * @param {?} _ngEl
      * @param {?} _renderer
      * @param {?} _ngClassInstance
-     * @param {?} _platformId
+     * @param {?} _styler
      */
-    constructor(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer, _ngClassInstance, _platformId) {
-        super(monitor, _ngEl, _renderer, _platformId);
+    constructor(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer, _ngClassInstance, _styler) {
+        super(monitor, _ngEl, _styler);
         this.monitor = monitor;
         this._iterableDiffers = _iterableDiffers;
         this._keyValueDiffers = _keyValueDiffers;
         this._ngEl = _ngEl;
         this._renderer = _renderer;
         this._ngClassInstance = _ngClassInstance;
-        this._platformId = _platformId;
+        this._styler = _styler;
         this._configureAdapters();
     }
     /**
@@ -3484,7 +3532,7 @@ class ClassDirective extends BaseFxDirective {
      * @return {?}
      */
     _configureAdapters() {
-        this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._renderer, this._platformId);
+        this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
         if (!this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
@@ -3519,13 +3567,13 @@ ClassDirective.decorators = [
 ];
 /** @nocollapse */
 ClassDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
+    { type: MediaMonitor, },
     { type: IterableDiffers, },
     { type: KeyValueDiffers, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
+    { type: ElementRef, },
+    { type: Renderer2, },
     { type: NgClass, decorators: [{ type: Optional }, { type: Self },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: StyleUtils, },
 ];
 ClassDirective.propDecorators = {
     "ngClassBase": [{ type: Input, args: ['ngClass',] },],
@@ -3680,17 +3728,17 @@ class StyleDirective extends BaseFxDirective {
      * @param {?} _renderer
      * @param {?} _differs
      * @param {?} _ngStyleInstance
-     * @param {?} _platformId
+     * @param {?} _styler
      */
-    constructor(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance, _platformId) {
-        super(monitor, _ngEl, _renderer, _platformId);
+    constructor(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance, _styler) {
+        super(monitor, _ngEl, _styler);
         this.monitor = monitor;
         this._sanitizer = _sanitizer;
         this._ngEl = _ngEl;
         this._renderer = _renderer;
         this._differs = _differs;
         this._ngStyleInstance = _ngStyleInstance;
-        this._platformId = _platformId;
+        this._styler = _styler;
         this._configureAdapters();
     }
     /**
@@ -3817,7 +3865,7 @@ class StyleDirective extends BaseFxDirective {
      * @return {?}
      */
     _configureAdapters() {
-        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._renderer, this._platformId);
+        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
         if (!this._ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -3898,13 +3946,13 @@ StyleDirective.decorators = [
 ];
 /** @nocollapse */
 StyleDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
+    { type: MediaMonitor, },
     { type: DomSanitizer, },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
+    { type: ElementRef, },
+    { type: Renderer2, },
     { type: KeyValueDiffers, },
     { type: NgStyle, decorators: [{ type: Optional }, { type: Self },] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: StyleUtils, },
 ];
 StyleDirective.propDecorators = {
     "ngStyleBase": [{ type: Input, args: ['ngStyle',] },],
@@ -3948,23 +3996,25 @@ class ShowHideDirective extends BaseFxDirective {
     /**
      *
      * @param {?} monitor
-     * @param {?} _layout
+     * @param {?} layout
      * @param {?} elRef
-     * @param {?} renderer
+     * @param {?} styleUtils
      * @param {?} platformId
+     * @param {?} serverModuleLoaded
      */
-    constructor(monitor, _layout, elRef, renderer, platformId) {
-        super(monitor, elRef, renderer, platformId);
-        this._layout = _layout;
+    constructor(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded) {
+        super(monitor, elRef, styleUtils);
+        this.layout = layout;
         this.elRef = elRef;
-        this.renderer = renderer;
+        this.styleUtils = styleUtils;
         this.platformId = platformId;
-        if (_layout) {
+        this.serverModuleLoaded = serverModuleLoaded;
+        if (layout) {
             /**
                    * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
                    * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
                    */
-            this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
+            this._layoutWatcher = layout.layout$.subscribe(() => this._updateWithValue());
         }
     }
     /**
@@ -4138,7 +4188,7 @@ class ShowHideDirective extends BaseFxDirective {
      * @return {?}
      */
     _getDisplayStyle() {
-        return this._layout ? 'flex' : super._getDisplayStyle();
+        return this.layout ? 'flex' : super._getDisplayStyle();
     }
     /**
      * On changes to any \@Input properties...
@@ -4187,6 +4237,9 @@ class ShowHideDirective extends BaseFxDirective {
         }
         let /** @type {?} */ shouldShow = this._validateTruthy(value);
         this._applyStyleToElement(this._buildCSS(shouldShow));
+        if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+            this.nativeElement.style.setProperty('display', '');
+        }
     }
     /**
      * Build the CSS that should be assigned to the element instance
@@ -4221,11 +4274,12 @@ ShowHideDirective.decorators = [
 ];
 /** @nocollapse */
 ShowHideDirective.ctorParameters = () => [
-    { type: MediaMonitor$1, },
+    { type: MediaMonitor, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
+    { type: ElementRef, },
+    { type: StyleUtils, },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
 ];
 ShowHideDirective.propDecorators = {
     "show": [{ type: Input, args: ['fxShow',] },],
@@ -4273,14 +4327,23 @@ ShowHideDirective.propDecorators = {
  */
 class ImgSrcDirective extends BaseFxDirective {
     /**
-     * @param {?} elRef
-     * @param {?} renderer
-     * @param {?} monitor
-     * @param {?} platformId
+     * @param {?} _elRef
+     * @param {?} _monitor
+     * @param {?} _styler
+     * @param {?} _platformId
+     * @param {?} _serverModuleLoaded
      */
-    constructor(elRef, renderer, monitor, platformId) {
-        super(monitor, elRef, renderer, platformId);
-        this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
+    constructor(_elRef, _monitor, _styler, _platformId, _serverModuleLoaded) {
+        super(_monitor, _elRef, _styler);
+        this._elRef = _elRef;
+        this._monitor = _monitor;
+        this._styler = _styler;
+        this._platformId = _platformId;
+        this._serverModuleLoaded = _serverModuleLoaded;
+        this._cacheInput('src', _elRef.nativeElement.getAttribute('src') || '');
+        if (isPlatformServer(this._platformId) && this._serverModuleLoaded) {
+            this.nativeElement.setAttribute('src', '');
+        }
     }
     /**
      * @param {?} val
@@ -4387,7 +4450,12 @@ class ImgSrcDirective extends BaseFxDirective {
     _updateSrcFor() {
         if (this.hasResponsiveKeys) {
             let /** @type {?} */ url = this.activatedValue || this.defaultSrc;
-            this._renderer.setAttribute(this.nativeElement, 'src', String(url));
+            if (isPlatformServer(this._platformId) && this._serverModuleLoaded) {
+                this._styler.applyStyleToElement(this.nativeElement, { 'content': url ? `url(${url})` : '' });
+            }
+            else {
+                this.nativeElement.setAttribute('src', String(url));
+            }
         }
     }
     /**
@@ -4428,10 +4496,11 @@ ImgSrcDirective.decorators = [
 ];
 /** @nocollapse */
 ImgSrcDirective.ctorParameters = () => [
-    { type: ElementRef$1, },
-    { type: Renderer2$1, },
-    { type: MediaMonitor$1, },
+    { type: ElementRef, },
+    { type: MediaMonitor, },
+    { type: StyleUtils, },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
 ];
 ImgSrcDirective.propDecorators = {
     "srcBase": [{ type: Input, args: ['src',] },],
@@ -4857,7 +4926,7 @@ const DEFAULT_BREAKPOINTS_PROVIDER = {
  */
 function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
     return {
-        provide: BREAKPOINTS,
+        provide: /** @type {?} */ (BREAKPOINTS),
         useFactory: buildMergedBreakPoints(_custom, options)
     };
 }
@@ -4902,20 +4971,166 @@ const OBSERVABLE_MEDIA_PROVIDER = {
  * @return {?}
  */
 function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
-    return parentMonitor || new MediaMonitor$1(breakpoints, matchMedia);
+    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
 }
 /**
  * Export provider that uses a global service factory (above)
  */
 const MEDIA_MONITOR_PROVIDER = {
-    provide: MediaMonitor$1,
+    provide: MediaMonitor,
     deps: [
-        [new Optional(), new SkipSelf(), MediaMonitor$1],
+        [new Optional(), new SkipSelf(), MediaMonitor],
         BreakPointRegistry,
         MatchMedia,
     ],
     useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
 };
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Special server-only class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
+ */
+class ServerMediaQueryList {
+    /**
+     * @param {?} _mediaQuery
+     */
+    constructor(_mediaQuery) {
+        this._mediaQuery = _mediaQuery;
+        this._isActive = false;
+        this._listeners = [];
+    }
+    /**
+     * @return {?}
+     */
+    get matches() {
+        return this._isActive;
+    }
+    /**
+     * @return {?}
+     */
+    get media() {
+        return this._mediaQuery;
+    }
+    /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     * @return {?}
+     */
+    destroy() {
+        this.deactivate();
+        this._listeners = [];
+    }
+    /**
+     * Notify all listeners that 'matches === TRUE'
+     * @return {?}
+     */
+    activate() {
+        if (!this._isActive) {
+            this._isActive = true;
+            this._listeners.forEach((callback) => {
+                callback(this);
+            });
+        }
+        return this;
+    }
+    /**
+     * Notify all listeners that 'matches === false'
+     * @return {?}
+     */
+    deactivate() {
+        if (this._isActive) {
+            this._isActive = false;
+            this._listeners.forEach((callback) => {
+                callback(this);
+            });
+        }
+        return this;
+    }
+    /**
+     * Add a listener to our internal list to activate later
+     * @param {?} listener
+     * @return {?}
+     */
+    addListener(listener) {
+        if (this._listeners.indexOf(listener) === -1) {
+            this._listeners.push(listener);
+        }
+        if (this._isActive) {
+            listener(this);
+        }
+    }
+    /**
+     * Don't need to remove listeners in the server environment
+     * @param {?} _
+     * @return {?}
+     */
+    removeListener(_) {
+    }
+}
+/**
+ * Special server-only implementation of MatchMedia that uses the above
+ * ServerMediaQueryList as its internal representation
+ *
+ * Also contains methods to activate and deactivate breakpoints
+ */
+class ServerMatchMedia extends MatchMedia {
+    /**
+     * @param {?} _zone
+     * @param {?} _document
+     */
+    constructor(_zone, _document) {
+        super(_zone, _document);
+        this._zone = _zone;
+        this._document = _document;
+        this._registry = new Map();
+        this._source = new BehaviorSubject(new MediaChange(true));
+        this._observable$ = this._source.asObservable();
+    }
+    /**
+     * Activate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    activateBreakpoint(bp) {
+        const /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        if (lookupBreakpoint) {
+            lookupBreakpoint.activate();
+        }
+    }
+    /**
+     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    deactivateBreakpoint(bp) {
+        const /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        if (lookupBreakpoint) {
+            lookupBreakpoint.deactivate();
+        }
+    }
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
+    _buildMQL(query) {
+        return new ServerMediaQueryList(query);
+    }
+}
+ServerMatchMedia.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ServerMatchMedia.ctorParameters = () => [
+    { type: NgZone, },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+];
 
 /**
  * @fileoverview added by tsickle
@@ -4934,13 +5149,53 @@ MediaQueriesModule.decorators = [
                     DEFAULT_BREAKPOINTS_PROVIDER,
                     BreakPointRegistry,
                     MatchMedia,
-                    MediaMonitor$1,
+                    MediaMonitor,
                     OBSERVABLE_MEDIA_PROVIDER
                 ]
             },] },
 ];
 /** @nocollapse */
 MediaQueriesModule.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Find all of the server-generated stylings, if any, and remove them
+ * This will be in the form of inline classes and the style block in the
+ * head of the DOM
+ * @param {?} _document
+ * @param {?} platformId
+ * @return {?}
+ */
+function removeStyles(_document, platformId) {
+    return () => {
+        if (isPlatformBrowser(platformId)) {
+            const /** @type {?} */ elements = Array.from(_document.querySelectorAll(`[class*=${CLASS_NAME}]`));
+            const /** @type {?} */ classRegex = new RegExp(/\bflex-layout-.+?\b/, 'g');
+            elements.forEach(el => {
+                el.classList.contains(`${CLASS_NAME}ssr`) && el.parentNode ?
+                    el.parentNode.removeChild(el) : el.className.replace(classRegex, '');
+            });
+        }
+    };
+}
+/**
+ *  Provider to remove SSR styles on the browser
+ */
+const BROWSER_PROVIDER = {
+    provide: /** @type {?} */ (APP_BOOTSTRAP_LISTENER),
+    useFactory: removeStyles,
+    deps: [DOCUMENT, PLATFORM_ID],
+    multi: true
+};
+const CLASS_NAME = 'flex-layout-';
 
 /**
  * @fileoverview added by tsickle
@@ -5076,6 +5331,15 @@ const ALL_DIRECTIVES = [
  */
 class FlexLayoutModule {
     /**
+     * @param {?} serverModuleLoaded
+     * @param {?} platformId
+     */
+    constructor(serverModuleLoaded, platformId) {
+        if (isPlatformServer(platformId) && !serverModuleLoaded) {
+            console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
+        }
+    }
+    /**
      * External uses can easily add custom breakpoints AND include internal orientations
      * breakpoints; which are not available by default.
      *
@@ -5102,12 +5366,18 @@ FlexLayoutModule.decorators = [
                 providers: [
                     MEDIA_MONITOR_PROVIDER,
                     DEFAULT_BREAKPOINTS_PROVIDER,
-                    OBSERVABLE_MEDIA_PROVIDER
+                    OBSERVABLE_MEDIA_PROVIDER,
+                    ServerStylesheet,
+                    StyleUtils,
+                    BROWSER_PROVIDER,
                 ]
             },] },
 ];
 /** @nocollapse */
-FlexLayoutModule.ctorParameters = () => [];
+FlexLayoutModule.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+];
 
 /**
  * @fileoverview added by tsickle
@@ -5128,5 +5398,5 @@ FlexLayoutModule.ctorParameters = () => [];
  * Generated bundle index. Do not edit.
  */
 
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor$1 as MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule, BidiModule as ɵc, Dir as ɵd, DIR_DOCUMENT as ɵa, Directionality as ɵb };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ServerMediaQueryList, ServerMatchMedia, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, StyleUtils, NgStyleKeyValue, ngStyleUtils, removeStyles, BROWSER_PROVIDER, CLASS_NAME, ServerStylesheet, SERVER_TOKEN, FlexLayoutModule, BidiModule as ɵc, Dir as ɵd, DIR_DOCUMENT as ɵa, Directionality as ɵb };
 //# sourceMappingURL=flex-layout.js.map

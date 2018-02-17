@@ -5,12 +5,13 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from '../core/base';
 import { Directionality } from '../../bidi/directionality';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
@@ -33,7 +34,7 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
     offsetGtSm: any;
     offsetGtMd: any;
     offsetGtLg: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, platformId: Object, _directionality: Directionality);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, _container: LayoutDirective, _directionality: Directionality, styleUtils: StyleUtils);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */

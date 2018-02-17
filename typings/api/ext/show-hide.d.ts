@@ -5,11 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from '../flexbox/layout';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
@@ -22,10 +23,11 @@ export declare function negativeOf(hide: any): boolean;
  *
  */
 export declare class ShowHideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-    protected _layout: LayoutDirective;
+    protected layout: LayoutDirective;
     protected elRef: ElementRef;
-    protected renderer: Renderer2;
+    protected styleUtils: StyleUtils;
     protected platformId: Object;
+    protected serverModuleLoaded: boolean;
     /**
      * Subscription to the parent flex container's layout changes.
      * Stored so we can unsubscribe when this directive is destroyed.
@@ -62,7 +64,7 @@ export declare class ShowHideDirective extends BaseFxDirective implements OnInit
     /**
      *
      */
-    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer2, platformId: Object);
+    constructor(monitor: MediaMonitor, layout: LayoutDirective, elRef: ElementRef, styleUtils: StyleUtils, platformId: Object, serverModuleLoaded: boolean);
     /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'

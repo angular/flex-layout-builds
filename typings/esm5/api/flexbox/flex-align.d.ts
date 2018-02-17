@@ -5,9 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
+import { StyleUtils } from '../../utils/styling/style-utils';
 /**
  * 'flex-align' flexbox styling directive
  * Allows element-specific overrides for cross-axis alignments in a layout container
@@ -28,7 +29,7 @@ export declare class FlexAlignDirective extends BaseFxDirective implements OnIni
     alignGtSm: any;
     alignGtMd: any;
     alignGtLg: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, platformId: Object);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
