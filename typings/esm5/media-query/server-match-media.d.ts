@@ -38,11 +38,12 @@ export declare class ServerMediaQueryList implements MediaQueryList {
  */
 export declare class ServerMatchMedia extends MatchMedia {
     protected _zone: NgZone;
+    protected _platformId: Object;
     protected _document: any;
     protected _registry: Map<string, ServerMediaQueryList>;
     protected _source: BehaviorSubject<MediaChange>;
     protected _observable$: Observable<MediaChange>;
-    constructor(_zone: NgZone, _document: any);
+    constructor(_zone: NgZone, _platformId: Object, _document: any);
     /** Activate the specified breakpoint if we're on the server, no-op otherwise */
     activateBreakpoint(bp: BreakPoint): void;
     /** Deactivate the specified breakpoint if we're on the server, no-op otherwise */

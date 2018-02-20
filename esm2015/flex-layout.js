@@ -21,7 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * Current version of Angular Flex-Layout.
  */
-const VERSION = new Version('2.0.0-beta.12-cf5266a');
+const VERSION = new Version('2.0.0-beta.12-9dd03c6');
 
 /**
  * @fileoverview added by tsickle
@@ -907,10 +907,12 @@ class MediaChange {
 class MatchMedia {
     /**
      * @param {?} _zone
+     * @param {?} _platformId
      * @param {?} _document
      */
-    constructor(_zone, _document) {
+    constructor(_zone, _platformId, _document) {
         this._zone = _zone;
+        this._platformId = _platformId;
         this._document = _document;
         this._registry = new Map();
         this._source = new BehaviorSubject(new MediaChange(true));
@@ -979,7 +981,8 @@ class MatchMedia {
      * @return {?}
      */
     _buildMQL(query) {
-        let /** @type {?} */ canListen = !!(/** @type {?} */ (window)).matchMedia('all').addListener;
+        let /** @type {?} */ canListen = isPlatformBrowser(this._platformId) &&
+            !!(/** @type {?} */ (window)).matchMedia('all').addListener;
         return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
             matches: query === 'all' || query === '',
             media: query,
@@ -1030,6 +1033,7 @@ MatchMedia.decorators = [
 /** @nocollapse */
 MatchMedia.ctorParameters = () => [
     { type: NgZone, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
 ];
 /**
@@ -5081,11 +5085,13 @@ class ServerMediaQueryList {
 class ServerMatchMedia extends MatchMedia {
     /**
      * @param {?} _zone
+     * @param {?} _platformId
      * @param {?} _document
      */
-    constructor(_zone, _document) {
-        super(_zone, _document);
+    constructor(_zone, _platformId, _document) {
+        super(_zone, _platformId, _document);
         this._zone = _zone;
+        this._platformId = _platformId;
         this._document = _document;
         this._registry = new Map();
         this._source = new BehaviorSubject(new MediaChange(true));
@@ -5129,6 +5135,7 @@ ServerMatchMedia.decorators = [
 /** @nocollapse */
 ServerMatchMedia.ctorParameters = () => [
     { type: NgZone, },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
 ];
 
@@ -5364,9 +5371,6 @@ FlexLayoutModule.decorators = [
                 exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
                 declarations: [...ALL_DIRECTIVES],
                 providers: [
-                    MEDIA_MONITOR_PROVIDER,
-                    DEFAULT_BREAKPOINTS_PROVIDER,
-                    OBSERVABLE_MEDIA_PROVIDER,
                     ServerStylesheet,
                     StyleUtils,
                     BROWSER_PROVIDER,

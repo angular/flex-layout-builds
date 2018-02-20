@@ -23,7 +23,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.12-cf5266a');
+var VERSION = new Version('2.0.0-beta.12-9dd03c6');
 
 /**
  * @fileoverview added by tsickle
@@ -1355,8 +1355,9 @@ var MediaChange = /** @class */ (function () {
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
 var MatchMedia = /** @class */ (function () {
-    function MatchMedia(_zone, _document) {
+    function MatchMedia(_zone, _platformId, _document) {
         this._zone = _zone;
+        this._platformId = _platformId;
         this._document = _document;
         this._registry = new Map();
         this._source = new BehaviorSubject(new MediaChange(true));
@@ -1472,7 +1473,8 @@ var MatchMedia = /** @class */ (function () {
      * @return {?}
      */
     function (query) {
-        var /** @type {?} */ canListen = !!(/** @type {?} */ (window)).matchMedia('all').addListener;
+        var /** @type {?} */ canListen = isPlatformBrowser(this._platformId) &&
+            !!(/** @type {?} */ (window)).matchMedia('all').addListener;
         return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
             matches: query === 'all' || query === '',
             media: query,
@@ -1531,6 +1533,7 @@ var MatchMedia = /** @class */ (function () {
     /** @nocollapse */
     MatchMedia.ctorParameters = function () { return [
         { type: NgZone, },
+        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
         { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
     ]; };
     return MatchMedia;
@@ -7095,9 +7098,10 @@ var ServerMediaQueryList = /** @class */ (function () {
  */
 var ServerMatchMedia = /** @class */ (function (_super) {
     __extends(ServerMatchMedia, _super);
-    function ServerMatchMedia(_zone, _document) {
-        var _this = _super.call(this, _zone, _document) || this;
+    function ServerMatchMedia(_zone, _platformId, _document) {
+        var _this = _super.call(this, _zone, _platformId, _document) || this;
         _this._zone = _zone;
+        _this._platformId = _platformId;
         _this._document = _document;
         _this._registry = new Map();
         _this._source = new BehaviorSubject(new MediaChange(true));
@@ -7163,6 +7167,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
     /** @nocollapse */
     ServerMatchMedia.ctorParameters = function () { return [
         { type: NgZone, },
+        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
         { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
     ]; };
     return ServerMatchMedia;
@@ -7436,9 +7441,6 @@ var FlexLayoutModule = /** @class */ (function () {
                     exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
                     declarations: ALL_DIRECTIVES.slice(),
                     providers: [
-                        MEDIA_MONITOR_PROVIDER,
-                        DEFAULT_BREAKPOINTS_PROVIDER,
-                        OBSERVABLE_MEDIA_PROVIDER,
                         ServerStylesheet,
                         StyleUtils,
                         BROWSER_PROVIDER,

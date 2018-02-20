@@ -18,11 +18,12 @@ import { MediaChange } from './media-change';
  */
 export declare class MatchMedia {
     protected _zone: NgZone;
+    protected _platformId: Object;
     protected _document: any;
     protected _registry: Map<string, MediaQueryList>;
     protected _source: BehaviorSubject<MediaChange>;
     protected _observable$: Observable<MediaChange>;
-    constructor(_zone: NgZone, _document: any);
+    constructor(_zone: NgZone, _platformId: Object, _document: any);
     /**
      * For the specified mediaQuery?
      */
