@@ -23,7 +23,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.12-9dd03c6');
+var VERSION = new Version('2.0.0-beta.12-de72903');
 
 /**
  * @fileoverview added by tsickle
@@ -3084,13 +3084,21 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         }
         // Gather all non-hidden Element nodes
         var /** @type {?} */ items = this.childrenNodes
-            .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != 'none'; });
-        var /** @type {?} */ numItems = items.length;
-        if (numItems > 0) {
-            var /** @type {?} */ lastItem = items[numItems - 1];
+            .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != 'none'; })
+            .sort(function (a, b) {
+            var /** @type {?} */ orderA = +_this._styler.lookupStyle(a, 'order');
+            var /** @type {?} */ orderB = +_this._styler.lookupStyle(b, 'order');
+            if (isNaN(orderA) || isNaN(orderB) || orderA === orderB) {
+                return 0;
+            }
+            else {
+                return orderA > orderB ? 1 : -1;
+            }
+        });
+        if (items.length > 0) {
+            var /** @type {?} */ lastItem = items.pop();
             // For each `element` children EXCEPT the last,
             // set the margin right/bottom styles...
-            items = items.filter(function (_, j) { return j < numItems - 1; });
             this._applyStyleToElements(this._buildCSS(value), items);
             // Clear all gaps for all visible elements
             this._applyStyleToElements(this._buildCSS(), [lastItem]);
