@@ -36,3 +36,5 @@ export declare const SERVER_PROVIDERS: ({
     provide: typeof MatchMedia;
     useClass: typeof ServerMatchMedia;
 })[];
+export declare type StyleSheet = Map<HTMLElement, Map<string, string | number>>;
+export declare type ClassMap = Map<HTMLElement, string>;

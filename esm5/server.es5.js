@@ -14,38 +14,6 @@ import { BREAKPOINTS, CLASS_NAME, MatchMedia, SERVER_TOKEN, ServerMatchMedia, Se
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var nextId = 0;
-var IS_DEBUG_MODE = false;
-/**
- * create \@media queries based on a virtual stylesheet
- * * Adds a unique class to each element and stores it
- *   in a shared classMap for later reuse
- * @param {?} stylesheet the virtual stylesheet that stores styles for each
- *        element
- * @param {?} mediaQuery the given \@media CSS selector for the current breakpoint
- * @param {?} classMap the map of HTML elements to class names to avoid duplications
- * @return {?}
- */
-function generateCss(stylesheet, mediaQuery, classMap) {
-    var /** @type {?} */ styleText = IS_DEBUG_MODE ? "\n        @media " + mediaQuery + " {" : "@media " + mediaQuery + "{";
-    stylesheet.forEach(function (styles, el) {
-        var /** @type {?} */ className = classMap.get(el);
-        if (!className) {
-            className = "" + CLASS_NAME + nextId++;
-            classMap.set(el, className);
-        }
-        el.classList.add(className);
-        styleText += IS_DEBUG_MODE ? "\n          ." + className + " {" : "." + className + "{";
-        styles.forEach(function (v, k) {
-            if (v) {
-                styleText += IS_DEBUG_MODE ? "\n              " + k + ": " + v + ";" : k + ":" + v + ";";
-            }
-        });
-        styleText += IS_DEBUG_MODE ? "\n          }" : '}';
-    });
-    styleText += IS_DEBUG_MODE ? "\n        }\n" : '}';
-    return styleText;
-}
 /**
  * Activate all of the registered breakpoints in sequence, and then
  * retrieve the associated stylings from the virtual stylesheet
@@ -121,6 +89,74 @@ var SERVER_PROVIDERS = [
         useClass: ServerMatchMedia
     }
 ];
+var nextId = 0;
+var IS_DEBUG_MODE = false;
+/**
+ * create \@media queries based on a virtual stylesheet
+ * * Adds a unique class to each element and stores it
+ *   in a shared classMap for later reuse
+ * @param {?} stylesheet the virtual stylesheet that stores styles for each
+ *        element
+ * @param {?} mediaQuery the given \@media CSS selector for the current breakpoint
+ * @param {?} classMap the map of HTML elements to class names to avoid duplications
+ * @return {?}
+ */
+function generateCss(stylesheet, mediaQuery, classMap) {
+    var /** @type {?} */ css = '';
+    stylesheet.forEach(function (styles, el) {
+        var /** @type {?} */ keyVals = '', /** @type {?} */ className = getClassName(el, classMap);
+        styles.forEach(function (v, k) {
+            keyVals += v ? format(k + ":" + v + ";") : '';
+        });
+        // Build list of CSS styles; each with a className
+        css += format("." + className + " {", keyVals, '}');
+    });
+    // Group 1 or more styles (each with className) in a specific mediaQuery
+    return format("@media " + mediaQuery + " {", css, '}');
+}
+/**
+ * For debugging purposes, prefix css segment with linefeed(s) for easy
+ * debugging purposes.
+ * @param {...?} list
+ * @return {?}
+ */
+function format() {
+    var list = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        list[_i] = arguments[_i];
+    }
+    var /** @type {?} */ result = '';
+    list.forEach(function (css, i) {
+        result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
+    });
+    return result;
+}
+/**
+ * @param {?} css
+ * @param {?=} asPrefix
+ * @return {?}
+ */
+function formatSegment(css, asPrefix) {
+    if (asPrefix === void 0) { asPrefix = true; }
+    return asPrefix ? '\n' + css : css + '\n';
+}
+/**
+ * Get className associated with CSS styling
+ * If not found, generate global className and set
+ * association.
+ * @param {?} stylesheet
+ * @param {?} classMap
+ * @return {?}
+ */
+function getClassName(stylesheet, classMap) {
+    var /** @type {?} */ className = classMap.get(stylesheet);
+    if (!className) {
+        className = "" + CLASS_NAME + nextId++;
+        classMap.set(stylesheet, className);
+    }
+    stylesheet.classList.add(className);
+    return className;
+}
 
 /**
  * @fileoverview added by tsickle

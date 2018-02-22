@@ -14,43 +14,6 @@ import { BREAKPOINTS, CLASS_NAME, MatchMedia, SERVER_TOKEN, ServerMatchMedia, Se
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-let nextId = 0;
-const IS_DEBUG_MODE = false;
-/**
- * create \@media queries based on a virtual stylesheet
- * * Adds a unique class to each element and stores it
- *   in a shared classMap for later reuse
- * @param {?} stylesheet the virtual stylesheet that stores styles for each
- *        element
- * @param {?} mediaQuery the given \@media CSS selector for the current breakpoint
- * @param {?} classMap the map of HTML elements to class names to avoid duplications
- * @return {?}
- */
-function generateCss(stylesheet, mediaQuery, classMap) {
-    let /** @type {?} */ styleText = IS_DEBUG_MODE ? `
-        @media ${mediaQuery} {` : `@media ${mediaQuery}{`;
-    stylesheet.forEach((styles, el) => {
-        let /** @type {?} */ className = classMap.get(el);
-        if (!className) {
-            className = `${CLASS_NAME}${nextId++}`;
-            classMap.set(el, className);
-        }
-        el.classList.add(className);
-        styleText += IS_DEBUG_MODE ? `
-          .${className} {` : `.${className}{`;
-        styles.forEach((v, k) => {
-            if (v) {
-                styleText += IS_DEBUG_MODE ? `
-              ${k}: ${v};` : `${k}:${v};`;
-            }
-        });
-        styleText += IS_DEBUG_MODE ? `
-          }` : '}';
-    });
-    styleText += IS_DEBUG_MODE ? `
-        }\n` : '}';
-    return styleText;
-}
 /**
  * Activate all of the registered breakpoints in sequence, and then
  * retrieve the associated stylings from the virtual stylesheet
@@ -126,6 +89,69 @@ const SERVER_PROVIDERS = [
         useClass: ServerMatchMedia
     }
 ];
+let nextId = 0;
+const IS_DEBUG_MODE = false;
+/**
+ * create \@media queries based on a virtual stylesheet
+ * * Adds a unique class to each element and stores it
+ *   in a shared classMap for later reuse
+ * @param {?} stylesheet the virtual stylesheet that stores styles for each
+ *        element
+ * @param {?} mediaQuery the given \@media CSS selector for the current breakpoint
+ * @param {?} classMap the map of HTML elements to class names to avoid duplications
+ * @return {?}
+ */
+function generateCss(stylesheet, mediaQuery, classMap) {
+    let /** @type {?} */ css = '';
+    stylesheet.forEach((styles, el) => {
+        let /** @type {?} */ keyVals = '', /** @type {?} */ className = getClassName(el, classMap);
+        styles.forEach((v, k) => {
+            keyVals += v ? format(`${k}:${v};`) : '';
+        });
+        // Build list of CSS styles; each with a className
+        css += format(`.${className} {`, keyVals, '}');
+    });
+    // Group 1 or more styles (each with className) in a specific mediaQuery
+    return format(`@media ${mediaQuery} {`, css, '}');
+}
+/**
+ * For debugging purposes, prefix css segment with linefeed(s) for easy
+ * debugging purposes.
+ * @param {...?} list
+ * @return {?}
+ */
+function format(...list) {
+    let /** @type {?} */ result = '';
+    list.forEach((css, i) => {
+        result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
+    });
+    return result;
+}
+/**
+ * @param {?} css
+ * @param {?=} asPrefix
+ * @return {?}
+ */
+function formatSegment(css, asPrefix = true) {
+    return asPrefix ? '\n' + css : css + '\n';
+}
+/**
+ * Get className associated with CSS styling
+ * If not found, generate global className and set
+ * association.
+ * @param {?} stylesheet
+ * @param {?} classMap
+ * @return {?}
+ */
+function getClassName(stylesheet, classMap) {
+    let /** @type {?} */ className = classMap.get(stylesheet);
+    if (!className) {
+        className = `${CLASS_NAME}${nextId++}`;
+        classMap.set(stylesheet, className);
+    }
+    stylesheet.classList.add(className);
+    return className;
+}
 
 /**
  * @fileoverview added by tsickle
