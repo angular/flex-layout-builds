@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/platform-server'), require('@angular/flex-layout')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/platform-server', '@angular/flex-layout'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].server = global.ng['flex-layout'].server || {}),global.ng.core,global.ng.common,global.ng.platformServer,global.ng['flex-layout']));
-}(this, (function (exports,_angular_core,_angular_common,_angular_platformServer,_angular_flexLayout) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/platform-server'), require('@angular/flex-layout'), require('@angular/core')) :
+	typeof define === 'function' && define.amd ? define('@angular/flex-layout/server', ['exports', '@angular/common', '@angular/platform-server', '@angular/flex-layout', '@angular/core'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].server = {}),global.ng.common,global.ng.platformServer,global.ng['flex-layout'],global.ng.core));
+}(this, (function (exports,common,platformServer,flexLayout,core) { 'use strict';
 
 /**
  * @fileoverview added by tsickle
@@ -61,7 +61,7 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpo
         // populated with the manual media queries
         var /** @type {?} */ styleTag = _document.createElement('style');
         var /** @type {?} */ styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
-        styleTag.classList.add(_angular_flexLayout.CLASS_NAME + "ssr");
+        styleTag.classList.add(flexLayout.CLASS_NAME + "ssr");
         styleTag.textContent = styleText;
         _document.head.appendChild(styleTag);
     };
@@ -69,29 +69,29 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpo
 /**
  *  Provider to set static styles on the server
  */
-var SERVER_PROVIDERS = [
+var /** @type {?} */ SERVER_PROVIDERS = [
     {
-        provide: /** @type {?} */ (_angular_platformServer.BEFORE_APP_SERIALIZED),
+        provide: /** @type {?} */ (platformServer.BEFORE_APP_SERIALIZED),
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
-            _angular_flexLayout.ServerStylesheet,
-            _angular_flexLayout.MatchMedia,
-            _angular_common.DOCUMENT,
-            _angular_flexLayout.BREAKPOINTS,
+            flexLayout.ServerStylesheet,
+            flexLayout.MatchMedia,
+            common.DOCUMENT,
+            flexLayout.BREAKPOINTS,
         ],
         multi: true
     },
     {
-        provide: _angular_flexLayout.SERVER_TOKEN,
+        provide: flexLayout.SERVER_TOKEN,
         useValue: true
     },
     {
-        provide: _angular_flexLayout.MatchMedia,
-        useClass: _angular_flexLayout.ServerMatchMedia
+        provide: flexLayout.MatchMedia,
+        useClass: flexLayout.ServerMatchMedia
     }
 ];
-var nextId = 0;
-var IS_DEBUG_MODE = false;
+var /** @type {?} */ nextId = 0;
+var /** @type {?} */ IS_DEBUG_MODE = false;
 /**
  * create \@media queries based on a virtual stylesheet
  * * Adds a unique class to each element and stores it
@@ -152,7 +152,7 @@ function formatSegment(css, asPrefix) {
 function getClassName(stylesheet, classMap) {
     var /** @type {?} */ className = classMap.get(stylesheet);
     if (!className) {
-        className = "" + _angular_flexLayout.CLASS_NAME + nextId++;
+        className = "" + flexLayout.CLASS_NAME + nextId++;
         classMap.set(stylesheet, className);
     }
     stylesheet.classList.add(className);
@@ -167,7 +167,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
     function FlexLayoutServerModule() {
     }
     FlexLayoutServerModule.decorators = [
-        { type: _angular_core.NgModule, args: [{
+        { type: core.NgModule, args: [{
                     providers: [SERVER_PROVIDERS]
                 },] },
     ];

@@ -5,10 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { NgModule } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
-import { BREAKPOINTS, CLASS_NAME, MatchMedia, SERVER_TOKEN, ServerMatchMedia, ServerStylesheet } from '@angular/flex-layout';
+import { BREAKPOINTS, CLASS_NAME, MatchMedia, ServerStylesheet, SERVER_TOKEN, ServerMatchMedia } from '@angular/flex-layout';
+import { NgModule } from '@angular/core';
 
 /**
  * @fileoverview added by tsickle
@@ -68,7 +68,7 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpo
 /**
  *  Provider to set static styles on the server
  */
-const SERVER_PROVIDERS = [
+const /** @type {?} */ SERVER_PROVIDERS = [
     {
         provide: /** @type {?} */ (BEFORE_APP_SERIALIZED),
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
@@ -89,8 +89,8 @@ const SERVER_PROVIDERS = [
         useClass: ServerMatchMedia
     }
 ];
-let nextId = 0;
-const IS_DEBUG_MODE = false;
+let /** @type {?} */ nextId = 0;
+const /** @type {?} */ IS_DEBUG_MODE = false;
 /**
  * create \@media queries based on a virtual stylesheet
  * * Adds a unique class to each element and stores it
@@ -175,9 +175,6 @@ FlexLayoutServerModule.ctorParameters = () => [];
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
- */
-/**
- * Generated bundle index. Do not edit.
  */
 
 export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS };

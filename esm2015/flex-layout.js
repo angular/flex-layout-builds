@@ -5,9 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, Directive, ElementRef, EventEmitter, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Output, PLATFORM_ID, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
+import { Version, SimpleChange, InjectionToken, Injectable, Inject, NgZone, PLATFORM_ID, Optional, Directive, ElementRef, Input, Self, EventEmitter, SkipSelf, IterableDiffers, KeyValueDiffers, Renderer2, SecurityContext, NgModule, APP_BOOTSTRAP_LISTENER, Output } from '@angular/core';
 import { map } from 'rxjs/operators/map';
-import { DOCUMENT, NgClass, NgStyle, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, isPlatformServer, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -17,19 +17,18 @@ import { DomSanitizer } from '@angular/platform-browser';
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Current version of Angular Flex-Layout.
  */
-const VERSION = new Version('5.0.0-beta.13-0486e85');
+const /** @type {?} */ VERSION = new Version('5.0.0-beta.13-ceac965');
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 
-const INLINE = 'inline';
-const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+const /** @type {?} */ INLINE = 'inline';
+const /** @type {?} */ LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
  * @param {?} value
@@ -148,10 +147,6 @@ function extendObject(dest, ...sources) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-/**
- * @record
- */
-
 class KeyOptions {
     /**
      * @param {?} baseKey
@@ -773,12 +768,11 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
  */
-const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
+const /** @type {?} */ BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
 
 /**
  * @fileoverview added by tsickle
@@ -1040,7 +1034,7 @@ MatchMedia.ctorParameters = () => [
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
  */
-const ALL_STYLES = {};
+const /** @type {?} */ ALL_STYLES = {};
 /**
  * Always convert to unique list of queries; for iteration in ::registerQuery()
  * @param {?} mediaQuery
@@ -1310,7 +1304,7 @@ ServerStylesheet.ctorParameters = () => [];
  *
  * NOTE: This can be manually provided to disable styles when using SSR
  */
-const SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded');
+const /** @type {?} */ SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded');
 
 /**
  * @fileoverview added by tsickle
@@ -1451,7 +1445,7 @@ StyleUtils.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
     { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
 ];
-const FALLBACK_STYLE = 'block';
+const /** @type {?} */ FALLBACK_STYLE = 'block';
 
 /**
  * @fileoverview added by tsickle
@@ -1913,7 +1907,6 @@ LayoutAlignDirective.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Injection token used to inject the document into Directionality.
  * This is used so that the value can be faked in tests.
@@ -1924,7 +1917,7 @@ LayoutAlignDirective.propDecorators = {
  * We also can't re-provide the DOCUMENT token from platform-brower because the unit tests
  * themselves use things like `querySelector` in test code.
  */
-const DIR_DOCUMENT = new InjectionToken('cdk-dir-doc');
+const /** @type {?} */ DIR_DOCUMENT = new InjectionToken('cdk-dir-doc');
 /**
  * The directionality (LTR / RTL) context for the application (or a subtree of it).
  * Exposes the current direction and a stream of direction changes.
@@ -2791,7 +2784,7 @@ FlexAlignDirective.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-const FLEX_FILL_CSS = {
+const /** @type {?} */ FLEX_FILL_CSS = {
     'margin': 0,
     'width': '100%',
     'height': '100%',
@@ -3630,7 +3623,7 @@ class NgStyleKeyValue {
 /**
  * Transform Operators for \@angular/flex-layout NgStyle Directive
  */
-const ngStyleUtils = {
+const /** @type {?} */ ngStyleUtils = {
     getType,
     buildRawList,
     buildMapFromList,
@@ -3987,7 +3980,7 @@ StyleDirective.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-const FALSY = ['false', false, 0];
+const /** @type {?} */ FALSY = ['false', false, 0];
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
@@ -4540,10 +4533,10 @@ ImgSrcDirective.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-const RESPONSIVE_ALIASES = [
+const /** @type {?} */ RESPONSIVE_ALIASES = [
     'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
 ];
-const DEFAULT_BREAKPOINTS = [
+const /** @type {?} */ DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
         mediaQuery: '(min-width: 0px) and (max-width: 599px)'
@@ -4612,13 +4605,13 @@ const DEFAULT_BREAKPOINTS = [
  */
 
 /* tslint:disable */
-const HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
-const HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
-const TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-const TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
-const WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
-const WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
-const ScreenTypes = {
+const /** @type {?} */ HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
+const /** @type {?} */ HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
+const /** @type {?} */ TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
+const /** @type {?} */ TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
+const /** @type {?} */ WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
+const /** @type {?} */ WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
+const /** @type {?} */ ScreenTypes = {
     'HANDSET': `${HANDSET_PORTRAIT}, ${HANDSET_LANDSCAPE}`,
     'TABLET': `${TABLET_PORTRAIT} , ${TABLET_LANDSCAPE}`,
     'WEB': `${WEB_PORTRAIT}, ${WEB_LANDSCAPE} `,
@@ -4632,7 +4625,7 @@ const ScreenTypes = {
 /**
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
  */
-const ORIENTATION_BREAKPOINTS = [
+const /** @type {?} */ ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
     { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
     { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
@@ -4815,8 +4808,7 @@ MediaService.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
-const ALIAS_DELIMITERS = /(\.|-|_)/g;
+const /** @type {?} */ ALIAS_DELIMITERS = /(\.|-|_)/g;
 /**
  * @param {?} part
  * @return {?}
@@ -4884,12 +4876,6 @@ function mergeByAlias(defaults, custom = []) {
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * Options to identify which breakpoint types to include as part of
- * a BreakPoint provider
- * @record
- */
-
-/**
  * Add new custom items to the default list or override existing default with custom overrides
  * @param {?=} _custom
  * @param {?=} options
@@ -4925,7 +4911,7 @@ function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
  *        of the existing (and not be added as an extra breakpoint entry).
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
  */
-const DEFAULT_BREAKPOINTS_PROVIDER = {
+const /** @type {?} */ DEFAULT_BREAKPOINTS_PROVIDER = {
     // tslint:disable-line:variable-name
     provide: BREAKPOINTS,
     useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
@@ -4960,7 +4946,7 @@ function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoint
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
  */
-const OBSERVABLE_MEDIA_PROVIDER = {
+const /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
     // tslint:disable-line:variable-name
     provide: ObservableMedia,
     deps: [
@@ -4988,7 +4974,7 @@ function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) 
 /**
  * Export provider that uses a global service factory (above)
  */
-const MEDIA_MONITOR_PROVIDER = {
+const /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
     deps: [
         [new Optional(), new SkipSelf(), MediaMonitor],
@@ -5204,13 +5190,13 @@ function removeStyles(_document, platformId) {
 /**
  *  Provider to remove SSR styles on the browser
  */
-const BROWSER_PROVIDER = {
+const /** @type {?} */ BROWSER_PROVIDER = {
     provide: /** @type {?} */ (APP_BOOTSTRAP_LISTENER),
     useFactory: removeStyles,
     deps: [DOCUMENT, PLATFORM_ID],
     multi: true
 };
-const CLASS_NAME = 'flex-layout-';
+const /** @type {?} */ CLASS_NAME = 'flex-layout-';
 
 /**
  * @fileoverview added by tsickle
@@ -5226,7 +5212,6 @@ const CLASS_NAME = 'flex-layout-';
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Directive to listen for changes of direction of part of the DOM.
  *
@@ -5299,7 +5284,6 @@ Dir.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 class BidiModule {
 }
 BidiModule.decorators = [
@@ -5319,7 +5303,6 @@ BidiModule.ctorParameters = () => [];
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Since the equivalent results are easily achieved with a css class attached to each
  * layout child, these have been deprecated and removed from the API.
@@ -5327,7 +5310,7 @@ BidiModule.ctorParameters = () => [];
  *  import {LayoutPaddingDirective} from './api/flexbox/layout-padding';
  *  import {LayoutMarginDirective} from './api/flexbox/layout-margin';
  */
-const ALL_DIRECTIVES = [
+const /** @type {?} */ ALL_DIRECTIVES = [
     LayoutDirective,
     LayoutGapDirective,
     LayoutAlignDirective,
@@ -5397,17 +5380,8 @@ FlexLayoutModule.ctorParameters = () => [
  */
 
 /**
- * @module
- * @description
- * Entry point for all public APIs of Angular Flex-Layout.
- */
-
-/**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
- */
-/**
- * Generated bundle index. Do not edit.
  */
 
 export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ServerMediaQueryList, ServerMatchMedia, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, StyleUtils, NgStyleKeyValue, ngStyleUtils, removeStyles, BROWSER_PROVIDER, CLASS_NAME, ServerStylesheet, SERVER_TOKEN, FlexLayoutModule, BidiModule as ɵc, Dir as ɵd, DIR_DOCUMENT as ɵa, Directionality as ɵb };

@@ -5,11 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, Directive, ElementRef, EventEmitter, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Output, PLATFORM_ID, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
+import { Version, SimpleChange, InjectionToken, Injectable, Inject, NgZone, PLATFORM_ID, Optional, Directive, ElementRef, Input, Self, EventEmitter, SkipSelf, IterableDiffers, KeyValueDiffers, Renderer2, SecurityContext, NgModule, APP_BOOTSTRAP_LISTENER, Output } from '@angular/core';
 import { map } from 'rxjs/operators/map';
 import { __extends } from 'tslib';
-import * as tslib_1 from 'tslib';
-import { DOCUMENT, NgClass, NgStyle, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser, isPlatformServer, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operators/filter';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -19,19 +18,18 @@ import { DomSanitizer } from '@angular/platform-browser';
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('5.0.0-beta.13-0486e85');
+var /** @type {?} */ VERSION = new Version('5.0.0-beta.13-ceac965');
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 
-var INLINE = 'inline';
-var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+var /** @type {?} */ INLINE = 'inline';
+var /** @type {?} */ LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
  * @param {?} value
@@ -157,10 +155,6 @@ function extendObject(dest) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-/**
- * @record
- */
-
 var KeyOptions = /** @class */ (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
@@ -181,7 +175,19 @@ var KeyOptions = /** @class */ (function () {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  */
-var ResponsiveActivation = /** @class */ (function () {
+var  /**
+ * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
+ * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
+ * directive via the specified callback.
+ *
+ * - The MQA also determines which directive property should be used to determine the
+ *   current change 'value'... BEFORE the original `onMediaQueryChanges()` method is called.
+ * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the
+ *   MediaQueryServices.
+ *
+ * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
+ */
+ResponsiveActivation = /** @class */ (function () {
     /**
      * Constructor
      */
@@ -477,7 +483,11 @@ var ResponsiveActivation = /** @class */ (function () {
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
-var BaseFxDirective = /** @class */ (function () {
+var  /**
+ * Abstract base class for the Layout API styling directives.
+ * @abstract
+ */
+BaseFxDirective = /** @class */ (function () {
     /**
      * Constructor
      */
@@ -923,7 +933,11 @@ var BaseFxDirective = /** @class */ (function () {
  * Adapter to the BaseFxDirective abstract class so it can be used via composition.
  * @see BaseFxDirective
  */
-var BaseFxDirectiveAdapter = /** @class */ (function (_super) {
+var  /**
+ * Adapter to the BaseFxDirective abstract class so it can be used via composition.
+ * @see BaseFxDirective
+ */
+BaseFxDirectiveAdapter = /** @class */ (function (_super) {
     __extends(BaseFxDirectiveAdapter, _super);
     /**
      * BaseFxDirectiveAdapter constructor
@@ -1169,12 +1183,11 @@ var BaseFxDirectiveAdapter = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
  */
-var BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
+var /** @type {?} */ BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
 
 /**
  * @fileoverview added by tsickle
@@ -1319,7 +1332,10 @@ var BreakPointRegistry = /** @class */ (function () {
 /**
  * Class instances emitted [to observers] for each mql notification
  */
-var MediaChange = /** @class */ (function () {
+var  /**
+ * Class instances emitted [to observers] for each mql notification
+ */
+MediaChange = /** @class */ (function () {
     function MediaChange(matches, mediaQuery, mqAlias, suffix // e.g.   GtSM, Md, GtLg
     ) {
         if (matches === void 0) { matches = false; }
@@ -1542,7 +1558,7 @@ var MatchMedia = /** @class */ (function () {
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
  */
-var ALL_STYLES = {};
+var /** @type {?} */ ALL_STYLES = {};
 /**
  * Always convert to unique list of queries; for iteration in ::registerQuery()
  * @param {?} mediaQuery
@@ -1878,7 +1894,7 @@ var ServerStylesheet = /** @class */ (function () {
  *
  * NOTE: This can be manually provided to disable styles when using SSR
  */
-var SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded');
+var /** @type {?} */ SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded');
 
 /**
  * @fileoverview added by tsickle
@@ -2089,7 +2105,7 @@ var StyleUtils = /** @class */ (function () {
     ]; };
     return StyleUtils;
 }());
-var FALLBACK_STYLE = 'block';
+var /** @type {?} */ FALLBACK_STYLE = 'block';
 
 /**
  * @fileoverview added by tsickle
@@ -2123,7 +2139,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutXs", {
         set: /**
          * @param {?} val
@@ -2133,7 +2148,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutSm", {
         set: /**
          * @param {?} val
@@ -2143,7 +2157,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutMd", {
         set: /**
          * @param {?} val
@@ -2153,7 +2166,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutLg", {
         set: /**
          * @param {?} val
@@ -2163,7 +2175,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutXl", {
         set: /**
          * @param {?} val
@@ -2173,7 +2184,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtXs", {
         set: /**
          * @param {?} val
@@ -2183,7 +2193,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtSm", {
         set: /**
          * @param {?} val
@@ -2193,7 +2202,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtMd", {
         set: /**
          * @param {?} val
@@ -2203,7 +2211,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtLg", {
         set: /**
          * @param {?} val
@@ -2213,7 +2220,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutLtSm", {
         set: /**
          * @param {?} val
@@ -2223,7 +2229,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutLtMd", {
         set: /**
          * @param {?} val
@@ -2233,7 +2238,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutLtLg", {
         set: /**
          * @param {?} val
@@ -2243,7 +2247,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutDirective.prototype, "layoutLtXl", {
         set: /**
          * @param {?} val
@@ -2253,7 +2256,6 @@ var LayoutDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -2409,7 +2411,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
         set: /**
          * @param {?} val
@@ -2419,7 +2420,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
         set: /**
          * @param {?} val
@@ -2429,7 +2429,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
         set: /**
          * @param {?} val
@@ -2439,7 +2438,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtXs", {
         set: /**
          * @param {?} val
@@ -2449,7 +2447,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
         set: /**
          * @param {?} val
@@ -2459,7 +2456,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
         set: /**
          * @param {?} val
@@ -2469,7 +2465,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
         set: /**
          * @param {?} val
@@ -2479,7 +2474,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtSm", {
         set: /**
          * @param {?} val
@@ -2489,7 +2483,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtMd", {
         set: /**
          * @param {?} val
@@ -2499,7 +2492,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtLg", {
         set: /**
          * @param {?} val
@@ -2509,7 +2501,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtXl", {
         set: /**
          * @param {?} val
@@ -2519,7 +2510,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -2743,7 +2733,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Injection token used to inject the document into Directionality.
  * This is used so that the value can be faked in tests.
@@ -2754,7 +2743,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
  * We also can't re-provide the DOCUMENT token from platform-brower because the unit tests
  * themselves use things like `querySelector` in test code.
  */
-var DIR_DOCUMENT = new InjectionToken('cdk-dir-doc');
+var /** @type {?} */ DIR_DOCUMENT = new InjectionToken('cdk-dir-doc');
 /**
  * The directionality (LTR / RTL) context for the application (or a subtree of it).
  * Exposes the current direction and a stream of direction changes.
@@ -2840,7 +2829,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
         set: /**
          * @param {?} val
@@ -2850,7 +2838,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
         set: /**
          * @param {?} val
@@ -2860,7 +2847,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
         set: /**
          * @param {?} val
@@ -2870,7 +2856,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
         set: /**
          * @param {?} val
@@ -2880,7 +2865,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
         set: /**
          * @param {?} val
@@ -2890,7 +2874,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
         set: /**
          * @param {?} val
@@ -2900,7 +2883,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
         set: /**
          * @param {?} val
@@ -2910,7 +2892,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtSm", {
         set: /**
          * @param {?} val
@@ -2920,7 +2901,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtMd", {
         set: /**
          * @param {?} val
@@ -2930,7 +2910,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtLg", {
         set: /**
          * @param {?} val
@@ -2940,7 +2919,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtXl", {
         set: /**
          * @param {?} val
@@ -2950,7 +2928,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -3269,7 +3246,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "grow", {
         set: /**
          * @param {?} val
@@ -3279,7 +3255,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flex", {
         set: /**
          * @param {?} val
@@ -3289,7 +3264,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexXs", {
         set: /**
          * @param {?} val
@@ -3299,7 +3273,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexSm", {
         set: /**
          * @param {?} val
@@ -3309,7 +3282,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexMd", {
         set: /**
          * @param {?} val
@@ -3319,7 +3291,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexLg", {
         set: /**
          * @param {?} val
@@ -3329,7 +3300,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexXl", {
         set: /**
          * @param {?} val
@@ -3339,7 +3309,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexGtXs", {
         set: /**
          * @param {?} val
@@ -3349,7 +3318,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
         set: /**
          * @param {?} val
@@ -3359,7 +3327,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
         set: /**
          * @param {?} val
@@ -3369,7 +3336,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
         set: /**
          * @param {?} val
@@ -3379,7 +3345,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexLtSm", {
         set: /**
          * @param {?} val
@@ -3389,7 +3354,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexLtMd", {
         set: /**
          * @param {?} val
@@ -3399,7 +3363,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexLtLg", {
         set: /**
          * @param {?} val
@@ -3409,7 +3372,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexDirective.prototype, "flexLtXl", {
         set: /**
          * @param {?} val
@@ -3419,7 +3381,6 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -3666,7 +3627,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignXs", {
         set: /**
          * @param {?} val
@@ -3676,7 +3636,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignSm", {
         set: /**
          * @param {?} val
@@ -3686,7 +3645,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignMd", {
         set: /**
          * @param {?} val
@@ -3696,7 +3654,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignLg", {
         set: /**
          * @param {?} val
@@ -3706,7 +3663,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignXl", {
         set: /**
          * @param {?} val
@@ -3716,7 +3672,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtSm", {
         set: /**
          * @param {?} val
@@ -3726,7 +3681,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtMd", {
         set: /**
          * @param {?} val
@@ -3736,7 +3690,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtLg", {
         set: /**
          * @param {?} val
@@ -3746,7 +3699,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtXl", {
         set: /**
          * @param {?} val
@@ -3756,7 +3708,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtXs", {
         set: /**
          * @param {?} val
@@ -3766,7 +3717,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtSm", {
         set: /**
          * @param {?} val
@@ -3776,7 +3726,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtMd", {
         set: /**
          * @param {?} val
@@ -3786,7 +3735,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtLg", {
         set: /**
          * @param {?} val
@@ -3796,7 +3744,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -3916,7 +3863,7 @@ var FlexAlignDirective = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var FLEX_FILL_CSS = {
+var /** @type {?} */ FLEX_FILL_CSS = {
     'margin': 0,
     'width': '100%',
     'height': '100%',
@@ -4000,7 +3947,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetMd", {
         set: /**
          * @param {?} val
@@ -4010,7 +3956,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLg", {
         set: /**
          * @param {?} val
@@ -4020,7 +3965,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
         set: /**
          * @param {?} val
@@ -4030,7 +3974,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtSm", {
         set: /**
          * @param {?} val
@@ -4040,7 +3983,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtMd", {
         set: /**
          * @param {?} val
@@ -4050,7 +3992,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtLg", {
         set: /**
          * @param {?} val
@@ -4060,7 +4001,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtXl", {
         set: /**
          * @param {?} val
@@ -4070,7 +4010,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtXs", {
         set: /**
          * @param {?} val
@@ -4080,7 +4019,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
         set: /**
          * @param {?} val
@@ -4090,7 +4028,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
         set: /**
          * @param {?} val
@@ -4100,7 +4037,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
         set: /**
          * @param {?} val
@@ -4110,7 +4046,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -4337,7 +4272,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderMd", {
         set: /**
          * @param {?} val
@@ -4347,7 +4281,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
         set: /**
          * @param {?} val
@@ -4357,7 +4290,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
         set: /**
          * @param {?} val
@@ -4367,7 +4299,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtXs", {
         set: /**
          * @param {?} val
@@ -4377,7 +4308,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
         set: /**
          * @param {?} val
@@ -4387,7 +4317,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
         set: /**
          * @param {?} val
@@ -4397,7 +4326,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtLg", {
         set: /**
          * @param {?} val
@@ -4407,7 +4335,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtSm", {
         set: /**
          * @param {?} val
@@ -4417,7 +4344,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtMd", {
         set: /**
          * @param {?} val
@@ -4427,7 +4353,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtLg", {
         set: /**
          * @param {?} val
@@ -4437,7 +4362,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtXl", {
         set: /**
          * @param {?} val
@@ -4447,7 +4371,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -4558,7 +4481,12 @@ var FlexOrderDirective = /** @class */ (function (_super) {
  * This is required for older versions of NgStyle and NgClass that require
  * the v1 API (but should use the v2 instances)
  */
-var RendererAdapter = /** @class */ (function () {
+var /**
+ * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
+ * This is required for older versions of NgStyle and NgClass that require
+ * the v1 API (but should use the v2 instances)
+ */
+RendererAdapter = /** @class */ (function () {
     function RendererAdapter(_renderer) {
         this._renderer = _renderer;
     }
@@ -5123,7 +5051,10 @@ var ClassDirective = /** @class */ (function (_super) {
 /**
  * NgStyle allowed inputs
  */
-var NgStyleKeyValue = /** @class */ (function () {
+var  /**
+ * NgStyle allowed inputs
+ */
+NgStyleKeyValue = /** @class */ (function () {
     function NgStyleKeyValue(key, value, noQuotes) {
         if (noQuotes === void 0) { noQuotes = true; }
         this.key = key;
@@ -5137,7 +5068,7 @@ var NgStyleKeyValue = /** @class */ (function () {
 /**
  * Transform Operators for \@angular/flex-layout NgStyle Directive
  */
-var ngStyleUtils = {
+var /** @type {?} */ ngStyleUtils = {
     getType: getType,
     buildRawList: buildRawList,
     buildMapFromList: buildMapFromList,
@@ -5290,7 +5221,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleMd", {
         set: /**
          * @param {?} val
@@ -5300,7 +5230,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleLg", {
         set: /**
          * @param {?} val
@@ -5310,7 +5239,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleXl", {
         set: /**
          * @param {?} val
@@ -5320,7 +5248,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtSm", {
         set: /**
          * @param {?} val
@@ -5330,7 +5257,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtMd", {
         set: /**
          * @param {?} val
@@ -5340,7 +5266,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtLg", {
         set: /**
          * @param {?} val
@@ -5350,7 +5275,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtXl", {
         set: /**
          * @param {?} val
@@ -5360,7 +5284,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtXs", {
         set: /**
          * @param {?} val
@@ -5370,7 +5293,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtSm", {
         set: /**
          * @param {?} val
@@ -5380,7 +5302,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtMd", {
         set: /**
          * @param {?} val
@@ -5390,7 +5311,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtLg", {
         set: /**
          * @param {?} val
@@ -5400,7 +5320,6 @@ var StyleDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // ******************************************************************
     // Lifecycle Hooks
     // ******************************************************************
@@ -5627,7 +5546,7 @@ var StyleDirective = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var FALSY = ['false', false, 0];
+var /** @type {?} */ FALSY = ['false', false, 0];
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
@@ -5697,7 +5616,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showMd", {
         set: /**
          * @param {?} val
@@ -5707,7 +5625,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showLg", {
         set: /**
          * @param {?} val
@@ -5717,7 +5634,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showXl", {
         set: /**
          * @param {?} val
@@ -5727,7 +5643,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showLtSm", {
         set: /**
          * @param {?} val
@@ -5737,7 +5652,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showLtMd", {
         set: /**
          * @param {?} val
@@ -5747,7 +5661,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showLtLg", {
         set: /**
          * @param {?} val
@@ -5757,7 +5670,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showLtXl", {
         set: /**
          * @param {?} val
@@ -5767,7 +5679,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showGtXs", {
         set: /**
          * @param {?} val
@@ -5777,7 +5688,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showGtSm", {
         set: /**
          * @param {?} val
@@ -5787,7 +5697,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showGtMd", {
         set: /**
          * @param {?} val
@@ -5797,7 +5706,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "showGtLg", {
         set: /**
          * @param {?} val
@@ -5807,7 +5715,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hide", {
         set: /**
          * @param {?} val
@@ -5835,7 +5742,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideMd", {
         set: /**
          * @param {?} val
@@ -5845,7 +5751,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideLg", {
         set: /**
          * @param {?} val
@@ -5855,7 +5760,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideXl", {
         set: /**
          * @param {?} val
@@ -5865,7 +5769,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideLtSm", {
         set: /**
          * @param {?} val
@@ -5875,7 +5778,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideLtMd", {
         set: /**
          * @param {?} val
@@ -5885,7 +5787,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideLtLg", {
         set: /**
          * @param {?} val
@@ -5895,7 +5796,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideLtXl", {
         set: /**
          * @param {?} val
@@ -5905,7 +5805,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideGtXs", {
         set: /**
          * @param {?} val
@@ -5915,7 +5814,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideGtSm", {
         set: /**
          * @param {?} val
@@ -5925,7 +5823,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideGtMd", {
         set: /**
          * @param {?} val
@@ -5935,7 +5832,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ShowHideDirective.prototype, "hideGtLg", {
         set: /**
          * @param {?} val
@@ -5945,7 +5841,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -6455,10 +6350,10 @@ var ImgSrcDirective = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var RESPONSIVE_ALIASES = [
+var /** @type {?} */ RESPONSIVE_ALIASES = [
     'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
 ];
-var DEFAULT_BREAKPOINTS = [
+var /** @type {?} */ DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
         mediaQuery: '(min-width: 0px) and (max-width: 599px)'
@@ -6527,13 +6422,13 @@ var DEFAULT_BREAKPOINTS = [
  */
 
 /* tslint:disable */
-var HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
-var HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
-var TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-var TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
-var WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
-var WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
-var ScreenTypes = {
+var /** @type {?} */ HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
+var /** @type {?} */ HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
+var /** @type {?} */ TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
+var /** @type {?} */ TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
+var /** @type {?} */ WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
+var /** @type {?} */ WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
+var /** @type {?} */ ScreenTypes = {
     'HANDSET': HANDSET_PORTRAIT + ", " + HANDSET_LANDSCAPE,
     'TABLET': TABLET_PORTRAIT + " , " + TABLET_LANDSCAPE,
     'WEB': WEB_PORTRAIT + ", " + WEB_LANDSCAPE + " ",
@@ -6547,7 +6442,7 @@ var ScreenTypes = {
 /**
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
  */
-var ORIENTATION_BREAKPOINTS = [
+var /** @type {?} */ ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
     { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
     { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
@@ -6567,7 +6462,11 @@ var ORIENTATION_BREAKPOINTS = [
  * Base class for MediaService and pseudo-token for
  * @abstract
  */
-var ObservableMedia = /** @class */ (function () {
+var  /**
+ * Base class for MediaService and pseudo-token for
+ * @abstract
+ */
+ObservableMedia = /** @class */ (function () {
     function ObservableMedia() {
     }
     return ObservableMedia;
@@ -6787,8 +6686,7 @@ var MediaService = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
-var ALIAS_DELIMITERS = /(\.|-|_)/g;
+var /** @type {?} */ ALIAS_DELIMITERS = /(\.|-|_)/g;
 /**
  * @param {?} part
  * @return {?}
@@ -6859,12 +6757,6 @@ function mergeByAlias(defaults, custom) {
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * Options to identify which breakpoint types to include as part of
- * a BreakPoint provider
- * @record
- */
-
-/**
  * Add new custom items to the default list or override existing default with custom overrides
  * @param {?=} _custom
  * @param {?=} options
@@ -6900,7 +6792,7 @@ function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
  *        of the existing (and not be added as an extra breakpoint entry).
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
  */
-var DEFAULT_BREAKPOINTS_PROVIDER = {
+var /** @type {?} */ DEFAULT_BREAKPOINTS_PROVIDER = {
     // tslint:disable-line:variable-name
     provide: BREAKPOINTS,
     useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
@@ -6935,7 +6827,7 @@ function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoint
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
  */
-var OBSERVABLE_MEDIA_PROVIDER = {
+var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
     // tslint:disable-line:variable-name
     provide: ObservableMedia,
     deps: [
@@ -6963,7 +6855,7 @@ function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) 
 /**
  * Export provider that uses a global service factory (above)
  */
-var MEDIA_MONITOR_PROVIDER = {
+var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
     deps: [
         [new Optional(), new SkipSelf(), MediaMonitor],
@@ -6982,7 +6874,12 @@ var MEDIA_MONITOR_PROVIDER = {
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
  */
-var ServerMediaQueryList = /** @class */ (function () {
+var  /**
+ * Special server-only class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
+ */
+ServerMediaQueryList = /** @class */ (function () {
     function ServerMediaQueryList(_mediaQuery) {
         this._mediaQuery = _mediaQuery;
         this._isActive = false;
@@ -7241,13 +7138,13 @@ function removeStyles(_document, platformId) {
 /**
  *  Provider to remove SSR styles on the browser
  */
-var BROWSER_PROVIDER = {
+var /** @type {?} */ BROWSER_PROVIDER = {
     provide: /** @type {?} */ (APP_BOOTSTRAP_LISTENER),
     useFactory: removeStyles,
     deps: [DOCUMENT, PLATFORM_ID],
     multi: true
 };
-var CLASS_NAME = 'flex-layout-';
+var /** @type {?} */ CLASS_NAME = 'flex-layout-';
 
 /**
  * @fileoverview added by tsickle
@@ -7263,7 +7160,6 @@ var CLASS_NAME = 'flex-layout-';
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Directive to listen for changes of direction of part of the DOM.
  *
@@ -7354,7 +7250,6 @@ var Dir = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 var BidiModule = /** @class */ (function () {
     function BidiModule() {
     }
@@ -7377,7 +7272,6 @@ var BidiModule = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
 /**
  * Since the equivalent results are easily achieved with a css class attached to each
  * layout child, these have been deprecated and removed from the API.
@@ -7385,7 +7279,7 @@ var BidiModule = /** @class */ (function () {
  *  import {LayoutPaddingDirective} from './api/flexbox/layout-padding';
  *  import {LayoutMarginDirective} from './api/flexbox/layout-margin';
  */
-var ALL_DIRECTIVES = [
+var /** @type {?} */ ALL_DIRECTIVES = [
     LayoutDirective,
     LayoutGapDirective,
     LayoutAlignDirective,
@@ -7469,17 +7363,8 @@ var FlexLayoutModule = /** @class */ (function () {
  */
 
 /**
- * @module
- * @description
- * Entry point for all public APIs of Angular Flex-Layout.
- */
-
-/**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
- */
-/**
- * Generated bundle index. Do not edit.
  */
 
 export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ServerMediaQueryList, ServerMatchMedia, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, INLINE, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, StyleUtils, NgStyleKeyValue, ngStyleUtils, removeStyles, BROWSER_PROVIDER, CLASS_NAME, ServerStylesheet, SERVER_TOKEN, FlexLayoutModule, BidiModule as ɵc, Dir as ɵd, DIR_DOCUMENT as ɵa, Directionality as ɵb };
