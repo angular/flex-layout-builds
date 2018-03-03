@@ -7,7 +7,7 @@
  */
 import { DOCUMENT } from '@angular/common';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
-import { BREAKPOINTS, CLASS_NAME, MatchMedia, ServerStylesheet, SERVER_TOKEN, ServerMatchMedia } from '@angular/flex-layout';
+import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia } from '@angular/flex-layout/core';
 import { NgModule } from '@angular/core';
 
 /**
@@ -73,7 +73,7 @@ var /** @type {?} */ SERVER_PROVIDERS = [
         provide: /** @type {?} */ (BEFORE_APP_SERIALIZED),
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
-            ServerStylesheet,
+            StylesheetMap,
             MatchMedia,
             DOCUMENT,
             BREAKPOINTS,

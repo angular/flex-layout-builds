@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/operators/map'), require('@angular/common'), require('rxjs/BehaviorSubject'), require('rxjs/operators/filter'), require('rxjs/ReplaySubject'), require('@angular/platform-browser')) :
-	typeof define === 'function' && define.amd ? define('@angular/flex-layout', ['exports', '@angular/core', 'rxjs/operators/map', '@angular/common', 'rxjs/BehaviorSubject', 'rxjs/operators/filter', 'rxjs/ReplaySubject', '@angular/platform-browser'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = {}),global.ng.core,global.Rx.operators,global.ng.common,global.Rx,global.Rx.operators,global.Rx,global.ng.platformBrowser));
-}(this, (function (exports,core,map,common,BehaviorSubject,filter,ReplaySubject,platformBrowser) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs/BehaviorSubject'), require('rxjs/operators/filter'), require('rxjs/operators/map'), require('rxjs/ReplaySubject'), require('@angular/cdk/bidi'), require('@angular/platform-browser'), require('@angular/platform-server')) :
+	typeof define === 'function' && define.amd ? define('@angular/flex-layout', ['exports', '@angular/core', '@angular/common', 'rxjs/BehaviorSubject', 'rxjs/operators/filter', 'rxjs/operators/map', 'rxjs/ReplaySubject', '@angular/cdk/bidi', '@angular/platform-browser', '@angular/platform-server'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = {}),global.ng.core,global.ng.common,global.Rx,global.Rx.operators,global.Rx.operators,global.Rx,global.ng.cdk.bidi,global.ng.platformBrowser,global.ng.platformServer));
+}(this, (function (exports,core,common,BehaviorSubject,filter,map,ReplaySubject,bidi,platformBrowser,platformServer) { 'use strict';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -42,9 +42,1493 @@ function __extends(d, b) {
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * Current version of Angular Flex-Layout.
+ * Find all of the server-generated stylings, if any, and remove them
+ * This will be in the form of inline classes and the style block in the
+ * head of the DOM
+ * @param {?} _document
+ * @param {?} platformId
+ * @return {?}
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-cb0beab');
+function removeStyles(_document, platformId) {
+    return function () {
+        if (common.isPlatformBrowser(platformId)) {
+            var /** @type {?} */ elements = Array.from(_document.querySelectorAll("[class*=" + CLASS_NAME + "]"));
+            var /** @type {?} */ classRegex_1 = new RegExp(/\bflex-layout-.+?\b/, 'g');
+            elements.forEach(function (el) {
+                el.classList.contains(CLASS_NAME + "ssr") && el.parentNode ?
+                    el.parentNode.removeChild(el) : el.className.replace(classRegex_1, '');
+            });
+        }
+    };
+}
+/**
+ *  Provider to remove SSR styles on the browser
+ */
+var /** @type {?} */ BROWSER_PROVIDER = {
+    provide: /** @type {?} */ (core.APP_BOOTSTRAP_LISTENER),
+    useFactory: removeStyles,
+    deps: [common.DOCUMENT, core.PLATFORM_ID],
+    multi: true
+};
+var /** @type {?} */ CLASS_NAME = 'flex-layout-';
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Class instances emitted [to observers] for each mql notification
+ */
+var   /**
+ * Class instances emitted [to observers] for each mql notification
+ */
+MediaChange = /** @class */ (function () {
+    function MediaChange(matches, mediaQuery, mqAlias, suffix // e.g.   GtSM, Md, GtLg
+    ) {
+        if (matches === void 0) { matches = false; }
+        if (mediaQuery === void 0) { mediaQuery = 'all'; }
+        if (mqAlias === void 0) { mqAlias = ''; }
+        if (suffix === void 0) { suffix = ''; }
+        this.matches = matches;
+        this.mediaQuery = mediaQuery;
+        this.mqAlias = mqAlias;
+        this.suffix = suffix;
+    }
+    /**
+     * @return {?}
+     */
+    MediaChange.prototype.clone = /**
+     * @return {?}
+     */
+    function () {
+        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
+    };
+    return MediaChange;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
+ * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
+ * performed within the ng Zone to trigger change detections and component updates.
+ *
+ * NOTE: both mediaQuery activations and de-activations are announced in notifications
+ */
+var MatchMedia = /** @class */ (function () {
+    function MatchMedia(_zone, _platformId, _document) {
+        this._zone = _zone;
+        this._platformId = _platformId;
+        this._document = _document;
+        this._registry = new Map();
+        this._source = new BehaviorSubject.BehaviorSubject(new MediaChange(true));
+        this._observable$ = this._source.asObservable();
+    }
+    /**
+     * For the specified mediaQuery?
+     */
+    /**
+     * For the specified mediaQuery?
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    MatchMedia.prototype.isActive = /**
+     * For the specified mediaQuery?
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    function (mediaQuery) {
+        var /** @type {?} */ mql = this._registry.get(mediaQuery);
+        return !!mql ? mql.matches : false;
+    };
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * Typically used by the MediaQueryAdaptor; optionally available to components
+     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
+     *
+     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
+     *       be announced.
+     */
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * Typically used by the MediaQueryAdaptor; optionally available to components
+     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
+     *
+     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
+     *       be announced.
+     * @param {?=} mediaQuery
+     * @return {?}
+     */
+    MatchMedia.prototype.observe = /**
+     * External observers can watch for all (or a specific) mql changes.
+     * Typically used by the MediaQueryAdaptor; optionally available to components
+     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
+     *
+     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
+     *       be announced.
+     * @param {?=} mediaQuery
+     * @return {?}
+     */
+    function (mediaQuery) {
+        if (mediaQuery) {
+            this.registerQuery(mediaQuery);
+        }
+        return this._observable$.pipe(filter.filter(function (change) {
+            return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
+        }));
+    };
+    /**
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
+     */
+    /**
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    MatchMedia.prototype.registerQuery = /**
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    function (mediaQuery) {
+        var _this = this;
+        var /** @type {?} */ list = normalizeQuery(mediaQuery);
+        if (list.length > 0) {
+            this._prepareQueryCSS(list, this._document);
+            list.forEach(function (query) {
+                var /** @type {?} */ mql = _this._registry.get(query);
+                var /** @type {?} */ onMQLEvent = function (e) {
+                    _this._zone.run(function () {
+                        var /** @type {?} */ change = new MediaChange(e.matches, query);
+                        _this._source.next(change);
+                    });
+                };
+                if (!mql) {
+                    mql = _this._buildMQL(query);
+                    mql.addListener(onMQLEvent);
+                    _this._registry.set(query, mql);
+                }
+                if (mql.matches) {
+                    onMQLEvent(mql); // Announce activate range for initial subscribers
+                }
+            });
+        }
+    };
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     */
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
+    MatchMedia.prototype._buildMQL = /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) {
+        var /** @type {?} */ canListen = common.isPlatformBrowser(this._platformId) &&
+            !!(/** @type {?} */ (window)).matchMedia('all').addListener;
+        return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
+            matches: query === 'all' || query === '',
+            media: query,
+            addListener: function () {
+            },
+            removeListener: function () {
+            }
+        });
+    };
+    /**
+     * For Webkit engines that only trigger the MediaQueryList Listener
+     * when there is at least one CSS selector for the respective media query.
+     *
+     * @param query string The mediaQuery used to create a faux CSS selector
+     *
+     */
+    /**
+     * For Webkit engines that only trigger the MediaQueryList Listener
+     * when there is at least one CSS selector for the respective media query.
+     *
+     * @param {?} mediaQueries
+     * @param {?} _document
+     * @return {?}
+     */
+    MatchMedia.prototype._prepareQueryCSS = /**
+     * For Webkit engines that only trigger the MediaQueryList Listener
+     * when there is at least one CSS selector for the respective media query.
+     *
+     * @param {?} mediaQueries
+     * @param {?} _document
+     * @return {?}
+     */
+    function (mediaQueries, _document) {
+        var /** @type {?} */ list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
+        if (list.length > 0) {
+            var /** @type {?} */ query = list.join(', ');
+            try {
+                var /** @type {?} */ styleEl_1 = _document.createElement('style');
+                styleEl_1.setAttribute('type', 'text/css');
+                if (!styleEl_1['styleSheet']) {
+                    var /** @type {?} */ cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
+                    styleEl_1.appendChild(_document.createTextNode(cssText));
+                }
+                _document.head.appendChild(styleEl_1);
+                // Store in private global registry
+                list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
+            }
+            catch (/** @type {?} */ e) {
+                console.error(e);
+            }
+        }
+    };
+    MatchMedia.decorators = [
+        { type: core.Injectable },
+    ];
+    /** @nocollapse */
+    MatchMedia.ctorParameters = function () { return [
+        { type: core.NgZone, },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
+    ]; };
+    return MatchMedia;
+}());
+/**
+ * Private global registry for all dynamically-created, injected style tags
+ * @see prepare(query)
+ */
+var /** @type {?} */ ALL_STYLES = {};
+/**
+ * Always convert to unique list of queries; for iteration in ::registerQuery()
+ * @param {?} mediaQuery
+ * @return {?}
+ */
+function normalizeQuery(mediaQuery) {
+    return (typeof mediaQuery === 'undefined') ? [] :
+        (typeof mediaQuery === 'string') ? [mediaQuery] : unique(/** @type {?} */ (mediaQuery));
+}
+/**
+ * Filter duplicate mediaQueries in the list
+ * @param {?} list
+ * @return {?}
+ */
+function unique(list) {
+    var /** @type {?} */ seen = {};
+    return list.filter(function (item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ *  Injection token unique to the flex-layout library.
+ *  Use this token when build a custom provider (see below).
+ */
+var /** @type {?} */ BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoints');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Registry of 1..n MediaQuery breakpoint ranges
+ * This is published as a provider and may be overriden from custom, application-specific ranges
+ *
+ */
+var BreakPointRegistry = /** @class */ (function () {
+    function BreakPointRegistry(_registry) {
+        this._registry = _registry;
+    }
+    Object.defineProperty(BreakPointRegistry.prototype, "items", {
+        /**
+         * Accessor to raw list
+         */
+        get: /**
+         * Accessor to raw list
+         * @return {?}
+         */
+        function () {
+            return this._registry.slice();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BreakPointRegistry.prototype, "sortedItems", {
+        /**
+         * Accessor to sorted list used for registration with matchMedia API
+         *
+         * NOTE: During breakpoint registration, we want to register the overlaps FIRST
+         *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
+         *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
+         */
+        get: /**
+         * Accessor to sorted list used for registration with matchMedia API
+         *
+         * NOTE: During breakpoint registration, we want to register the overlaps FIRST
+         *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
+         *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
+         * @return {?}
+         */
+        function () {
+            var /** @type {?} */ overlaps = this._registry.filter(function (it) { return it.overlapping === true; });
+            var /** @type {?} */ nonOverlaps = this._registry.filter(function (it) { return it.overlapping !== true; });
+            return overlaps.concat(nonOverlaps);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Search breakpoints by alias (e.g. gt-xs)
+     */
+    /**
+     * Search breakpoints by alias (e.g. gt-xs)
+     * @param {?} alias
+     * @return {?}
+     */
+    BreakPointRegistry.prototype.findByAlias = /**
+     * Search breakpoints by alias (e.g. gt-xs)
+     * @param {?} alias
+     * @return {?}
+     */
+    function (alias) {
+        return this._registry.find(function (bp) { return bp.alias == alias; }) || null;
+    };
+    /**
+     * @param {?} query
+     * @return {?}
+     */
+    BreakPointRegistry.prototype.findByQuery = /**
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) {
+        return this._registry.find(function (bp) { return bp.mediaQuery == query; }) || null;
+    };
+    Object.defineProperty(BreakPointRegistry.prototype, "overlappings", {
+        /**
+         * Get all the breakpoints whose ranges could overlapping `normal` ranges;
+         * e.g. gt-sm overlaps md, lg, and xl
+         */
+        get: /**
+         * Get all the breakpoints whose ranges could overlapping `normal` ranges;
+         * e.g. gt-sm overlaps md, lg, and xl
+         * @return {?}
+         */
+        function () {
+            return this._registry.filter(function (it) { return it.overlapping == true; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BreakPointRegistry.prototype, "aliases", {
+        /**
+         * Get list of all registered (non-empty) breakpoint aliases
+         */
+        get: /**
+         * Get list of all registered (non-empty) breakpoint aliases
+         * @return {?}
+         */
+        function () {
+            return this._registry.map(function (it) { return it.alias; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BreakPointRegistry.prototype, "suffixes", {
+        /**
+         * Aliases are mapped to properties using suffixes
+         * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
+         * for property layoutGtSM.
+         */
+        get: /**
+         * Aliases are mapped to properties using suffixes
+         * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
+         * for property layoutGtSM.
+         * @return {?}
+         */
+        function () {
+            return this._registry.map(function (it) { return !!it.suffix ? it.suffix : ''; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BreakPointRegistry.decorators = [
+        { type: core.Injectable },
+    ];
+    /** @nocollapse */
+    BreakPointRegistry.ctorParameters = function () { return [
+        { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] },] },
+    ]; };
+    return BreakPointRegistry;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Extends an object with the *enumerable* and *own* properties of one or more source objects,
+ * similar to Object.assign.
+ *
+ * @param {?} dest The object which will have properties copied to it.
+ * @param {...?} sources The source objects from which properties will be copied.
+ * @return {?}
+ */
+function extendObject(dest) {
+    var sources = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        sources[_i - 1] = arguments[_i];
+    }
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
+        var source = sources_1[_a];
+        if (source != null) {
+            for (var /** @type {?} */ key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
+        }
+    }
+    return dest;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * For the specified MediaChange, make sure it contains the breakpoint alias
+ * and suffix (if available).
+ * @param {?} dest
+ * @param {?} source
+ * @return {?}
+ */
+function mergeAlias(dest, source) {
+    return extendObject(dest, source ? {
+        mqAlias: source.alias,
+        suffix: source.suffix
+    } : {});
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
+ * deactivations). These changes are are published as MediaChange notifications.
+ *
+ * Note: all notifications will be performed within the
+ * ng Zone to trigger change detections and component updates.
+ *
+ * It is the MediaMonitor that:
+ *  - auto registers all known breakpoints
+ *  - injects alias information into each raw MediaChange event
+ *  - provides accessor to the currently active BreakPoint
+ *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
+ */
+var MediaMonitor = /** @class */ (function () {
+    function MediaMonitor(_breakpoints, _matchMedia) {
+        this._breakpoints = _breakpoints;
+        this._matchMedia = _matchMedia;
+        this._registerBreakpoints();
+    }
+    Object.defineProperty(MediaMonitor.prototype, "breakpoints", {
+        /**
+         * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
+         */
+        get: /**
+         * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
+         * @return {?}
+         */
+        function () {
+            return this._breakpoints.items.slice();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MediaMonitor.prototype, "activeOverlaps", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            var _this = this;
+            var /** @type {?} */ items = this._breakpoints.overlappings.reverse();
+            return items.filter(function (bp) {
+                return _this._matchMedia.isActive(bp.mediaQuery);
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MediaMonitor.prototype, "active", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            var _this = this;
+            var /** @type {?} */ found = null, /** @type {?} */ items = this.breakpoints.reverse();
+            items.forEach(function (bp) {
+                if (bp.alias !== '') {
+                    if (!found && _this._matchMedia.isActive(bp.mediaQuery)) {
+                        found = bp;
+                    }
+                }
+            });
+            var /** @type {?} */ first = this.breakpoints[0];
+            return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * For the specified mediaQuery alias, is the mediaQuery range active?
+     */
+    /**
+     * For the specified mediaQuery alias, is the mediaQuery range active?
+     * @param {?} alias
+     * @return {?}
+     */
+    MediaMonitor.prototype.isActive = /**
+     * For the specified mediaQuery alias, is the mediaQuery range active?
+     * @param {?} alias
+     * @return {?}
+     */
+    function (alias) {
+        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
+    };
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * If specific breakpoint is observed, only return *activated* events
+     * otherwise return all events for BOTH activated + deactivated changes.
+     */
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * If specific breakpoint is observed, only return *activated* events
+     * otherwise return all events for BOTH activated + deactivated changes.
+     * @param {?=} alias
+     * @return {?}
+     */
+    MediaMonitor.prototype.observe = /**
+     * External observers can watch for all (or a specific) mql changes.
+     * If specific breakpoint is observed, only return *activated* events
+     * otherwise return all events for BOTH activated + deactivated changes.
+     * @param {?=} alias
+     * @return {?}
+     */
+    function (alias) {
+        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias || '') ||
+            this._breakpoints.findByQuery(alias || '');
+        var /** @type {?} */ hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
+        // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
+        var /** @type {?} */ media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
+        return media$.pipe(map.map(function (change) { return mergeAlias(change, bp); }), filter.filter(hasAlias));
+    };
+    /**
+     * Immediate calls to matchMedia() to establish listeners
+     * and prepare for immediate subscription notifications
+     * @return {?}
+     */
+    MediaMonitor.prototype._registerBreakpoints = /**
+     * Immediate calls to matchMedia() to establish listeners
+     * and prepare for immediate subscription notifications
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this._matchMedia.registerQuery(queries);
+    };
+    MediaMonitor.decorators = [
+        { type: core.Injectable },
+    ];
+    /** @nocollapse */
+    MediaMonitor.ctorParameters = function () { return [
+        { type: BreakPointRegistry, },
+        { type: MatchMedia, },
+    ]; };
+    return MediaMonitor;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Base class for MediaService and pseudo-token for
+ * @abstract
+ */
+var   /**
+ * Base class for MediaService and pseudo-token for
+ * @abstract
+ */
+ObservableMedia = /** @class */ (function () {
+    function ObservableMedia() {
+    }
+    return ObservableMedia;
+}());
+/**
+ * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
+ * This an Observable with that exposes a feature to subscribe to mediaQuery
+ * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
+ * currently active.
+ *
+ * !! Only mediaChange activations (not de-activations) are announced by the ObservableMedia
+ *
+ * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
+ * notification. For custom mediaQuery notifications, alias information will not be injected and
+ * those fields will be ''.
+ *
+ * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
+ * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
+ * `.asObservable()` with syntax like media.asObservable().map(....).
+ *
+ *  \@usage
+ *
+ *  // RxJS
+ *  import {filter} from 'rxjs/operators/filter';
+ *  import { ObservableMedia } from '\@angular/flex-layout';
+ *
+ *  \@Component({ ... })
+ *  export class AppComponent {
+ *    status : string = '';
+ *
+ *    constructor(  media:ObservableMedia ) {
+ *      let onChange = (change:MediaChange) => {
+ *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
+ *      };
+ *
+ *      // Subscribe directly or access observable to use filter/map operators
+ *      // e.g.
+ *      //      media.subscribe(onChange);
+ *
+ *      media.asObservable()
+ *        .pipe(
+ *          filter((change:MediaChange) => true)   // silly noop filter
+ *        ).subscribe(onChange);
+ *    }
+ *  }
+ */
+var MediaService = /** @class */ (function () {
+    function MediaService(breakpoints, mediaWatcher) {
+        this.breakpoints = breakpoints;
+        this.mediaWatcher = mediaWatcher;
+        /**
+         * Should we announce gt-<xxx> breakpoint activations ?
+         */
+        this.filterOverlaps = true;
+        this._registerBreakPoints();
+        this.observable$ = this._buildObservable();
+    }
+    /**
+     * Test if specified query/alias is active.
+     */
+    /**
+     * Test if specified query/alias is active.
+     * @param {?} alias
+     * @return {?}
+     */
+    MediaService.prototype.isActive = /**
+     * Test if specified query/alias is active.
+     * @param {?} alias
+     * @return {?}
+     */
+    function (alias) {
+        var /** @type {?} */ query = this._toMediaQuery(alias);
+        return this.mediaWatcher.isActive(query);
+    };
+    /**
+     * Proxy to the Observable subscribe method
+     */
+    /**
+     * Proxy to the Observable subscribe method
+     * @param {?=} next
+     * @param {?=} error
+     * @param {?=} complete
+     * @return {?}
+     */
+    MediaService.prototype.subscribe = /**
+     * Proxy to the Observable subscribe method
+     * @param {?=} next
+     * @param {?=} error
+     * @param {?=} complete
+     * @return {?}
+     */
+    function (next, error, complete) {
+        return this.observable$.subscribe(next, error, complete);
+    };
+    /**
+     * Access to observable for use with operators like
+     * .filter(), .map(), etc.
+     */
+    /**
+     * Access to observable for use with operators like
+     * .filter(), .map(), etc.
+     * @return {?}
+     */
+    MediaService.prototype.asObservable = /**
+     * Access to observable for use with operators like
+     * .filter(), .map(), etc.
+     * @return {?}
+     */
+    function () {
+        return this.observable$;
+    };
+    /**
+     * Register all the mediaQueries registered in the BreakPointRegistry
+     * This is needed so subscribers can be auto-notified of all standard, registered
+     * mediaQuery activations
+     * @return {?}
+     */
+    MediaService.prototype._registerBreakPoints = /**
+     * Register all the mediaQueries registered in the BreakPointRegistry
+     * This is needed so subscribers can be auto-notified of all standard, registered
+     * mediaQuery activations
+     * @return {?}
+     */
+    function () {
+        var /** @type {?} */ queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this.mediaWatcher.registerQuery(queries);
+    };
+    /**
+     * Prepare internal observable
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
+     * @return {?}
+     */
+    MediaService.prototype._buildObservable = /**
+     * Prepare internal observable
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        var /** @type {?} */ self = this;
+        var /** @type {?} */ media$ = this.mediaWatcher.observe();
+        var /** @type {?} */ activationsOnly = function (change) {
+            return change.matches === true;
+        };
+        var /** @type {?} */ addAliasInformation = function (change) {
+            return mergeAlias(change, _this._findByQuery(change.mediaQuery));
+        };
+        var /** @type {?} */ excludeOverlaps = function (change) {
+            var /** @type {?} */ bp = _this.breakpoints.findByQuery(change.mediaQuery);
+            return !bp ? true : !(self.filterOverlaps && bp.overlapping);
+        };
+        /**
+             * Only pass/announce activations (not de-activations)
+             * Inject associated (if any) alias information into the MediaChange event
+             * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+             */
+        return media$.pipe(filter.filter(activationsOnly), filter.filter(excludeOverlaps), map.map(addAliasInformation));
+    };
+    /**
+     * Breakpoint locator by alias
+     * @param {?} alias
+     * @return {?}
+     */
+    MediaService.prototype._findByAlias = /**
+     * Breakpoint locator by alias
+     * @param {?} alias
+     * @return {?}
+     */
+    function (alias) {
+        return this.breakpoints.findByAlias(alias);
+    };
+    /**
+     * Breakpoint locator by mediaQuery
+     * @param {?} query
+     * @return {?}
+     */
+    MediaService.prototype._findByQuery = /**
+     * Breakpoint locator by mediaQuery
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) {
+        return this.breakpoints.findByQuery(query);
+    };
+    /**
+     * Find associated breakpoint (if any)
+     * @param {?} query
+     * @return {?}
+     */
+    MediaService.prototype._toMediaQuery = /**
+     * Find associated breakpoint (if any)
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) {
+        var /** @type {?} */ bp = this._findByAlias(query) || this._findByQuery(query);
+        return bp ? bp.mediaQuery : query;
+    };
+    MediaService.decorators = [
+        { type: core.Injectable },
+    ];
+    /** @nocollapse */
+    MediaService.ctorParameters = function () { return [
+        { type: BreakPointRegistry, },
+        { type: MatchMedia, },
+    ]; };
+    return MediaService;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Ensure a single global ObservableMedia service provider
+ * @param {?} parentService
+ * @param {?} matchMedia
+ * @param {?} breakpoints
+ * @return {?}
+ */
+function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
+    return parentService || new MediaService(breakpoints, matchMedia);
+}
+/**
+ *  Provider to return global service for observable service for all MediaQuery activations
+ */
+var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
+    // tslint:disable-line:variable-name
+    provide: ObservableMedia,
+    deps: [
+        [new core.Optional(), new core.SkipSelf(), ObservableMedia],
+        MatchMedia,
+        BreakPointRegistry
+    ],
+    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var /** @type {?} */ RESPONSIVE_ALIASES = [
+    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
+];
+var /** @type {?} */ DEFAULT_BREAKPOINTS = [
+    {
+        alias: 'xs',
+        mediaQuery: '(min-width: 0px) and (max-width: 599px)'
+    },
+    {
+        alias: 'gt-xs',
+        overlapping: true,
+        mediaQuery: '(min-width: 600px)'
+    },
+    {
+        alias: 'lt-sm',
+        overlapping: true,
+        mediaQuery: '(max-width: 599px)'
+    },
+    {
+        alias: 'sm',
+        mediaQuery: '(min-width: 600px) and (max-width: 959px)'
+    },
+    {
+        alias: 'gt-sm',
+        overlapping: true,
+        mediaQuery: '(min-width: 960px)'
+    },
+    {
+        alias: 'lt-md',
+        overlapping: true,
+        mediaQuery: '(max-width: 959px)'
+    },
+    {
+        alias: 'md',
+        mediaQuery: '(min-width: 960px) and (max-width: 1279px)'
+    },
+    {
+        alias: 'gt-md',
+        overlapping: true,
+        mediaQuery: '(min-width: 1280px)'
+    },
+    {
+        alias: 'lt-lg',
+        overlapping: true,
+        mediaQuery: '(max-width: 1279px)'
+    },
+    {
+        alias: 'lg',
+        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)'
+    },
+    {
+        alias: 'gt-lg',
+        overlapping: true,
+        mediaQuery: '(min-width: 1920px)'
+    },
+    {
+        alias: 'lt-xl',
+        overlapping: true,
+        mediaQuery: '(max-width: 1920px)'
+    },
+    {
+        alias: 'xl',
+        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)'
+    }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/* tslint:disable */
+var /** @type {?} */ HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
+var /** @type {?} */ HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
+var /** @type {?} */ TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
+var /** @type {?} */ TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
+var /** @type {?} */ WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
+var /** @type {?} */ WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
+var /** @type {?} */ ScreenTypes = {
+    'HANDSET': HANDSET_PORTRAIT + ", " + HANDSET_LANDSCAPE,
+    'TABLET': TABLET_PORTRAIT + " , " + TABLET_LANDSCAPE,
+    'WEB': WEB_PORTRAIT + ", " + WEB_LANDSCAPE + " ",
+    'HANDSET_PORTRAIT': "" + HANDSET_PORTRAIT,
+    'TABLET_PORTRAIT': TABLET_PORTRAIT + " ",
+    'WEB_PORTRAIT': "" + WEB_PORTRAIT,
+    'HANDSET_LANDSCAPE': HANDSET_LANDSCAPE + "]",
+    'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
+    'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
+};
+/**
+ * Extended Breakpoints for handset/tablets with landscape or portrait orientations
+ */
+var /** @type {?} */ ORIENTATION_BREAKPOINTS = [
+    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
+    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
+    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
+    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
+    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
+    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
+    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var /** @type {?} */ ALIAS_DELIMITERS = /(\.|-|_)/g;
+/**
+ * @param {?} part
+ * @return {?}
+ */
+function firstUpperCase(part) {
+    var /** @type {?} */ first = part.length > 0 ? part.charAt(0) : '';
+    var /** @type {?} */ remainder = (part.length > 1) ? part.slice(1) : '';
+    return first.toUpperCase() + remainder;
+}
+/**
+ * Converts snake-case to SnakeCase.
+ * @param {?} name Text to UpperCamelCase
+ * @return {?}
+ */
+function camelCase(name) {
+    return name
+        .replace(ALIAS_DELIMITERS, '|')
+        .split('|')
+        .map(firstUpperCase)
+        .join('');
+}
+/**
+ * For each breakpoint, ensure that a Suffix is defined;
+ * fallback to UpperCamelCase the unique Alias value
+ * @param {?} list
+ * @return {?}
+ */
+function validateSuffixes(list) {
+    list.forEach(function (bp) {
+        if (!bp.suffix || bp.suffix === '') {
+            bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
+            bp.overlapping = bp.overlapping || false; // ensure default value
+        }
+    });
+    return list;
+}
+/**
+ * Merge a custom breakpoint list with the default list based on unique alias values
+ *  - Items are added if the alias is not in the default list
+ *  - Items are merged with the custom override if the alias exists in the default list
+ * @param {?} defaults
+ * @param {?=} custom
+ * @return {?}
+ */
+function mergeByAlias(defaults, custom) {
+    if (custom === void 0) { custom = []; }
+    var /** @type {?} */ merged = defaults.map(function (bp) { return extendObject({}, bp); });
+    var /** @type {?} */ findByAlias = function (alias) {
+        return merged.reduce(function (result, bp) {
+            return result || ((bp.alias === alias) ? bp : null);
+        }, null);
+    };
+    // Merge custom breakpoints
+    custom.forEach(function (bp) {
+        var /** @type {?} */ target = findByAlias(bp.alias);
+        if (target) {
+            extendObject(target, bp);
+        }
+        else {
+            merged.push(bp);
+        }
+    });
+    return validateSuffixes(merged);
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Add new custom items to the default list or override existing default with custom overrides
+ * @param {?=} _custom
+ * @param {?=} options
+ * @return {?}
+ */
+function buildMergedBreakPoints(_custom, options) {
+    options = extendObject({}, {
+        defaults: true,
+        // exclude pre-configured, internal default breakpoints
+        orientation: false // exclude pre-configured, internal orientations breakpoints
+    }, options || {});
+    return function () {
+        // Order so the defaults are loaded last; so ObservableMedia will report these last!
+        var /** @type {?} */ defaults = (options && options.orientations) ?
+            ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) : DEFAULT_BREAKPOINTS;
+        return (options && options.defaults) ?
+            mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom || []);
+    };
+}
+/**
+ *  Ensure that only a single global BreakPoint list is instantiated...
+ * @return {?}
+ */
+function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
+    return validateSuffixes(DEFAULT_BREAKPOINTS);
+}
+/**
+ * Default Provider that does not support external customization nor provide
+ * the extra extended breakpoints:   "handset", "tablet", and "web"
+ *
+ *  NOTE: !! breakpoints are considered to have unique 'alias' properties,
+ *        custom breakpoints matching existing breakpoints will override the properties
+ *        of the existing (and not be added as an extra breakpoint entry).
+ *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
+ */
+var /** @type {?} */ DEFAULT_BREAKPOINTS_PROVIDER = {
+    // tslint:disable-line:variable-name
+    provide: BREAKPOINTS,
+    useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
+};
+/**
+ * Use with FlexLayoutModule.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY!
+ * @param {?=} _custom
+ * @param {?=} options
+ * @return {?}
+ */
+function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
+    return {
+        provide: /** @type {?} */ (BREAKPOINTS),
+        useFactory: buildMergedBreakPoints(_custom, options)
+    };
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * *****************************************************************
+ * Define module for the MediaQuery API
+ * *****************************************************************
+ */
+var CoreModule = /** @class */ (function () {
+    function CoreModule() {
+    }
+    CoreModule.decorators = [
+        { type: core.NgModule, args: [{
+                    providers: [
+                        DEFAULT_BREAKPOINTS_PROVIDER,
+                        BreakPointRegistry,
+                        MatchMedia,
+                        MediaMonitor,
+                        OBSERVABLE_MEDIA_PROVIDER
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    CoreModule.ctorParameters = function () { return []; };
+    return CoreModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
+ * This is required for older versions of NgStyle and NgClass that require
+ * the v1 API (but should use the v2 instances)
+ */
+var   /**
+ * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
+ * This is required for older versions of NgStyle and NgClass that require
+ * the v1 API (but should use the v2 instances)
+ */
+RendererAdapter = /** @class */ (function () {
+    function RendererAdapter(_renderer) {
+        this._renderer = _renderer;
+    }
+    /**
+     * @param {?} el
+     * @param {?} className
+     * @param {?} isAdd
+     * @return {?}
+     */
+    RendererAdapter.prototype.setElementClass = /**
+     * @param {?} el
+     * @param {?} className
+     * @param {?} isAdd
+     * @return {?}
+     */
+    function (el, className, isAdd) {
+        if (isAdd) {
+            this._renderer.addClass(el, className);
+        }
+        else {
+            this._renderer.removeClass(el, className);
+        }
+    };
+    /**
+     * @param {?} el
+     * @param {?} styleName
+     * @param {?} styleValue
+     * @return {?}
+     */
+    RendererAdapter.prototype.setElementStyle = /**
+     * @param {?} el
+     * @param {?} styleName
+     * @param {?} styleValue
+     * @return {?}
+     */
+    function (el, styleName, styleValue) {
+        if (styleValue) {
+            this._renderer.setStyle(el, styleName, styleValue);
+        }
+        else {
+            this._renderer.removeStyle(el, styleName);
+        }
+    };
+    // new API is forwarded
+    /**
+     * @param {?} el
+     * @param {?} name
+     * @return {?}
+     */
+    RendererAdapter.prototype.addClass = /**
+     * @param {?} el
+     * @param {?} name
+     * @return {?}
+     */
+    function (el, name) {
+        this._renderer.addClass(el, name);
+    };
+    /**
+     * @param {?} el
+     * @param {?} name
+     * @return {?}
+     */
+    RendererAdapter.prototype.removeClass = /**
+     * @param {?} el
+     * @param {?} name
+     * @return {?}
+     */
+    function (el, name) {
+        this._renderer.removeClass(el, name);
+    };
+    /**
+     * @param {?} el
+     * @param {?} style
+     * @param {?} value
+     * @param {?=} flags
+     * @return {?}
+     */
+    RendererAdapter.prototype.setStyle = /**
+     * @param {?} el
+     * @param {?} style
+     * @param {?} value
+     * @param {?=} flags
+     * @return {?}
+     */
+    function (el, style, value, flags) {
+        this._renderer.setStyle(el, style, value, flags);
+    };
+    /**
+     * @param {?} el
+     * @param {?} style
+     * @param {?=} flags
+     * @return {?}
+     */
+    RendererAdapter.prototype.removeStyle = /**
+     * @param {?} el
+     * @param {?} style
+     * @param {?=} flags
+     * @return {?}
+     */
+    function (el, style, flags) {
+        this._renderer.removeStyle(el, style, flags);
+    };
+    // ******************************************************************
+    // !! Renderer is an abstract class with abstract methods
+    //
+    // These are implementation of those methods... and do NOTHING since
+    // we only use setElementStyle() and setElementClass()
+    // ******************************************************************
+    /* tslint:disable */
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.animate = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('animate'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.attachViewAfter = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('attachViewAfter'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.detachView = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('detachView'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.destroyView = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('destroyView'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.createElement = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('createElement'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.createViewRoot = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('createViewRoot'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.createTemplateAnchor = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('createTemplateAnchor'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.createText = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('createText'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.invokeElementMethod = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('invokeElementMethod'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.projectNodes = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('projectNodes'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.selectRootElement = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('selectRootElement'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.setBindingDebugInfo = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('setBindingDebugInfo'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.setElementProperty = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('setElementProperty'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.setElementAttribute = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('setElementAttribute'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.setText = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('setText'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.listen = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('listen'); };
+    /**
+     * @return {?}
+     */
+    RendererAdapter.prototype.listenGlobal = /**
+     * @return {?}
+     */
+    function () { throw _notImplemented('listenGlobal'); };
+    return RendererAdapter;
+}());
+/**
+ * @param {?} methodName
+ * @return {?}
+ */
+function _notImplemented(methodName) {
+    return new Error("The method RendererAdapter::" + methodName + "() has not been implemented");
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Utility to emulate a CSS stylesheet
+ *
+ * This utility class stores all of the styles for a given HTML element
+ * as a readonly `stylesheet` map.
+ */
+var StylesheetMap = /** @class */ (function () {
+    function StylesheetMap() {
+        this.stylesheet = new Map();
+    }
+    /**
+     * Add an individual style to an HTML element
+     */
+    /**
+     * Add an individual style to an HTML element
+     * @param {?} element
+     * @param {?} style
+     * @param {?} value
+     * @return {?}
+     */
+    StylesheetMap.prototype.addStyleToElement = /**
+     * Add an individual style to an HTML element
+     * @param {?} element
+     * @param {?} style
+     * @param {?} value
+     * @return {?}
+     */
+    function (element, style, value) {
+        var /** @type {?} */ stylesheet = this.stylesheet.get(element);
+        if (stylesheet) {
+            stylesheet.set(style, value);
+        }
+        else {
+            this.stylesheet.set(element, new Map([[style, value]]));
+        }
+    };
+    /**
+     * Clear the virtual stylesheet
+     */
+    /**
+     * Clear the virtual stylesheet
+     * @return {?}
+     */
+    StylesheetMap.prototype.clearStyles = /**
+     * Clear the virtual stylesheet
+     * @return {?}
+     */
+    function () {
+        this.stylesheet.clear();
+    };
+    /**
+     * Retrieve a given style for an HTML element
+     */
+    /**
+     * Retrieve a given style for an HTML element
+     * @param {?} el
+     * @param {?} styleName
+     * @return {?}
+     */
+    StylesheetMap.prototype.getStyleForElement = /**
+     * Retrieve a given style for an HTML element
+     * @param {?} el
+     * @param {?} styleName
+     * @return {?}
+     */
+    function (el, styleName) {
+        var /** @type {?} */ styles = this.stylesheet.get(el);
+        return (styles && styles.get(styleName)) || '';
+    };
+    StylesheetMap.decorators = [
+        { type: core.Injectable },
+    ];
+    /** @nocollapse */
+    StylesheetMap.ctorParameters = function () { return []; };
+    return StylesheetMap;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Token that is provided to tell whether the FlexLayoutServerModule
+ * has been included in the bundle
+ *
+ * NOTE: This can be manually provided to disable styles when using SSR
+ */
+var /** @type {?} */ SERVER_TOKEN = new core.InjectionToken('FlexLayoutServerLoaded');
 
 /**
  * @fileoverview added by tsickle
@@ -80,16 +1564,6 @@ function validateValue(value) {
         inline = INLINE;
     }
     return [direction, validateWrapValue(wrap), !!inline];
-}
-/**
- * Determine if the validated, flex-direction value specifies
- * a horizontal/row flow.
- * @param {?} value
- * @return {?}
- */
-function isFlowHorizontal(value) {
-    var flow = validateValue(value)[0];
-    return flow.indexOf('row') > -1;
 }
 /**
  * Convert layout-wrap='<value>' to expected flex-wrap style
@@ -139,39 +1613,6 @@ function buildCSS(direction, wrap, inline) {
         'flex-direction': direction,
         'flex-wrap': !!wrap ? wrap : null
     };
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Extends an object with the *enumerable* and *own* properties of one or more source objects,
- * similar to Object.assign.
- *
- * @param {?} dest The object which will have properties copied to it.
- * @param {...?} sources The source objects from which properties will be copied.
- * @return {?}
- */
-function extendObject(dest) {
-    var sources = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        sources[_i - 1] = arguments[_i];
-    }
-    if (dest == null) {
-        throw TypeError('Cannot convert undefined or null to object');
-    }
-    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
-        var source = sources_1[_a];
-        if (source != null) {
-            for (var /** @type {?} */ key in source) {
-                if (source.hasOwnProperty(key)) {
-                    dest[key] = source[key];
-                }
-            }
-        }
-    }
-    return dest;
 }
 
 /**
@@ -1206,293 +2647,219 @@ BaseFxDirectiveAdapter = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+
 /**
- *  Injection token unique to the flex-layout library.
- *  Use this token when build a custom provider (see below).
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
  */
-var /** @type {?} */ BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoints');
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * Registry of 1..n MediaQuery breakpoint ranges
- * This is published as a provider and may be overriden from custom, application-specific ranges
- *
+ * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
+ * MockMediaQueryListener. Methods are available to simulate an activation of a mediaQuery
+ * range and to clearAll mediaQuery listeners.
  */
-var BreakPointRegistry = /** @class */ (function () {
-    function BreakPointRegistry(_registry) {
-        this._registry = _registry;
+var MockMatchMedia = /** @class */ (function (_super) {
+    __extends(MockMatchMedia, _super);
+    function MockMatchMedia(_zone, _platformId, _document, _breakpoints) {
+        var _this = _super.call(this, _zone, _platformId, _document) || this;
+        _this._breakpoints = _breakpoints;
+        /**
+         * Special flag used to test BreakPoint registrations with MatchMedia
+         */
+        _this.autoRegisterQueries = true;
+        /**
+         * Allow fallback to overlapping mediaQueries to determine
+         * activatedInput(s).
+         */
+        _this.useOverlaps = false;
+        _this._actives = [];
+        _this._actives = [];
+        return _this;
     }
-    Object.defineProperty(BreakPointRegistry.prototype, "items", {
-        /**
-         * Accessor to raw list
-         */
-        get: /**
-         * Accessor to raw list
-         * @return {?}
-         */
-        function () {
-            return this._registry.slice();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BreakPointRegistry.prototype, "sortedItems", {
-        /**
-         * Accessor to sorted list used for registration with matchMedia API
-         *
-         * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-         *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-         *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-         */
-        get: /**
-         * Accessor to sorted list used for registration with matchMedia API
-         *
-         * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-         *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-         *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-         * @return {?}
-         */
-        function () {
-            var /** @type {?} */ overlaps = this._registry.filter(function (it) { return it.overlapping === true; });
-            var /** @type {?} */ nonOverlaps = this._registry.filter(function (it) { return it.overlapping !== true; });
-            return overlaps.concat(nonOverlaps);
-        },
-        enumerable: true,
-        configurable: true
-    });
+    /** Easy method to clear all listeners for all mediaQueries */
     /**
-     * Search breakpoints by alias (e.g. gt-xs)
-     */
-    /**
-     * Search breakpoints by alias (e.g. gt-xs)
-     * @param {?} alias
+     * Easy method to clear all listeners for all mediaQueries
      * @return {?}
      */
-    BreakPointRegistry.prototype.findByAlias = /**
-     * Search breakpoints by alias (e.g. gt-xs)
-     * @param {?} alias
-     * @return {?}
-     */
-    function (alias) {
-        return this._registry.find(function (bp) { return bp.alias == alias; }) || null;
-    };
-    /**
-     * @param {?} query
-     * @return {?}
-     */
-    BreakPointRegistry.prototype.findByQuery = /**
-     * @param {?} query
-     * @return {?}
-     */
-    function (query) {
-        return this._registry.find(function (bp) { return bp.mediaQuery == query; }) || null;
-    };
-    Object.defineProperty(BreakPointRegistry.prototype, "overlappings", {
-        /**
-         * Get all the breakpoints whose ranges could overlapping `normal` ranges;
-         * e.g. gt-sm overlaps md, lg, and xl
-         */
-        get: /**
-         * Get all the breakpoints whose ranges could overlapping `normal` ranges;
-         * e.g. gt-sm overlaps md, lg, and xl
-         * @return {?}
-         */
-        function () {
-            return this._registry.filter(function (it) { return it.overlapping == true; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BreakPointRegistry.prototype, "aliases", {
-        /**
-         * Get list of all registered (non-empty) breakpoint aliases
-         */
-        get: /**
-         * Get list of all registered (non-empty) breakpoint aliases
-         * @return {?}
-         */
-        function () {
-            return this._registry.map(function (it) { return it.alias; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BreakPointRegistry.prototype, "suffixes", {
-        /**
-         * Aliases are mapped to properties using suffixes
-         * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
-         * for property layoutGtSM.
-         */
-        get: /**
-         * Aliases are mapped to properties using suffixes
-         * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
-         * for property layoutGtSM.
-         * @return {?}
-         */
-        function () {
-            return this._registry.map(function (it) { return !!it.suffix ? it.suffix : ''; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BreakPointRegistry.decorators = [
-        { type: core.Injectable },
-    ];
-    /** @nocollapse */
-    BreakPointRegistry.ctorParameters = function () { return [
-        { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] },] },
-    ]; };
-    return BreakPointRegistry;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Class instances emitted [to observers] for each mql notification
- */
-var   /**
- * Class instances emitted [to observers] for each mql notification
- */
-MediaChange = /** @class */ (function () {
-    function MediaChange(matches, mediaQuery, mqAlias, suffix // e.g.   GtSM, Md, GtLg
-    ) {
-        if (matches === void 0) { matches = false; }
-        if (mediaQuery === void 0) { mediaQuery = 'all'; }
-        if (mqAlias === void 0) { mqAlias = ''; }
-        if (suffix === void 0) { suffix = ''; }
-        this.matches = matches;
-        this.mediaQuery = mediaQuery;
-        this.mqAlias = mqAlias;
-        this.suffix = suffix;
-    }
-    /**
-     * @return {?}
-     */
-    MediaChange.prototype.clone = /**
+    MockMatchMedia.prototype.clearAll = /**
+     * Easy method to clear all listeners for all mediaQueries
      * @return {?}
      */
     function () {
-        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
+        this._registry.forEach(function (mql, _) {
+            mql.destroy();
+        });
+        this._registry.clear();
+        this.useOverlaps = false;
     };
-    return MediaChange;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
- * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
- * performed within the ng Zone to trigger change detections and component updates.
- *
- * NOTE: both mediaQuery activations and de-activations are announced in notifications
- */
-var MatchMedia = /** @class */ (function () {
-    function MatchMedia(_zone, _platformId, _document) {
-        this._zone = _zone;
-        this._platformId = _platformId;
-        this._document = _document;
-        this._registry = new Map();
-        this._source = new BehaviorSubject.BehaviorSubject(new MediaChange(true));
-        this._observable$ = this._source.asObservable();
-    }
+    /** Feature to support manual, simulated activation of a mediaQuery. */
     /**
-     * For the specified mediaQuery?
-     */
-    /**
-     * For the specified mediaQuery?
+     * Feature to support manual, simulated activation of a mediaQuery.
      * @param {?} mediaQuery
+     * @param {?=} useOverlaps
      * @return {?}
      */
-    MatchMedia.prototype.isActive = /**
-     * For the specified mediaQuery?
+    MockMatchMedia.prototype.activate = /**
+     * Feature to support manual, simulated activation of a mediaQuery.
      * @param {?} mediaQuery
+     * @param {?=} useOverlaps
      * @return {?}
      */
-    function (mediaQuery) {
-        var /** @type {?} */ mql = this._registry.get(mediaQuery);
-        return !!mql ? mql.matches : false;
-    };
-    /**
-     * External observers can watch for all (or a specific) mql changes.
-     * Typically used by the MediaQueryAdaptor; optionally available to components
-     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
-     *
-     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-     *       be announced.
-     */
-    /**
-     * External observers can watch for all (or a specific) mql changes.
-     * Typically used by the MediaQueryAdaptor; optionally available to components
-     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
-     *
-     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-     *       be announced.
-     * @param {?=} mediaQuery
-     * @return {?}
-     */
-    MatchMedia.prototype.observe = /**
-     * External observers can watch for all (or a specific) mql changes.
-     * Typically used by the MediaQueryAdaptor; optionally available to components
-     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
-     *
-     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-     *       be announced.
-     * @param {?=} mediaQuery
-     * @return {?}
-     */
-    function (mediaQuery) {
-        if (mediaQuery) {
-            this.registerQuery(mediaQuery);
+    function (mediaQuery, useOverlaps) {
+        if (useOverlaps === void 0) { useOverlaps = false; }
+        useOverlaps = useOverlaps || this.useOverlaps;
+        mediaQuery = this._validateQuery(mediaQuery);
+        if (useOverlaps || !this.isActive(mediaQuery)) {
+            this._deactivateAll();
+            this._registerMediaQuery(mediaQuery);
+            this._activateWithOverlaps(mediaQuery, useOverlaps);
         }
-        return this._observable$.pipe(filter.filter(function (change) {
-            return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-        }));
+        return this.hasActivated;
+    };
+    /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
+    /**
+     * Converts an optional mediaQuery alias to a specific, valid mediaQuery
+     * @param {?} queryOrAlias
+     * @return {?}
+     */
+    MockMatchMedia.prototype._validateQuery = /**
+     * Converts an optional mediaQuery alias to a specific, valid mediaQuery
+     * @param {?} queryOrAlias
+     * @return {?}
+     */
+    function (queryOrAlias) {
+        var /** @type {?} */ bp = this._breakpoints.findByAlias(queryOrAlias);
+        if (bp) {
+            queryOrAlias = bp.mediaQuery;
+        }
+        return queryOrAlias;
     };
     /**
-     * Based on the BreakPointRegistry provider, register internal listeners for each unique
-     * mediaQuery. Each listener emits specific MediaChange data to observers
+     * Manually activate any overlapping mediaQueries to simulate
+     * similar functionality in the window.matchMedia()
+     * @param {?} mediaQuery
+     * @param {?} useOverlaps
+     * @return {?}
      */
+    MockMatchMedia.prototype._activateWithOverlaps = /**
+     * Manually activate any overlapping mediaQueries to simulate
+     * similar functionality in the window.matchMedia()
+     * @param {?} mediaQuery
+     * @param {?} useOverlaps
+     * @return {?}
+     */
+    function (mediaQuery, useOverlaps) {
+        if (useOverlaps) {
+            var /** @type {?} */ bp = this._breakpoints.findByQuery(mediaQuery);
+            var /** @type {?} */ alias = bp ? bp.alias : 'unknown';
+            // Simulate activation of overlapping lt-<XXX> ranges
+            switch (alias) {
+                case 'lg':
+                    this._activateByAlias('lt-xl');
+                    break;
+                case 'md':
+                    this._activateByAlias('lt-xl, lt-lg');
+                    break;
+                case 'sm':
+                    this._activateByAlias('lt-xl, lt-lg, lt-md');
+                    break;
+                case 'xs':
+                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
+                    break;
+            }
+            // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
+            switch (alias) {
+                case 'xl':
+                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
+                    break;
+                case 'lg':
+                    this._activateByAlias('gt-md, gt-sm, gt-xs');
+                    break;
+                case 'md':
+                    this._activateByAlias('gt-sm, gt-xs');
+                    break;
+                case 'sm':
+                    this._activateByAlias('gt-xs');
+                    break;
+            }
+        }
+        // Activate last since the responsiveActivation is watching *this* mediaQuery
+        return this._activateByQuery(mediaQuery);
+    };
     /**
-     * Based on the BreakPointRegistry provider, register internal listeners for each unique
-     * mediaQuery. Each listener emits specific MediaChange data to observers
+     *
+     * @param {?} aliases
+     * @return {?}
+     */
+    MockMatchMedia.prototype._activateByAlias = /**
+     *
+     * @param {?} aliases
+     * @return {?}
+     */
+    function (aliases) {
+        var _this = this;
+        var /** @type {?} */ activate = function (alias) {
+            var /** @type {?} */ bp = _this._breakpoints.findByAlias(alias);
+            _this._activateByQuery(bp ? bp.mediaQuery : alias);
+        };
+        aliases.split(',').forEach(function (alias) { return activate(alias.trim()); });
+    };
+    /**
+     *
      * @param {?} mediaQuery
      * @return {?}
      */
-    MatchMedia.prototype.registerQuery = /**
-     * Based on the BreakPointRegistry provider, register internal listeners for each unique
-     * mediaQuery. Each listener emits specific MediaChange data to observers
+    MockMatchMedia.prototype._activateByQuery = /**
+     *
      * @param {?} mediaQuery
      * @return {?}
      */
     function (mediaQuery) {
-        var _this = this;
-        var /** @type {?} */ list = normalizeQuery(mediaQuery);
-        if (list.length > 0) {
-            this._prepareQueryCSS(list, this._document);
-            list.forEach(function (query) {
-                var /** @type {?} */ mql = _this._registry.get(query);
-                var /** @type {?} */ onMQLEvent = function (e) {
-                    _this._zone.run(function () {
-                        var /** @type {?} */ change = new MediaChange(e.matches, query);
-                        _this._source.next(change);
-                    });
-                };
-                if (!mql) {
-                    mql = _this._buildMQL(query);
-                    mql.addListener(onMQLEvent);
-                    _this._registry.set(query, mql);
-                }
-                if (mql.matches) {
-                    onMQLEvent(mql); // Announce activate range for initial subscribers
-                }
-            });
+        var /** @type {?} */ mql = /** @type {?} */ (this._registry.get(mediaQuery));
+        var /** @type {?} */ alreadyAdded = this._actives.reduce(function (found, it) {
+            return found || (mql && (it.media === mql.media));
+        }, false);
+        if (mql && !alreadyAdded) {
+            this._actives.push(mql.activate());
+        }
+        return this.hasActivated;
+    };
+    /**
+     * Deactivate all current Mock MQLs
+     * @return {?}
+     */
+    MockMatchMedia.prototype._deactivateAll = /**
+     * Deactivate all current Mock MQLs
+     * @return {?}
+     */
+    function () {
+        if (this._actives.length) {
+            // Deactivate all current MQLs and reset the buffer
+            for (var _i = 0, _a = this._actives; _i < _a.length; _i++) {
+                var it = _a[_i];
+                it.deactivate();
+            }
+            this._actives = [];
+        }
+        return this;
+    };
+    /**
+     * Insure the mediaQuery is registered with MatchMedia
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    MockMatchMedia.prototype._registerMediaQuery = /**
+     * Insure the mediaQuery is registered with MatchMedia
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    function (mediaQuery) {
+        if (!this._registry.has(mediaQuery) && this.autoRegisterQueries) {
+            this.registerQuery(mediaQuery);
         }
     };
     /**
@@ -1505,261 +2872,426 @@ var MatchMedia = /** @class */ (function () {
      * @param {?} query
      * @return {?}
      */
-    MatchMedia.prototype._buildMQL = /**
+    MockMatchMedia.prototype._buildMQL = /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
      * @param {?} query
      * @return {?}
      */
     function (query) {
-        var /** @type {?} */ canListen = common.isPlatformBrowser(this._platformId) &&
-            !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-        return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
-            matches: query === 'all' || query === '',
-            media: query,
-            addListener: function () {
-            },
-            removeListener: function () {
-            }
-        });
+        return new MockMediaQueryList(query);
     };
-    /**
-     * For Webkit engines that only trigger the MediaQueryList Listener
-     * when there is at least one CSS selector for the respective media query.
-     *
-     * @param query string The mediaQuery used to create a faux CSS selector
-     *
-     */
-    /**
-     * For Webkit engines that only trigger the MediaQueryList Listener
-     * when there is at least one CSS selector for the respective media query.
-     *
-     * @param {?} mediaQueries
-     * @param {?} _document
-     * @return {?}
-     */
-    MatchMedia.prototype._prepareQueryCSS = /**
-     * For Webkit engines that only trigger the MediaQueryList Listener
-     * when there is at least one CSS selector for the respective media query.
-     *
-     * @param {?} mediaQueries
-     * @param {?} _document
-     * @return {?}
-     */
-    function (mediaQueries, _document) {
-        var /** @type {?} */ list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
-        if (list.length > 0) {
-            var /** @type {?} */ query = list.join(', ');
-            try {
-                var /** @type {?} */ styleEl_1 = _document.createElement('style');
-                styleEl_1.setAttribute('type', 'text/css');
-                if (!styleEl_1['styleSheet']) {
-                    var /** @type {?} */ cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
-                    styleEl_1.appendChild(_document.createTextNode(cssText));
-                }
-                _document.head.appendChild(styleEl_1);
-                // Store in private global registry
-                list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
-            }
-            catch (/** @type {?} */ e) {
-                console.error(e);
-            }
-        }
-    };
-    MatchMedia.decorators = [
+    Object.defineProperty(MockMatchMedia.prototype, "hasActivated", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return (this._actives.length > 0);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MockMatchMedia.decorators = [
         { type: core.Injectable },
     ];
     /** @nocollapse */
-    MatchMedia.ctorParameters = function () { return [
+    MockMatchMedia.ctorParameters = function () { return [
+        { type: core.NgZone, },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
+        { type: BreakPointRegistry, },
+    ]; };
+    return MockMatchMedia;
+}(MatchMedia));
+/**
+ * Special internal class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
+ */
+var   /**
+ * Special internal class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
+ */
+MockMediaQueryList = /** @class */ (function () {
+    function MockMediaQueryList(_mediaQuery) {
+        this._mediaQuery = _mediaQuery;
+        this._isActive = false;
+        this._listeners = [];
+    }
+    Object.defineProperty(MockMediaQueryList.prototype, "matches", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._isActive;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MockMediaQueryList.prototype, "media", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._mediaQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     */
+    /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.destroy = /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     * @return {?}
+     */
+    function () {
+        this.deactivate();
+        this._listeners = [];
+    };
+    /** Notify all listeners that 'matches === TRUE' */
+    /**
+     * Notify all listeners that 'matches === TRUE'
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.activate = /**
+     * Notify all listeners that 'matches === TRUE'
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (!this._isActive) {
+            this._isActive = true;
+            this._listeners.forEach(function (callback) {
+                callback(_this);
+            });
+        }
+        return this;
+    };
+    /** Notify all listeners that 'matches === false' */
+    /**
+     * Notify all listeners that 'matches === false'
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.deactivate = /**
+     * Notify all listeners that 'matches === false'
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (this._isActive) {
+            this._isActive = false;
+            this._listeners.forEach(function (callback) {
+                callback(_this);
+            });
+        }
+        return this;
+    };
+    /** Add a listener to our internal list to activate later */
+    /**
+     * Add a listener to our internal list to activate later
+     * @param {?} listener
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.addListener = /**
+     * Add a listener to our internal list to activate later
+     * @param {?} listener
+     * @return {?}
+     */
+    function (listener) {
+        if (this._listeners.indexOf(listener) === -1) {
+            this._listeners.push(listener);
+        }
+        if (this._isActive) {
+            listener(this);
+        }
+    };
+    /** Don't need to remove listeners in the testing environment */
+    /**
+     * Don't need to remove listeners in the testing environment
+     * @param {?} _
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.removeListener = /**
+     * Don't need to remove listeners in the testing environment
+     * @param {?} _
+     * @return {?}
+     */
+    function (_) {
+    };
+    return MockMediaQueryList;
+}());
+/**
+ * Pre-configured provider for MockMatchMedia
+ */
+var /** @type {?} */ MockMatchMediaProvider = {
+    // tslint:disable-line:variable-name
+    provide: MatchMedia,
+    useClass: MockMatchMedia
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Special server-only class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
+ */
+var   /**
+ * Special server-only class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
+ */
+ServerMediaQueryList = /** @class */ (function () {
+    function ServerMediaQueryList(_mediaQuery) {
+        this._mediaQuery = _mediaQuery;
+        this._isActive = false;
+        this._listeners = [];
+    }
+    Object.defineProperty(ServerMediaQueryList.prototype, "matches", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._isActive;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ServerMediaQueryList.prototype, "media", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._mediaQuery;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     */
+    /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.destroy = /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     * @return {?}
+     */
+    function () {
+        this.deactivate();
+        this._listeners = [];
+    };
+    /** Notify all listeners that 'matches === TRUE' */
+    /**
+     * Notify all listeners that 'matches === TRUE'
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.activate = /**
+     * Notify all listeners that 'matches === TRUE'
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (!this._isActive) {
+            this._isActive = true;
+            this._listeners.forEach(function (callback) {
+                callback(_this);
+            });
+        }
+        return this;
+    };
+    /** Notify all listeners that 'matches === false' */
+    /**
+     * Notify all listeners that 'matches === false'
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.deactivate = /**
+     * Notify all listeners that 'matches === false'
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (this._isActive) {
+            this._isActive = false;
+            this._listeners.forEach(function (callback) {
+                callback(_this);
+            });
+        }
+        return this;
+    };
+    /** Add a listener to our internal list to activate later */
+    /**
+     * Add a listener to our internal list to activate later
+     * @param {?} listener
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.addListener = /**
+     * Add a listener to our internal list to activate later
+     * @param {?} listener
+     * @return {?}
+     */
+    function (listener) {
+        if (this._listeners.indexOf(listener) === -1) {
+            this._listeners.push(listener);
+        }
+        if (this._isActive) {
+            listener(this);
+        }
+    };
+    /** Don't need to remove listeners in the server environment */
+    /**
+     * Don't need to remove listeners in the server environment
+     * @param {?} _
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.removeListener = /**
+     * Don't need to remove listeners in the server environment
+     * @param {?} _
+     * @return {?}
+     */
+    function (_) {
+    };
+    return ServerMediaQueryList;
+}());
+/**
+ * Special server-only implementation of MatchMedia that uses the above
+ * ServerMediaQueryList as its internal representation
+ *
+ * Also contains methods to activate and deactivate breakpoints
+ */
+var ServerMatchMedia = /** @class */ (function (_super) {
+    __extends(ServerMatchMedia, _super);
+    function ServerMatchMedia(_zone, _platformId, _document) {
+        var _this = _super.call(this, _zone, _platformId, _document) || this;
+        _this._zone = _zone;
+        _this._platformId = _platformId;
+        _this._document = _document;
+        _this._registry = new Map();
+        _this._source = new BehaviorSubject.BehaviorSubject(new MediaChange(true));
+        _this._observable$ = _this._source.asObservable();
+        return _this;
+    }
+    /** Activate the specified breakpoint if we're on the server, no-op otherwise */
+    /**
+     * Activate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    ServerMatchMedia.prototype.activateBreakpoint = /**
+     * Activate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
+        var /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        if (lookupBreakpoint) {
+            lookupBreakpoint.activate();
+        }
+    };
+    /** Deactivate the specified breakpoint if we're on the server, no-op otherwise */
+    /**
+     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    ServerMatchMedia.prototype.deactivateBreakpoint = /**
+     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
+        var /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        if (lookupBreakpoint) {
+            lookupBreakpoint.deactivate();
+        }
+    };
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     */
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
+    ServerMatchMedia.prototype._buildMQL = /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) {
+        return new ServerMediaQueryList(query);
+    };
+    ServerMatchMedia.decorators = [
+        { type: core.Injectable },
+    ];
+    /** @nocollapse */
+    ServerMatchMedia.ctorParameters = function () { return [
         { type: core.NgZone, },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
     ]; };
-    return MatchMedia;
-}());
+    return ServerMatchMedia;
+}(MatchMedia));
+
 /**
- * Private global registry for all dynamically-created, injected style tags
- * @see prepare(query)
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
  */
-var /** @type {?} */ ALL_STYLES = {};
-/**
- * Always convert to unique list of queries; for iteration in ::registerQuery()
- * @param {?} mediaQuery
- * @return {?}
- */
-function normalizeQuery(mediaQuery) {
-    return (typeof mediaQuery === 'undefined') ? [] :
-        (typeof mediaQuery === 'string') ? [mediaQuery] : unique(/** @type {?} */ (mediaQuery));
-}
-/**
- * Filter duplicate mediaQueries in the list
- * @param {?} list
- * @return {?}
- */
-function unique(list) {
-    var /** @type {?} */ seen = {};
-    return list.filter(function (item) {
-        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-    });
-}
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * For the specified MediaChange, make sure it contains the breakpoint alias
- * and suffix (if available).
- * @param {?} dest
- * @param {?} source
+ * Ensure a single global service provider
+ * @param {?} parentMonitor
+ * @param {?} breakpoints
+ * @param {?} matchMedia
  * @return {?}
  */
-function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
-        mqAlias: source.alias,
-        suffix: source.suffix
-    } : {});
+function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
+    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
 }
+/**
+ * Export provider that uses a global service factory (above)
+ */
+var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
+    provide: MediaMonitor,
+    deps: [
+        [new core.Optional(), new core.SkipSelf(), MediaMonitor],
+        BreakPointRegistry,
+        MatchMedia,
+    ],
+    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
+};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+
 /**
- * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
- * deactivations). These changes are are published as MediaChange notifications.
- *
- * Note: all notifications will be performed within the
- * ng Zone to trigger change detections and component updates.
- *
- * It is the MediaMonitor that:
- *  - auto registers all known breakpoints
- *  - injects alias information into each raw MediaChange event
- *  - provides accessor to the currently active BreakPoint
- *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
  */
-var MediaMonitor = /** @class */ (function () {
-    function MediaMonitor(_breakpoints, _matchMedia) {
-        this._breakpoints = _breakpoints;
-        this._matchMedia = _matchMedia;
-        this._registerBreakpoints();
-    }
-    Object.defineProperty(MediaMonitor.prototype, "breakpoints", {
-        /**
-         * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
-         */
-        get: /**
-         * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
-         * @return {?}
-         */
-        function () {
-            return this._breakpoints.items.slice();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MediaMonitor.prototype, "activeOverlaps", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            var _this = this;
-            var /** @type {?} */ items = this._breakpoints.overlappings.reverse();
-            return items.filter(function (bp) {
-                return _this._matchMedia.isActive(bp.mediaQuery);
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MediaMonitor.prototype, "active", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            var _this = this;
-            var /** @type {?} */ found = null, /** @type {?} */ items = this.breakpoints.reverse();
-            items.forEach(function (bp) {
-                if (bp.alias !== '') {
-                    if (!found && _this._matchMedia.isActive(bp.mediaQuery)) {
-                        found = bp;
-                    }
-                }
-            });
-            var /** @type {?} */ first = this.breakpoints[0];
-            return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * For the specified mediaQuery alias, is the mediaQuery range active?
-     */
-    /**
-     * For the specified mediaQuery alias, is the mediaQuery range active?
-     * @param {?} alias
-     * @return {?}
-     */
-    MediaMonitor.prototype.isActive = /**
-     * For the specified mediaQuery alias, is the mediaQuery range active?
-     * @param {?} alias
-     * @return {?}
-     */
-    function (alias) {
-        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
-    };
-    /**
-     * External observers can watch for all (or a specific) mql changes.
-     * If specific breakpoint is observed, only return *activated* events
-     * otherwise return all events for BOTH activated + deactivated changes.
-     */
-    /**
-     * External observers can watch for all (or a specific) mql changes.
-     * If specific breakpoint is observed, only return *activated* events
-     * otherwise return all events for BOTH activated + deactivated changes.
-     * @param {?=} alias
-     * @return {?}
-     */
-    MediaMonitor.prototype.observe = /**
-     * External observers can watch for all (or a specific) mql changes.
-     * If specific breakpoint is observed, only return *activated* events
-     * otherwise return all events for BOTH activated + deactivated changes.
-     * @param {?=} alias
-     * @return {?}
-     */
-    function (alias) {
-        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias || '') ||
-            this._breakpoints.findByQuery(alias || '');
-        var /** @type {?} */ hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
-        // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
-        var /** @type {?} */ media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-        return media$.pipe(map.map(function (change) { return mergeAlias(change, bp); }), filter.filter(hasAlias));
-    };
-    /**
-     * Immediate calls to matchMedia() to establish listeners
-     * and prepare for immediate subscription notifications
-     * @return {?}
-     */
-    MediaMonitor.prototype._registerBreakpoints = /**
-     * Immediate calls to matchMedia() to establish listeners
-     * and prepare for immediate subscription notifications
-     * @return {?}
-     */
-    function () {
-        var /** @type {?} */ queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
-        this._matchMedia.registerQuery(queries);
-    };
-    MediaMonitor.decorators = [
-        { type: core.Injectable },
-    ];
-    /** @nocollapse */
-    MediaMonitor.ctorParameters = function () { return [
-        { type: BreakPointRegistry, },
-        { type: MatchMedia, },
-    ]; };
-    return MediaMonitor;
-}());
 
 /**
  * @fileoverview added by tsickle
@@ -1825,99 +3357,6 @@ function applyCssPrefixes(target) {
     }
     return target;
 }
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Utility to emulate a CSS stylesheet
- *
- * This stores all of the styles for a given HTML element
- * and returns them later
- */
-var ServerStylesheet = /** @class */ (function () {
-    function ServerStylesheet() {
-        this.stylesheet = new Map();
-    }
-    /**
-     * Add an individual style to an HTML element
-     */
-    /**
-     * Add an individual style to an HTML element
-     * @param {?} element
-     * @param {?} style
-     * @param {?} value
-     * @return {?}
-     */
-    ServerStylesheet.prototype.addStyleToElement = /**
-     * Add an individual style to an HTML element
-     * @param {?} element
-     * @param {?} style
-     * @param {?} value
-     * @return {?}
-     */
-    function (element, style, value) {
-        var /** @type {?} */ stylesheet = this.stylesheet.get(element);
-        if (stylesheet) {
-            stylesheet.set(style, value);
-        }
-        else {
-            this.stylesheet.set(element, new Map([[style, value]]));
-        }
-    };
-    /**
-     * Clear the virtual stylesheet
-     */
-    /**
-     * Clear the virtual stylesheet
-     * @return {?}
-     */
-    ServerStylesheet.prototype.clearStyles = /**
-     * Clear the virtual stylesheet
-     * @return {?}
-     */
-    function () {
-        this.stylesheet.clear();
-    };
-    /**
-     * Retrieve a given style for an HTML element
-     */
-    /**
-     * Retrieve a given style for an HTML element
-     * @param {?} el
-     * @param {?} styleName
-     * @return {?}
-     */
-    ServerStylesheet.prototype.getStyleForElement = /**
-     * Retrieve a given style for an HTML element
-     * @param {?} el
-     * @param {?} styleName
-     * @return {?}
-     */
-    function (el, styleName) {
-        var /** @type {?} */ styles = this.stylesheet.get(el);
-        return (styles && styles.get(styleName)) || '';
-    };
-    ServerStylesheet.decorators = [
-        { type: core.Injectable },
-    ];
-    /** @nocollapse */
-    ServerStylesheet.ctorParameters = function () { return []; };
-    return ServerStylesheet;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Token that is provided to tell whether the FlexLayoutServerModule
- * has been included in the bundle
- *
- * NOTE: This can be manually provided to disable styles when using SSR
- */
-var /** @type {?} */ SERVER_TOKEN = new core.InjectionToken('FlexLayoutServerLoaded');
 
 /**
  * @fileoverview added by tsickle
@@ -2122,13 +3561,108 @@ var StyleUtils = /** @class */ (function () {
     ];
     /** @nocollapse */
     StyleUtils.ctorParameters = function () { return [
-        { type: ServerStylesheet, decorators: [{ type: core.Optional },] },
+        { type: StylesheetMap, decorators: [{ type: core.Optional },] },
         { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] },] },
         { type: undefined, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
     ]; };
     return StyleUtils;
 }());
 var /** @type {?} */ FALLBACK_STYLE = 'block';
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+var /** @type {?} */ INLINE$1 = 'inline';
+var /** @type {?} */ LAYOUT_VALUES$1 = ['row', 'column', 'row-reverse', 'column-reverse'];
+/**
+ * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
+ * @param {?} value
+ * @return {?}
+ */
+function buildLayoutCSS$1(value) {
+    var _a = validateValue$1(value), direction = _a[0], wrap = _a[1], isInline = _a[2];
+    return buildCSS$1(direction, wrap, isInline);
+}
+/**
+ * Validate the value to be one of the acceptable value options
+ * Use default fallback of 'row'
+ * @param {?} value
+ * @return {?}
+ */
+function validateValue$1(value) {
+    value = value ? value.toLowerCase() : '';
+    var _a = value.split(' '), direction = _a[0], wrap = _a[1], inline = _a[2];
+    // First value must be the `flex-direction`
+    if (!LAYOUT_VALUES$1.find(function (x) { return x === direction; })) {
+        direction = LAYOUT_VALUES$1[0];
+    }
+    if (wrap === INLINE$1) {
+        wrap = (inline !== INLINE$1) ? inline : '';
+        inline = INLINE$1;
+    }
+    return [direction, validateWrapValue$1(wrap), !!inline];
+}
+/**
+ * Determine if the validated, flex-direction value specifies
+ * a horizontal/row flow.
+ * @param {?} value
+ * @return {?}
+ */
+function isFlowHorizontal(value) {
+    var flow = validateValue$1(value)[0];
+    return flow.indexOf('row') > -1;
+}
+/**
+ * Convert layout-wrap='<value>' to expected flex-wrap style
+ * @param {?} value
+ * @return {?}
+ */
+function validateWrapValue$1(value) {
+    if (!!value) {
+        switch (value.toLowerCase()) {
+            case 'reverse':
+            case 'wrap-reverse':
+            case 'reverse-wrap':
+                value = 'wrap-reverse';
+                break;
+            case 'no':
+            case 'none':
+            case 'nowrap':
+                value = 'nowrap';
+                break;
+            // All other values fallback to 'wrap'
+            default:
+                value = 'wrap';
+                break;
+        }
+    }
+    return value;
+}
+/**
+ * Build the CSS that should be assigned to the element instance
+ * BUG:
+ *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
+ *      Use height instead if possible; height : <xxx>vh;
+ *
+ *  This way any padding or border specified on the child elements are
+ *  laid out and drawn inside that element's specified width and height.
+ * @param {?} direction
+ * @param {?=} wrap
+ * @param {?=} inline
+ * @return {?}
+ */
+function buildCSS$1(direction, wrap, inline) {
+    if (wrap === void 0) { wrap = null; }
+    if (inline === void 0) { inline = false; }
+    return {
+        'display': inline ? 'inline-flex' : 'flex',
+        'box-sizing': 'border-box',
+        'flex-direction': direction,
+        'flex-wrap': !!wrap ? wrap : null
+    };
+}
 
 /**
  * @fileoverview added by tsickle
@@ -2350,7 +3884,7 @@ var LayoutDirective = /** @class */ (function (_super) {
             value = this._mqActivation.activatedInput;
         }
         // Update styles and announce to subscribers the *new* direction
-        var /** @type {?} */ css = buildLayoutCSS(!!value ? value : '');
+        var /** @type {?} */ css = buildLayoutCSS$1(!!value ? value : '');
         this._applyStyleToElement(css);
         this._announcer.next(css['flex-direction']);
     };
@@ -2381,425 +3915,6 @@ var LayoutDirective = /** @class */ (function (_super) {
     };
     return LayoutDirective;
 }(BaseFxDirective));
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * 'layout-align' flexbox styling directive
- *  Defines positioning of child elements along main and cross axis in a layout container
- *  Optional values: {main-axis} values or {main-axis cross-axis} value pairs
- *
- *  \@see https://css-tricks.com/almanac/properties/j/justify-content/
- *  \@see https://css-tricks.com/almanac/properties/a/align-items/
- *  \@see https://css-tricks.com/almanac/properties/a/align-content/
- */
-var LayoutAlignDirective = /** @class */ (function (_super) {
-    __extends(LayoutAlignDirective, _super);
-    /* tslint:enable */
-    function LayoutAlignDirective(monitor, elRef, container, styleUtils) {
-        var _this = _super.call(this, monitor, elRef, styleUtils) || this;
-        _this._layout = 'row';
-        if (container) {
-            // Subscribe to layout direction changes
-            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
-        }
-        return _this;
-    }
-    Object.defineProperty(LayoutAlignDirective.prototype, "align", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('align', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype.ngOnChanges = /**
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['align'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('align', 'start stretch', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    };
-    /**
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    };
-    // *********************************************
-    // Protected methods
-    // *********************************************
-    /**
-     *
-     */
-    /**
-     *
-     * @param {?=} value
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype._updateWithValue = /**
-     *
-     * @param {?=} value
-     * @return {?}
-     */
-    function (value) {
-        value = value || this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-        this._allowStretching(value, !this._layout ? 'row' : this._layout);
-    };
-    /**
-     * Cache the parent container 'flex-direction' and update the 'flex' styles
-     */
-    /**
-     * Cache the parent container 'flex-direction' and update the 'flex' styles
-     * @param {?} direction
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype._onLayoutChange = /**
-     * Cache the parent container 'flex-direction' and update the 'flex' styles
-     * @param {?} direction
-     * @return {?}
-     */
-    function (direction) {
-        var _this = this;
-        this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
-            this._layout = 'row';
-        }
-        var /** @type {?} */ value = this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._allowStretching(value, this._layout || 'row');
-    };
-    /**
-     * @param {?} align
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype._buildCSS = /**
-     * @param {?} align
-     * @return {?}
-     */
-    function (align) {
-        var /** @type {?} */ css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1]; // tslint:disable-line:variable-name
-        // Main axis
-        switch (main_axis) {
-            case 'center':
-                css['justify-content'] = 'center';
-                break;
-            case 'space-around':
-                css['justify-content'] = 'space-around';
-                break;
-            case 'space-between':
-                css['justify-content'] = 'space-between';
-                break;
-            case 'space-evenly':
-                css['justify-content'] = 'space-evenly';
-                break;
-            case 'end':
-            case 'flex-end':
-                css['justify-content'] = 'flex-end';
-                break;
-            case 'start':
-            case 'flex-start':
-            default:
-                css['justify-content'] = 'flex-start'; // default main axis
-                break;
-        }
-        // Cross-axis
-        switch (cross_axis) {
-            case 'start':
-            case 'flex-start':
-                css['align-items'] = css['align-content'] = 'flex-start';
-                break;
-            case 'baseline':
-                css['align-items'] = 'baseline';
-                break;
-            case 'center':
-                css['align-items'] = css['align-content'] = 'center';
-                break;
-            case 'end':
-            case 'flex-end':
-                css['align-items'] = css['align-content'] = 'flex-end';
-                break;
-            case 'stretch':
-            default:
-                // 'stretch'
-                css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
-                break;
-        }
-        return extendObject(css, {
-            'display': 'flex',
-            'flex-direction': this._layout || 'row',
-            'box-sizing': 'border-box'
-        });
-    };
-    /**
-     * Update container element to 'stretch' as needed...
-     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-     */
-    /**
-     * Update container element to 'stretch' as needed...
-     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-     * @param {?} align
-     * @param {?} layout
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype._allowStretching = /**
-     * Update container element to 'stretch' as needed...
-     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-     * @param {?} align
-     * @param {?} layout
-     * @return {?}
-     */
-    function (align, layout) {
-        var _a = align.split(' '), cross_axis = _a[1]; // tslint:disable-line:variable-name
-        if (cross_axis == 'stretch') {
-            // Use `null` values to remove style
-            this._applyStyleToElement({
-                'box-sizing': 'border-box',
-                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
-                'max-height': isFlowHorizontal(layout) ? '100%' : null
-            });
-        }
-    };
-    LayoutAlignDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" },] },
-    ];
-    /** @nocollapse */
-    LayoutAlignDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.Self },] },
-        { type: StyleUtils, },
-    ]; };
-    LayoutAlignDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['fxLayoutAlign',] },],
-        "alignXs": [{ type: core.Input, args: ['fxLayoutAlign.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['fxLayoutAlign.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['fxLayoutAlign.md',] },],
-        "alignLg": [{ type: core.Input, args: ['fxLayoutAlign.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['fxLayoutAlign.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['fxLayoutAlign.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['fxLayoutAlign.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['fxLayoutAlign.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['fxLayoutAlign.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['fxLayoutAlign.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['fxLayoutAlign.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['fxLayoutAlign.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['fxLayoutAlign.lt-xl',] },],
-    };
-    return LayoutAlignDirective;
-}(BaseFxDirective));
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Injection token used to inject the document into Directionality.
- * This is used so that the value can be faked in tests.
- *
- * We can't use the real document in tests because changing the real `dir` causes geometry-based
- * tests in Safari to fail.
- *
- * We also can't re-provide the DOCUMENT token from platform-brower because the unit tests
- * themselves use things like `querySelector` in test code.
- */
-var /** @type {?} */ DIR_DOCUMENT = new core.InjectionToken('cdk-dir-doc');
-/**
- * The directionality (LTR / RTL) context for the application (or a subtree of it).
- * Exposes the current direction and a stream of direction changes.
- */
-var Directionality = /** @class */ (function () {
-    function Directionality(_document) {
-        /**
-         * The current 'ltr' or 'rtl' value.
-         */
-        this.value = 'ltr';
-        /**
-         * Stream that emits whenever the 'ltr' / 'rtl' state changes.
-         */
-        this.change = new core.EventEmitter();
-        if (_document) {
-            // TODO: handle 'auto' value -
-            // We still need to account for dir="auto".
-            // It looks like HTMLElemenet.dir is also "auto" when that's set to the attribute,
-            // but getComputedStyle return either "ltr" or "rtl". avoiding getComputedStyle for now
-            var /** @type {?} */ bodyDir = _document.body ? _document.body.dir : null;
-            var /** @type {?} */ htmlDir = _document.documentElement ? _document.documentElement.dir : null;
-            this.value = /** @type {?} */ ((bodyDir || htmlDir || 'ltr'));
-        }
-    }
-    Directionality.decorators = [
-        { type: core.Injectable },
-    ];
-    /** @nocollapse */
-    Directionality.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [DIR_DOCUMENT,] },] },
-    ]; };
-    return Directionality;
-}());
 
 /**
  * @fileoverview added by tsickle
@@ -3058,7 +4173,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     function (direction) {
         var _this = this;
         this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
+        if (!LAYOUT_VALUES$1.find(function (x) { return x === _this._layout; })) {
             this._layout = 'row';
         }
         this._updateWithValue();
@@ -3149,7 +4264,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         { type: core.ElementRef, },
         { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.Self },] },
         { type: core.NgZone, },
-        { type: Directionality, },
+        { type: bidi.Directionality, },
         { type: StyleUtils, },
     ]; };
     LayoutGapDirective.propDecorators = {
@@ -3170,6 +4285,39 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     };
     return LayoutGapDirective;
 }(BaseFxDirective));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Extends an object with the *enumerable* and *own* properties of one or more source objects,
+ * similar to Object.assign.
+ *
+ * @param {?} dest The object which will have properties copied to it.
+ * @param {...?} sources The source objects from which properties will be copied.
+ * @return {?}
+ */
+function extendObject$1(dest) {
+    var sources = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        sources[_i - 1] = arguments[_i];
+    }
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
+        var source = sources_1[_a];
+        if (source != null) {
+            for (var /** @type {?} */ key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
+        }
+    }
+    return dest;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -3539,27 +4687,27 @@ var FlexDirective = /** @class */ (function (_super) {
         };
         switch (basis || '') {
             case '':
-                css = extendObject(clearStyles, { 'flex': grow + " " + shrink + " 0.000000001px" });
+                css = extendObject$1(clearStyles, { 'flex': grow + " " + shrink + " 0.000000001px" });
                 break;
             case 'initial': // default
             case 'nogrow':
                 grow = 0;
-                css = extendObject(clearStyles, { 'flex': '0 1 auto' });
+                css = extendObject$1(clearStyles, { 'flex': '0 1 auto' });
                 break;
             case 'grow':
-                css = extendObject(clearStyles, { 'flex': '1 1 100%' });
+                css = extendObject$1(clearStyles, { 'flex': '1 1 100%' });
                 break;
             case 'noshrink':
                 shrink = 0;
-                css = extendObject(clearStyles, { 'flex': '1 0 auto' });
+                css = extendObject$1(clearStyles, { 'flex': '1 0 auto' });
                 break;
             case 'auto':
-                css = extendObject(clearStyles, { 'flex': grow + " " + shrink + " auto" });
+                css = extendObject$1(clearStyles, { 'flex': grow + " " + shrink + " auto" });
                 break;
             case 'none':
                 grow = 0;
                 shrink = 0;
-                css = extendObject(clearStyles, { 'flex': '0 0 auto' });
+                css = extendObject$1(clearStyles, { 'flex': '0 0 auto' });
                 break;
             default:
                 var /** @type {?} */ hasCalc = String(basis).indexOf('calc') > -1;
@@ -3576,7 +4724,7 @@ var FlexDirective = /** @class */ (function (_super) {
                 if (basis === '0px') {
                     basis = '0%';
                 }
-                css = extendObject(clearStyles, {
+                css = extendObject$1(clearStyles, {
                     // fix issue #5345
                     'flex': grow + " " + shrink + " " + (isValue ? basis : '100%')
                 });
@@ -3592,7 +4740,7 @@ var FlexDirective = /** @class */ (function (_super) {
         var /** @type {?} */ isFixed = !grow && !shrink;
         css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
         css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
-        return extendObject(css, { 'box-sizing': 'border-box' });
+        return extendObject$1(css, { 'box-sizing': 'border-box' });
     };
     FlexDirective.decorators = [
         { type: core.Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
@@ -3624,6 +4772,583 @@ var FlexDirective = /** @class */ (function (_super) {
         "flexLtXl": [{ type: core.Input, args: ['fxFlex.lt-xl',] },],
     };
     return FlexDirective;
+}(BaseFxDirective));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'flex-order' flexbox styling directive
+ * Configures the positional ordering of the element in a sorted layout container
+ * @see https://css-tricks.com/almanac/properties/o/order/
+ */
+var FlexOrderDirective = /** @class */ (function (_super) {
+    __extends(FlexOrderDirective, _super);
+    /* tslint:enable */
+    function FlexOrderDirective(monitor, elRef, styleUtils) {
+        return _super.call(this, monitor, elRef, styleUtils) || this;
+    }
+    Object.defineProperty(FlexOrderDirective.prototype, "order", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('order', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderXs", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderGtXs", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderGtLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtXl", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('orderLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
+    /**
+     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     */
+    /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
+    FlexOrderDirective.prototype.ngOnChanges = /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        if (changes['order'] != null || this._mqActivation) {
+            this._updateWithValue();
+        }
+    };
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
+    FlexOrderDirective.prototype.ngOnInit = /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        this._listenForMediaQueryChanges('order', '0', function (changes) {
+            _this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    };
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @param {?=} value
+     * @return {?}
+     */
+    FlexOrderDirective.prototype._updateWithValue = /**
+     * @param {?=} value
+     * @return {?}
+     */
+    function (value) {
+        value = value || this._queryInput('order') || '0';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        this._applyStyleToElement(this._buildCSS(value));
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    FlexOrderDirective.prototype._buildCSS = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        value = parseInt(value, 10);
+        return { order: isNaN(value) ? 0 : value };
+    };
+    FlexOrderDirective.decorators = [
+        { type: core.Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" },] },
+    ];
+    /** @nocollapse */
+    FlexOrderDirective.ctorParameters = function () { return [
+        { type: MediaMonitor, },
+        { type: core.ElementRef, },
+        { type: StyleUtils, },
+    ]; };
+    FlexOrderDirective.propDecorators = {
+        "order": [{ type: core.Input, args: ['fxFlexOrder',] },],
+        "orderXs": [{ type: core.Input, args: ['fxFlexOrder.xs',] },],
+        "orderSm": [{ type: core.Input, args: ['fxFlexOrder.sm',] },],
+        "orderMd": [{ type: core.Input, args: ['fxFlexOrder.md',] },],
+        "orderLg": [{ type: core.Input, args: ['fxFlexOrder.lg',] },],
+        "orderXl": [{ type: core.Input, args: ['fxFlexOrder.xl',] },],
+        "orderGtXs": [{ type: core.Input, args: ['fxFlexOrder.gt-xs',] },],
+        "orderGtSm": [{ type: core.Input, args: ['fxFlexOrder.gt-sm',] },],
+        "orderGtMd": [{ type: core.Input, args: ['fxFlexOrder.gt-md',] },],
+        "orderGtLg": [{ type: core.Input, args: ['fxFlexOrder.gt-lg',] },],
+        "orderLtSm": [{ type: core.Input, args: ['fxFlexOrder.lt-sm',] },],
+        "orderLtMd": [{ type: core.Input, args: ['fxFlexOrder.lt-md',] },],
+        "orderLtLg": [{ type: core.Input, args: ['fxFlexOrder.lt-lg',] },],
+        "orderLtXl": [{ type: core.Input, args: ['fxFlexOrder.lt-xl',] },],
+    };
+    return FlexOrderDirective;
+}(BaseFxDirective));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * 'flex-offset' flexbox styling directive
+ * Configures the 'margin-left' of the element in a layout container
+ */
+var FlexOffsetDirective = /** @class */ (function (_super) {
+    __extends(FlexOffsetDirective, _super);
+    /* tslint:enable */
+    function FlexOffsetDirective(monitor, elRef, _container, _directionality, styleUtils) {
+        var _this = _super.call(this, monitor, elRef, styleUtils) || this;
+        _this._container = _container;
+        _this._directionality = _directionality;
+        /**
+         * The flex-direction of this element's host container. Defaults to 'row'.
+         */
+        _this._layout = 'row';
+        _this._directionWatcher =
+            _this._directionality.change.subscribe(_this._updateWithValue.bind(_this));
+        _this.watchParentFlow();
+        return _this;
+    }
+    Object.defineProperty(FlexOffsetDirective.prototype, "offset", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offset', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXs", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtXl", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtXs", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('offsetGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
+    /**
+     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     */
+    /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
+    FlexOffsetDirective.prototype.ngOnChanges = /**
+     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        if (changes['offset'] != null || this._mqActivation) {
+            this._updateWithValue();
+        }
+    };
+    /**
+     * Cleanup
+     */
+    /**
+     * Cleanup
+     * @return {?}
+     */
+    FlexOffsetDirective.prototype.ngOnDestroy = /**
+     * Cleanup
+     * @return {?}
+     */
+    function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+        if (this._directionWatcher) {
+            this._directionWatcher.unsubscribe();
+        }
+    };
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
+    FlexOffsetDirective.prototype.ngOnInit = /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        this._listenForMediaQueryChanges('offset', 0, function (changes) {
+            _this._updateWithValue(changes.value);
+        });
+    };
+    /**
+     * If parent flow-direction changes, then update the margin property
+     * used to offset
+     */
+    /**
+     * If parent flow-direction changes, then update the margin property
+     * used to offset
+     * @return {?}
+     */
+    FlexOffsetDirective.prototype.watchParentFlow = /**
+     * If parent flow-direction changes, then update the margin property
+     * used to offset
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (this._container) {
+            // Subscribe to layout immediate parent direction changes (if any)
+            this._layoutWatcher = this._container.layout$.subscribe(function (direction) {
+                // `direction` === null if parent container does not have a `fxLayout`
+                // `direction` === null if parent container does not have a `fxLayout`
+                _this._onLayoutChange(direction);
+            });
+        }
+    };
+    /**
+     * Caches the parent container's 'flex-direction' and updates the element's style.
+     * Used as a handler for layout change events from the parent flex container.
+     */
+    /**
+     * Caches the parent container's 'flex-direction' and updates the element's style.
+     * Used as a handler for layout change events from the parent flex container.
+     * @param {?=} direction
+     * @return {?}
+     */
+    FlexOffsetDirective.prototype._onLayoutChange = /**
+     * Caches the parent container's 'flex-direction' and updates the element's style.
+     * Used as a handler for layout change events from the parent flex container.
+     * @param {?=} direction
+     * @return {?}
+     */
+    function (direction) {
+        this._layout = direction || this._layout || 'row';
+        this._updateWithValue();
+    };
+    /**
+     * Using the current fxFlexOffset value, update the inline CSS
+     * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
+     *       otherwise `margin-top` is used for the offset.
+     */
+    /**
+     * Using the current fxFlexOffset value, update the inline CSS
+     * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
+     *       otherwise `margin-top` is used for the offset.
+     * @param {?=} value
+     * @return {?}
+     */
+    FlexOffsetDirective.prototype._updateWithValue = /**
+     * Using the current fxFlexOffset value, update the inline CSS
+     * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
+     *       otherwise `margin-top` is used for the offset.
+     * @param {?=} value
+     * @return {?}
+     */
+    function (value) {
+        value = value || this._queryInput('offset') || 0;
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        this._applyStyleToElement(this._buildCSS(value));
+    };
+    /**
+     * @param {?} offset
+     * @return {?}
+     */
+    FlexOffsetDirective.prototype._buildCSS = /**
+     * @param {?} offset
+     * @return {?}
+     */
+    function (offset) {
+        var /** @type {?} */ isPercent = String(offset).indexOf('%') > -1;
+        var /** @type {?} */ isPx = String(offset).indexOf('px') > -1;
+        if (!isPx && !isPercent && !isNaN(offset)) {
+            offset = offset + '%';
+        }
+        // The flex-direction of this element's flex container. Defaults to 'row'.
+        var /** @type {?} */ isRtl = this._directionality.value === 'rtl';
+        var /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
+        var /** @type {?} */ horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
+        return isFlowHorizontal(layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) :
+            { 'margin-top': "" + offset };
+        var _a;
+    };
+    FlexOffsetDirective.decorators = [
+        { type: core.Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" },] },
+    ];
+    /** @nocollapse */
+    FlexOffsetDirective.ctorParameters = function () { return [
+        { type: MediaMonitor, },
+        { type: core.ElementRef, },
+        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.SkipSelf },] },
+        { type: bidi.Directionality, },
+        { type: StyleUtils, },
+    ]; };
+    FlexOffsetDirective.propDecorators = {
+        "offset": [{ type: core.Input, args: ['fxFlexOffset',] },],
+        "offsetXs": [{ type: core.Input, args: ['fxFlexOffset.xs',] },],
+        "offsetSm": [{ type: core.Input, args: ['fxFlexOffset.sm',] },],
+        "offsetMd": [{ type: core.Input, args: ['fxFlexOffset.md',] },],
+        "offsetLg": [{ type: core.Input, args: ['fxFlexOffset.lg',] },],
+        "offsetXl": [{ type: core.Input, args: ['fxFlexOffset.xl',] },],
+        "offsetLtSm": [{ type: core.Input, args: ['fxFlexOffset.lt-sm',] },],
+        "offsetLtMd": [{ type: core.Input, args: ['fxFlexOffset.lt-md',] },],
+        "offsetLtLg": [{ type: core.Input, args: ['fxFlexOffset.lt-lg',] },],
+        "offsetLtXl": [{ type: core.Input, args: ['fxFlexOffset.lt-xl',] },],
+        "offsetGtXs": [{ type: core.Input, args: ['fxFlexOffset.gt-xs',] },],
+        "offsetGtSm": [{ type: core.Input, args: ['fxFlexOffset.gt-sm',] },],
+        "offsetGtMd": [{ type: core.Input, args: ['fxFlexOffset.gt-md',] },],
+        "offsetGtLg": [{ type: core.Input, args: ['fxFlexOffset.gt-lg',] },],
+    };
+    return FlexOffsetDirective;
 }(BaseFxDirective));
 
 /**
@@ -3924,148 +5649,149 @@ var FlexFillDirective = /** @class */ (function (_super) {
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * 'flex-offset' flexbox styling directive
- * Configures the 'margin-left' of the element in a layout container
+ * 'layout-align' flexbox styling directive
+ *  Defines positioning of child elements along main and cross axis in a layout container
+ *  Optional values: {main-axis} values or {main-axis cross-axis} value pairs
+ *
+ *  \@see https://css-tricks.com/almanac/properties/j/justify-content/
+ *  \@see https://css-tricks.com/almanac/properties/a/align-items/
+ *  \@see https://css-tricks.com/almanac/properties/a/align-content/
  */
-var FlexOffsetDirective = /** @class */ (function (_super) {
-    __extends(FlexOffsetDirective, _super);
+var LayoutAlignDirective = /** @class */ (function (_super) {
+    __extends(LayoutAlignDirective, _super);
     /* tslint:enable */
-    function FlexOffsetDirective(monitor, elRef, _container, _directionality, styleUtils) {
+    function LayoutAlignDirective(monitor, elRef, container, styleUtils) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
-        _this._container = _container;
-        _this._directionality = _directionality;
-        /**
-         * The flex-direction of this element's host container. Defaults to 'row'.
-         */
         _this._layout = 'row';
-        _this._directionWatcher =
-            _this._directionality.change.subscribe(_this._updateWithValue.bind(_this));
-        _this.watchParentFlow();
+        if (container) {
+            // Subscribe to layout direction changes
+            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
+        }
         return _this;
     }
-    Object.defineProperty(FlexOffsetDirective.prototype, "offset", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "align", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offset', val); },
+        function (val) { this._cacheInput('align', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXs", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignXs", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetXs', val); },
+        function (val) { this._cacheInput('alignXs', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetSm", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignSm", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetSm', val); },
+        function (val) { this._cacheInput('alignSm', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetMd", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetMd', val); },
+        function (val) { this._cacheInput('alignMd', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLg", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetLg', val); },
+        function (val) { this._cacheInput('alignLg', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetXl', val); },
+        function (val) { this._cacheInput('alignXl', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtSm", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtXs", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetLtSm', val); },
+        function (val) { this._cacheInput('alignGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtMd", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetLtMd', val); },
+        function (val) { this._cacheInput('alignGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtLg", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetLtLg', val); },
+        function (val) { this._cacheInput('alignGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtXl", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetLtXl', val); },
+        function (val) { this._cacheInput('alignGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtXs", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtSm", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetGtXs', val); },
+        function (val) { this._cacheInput('alignLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtMd", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetGtSm', val); },
+        function (val) { this._cacheInput('alignLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtLg", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetGtMd', val); },
+        function (val) { this._cacheInput('alignLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtXl", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('offsetGtLg', val); },
+        function (val) { this._cacheInput('alignLtXl', val); },
         enumerable: true,
         configurable: true
     });
@@ -4073,32 +5799,44 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
     // Lifecycle Methods
     // *********************************************
     /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
      * @param {?} changes
      * @return {?}
      */
-    FlexOffsetDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
+    LayoutAlignDirective.prototype.ngOnChanges = /**
      * @param {?} changes
      * @return {?}
      */
     function (changes) {
-        if (changes['offset'] != null || this._mqActivation) {
+        if (changes['align'] != null || this._mqActivation) {
             this._updateWithValue();
         }
     };
     /**
-     * Cleanup
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
      */
     /**
-     * Cleanup
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
      * @return {?}
      */
-    FlexOffsetDirective.prototype.ngOnDestroy = /**
-     * Cleanup
+    LayoutAlignDirective.prototype.ngOnInit = /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        this._listenForMediaQueryChanges('align', 'start stretch', function (changes) {
+            _this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    };
+    /**
+     * @return {?}
+     */
+    LayoutAlignDirective.prototype.ngOnDestroy = /**
      * @return {?}
      */
     function () {
@@ -4106,647 +5844,531 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
-        if (this._directionWatcher) {
-            this._directionWatcher.unsubscribe();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('offset', 0, function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-    };
-    /**
-     * If parent flow-direction changes, then update the margin property
-     * used to offset
-     */
-    /**
-     * If parent flow-direction changes, then update the margin property
-     * used to offset
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype.watchParentFlow = /**
-     * If parent flow-direction changes, then update the margin property
-     * used to offset
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        if (this._container) {
-            // Subscribe to layout immediate parent direction changes (if any)
-            this._layoutWatcher = this._container.layout$.subscribe(function (direction) {
-                // `direction` === null if parent container does not have a `fxLayout`
-                // `direction` === null if parent container does not have a `fxLayout`
-                _this._onLayoutChange(direction);
-            });
-        }
-    };
-    /**
-     * Caches the parent container's 'flex-direction' and updates the element's style.
-     * Used as a handler for layout change events from the parent flex container.
-     */
-    /**
-     * Caches the parent container's 'flex-direction' and updates the element's style.
-     * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} direction
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype._onLayoutChange = /**
-     * Caches the parent container's 'flex-direction' and updates the element's style.
-     * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} direction
-     * @return {?}
-     */
-    function (direction) {
-        this._layout = direction || this._layout || 'row';
-        this._updateWithValue();
-    };
-    /**
-     * Using the current fxFlexOffset value, update the inline CSS
-     * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
-     *       otherwise `margin-top` is used for the offset.
-     */
-    /**
-     * Using the current fxFlexOffset value, update the inline CSS
-     * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
-     *       otherwise `margin-top` is used for the offset.
-     * @param {?=} value
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype._updateWithValue = /**
-     * Using the current fxFlexOffset value, update the inline CSS
-     * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
-     *       otherwise `margin-top` is used for the offset.
-     * @param {?=} value
-     * @return {?}
-     */
-    function (value) {
-        value = value || this._queryInput('offset') || 0;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    };
-    /**
-     * @param {?} offset
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype._buildCSS = /**
-     * @param {?} offset
-     * @return {?}
-     */
-    function (offset) {
-        var /** @type {?} */ isPercent = String(offset).indexOf('%') > -1;
-        var /** @type {?} */ isPx = String(offset).indexOf('px') > -1;
-        if (!isPx && !isPercent && !isNaN(offset)) {
-            offset = offset + '%';
-        }
-        var /** @type {?} */ horizontalLayoutKey = this._directionality.value === 'rtl' ? 'margin-right' : 'margin-left';
-        // The flex-direction of this element's flex container. Defaults to 'row'.
-        var /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
-        return isFlowHorizontal(layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) :
-            { 'margin-top': "" + offset };
-        var _a;
-    };
-    FlexOffsetDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" },] },
-    ];
-    /** @nocollapse */
-    FlexOffsetDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.SkipSelf },] },
-        { type: Directionality, },
-        { type: StyleUtils, },
-    ]; };
-    FlexOffsetDirective.propDecorators = {
-        "offset": [{ type: core.Input, args: ['fxFlexOffset',] },],
-        "offsetXs": [{ type: core.Input, args: ['fxFlexOffset.xs',] },],
-        "offsetSm": [{ type: core.Input, args: ['fxFlexOffset.sm',] },],
-        "offsetMd": [{ type: core.Input, args: ['fxFlexOffset.md',] },],
-        "offsetLg": [{ type: core.Input, args: ['fxFlexOffset.lg',] },],
-        "offsetXl": [{ type: core.Input, args: ['fxFlexOffset.xl',] },],
-        "offsetLtSm": [{ type: core.Input, args: ['fxFlexOffset.lt-sm',] },],
-        "offsetLtMd": [{ type: core.Input, args: ['fxFlexOffset.lt-md',] },],
-        "offsetLtLg": [{ type: core.Input, args: ['fxFlexOffset.lt-lg',] },],
-        "offsetLtXl": [{ type: core.Input, args: ['fxFlexOffset.lt-xl',] },],
-        "offsetGtXs": [{ type: core.Input, args: ['fxFlexOffset.gt-xs',] },],
-        "offsetGtSm": [{ type: core.Input, args: ['fxFlexOffset.gt-sm',] },],
-        "offsetGtMd": [{ type: core.Input, args: ['fxFlexOffset.gt-md',] },],
-        "offsetGtLg": [{ type: core.Input, args: ['fxFlexOffset.gt-lg',] },],
-    };
-    return FlexOffsetDirective;
-}(BaseFxDirective));
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * 'flex-order' flexbox styling directive
- * Configures the positional ordering of the element in a sorted layout container
- * @see https://css-tricks.com/almanac/properties/o/order/
- */
-var FlexOrderDirective = /** @class */ (function (_super) {
-    __extends(FlexOrderDirective, _super);
-    /* tslint:enable */
-    function FlexOrderDirective(monitor, elRef, styleUtils) {
-        return _super.call(this, monitor, elRef, styleUtils) || this;
-    }
-    Object.defineProperty(FlexOrderDirective.prototype, "order", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('order', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    FlexOrderDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['order'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    FlexOrderDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('order', '0', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
     };
     // *********************************************
     // Protected methods
     // *********************************************
     /**
+     *
+     */
+    /**
+     *
      * @param {?=} value
      * @return {?}
      */
-    FlexOrderDirective.prototype._updateWithValue = /**
+    LayoutAlignDirective.prototype._updateWithValue = /**
+     *
      * @param {?=} value
      * @return {?}
      */
     function (value) {
-        value = value || this._queryInput('order') || '0';
+        value = value || this._queryInput('align') || 'start stretch';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
         this._applyStyleToElement(this._buildCSS(value));
+        this._allowStretching(value, !this._layout ? 'row' : this._layout);
     };
     /**
-     * @param {?} value
+     * Cache the parent container 'flex-direction' and update the 'flex' styles
+     */
+    /**
+     * Cache the parent container 'flex-direction' and update the 'flex' styles
+     * @param {?} direction
      * @return {?}
      */
-    FlexOrderDirective.prototype._buildCSS = /**
-     * @param {?} value
+    LayoutAlignDirective.prototype._onLayoutChange = /**
+     * Cache the parent container 'flex-direction' and update the 'flex' styles
+     * @param {?} direction
      * @return {?}
      */
-    function (value) {
-        value = parseInt(value, 10);
-        return { order: isNaN(value) ? 0 : value };
+    function (direction) {
+        var _this = this;
+        this._layout = (direction || '').toLowerCase();
+        if (!LAYOUT_VALUES$1.find(function (x) { return x === _this._layout; })) {
+            this._layout = 'row';
+        }
+        var /** @type {?} */ value = this._queryInput('align') || 'start stretch';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        this._allowStretching(value, this._layout || 'row');
     };
-    FlexOrderDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" },] },
+    /**
+     * @param {?} align
+     * @return {?}
+     */
+    LayoutAlignDirective.prototype._buildCSS = /**
+     * @param {?} align
+     * @return {?}
+     */
+    function (align) {
+        var /** @type {?} */ css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1]; // tslint:disable-line:variable-name
+        // Main axis
+        switch (main_axis) {
+            case 'center':
+                css['justify-content'] = 'center';
+                break;
+            case 'space-around':
+                css['justify-content'] = 'space-around';
+                break;
+            case 'space-between':
+                css['justify-content'] = 'space-between';
+                break;
+            case 'space-evenly':
+                css['justify-content'] = 'space-evenly';
+                break;
+            case 'end':
+            case 'flex-end':
+                css['justify-content'] = 'flex-end';
+                break;
+            case 'start':
+            case 'flex-start':
+            default:
+                css['justify-content'] = 'flex-start'; // default main axis
+                break;
+        }
+        // Cross-axis
+        switch (cross_axis) {
+            case 'start':
+            case 'flex-start':
+                css['align-items'] = css['align-content'] = 'flex-start';
+                break;
+            case 'baseline':
+                css['align-items'] = 'baseline';
+                break;
+            case 'center':
+                css['align-items'] = css['align-content'] = 'center';
+                break;
+            case 'end':
+            case 'flex-end':
+                css['align-items'] = css['align-content'] = 'flex-end';
+                break;
+            case 'stretch':
+            default:
+                // 'stretch'
+                css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
+                break;
+        }
+        return extendObject$1(css, {
+            'display': 'flex',
+            'flex-direction': this._layout || 'row',
+            'box-sizing': 'border-box'
+        });
+    };
+    /**
+     * Update container element to 'stretch' as needed...
+     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
+     */
+    /**
+     * Update container element to 'stretch' as needed...
+     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
+     * @param {?} align
+     * @param {?} layout
+     * @return {?}
+     */
+    LayoutAlignDirective.prototype._allowStretching = /**
+     * Update container element to 'stretch' as needed...
+     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
+     * @param {?} align
+     * @param {?} layout
+     * @return {?}
+     */
+    function (align, layout) {
+        var _a = align.split(' '), cross_axis = _a[1]; // tslint:disable-line:variable-name
+        if (cross_axis == 'stretch') {
+            // Use `null` values to remove style
+            this._applyStyleToElement({
+                'box-sizing': 'border-box',
+                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
+                'max-height': isFlowHorizontal(layout) ? '100%' : null
+            });
+        }
+    };
+    LayoutAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" },] },
     ];
     /** @nocollapse */
-    FlexOrderDirective.ctorParameters = function () { return [
+    LayoutAlignDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: core.ElementRef, },
+        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.Self },] },
         { type: StyleUtils, },
     ]; };
-    FlexOrderDirective.propDecorators = {
-        "order": [{ type: core.Input, args: ['fxFlexOrder',] },],
-        "orderXs": [{ type: core.Input, args: ['fxFlexOrder.xs',] },],
-        "orderSm": [{ type: core.Input, args: ['fxFlexOrder.sm',] },],
-        "orderMd": [{ type: core.Input, args: ['fxFlexOrder.md',] },],
-        "orderLg": [{ type: core.Input, args: ['fxFlexOrder.lg',] },],
-        "orderXl": [{ type: core.Input, args: ['fxFlexOrder.xl',] },],
-        "orderGtXs": [{ type: core.Input, args: ['fxFlexOrder.gt-xs',] },],
-        "orderGtSm": [{ type: core.Input, args: ['fxFlexOrder.gt-sm',] },],
-        "orderGtMd": [{ type: core.Input, args: ['fxFlexOrder.gt-md',] },],
-        "orderGtLg": [{ type: core.Input, args: ['fxFlexOrder.gt-lg',] },],
-        "orderLtSm": [{ type: core.Input, args: ['fxFlexOrder.lt-sm',] },],
-        "orderLtMd": [{ type: core.Input, args: ['fxFlexOrder.lt-md',] },],
-        "orderLtLg": [{ type: core.Input, args: ['fxFlexOrder.lt-lg',] },],
-        "orderLtXl": [{ type: core.Input, args: ['fxFlexOrder.lt-xl',] },],
+    LayoutAlignDirective.propDecorators = {
+        "align": [{ type: core.Input, args: ['fxLayoutAlign',] },],
+        "alignXs": [{ type: core.Input, args: ['fxLayoutAlign.xs',] },],
+        "alignSm": [{ type: core.Input, args: ['fxLayoutAlign.sm',] },],
+        "alignMd": [{ type: core.Input, args: ['fxLayoutAlign.md',] },],
+        "alignLg": [{ type: core.Input, args: ['fxLayoutAlign.lg',] },],
+        "alignXl": [{ type: core.Input, args: ['fxLayoutAlign.xl',] },],
+        "alignGtXs": [{ type: core.Input, args: ['fxLayoutAlign.gt-xs',] },],
+        "alignGtSm": [{ type: core.Input, args: ['fxLayoutAlign.gt-sm',] },],
+        "alignGtMd": [{ type: core.Input, args: ['fxLayoutAlign.gt-md',] },],
+        "alignGtLg": [{ type: core.Input, args: ['fxLayoutAlign.gt-lg',] },],
+        "alignLtSm": [{ type: core.Input, args: ['fxLayoutAlign.lt-sm',] },],
+        "alignLtMd": [{ type: core.Input, args: ['fxLayoutAlign.lt-md',] },],
+        "alignLtLg": [{ type: core.Input, args: ['fxLayoutAlign.lt-lg',] },],
+        "alignLtXl": [{ type: core.Input, args: ['fxLayoutAlign.lt-xl',] },],
     };
-    return FlexOrderDirective;
+    return LayoutAlignDirective;
 }(BaseFxDirective));
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var /** @type {?} */ ALL_DIRECTIVES = [
+    LayoutDirective,
+    LayoutGapDirective,
+    LayoutAlignDirective,
+    FlexDirective,
+    FlexOrderDirective,
+    FlexOffsetDirective,
+    FlexFillDirective,
+    FlexAlignDirective,
+];
 /**
- * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
- * This is required for older versions of NgStyle and NgClass that require
- * the v1 API (but should use the v2 instances)
+ * *****************************************************************
+ * Define module for the Flex API
+ * *****************************************************************
  */
-var /**
- * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
- * This is required for older versions of NgStyle and NgClass that require
- * the v1 API (but should use the v2 instances)
- */
-RendererAdapter = /** @class */ (function () {
-    function RendererAdapter(_renderer) {
-        this._renderer = _renderer;
+var FlexModule = /** @class */ (function () {
+    function FlexModule() {
     }
-    /**
-     * @param {?} el
-     * @param {?} className
-     * @param {?} isAdd
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementClass = /**
-     * @param {?} el
-     * @param {?} className
-     * @param {?} isAdd
-     * @return {?}
-     */
-    function (el, className, isAdd) {
-        if (isAdd) {
-            this._renderer.addClass(el, className);
-        }
-        else {
-            this._renderer.removeClass(el, className);
-        }
-    };
-    /**
-     * @param {?} el
-     * @param {?} styleName
-     * @param {?} styleValue
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementStyle = /**
-     * @param {?} el
-     * @param {?} styleName
-     * @param {?} styleValue
-     * @return {?}
-     */
-    function (el, styleName, styleValue) {
-        if (styleValue) {
-            this._renderer.setStyle(el, styleName, styleValue);
-        }
-        else {
-            this._renderer.removeStyle(el, styleName);
-        }
-    };
-    // new API is forwarded
-    /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    RendererAdapter.prototype.addClass = /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    function (el, name) {
-        this._renderer.addClass(el, name);
-    };
-    /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    RendererAdapter.prototype.removeClass = /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    function (el, name) {
-        this._renderer.removeClass(el, name);
-    };
-    /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?} value
-     * @param {?=} flags
-     * @return {?}
-     */
-    RendererAdapter.prototype.setStyle = /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?} value
-     * @param {?=} flags
-     * @return {?}
-     */
-    function (el, style, value, flags) {
-        this._renderer.setStyle(el, style, value, flags);
-    };
-    /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?=} flags
-     * @return {?}
-     */
-    RendererAdapter.prototype.removeStyle = /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?=} flags
-     * @return {?}
-     */
-    function (el, style, flags) {
-        this._renderer.removeStyle(el, style, flags);
-    };
-    // ******************************************************************
-    // !! Renderer is an abstract class with abstract methods
-    //
-    // These are implementation of those methods... and do NOTHING since
-    // we only use setElementStyle() and setElementClass()
-    // ******************************************************************
-    /* tslint:disable */
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.animate = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('animate'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.attachViewAfter = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('attachViewAfter'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.detachView = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('detachView'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.destroyView = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('destroyView'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createElement = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createElement'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createViewRoot = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createViewRoot'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createTemplateAnchor = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createTemplateAnchor'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createText = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createText'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.invokeElementMethod = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('invokeElementMethod'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.projectNodes = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('projectNodes'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.selectRootElement = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('selectRootElement'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setBindingDebugInfo = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setBindingDebugInfo'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementProperty = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setElementProperty'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementAttribute = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setElementAttribute'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setText = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setText'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.listen = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('listen'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.listenGlobal = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('listenGlobal'); };
-    return RendererAdapter;
+    FlexModule.decorators = [
+        { type: core.NgModule, args: [{
+                    imports: [CoreModule, bidi.BidiModule],
+                    declarations: ALL_DIRECTIVES.slice(),
+                    exports: ALL_DIRECTIVES.slice(),
+                    providers: [
+                        StylesheetMap,
+                        StyleUtils,
+                        BROWSER_PROVIDER,
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    FlexModule.ctorParameters = function () { return []; };
+    return FlexModule;
 }());
+
 /**
- * @param {?} methodName
- * @return {?}
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
  */
-function _notImplemented(methodName) {
-    return new Error("The method RendererAdapter::" + methodName + "() has not been implemented");
-}
+/**
+ * This directive provides a responsive API for the HTML <img> 'src' attribute
+ * and will update the img.src property upon each responsive activation.
+ *
+ * e.g.
+ *      <img src="defaultScene.jpg" src.xs="mobileScene.jpg"></img>
+ *
+ * @see https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-src/
+ */
+var ImgSrcDirective = /** @class */ (function (_super) {
+    __extends(ImgSrcDirective, _super);
+    /* tslint:enable */
+    function ImgSrcDirective(_elRef, _monitor, _styler, _platformId, _serverModuleLoaded) {
+        var _this = _super.call(this, _monitor, _elRef, _styler) || this;
+        _this._elRef = _elRef;
+        _this._monitor = _monitor;
+        _this._styler = _styler;
+        _this._platformId = _platformId;
+        _this._serverModuleLoaded = _serverModuleLoaded;
+        _this._cacheInput('src', _elRef.nativeElement.getAttribute('src') || '');
+        if (common.isPlatformServer(_this._platformId) && _this._serverModuleLoaded) {
+            _this.nativeElement.setAttribute('src', '');
+        }
+        return _this;
+    }
+    Object.defineProperty(ImgSrcDirective.prototype, "srcBase", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this.cacheDefaultSrc(val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcXs", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcXl", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtXl", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtXs", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtSm", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtMd", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtLg", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) { this._cacheInput('srcGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Listen for responsive changes to update the img.src attribute
+     */
+    /**
+     * Listen for responsive changes to update the img.src attribute
+     * @return {?}
+     */
+    ImgSrcDirective.prototype.ngOnInit = /**
+     * Listen for responsive changes to update the img.src attribute
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        if (this.hasResponsiveKeys) {
+            // Listen for responsive changes
+            this._listenForMediaQueryChanges('src', this.defaultSrc, function () {
+                _this._updateSrcFor();
+            });
+        }
+        this._updateSrcFor();
+    };
+    /**
+     * Update the 'src' property of the host <img> element
+     */
+    /**
+     * Update the 'src' property of the host <img> element
+     * @return {?}
+     */
+    ImgSrcDirective.prototype.ngOnChanges = /**
+     * Update the 'src' property of the host <img> element
+     * @return {?}
+     */
+    function () {
+        if (this.hasInitialized) {
+            this._updateSrcFor();
+        }
+    };
+    /**
+     * Use the [responsively] activated input value to update
+     * the host img src attribute or assign a default `img.src=''`
+     * if the src has not been defined.
+     *
+     * Do nothing to standard `<img src="">` usages, only when responsive
+     * keys are present do we actually call `setAttribute()`
+     */
+    /**
+     * Use the [responsively] activated input value to update
+     * the host img src attribute or assign a default `img.src=''`
+     * if the src has not been defined.
+     *
+     * Do nothing to standard `<img src="">` usages, only when responsive
+     * keys are present do we actually call `setAttribute()`
+     * @return {?}
+     */
+    ImgSrcDirective.prototype._updateSrcFor = /**
+     * Use the [responsively] activated input value to update
+     * the host img src attribute or assign a default `img.src=''`
+     * if the src has not been defined.
+     *
+     * Do nothing to standard `<img src="">` usages, only when responsive
+     * keys are present do we actually call `setAttribute()`
+     * @return {?}
+     */
+    function () {
+        if (this.hasResponsiveKeys) {
+            var /** @type {?} */ url = this.activatedValue || this.defaultSrc;
+            if (common.isPlatformServer(this._platformId) && this._serverModuleLoaded) {
+                this._styler.applyStyleToElement(this.nativeElement, { 'content': url ? "url(" + url + ")" : '' });
+            }
+            else {
+                this.nativeElement.setAttribute('src', String(url));
+            }
+        }
+    };
+    /**
+     * Cache initial value of 'src', this will be used as fallback when breakpoint
+     * activations change.
+     * NOTE: The default 'src' property is not bound using @Input(), so perform
+     * a post-ngOnInit() lookup of the default src value (if any).
+     */
+    /**
+     * Cache initial value of 'src', this will be used as fallback when breakpoint
+     * activations change.
+     * NOTE: The default 'src' property is not bound using \@Input(), so perform
+     * a post-ngOnInit() lookup of the default src value (if any).
+     * @param {?=} value
+     * @return {?}
+     */
+    ImgSrcDirective.prototype.cacheDefaultSrc = /**
+     * Cache initial value of 'src', this will be used as fallback when breakpoint
+     * activations change.
+     * NOTE: The default 'src' property is not bound using \@Input(), so perform
+     * a post-ngOnInit() lookup of the default src value (if any).
+     * @param {?=} value
+     * @return {?}
+     */
+    function (value) {
+        this._cacheInput('src', value || '');
+    };
+    Object.defineProperty(ImgSrcDirective.prototype, "defaultSrc", {
+        /**
+         * Empty values are maintained, undefined values are exposed as ''
+         */
+        get: /**
+         * Empty values are maintained, undefined values are exposed as ''
+         * @return {?}
+         */
+        function () {
+            return this._queryInput('src') || '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "hasResponsiveKeys", {
+        /**
+         * Does the <img> have 1 or more src.<xxx> responsive inputs
+         * defined... these will be mapped to activated breakpoints.
+         */
+        get: /**
+         * Does the <img> have 1 or more src.<xxx> responsive inputs
+         * defined... these will be mapped to activated breakpoints.
+         * @return {?}
+         */
+        function () {
+            return Object.keys(this._inputMap).length > 1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ImgSrcDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: "\n  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],\n  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],\n  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]\n"
+                },] },
+    ];
+    /** @nocollapse */
+    ImgSrcDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+        { type: MediaMonitor, },
+        { type: StyleUtils, },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
+        { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] },] },
+    ]; };
+    ImgSrcDirective.propDecorators = {
+        "srcBase": [{ type: core.Input, args: ['src',] },],
+        "srcXs": [{ type: core.Input, args: ['src.xs',] },],
+        "srcSm": [{ type: core.Input, args: ['src.sm',] },],
+        "srcMd": [{ type: core.Input, args: ['src.md',] },],
+        "srcLg": [{ type: core.Input, args: ['src.lg',] },],
+        "srcXl": [{ type: core.Input, args: ['src.xl',] },],
+        "srcLtSm": [{ type: core.Input, args: ['src.lt-sm',] },],
+        "srcLtMd": [{ type: core.Input, args: ['src.lt-md',] },],
+        "srcLtLg": [{ type: core.Input, args: ['src.lt-lg',] },],
+        "srcLtXl": [{ type: core.Input, args: ['src.lt-xl',] },],
+        "srcGtXs": [{ type: core.Input, args: ['src.gt-xs',] },],
+        "srcGtSm": [{ type: core.Input, args: ['src.gt-sm',] },],
+        "srcGtMd": [{ type: core.Input, args: ['src.gt-md',] },],
+        "srcGtLg": [{ type: core.Input, args: ['src.gt-lg',] },],
+    };
+    return ImgSrcDirective;
+}(BaseFxDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -5064,505 +6686,6 @@ var ClassDirective = /** @class */ (function (_super) {
         "ngClassGtLg": [{ type: core.Input, args: ['ngClass.gt-lg',] },],
     };
     return ClassDirective;
-}(BaseFxDirective));
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-
-/**
- * NgStyle allowed inputs
- */
-var   /**
- * NgStyle allowed inputs
- */
-NgStyleKeyValue = /** @class */ (function () {
-    function NgStyleKeyValue(key, value, noQuotes) {
-        if (noQuotes === void 0) { noQuotes = true; }
-        this.key = key;
-        this.value = value;
-        this.key = noQuotes ? key.replace(/['"]/g, '').trim() : key.trim();
-        this.value = noQuotes ? value.replace(/['"]/g, '').trim() : value.trim();
-        this.value = this.value.replace(/;/, '');
-    }
-    return NgStyleKeyValue;
-}());
-/**
- * Transform Operators for \@angular/flex-layout NgStyle Directive
- */
-var /** @type {?} */ ngStyleUtils = {
-    getType: getType,
-    buildRawList: buildRawList,
-    buildMapFromList: buildMapFromList,
-    buildMapFromSet: buildMapFromSet
-};
-/**
- * @param {?} target
- * @return {?}
- */
-function getType(target) {
-    var /** @type {?} */ what = typeof target;
-    if (what === 'object') {
-        return (target.constructor === Array) ? 'array' :
-            (target.constructor === Set) ? 'set' : 'object';
-    }
-    return what;
-}
-/**
- * Split string of key:value pairs into Array of k-v pairs
- * e.g.  'key:value; key:value; key:value;' -> ['key:value',...]
- * @param {?} source
- * @param {?=} delimiter
- * @return {?}
- */
-function buildRawList(source, delimiter) {
-    if (delimiter === void 0) { delimiter = ';'; }
-    return String(source)
-        .trim()
-        .split(delimiter)
-        .map(function (val) { return val.trim(); })
-        .filter(function (val) { return val !== ''; });
-}
-/**
- * Convert array of key:value strings to a iterable map object
- * @param {?} styles
- * @param {?=} sanitize
- * @return {?}
- */
-function buildMapFromList(styles, sanitize) {
-    var /** @type {?} */ sanitizeValue = function (it) {
-        if (sanitize) {
-            it.value = sanitize(it.value);
-        }
-        return it;
-    };
-    return styles
-        .map(stringToKeyValue)
-        .filter(function (entry) { return !!entry; })
-        .map(sanitizeValue)
-        .reduce(keyValuesToMap, {});
-}
-/**
- * Convert Set<string> or raw Object to an iterable NgStyleMap
- * @param {?} source
- * @param {?=} sanitize
- * @return {?}
- */
-function buildMapFromSet(source, sanitize) {
-    var /** @type {?} */ list = new Array();
-    if (getType(source) == 'set') {
-        source.forEach(function (entry) { return list.push(entry); });
-    }
-    else {
-        // simple hashmap
-        Object.keys(source).forEach(function (key) {
-            list.push(key + ":" + source[key]);
-        });
-    }
-    return buildMapFromList(list, sanitize);
-}
-/**
- * Convert 'key:value' -> [key, value]
- * @param {?} it
- * @return {?}
- */
-function stringToKeyValue(it) {
-    var _a = it.split(':'), key = _a[0], val = _a[1];
-    return val ? new NgStyleKeyValue(key, val) : null;
-}
-/**
- * Convert [ [key,value] ] -> { key : value }
- * @param {?} map
- * @param {?} entry
- * @return {?}
- */
-function keyValuesToMap(map$$1, entry) {
-    if (!!entry.key) {
-        map$$1[entry.key] = entry.value;
-    }
-    return map$$1;
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Directive to add responsive support for ngStyle.
- *
- */
-var StyleDirective = /** @class */ (function (_super) {
-    __extends(StyleDirective, _super);
-    /* tslint:enable */
-    /**
-     *  Constructor for the ngStyle subclass; which adds selectors and
-     *  a MediaQuery Activation Adapter
-     */
-    function StyleDirective(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance, _styler) {
-        var _this = _super.call(this, monitor, _ngEl, _styler) || this;
-        _this.monitor = monitor;
-        _this._sanitizer = _sanitizer;
-        _this._ngEl = _ngEl;
-        _this._renderer = _renderer;
-        _this._differs = _differs;
-        _this._ngStyleInstance = _ngStyleInstance;
-        _this._styler = _styler;
-        _this._configureAdapters();
-        return _this;
-    }
-    Object.defineProperty(StyleDirective.prototype, "ngStyleBase", {
-        set: /**
-         * Intercept ngStyle assignments so we cache the default styles
-         * which are merged with activated styles or used as fallbacks.
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) {
-            var /** @type {?} */ key = 'ngStyle';
-            this._base.cacheInput(key, val, true); // convert val to hashmap
-            this._ngStyleInstance.ngStyle = this._base.queryInput(key);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleXl', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtXl', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    // ******************************************************************
-    // Lifecycle Hooks
-    // ******************************************************************
-    /**
-     * For @Input changes on the current mq activation property
-     */
-    /**
-     * For \@Input changes on the current mq activation property
-     * @param {?} changes
-     * @return {?}
-     */
-    StyleDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (this._base.activeKey in changes) {
-            this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
-        }
-    };
-    /**
-     * @return {?}
-     */
-    StyleDirective.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        this._configureMQListener();
-    };
-    /**
-     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-     */
-    /**
-     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-     * @return {?}
-     */
-    StyleDirective.prototype.ngDoCheck = /**
-     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-     * @return {?}
-     */
-    function () {
-        this._ngStyleInstance.ngDoCheck();
-    };
-    /**
-     * @return {?}
-     */
-    StyleDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this._base.ngOnDestroy();
-        delete this._ngStyleInstance;
-    };
-    // ******************************************************************
-    // Internal Methods
-    // ******************************************************************
-    /**
-       * Configure adapters (that delegate to an internal ngClass instance) if responsive
-       * keys have been defined.
-       */
-    /**
-     * Configure adapters (that delegate to an internal ngClass instance) if responsive
-     * keys have been defined.
-     * @return {?}
-     */
-    StyleDirective.prototype._configureAdapters = /**
-     * Configure adapters (that delegate to an internal ngClass instance) if responsive
-     * keys have been defined.
-     * @return {?}
-     */
-    function () {
-        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
-        if (!this._ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
-            // defined on the same host element; since the responsive variations may be defined...
-            var /** @type {?} */ adapter = new RendererAdapter(this._renderer);
-            this._ngStyleInstance = new common.NgStyle(this._differs, this._ngEl, /** @type {?} */ (adapter));
-        }
-        this._buildCacheInterceptor();
-        this._fallbackToStyle();
-    };
-    /**
-     * Build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * Build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @param {?=} baseKey
-     * @return {?}
-     */
-    StyleDirective.prototype._configureMQListener = /**
-     * Build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @param {?=} baseKey
-     * @return {?}
-     */
-    function (baseKey) {
-        var _this = this;
-        if (baseKey === void 0) { baseKey = 'ngStyle'; }
-        var /** @type {?} */ fallbackValue = this._base.queryInput(baseKey);
-        this._base.listenForMediaQueryChanges(baseKey, fallbackValue, function (changes) {
-            _this._ngStyleInstance.ngStyle = changes.value || '';
-            _this._ngStyleInstance.ngDoCheck();
-        });
-    };
-    // ************************************************************************
-    // Private Internal Methods
-    // ************************************************************************
-    /**
-     * Build intercept to convert raw strings to ngStyleMap
-     */
-    /**
-     * Build intercept to convert raw strings to ngStyleMap
-     * @return {?}
-     */
-    StyleDirective.prototype._buildCacheInterceptor = /**
-     * Build intercept to convert raw strings to ngStyleMap
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        var /** @type {?} */ cacheInput = this._base.cacheInput.bind(this._base);
-        this._base.cacheInput = function (key, source, cacheRaw, merge) {
-            if (cacheRaw === void 0) { cacheRaw = false; }
-            if (merge === void 0) { merge = true; }
-            var /** @type {?} */ styles = _this._buildStyleMap(source);
-            if (merge) {
-                styles = extendObject({}, _this._base.inputMap['ngStyle'], styles);
-            }
-            cacheInput(key, styles, cacheRaw);
-        };
-    };
-    /**
-     * Convert raw strings to ngStyleMap; which is required by ngStyle
-     * NOTE: Raw string key-value pairs MUST be delimited by `;`
-     *       Comma-delimiters are not supported due to complexities of
-     *       possible style values such as `rgba(x,x,x,x)` and others
-     */
-    /**
-     * Convert raw strings to ngStyleMap; which is required by ngStyle
-     * NOTE: Raw string key-value pairs MUST be delimited by `;`
-     *       Comma-delimiters are not supported due to complexities of
-     *       possible style values such as `rgba(x,x,x,x)` and others
-     * @param {?} styles
-     * @return {?}
-     */
-    StyleDirective.prototype._buildStyleMap = /**
-     * Convert raw strings to ngStyleMap; which is required by ngStyle
-     * NOTE: Raw string key-value pairs MUST be delimited by `;`
-     *       Comma-delimiters are not supported due to complexities of
-     *       possible style values such as `rgba(x,x,x,x)` and others
-     * @param {?} styles
-     * @return {?}
-     */
-    function (styles) {
-        var _this = this;
-        var /** @type {?} */ sanitizer = function (val) {
-            // Always safe-guard (aka sanitize) style property values
-            return _this._sanitizer.sanitize(core.SecurityContext.STYLE, val) || '';
-        };
-        if (styles) {
-            switch (ngStyleUtils.getType(styles)) {
-                case 'string': return ngStyleUtils.buildMapFromList(ngStyleUtils.buildRawList(styles), sanitizer);
-                case 'array': return ngStyleUtils.buildMapFromList(/** @type {?} */ (styles), sanitizer);
-                case 'set': return ngStyleUtils.buildMapFromSet(styles, sanitizer);
-                default: return ngStyleUtils.buildMapFromSet(styles, sanitizer);
-            }
-        }
-        return styles;
-    };
-    /**
-     * Initial lookup of raw 'class' value (if any)
-     */
-    /**
-     * Initial lookup of raw 'class' value (if any)
-     * @return {?}
-     */
-    StyleDirective.prototype._fallbackToStyle = /**
-     * Initial lookup of raw 'class' value (if any)
-     * @return {?}
-     */
-    function () {
-        if (!this._base.queryInput('ngStyle')) {
-            this.ngStyleBase = this._getAttributeValue('style') || '';
-        }
-    };
-    StyleDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
-                },] },
-    ];
-    /** @nocollapse */
-    StyleDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: platformBrowser.DomSanitizer, },
-        { type: core.ElementRef, },
-        { type: core.Renderer2, },
-        { type: core.KeyValueDiffers, },
-        { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self },] },
-        { type: StyleUtils, },
-    ]; };
-    StyleDirective.propDecorators = {
-        "ngStyleBase": [{ type: core.Input, args: ['ngStyle',] },],
-        "ngStyleXs": [{ type: core.Input, args: ['ngStyle.xs',] },],
-        "ngStyleSm": [{ type: core.Input, args: ['ngStyle.sm',] },],
-        "ngStyleMd": [{ type: core.Input, args: ['ngStyle.md',] },],
-        "ngStyleLg": [{ type: core.Input, args: ['ngStyle.lg',] },],
-        "ngStyleXl": [{ type: core.Input, args: ['ngStyle.xl',] },],
-        "ngStyleLtSm": [{ type: core.Input, args: ['ngStyle.lt-sm',] },],
-        "ngStyleLtMd": [{ type: core.Input, args: ['ngStyle.lt-md',] },],
-        "ngStyleLtLg": [{ type: core.Input, args: ['ngStyle.lt-lg',] },],
-        "ngStyleLtXl": [{ type: core.Input, args: ['ngStyle.lt-xl',] },],
-        "ngStyleGtXs": [{ type: core.Input, args: ['ngStyle.gt-xs',] },],
-        "ngStyleGtSm": [{ type: core.Input, args: ['ngStyle.gt-sm',] },],
-        "ngStyleGtMd": [{ type: core.Input, args: ['ngStyle.gt-md',] },],
-        "ngStyleGtLg": [{ type: core.Input, args: ['ngStyle.gt-lg',] },],
-    };
-    return StyleDirective;
 }(BaseFxDirective));
 
 /**
@@ -6052,1270 +7175,746 @@ var ShowHideDirective = /** @class */ (function (_super) {
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * This directive provides a responsive API for the HTML <img> 'src' attribute
- * and will update the img.src property upon each responsive activation.
+ * Extends an object with the *enumerable* and *own* properties of one or more source objects,
+ * similar to Object.assign.
  *
- * e.g.
- *      <img src="defaultScene.jpg" src.xs="mobileScene.jpg"></img>
- *
- * @see https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-src/
+ * @param {?} dest The object which will have properties copied to it.
+ * @param {...?} sources The source objects from which properties will be copied.
+ * @return {?}
  */
-var ImgSrcDirective = /** @class */ (function (_super) {
-    __extends(ImgSrcDirective, _super);
-    /* tslint:enable */
-    function ImgSrcDirective(_elRef, _monitor, _styler, _platformId, _serverModuleLoaded) {
-        var _this = _super.call(this, _monitor, _elRef, _styler) || this;
-        _this._elRef = _elRef;
-        _this._monitor = _monitor;
-        _this._styler = _styler;
-        _this._platformId = _platformId;
-        _this._serverModuleLoaded = _serverModuleLoaded;
-        _this._cacheInput('src', _elRef.nativeElement.getAttribute('src') || '');
-        if (common.isPlatformServer(_this._platformId) && _this._serverModuleLoaded) {
-            _this.nativeElement.setAttribute('src', '');
+function extendObject$2(dest) {
+    var sources = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        sources[_i - 1] = arguments[_i];
+    }
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
+        var source = sources_1[_a];
+        if (source != null) {
+            for (var /** @type {?} */ key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
         }
+    }
+    return dest;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * NgStyle allowed inputs
+ */
+var /**
+ * NgStyle allowed inputs
+ */
+NgStyleKeyValue = /** @class */ (function () {
+    function NgStyleKeyValue(key, value, noQuotes) {
+        if (noQuotes === void 0) { noQuotes = true; }
+        this.key = key;
+        this.value = value;
+        this.key = noQuotes ? key.replace(/['"]/g, '').trim() : key.trim();
+        this.value = noQuotes ? value.replace(/['"]/g, '').trim() : value.trim();
+        this.value = this.value.replace(/;/, '');
+    }
+    return NgStyleKeyValue;
+}());
+/**
+ * Transform Operators for \@angular/flex-layout NgStyle Directive
+ */
+var /** @type {?} */ ngStyleUtils = {
+    getType: getType,
+    buildRawList: buildRawList,
+    buildMapFromList: buildMapFromList,
+    buildMapFromSet: buildMapFromSet
+};
+/**
+ * @param {?} target
+ * @return {?}
+ */
+function getType(target) {
+    var /** @type {?} */ what = typeof target;
+    if (what === 'object') {
+        return (target.constructor === Array) ? 'array' :
+            (target.constructor === Set) ? 'set' : 'object';
+    }
+    return what;
+}
+/**
+ * Split string of key:value pairs into Array of k-v pairs
+ * e.g.  'key:value; key:value; key:value;' -> ['key:value',...]
+ * @param {?} source
+ * @param {?=} delimiter
+ * @return {?}
+ */
+function buildRawList(source, delimiter) {
+    if (delimiter === void 0) { delimiter = ';'; }
+    return String(source)
+        .trim()
+        .split(delimiter)
+        .map(function (val) { return val.trim(); })
+        .filter(function (val) { return val !== ''; });
+}
+/**
+ * Convert array of key:value strings to a iterable map object
+ * @param {?} styles
+ * @param {?=} sanitize
+ * @return {?}
+ */
+function buildMapFromList(styles, sanitize) {
+    var /** @type {?} */ sanitizeValue = function (it) {
+        if (sanitize) {
+            it.value = sanitize(it.value);
+        }
+        return it;
+    };
+    return styles
+        .map(stringToKeyValue)
+        .filter(function (entry) { return !!entry; })
+        .map(sanitizeValue)
+        .reduce(keyValuesToMap, {});
+}
+/**
+ * Convert Set<string> or raw Object to an iterable NgStyleMap
+ * @param {?} source
+ * @param {?=} sanitize
+ * @return {?}
+ */
+function buildMapFromSet(source, sanitize) {
+    var /** @type {?} */ list = new Array();
+    if (getType(source) == 'set') {
+        source.forEach(function (entry) { return list.push(entry); });
+    }
+    else {
+        // simple hashmap
+        Object.keys(source).forEach(function (key) {
+            list.push(key + ":" + source[key]);
+        });
+    }
+    return buildMapFromList(list, sanitize);
+}
+/**
+ * Convert 'key:value' -> [key, value]
+ * @param {?} it
+ * @return {?}
+ */
+function stringToKeyValue(it) {
+    var _a = it.split(':'), key = _a[0], val = _a[1];
+    return val ? new NgStyleKeyValue(key, val) : null;
+}
+/**
+ * Convert [ [key,value] ] -> { key : value }
+ * @param {?} map
+ * @param {?} entry
+ * @return {?}
+ */
+function keyValuesToMap(map$$1, entry) {
+    if (!!entry.key) {
+        map$$1[entry.key] = entry.value;
+    }
+    return map$$1;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Directive to add responsive support for ngStyle.
+ *
+ */
+var StyleDirective = /** @class */ (function (_super) {
+    __extends(StyleDirective, _super);
+    /* tslint:enable */
+    /**
+     *  Constructor for the ngStyle subclass; which adds selectors and
+     *  a MediaQuery Activation Adapter
+     */
+    function StyleDirective(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance, _styler) {
+        var _this = _super.call(this, monitor, _ngEl, _styler) || this;
+        _this.monitor = monitor;
+        _this._sanitizer = _sanitizer;
+        _this._ngEl = _ngEl;
+        _this._renderer = _renderer;
+        _this._differs = _differs;
+        _this._ngStyleInstance = _ngStyleInstance;
+        _this._styler = _styler;
+        _this._configureAdapters();
         return _this;
     }
-    Object.defineProperty(ImgSrcDirective.prototype, "srcBase", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleBase", {
+        set: /**
+         * Intercept ngStyle assignments so we cache the default styles
+         * which are merged with activated styles or used as fallbacks.
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) {
+            var /** @type {?} */ key = 'ngStyle';
+            this._base.cacheInput(key, val, true); // convert val to hashmap
+            this._ngStyleInstance.ngStyle = this._base.queryInput(key);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StyleDirective.prototype, "ngStyleXs", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this.cacheDefaultSrc(val); },
+        function (val) { this._base.cacheInput('ngStyleXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcXs", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleSm", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcXs', val); },
+        function (val) { this._base.cacheInput('ngStyleSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcSm", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleMd", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcSm', val); },
+        function (val) { this._base.cacheInput('ngStyleMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcMd", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLg", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcMd', val); },
+        function (val) { this._base.cacheInput('ngStyleLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLg", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleXl", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcLg', val); },
+        function (val) { this._base.cacheInput('ngStyleXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcXl", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtSm", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcXl', val); },
+        function (val) { this._base.cacheInput('ngStyleLtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtSm", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtMd", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcLtSm', val); },
+        function (val) { this._base.cacheInput('ngStyleLtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtMd", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtLg", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcLtMd', val); },
+        function (val) { this._base.cacheInput('ngStyleLtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtLg", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtXl", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcLtLg', val); },
+        function (val) { this._base.cacheInput('ngStyleLtXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtXl", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtXs", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcLtXl', val); },
+        function (val) { this._base.cacheInput('ngStyleGtXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtXs", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtSm", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcGtXs', val); },
+        function (val) { this._base.cacheInput('ngStyleGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtSm", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtMd", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcGtSm', val); },
+        function (val) { this._base.cacheInput('ngStyleGtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtMd", {
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtLg", {
         set: /**
          * @param {?} val
          * @return {?}
          */
-        function (val) { this._cacheInput('srcGtMd', val); },
+        function (val) { this._base.cacheInput('ngStyleGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
     /**
-     * Listen for responsive changes to update the img.src attribute
+     * For @Input changes on the current mq activation property
      */
     /**
-     * Listen for responsive changes to update the img.src attribute
+     * For \@Input changes on the current mq activation property
+     * @param {?} changes
      * @return {?}
      */
-    ImgSrcDirective.prototype.ngOnInit = /**
-     * Listen for responsive changes to update the img.src attribute
+    StyleDirective.prototype.ngOnChanges = /**
+     * For \@Input changes on the current mq activation property
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        if (this._base.activeKey in changes) {
+            this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
+        }
+    };
+    /**
+     * @return {?}
+     */
+    StyleDirective.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        this._configureMQListener();
+    };
+    /**
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
+     */
+    /**
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
+     * @return {?}
+     */
+    StyleDirective.prototype.ngDoCheck = /**
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
+     * @return {?}
+     */
+    function () {
+        this._ngStyleInstance.ngDoCheck();
+    };
+    /**
+     * @return {?}
+     */
+    StyleDirective.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        this._base.ngOnDestroy();
+        delete this._ngStyleInstance;
+    };
+    // ******************************************************************
+    // Internal Methods
+    // ******************************************************************
+    /**
+       * Configure adapters (that delegate to an internal ngClass instance) if responsive
+       * keys have been defined.
+       */
+    /**
+     * Configure adapters (that delegate to an internal ngClass instance) if responsive
+     * keys have been defined.
+     * @return {?}
+     */
+    StyleDirective.prototype._configureAdapters = /**
+     * Configure adapters (that delegate to an internal ngClass instance) if responsive
+     * keys have been defined.
+     * @return {?}
+     */
+    function () {
+        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
+        if (!this._ngStyleInstance) {
+            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // defined on the same host element; since the responsive variations may be defined...
+            var /** @type {?} */ adapter = new RendererAdapter(this._renderer);
+            this._ngStyleInstance = new common.NgStyle(this._differs, this._ngEl, /** @type {?} */ (adapter));
+        }
+        this._buildCacheInterceptor();
+        this._fallbackToStyle();
+    };
+    /**
+     * Build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    /**
+     * Build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @param {?=} baseKey
+     * @return {?}
+     */
+    StyleDirective.prototype._configureMQListener = /**
+     * Build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     * @param {?=} baseKey
+     * @return {?}
+     */
+    function (baseKey) {
+        var _this = this;
+        if (baseKey === void 0) { baseKey = 'ngStyle'; }
+        var /** @type {?} */ fallbackValue = this._base.queryInput(baseKey);
+        this._base.listenForMediaQueryChanges(baseKey, fallbackValue, function (changes) {
+            _this._ngStyleInstance.ngStyle = changes.value || '';
+            _this._ngStyleInstance.ngDoCheck();
+        });
+    };
+    // ************************************************************************
+    // Private Internal Methods
+    // ************************************************************************
+    /**
+     * Build intercept to convert raw strings to ngStyleMap
+     */
+    /**
+     * Build intercept to convert raw strings to ngStyleMap
+     * @return {?}
+     */
+    StyleDirective.prototype._buildCacheInterceptor = /**
+     * Build intercept to convert raw strings to ngStyleMap
      * @return {?}
      */
     function () {
         var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        if (this.hasResponsiveKeys) {
-            // Listen for responsive changes
-            this._listenForMediaQueryChanges('src', this.defaultSrc, function () {
-                _this._updateSrcFor();
-            });
-        }
-        this._updateSrcFor();
+        var /** @type {?} */ cacheInput = this._base.cacheInput.bind(this._base);
+        this._base.cacheInput = function (key, source, cacheRaw, merge) {
+            if (cacheRaw === void 0) { cacheRaw = false; }
+            if (merge === void 0) { merge = true; }
+            var /** @type {?} */ styles = _this._buildStyleMap(source);
+            if (merge) {
+                styles = extendObject$2({}, _this._base.inputMap['ngStyle'], styles);
+            }
+            cacheInput(key, styles, cacheRaw);
+        };
     };
     /**
-     * Update the 'src' property of the host <img> element
+     * Convert raw strings to ngStyleMap; which is required by ngStyle
+     * NOTE: Raw string key-value pairs MUST be delimited by `;`
+     *       Comma-delimiters are not supported due to complexities of
+     *       possible style values such as `rgba(x,x,x,x)` and others
      */
     /**
-     * Update the 'src' property of the host <img> element
+     * Convert raw strings to ngStyleMap; which is required by ngStyle
+     * NOTE: Raw string key-value pairs MUST be delimited by `;`
+     *       Comma-delimiters are not supported due to complexities of
+     *       possible style values such as `rgba(x,x,x,x)` and others
+     * @param {?} styles
      * @return {?}
      */
-    ImgSrcDirective.prototype.ngOnChanges = /**
-     * Update the 'src' property of the host <img> element
+    StyleDirective.prototype._buildStyleMap = /**
+     * Convert raw strings to ngStyleMap; which is required by ngStyle
+     * NOTE: Raw string key-value pairs MUST be delimited by `;`
+     *       Comma-delimiters are not supported due to complexities of
+     *       possible style values such as `rgba(x,x,x,x)` and others
+     * @param {?} styles
+     * @return {?}
+     */
+    function (styles) {
+        var _this = this;
+        var /** @type {?} */ sanitizer = function (val) {
+            // Always safe-guard (aka sanitize) style property values
+            return _this._sanitizer.sanitize(core.SecurityContext.STYLE, val) || '';
+        };
+        if (styles) {
+            switch (ngStyleUtils.getType(styles)) {
+                case 'string': return ngStyleUtils.buildMapFromList(ngStyleUtils.buildRawList(styles), sanitizer);
+                case 'array': return ngStyleUtils.buildMapFromList(/** @type {?} */ (styles), sanitizer);
+                case 'set': return ngStyleUtils.buildMapFromSet(styles, sanitizer);
+                default: return ngStyleUtils.buildMapFromSet(styles, sanitizer);
+            }
+        }
+        return styles;
+    };
+    /**
+     * Initial lookup of raw 'class' value (if any)
+     */
+    /**
+     * Initial lookup of raw 'class' value (if any)
+     * @return {?}
+     */
+    StyleDirective.prototype._fallbackToStyle = /**
+     * Initial lookup of raw 'class' value (if any)
      * @return {?}
      */
     function () {
-        if (this.hasInitialized) {
-            this._updateSrcFor();
+        if (!this._base.queryInput('ngStyle')) {
+            this.ngStyleBase = this._getAttributeValue('style') || '';
         }
     };
-    /**
-     * Use the [responsively] activated input value to update
-     * the host img src attribute or assign a default `img.src=''`
-     * if the src has not been defined.
-     *
-     * Do nothing to standard `<img src="">` usages, only when responsive
-     * keys are present do we actually call `setAttribute()`
-     */
-    /**
-     * Use the [responsively] activated input value to update
-     * the host img src attribute or assign a default `img.src=''`
-     * if the src has not been defined.
-     *
-     * Do nothing to standard `<img src="">` usages, only when responsive
-     * keys are present do we actually call `setAttribute()`
-     * @return {?}
-     */
-    ImgSrcDirective.prototype._updateSrcFor = /**
-     * Use the [responsively] activated input value to update
-     * the host img src attribute or assign a default `img.src=''`
-     * if the src has not been defined.
-     *
-     * Do nothing to standard `<img src="">` usages, only when responsive
-     * keys are present do we actually call `setAttribute()`
-     * @return {?}
-     */
-    function () {
-        if (this.hasResponsiveKeys) {
-            var /** @type {?} */ url = this.activatedValue || this.defaultSrc;
-            if (common.isPlatformServer(this._platformId) && this._serverModuleLoaded) {
-                this._styler.applyStyleToElement(this.nativeElement, { 'content': url ? "url(" + url + ")" : '' });
-            }
-            else {
-                this.nativeElement.setAttribute('src', String(url));
-            }
-        }
-    };
-    /**
-     * Cache initial value of 'src', this will be used as fallback when breakpoint
-     * activations change.
-     * NOTE: The default 'src' property is not bound using @Input(), so perform
-     * a post-ngOnInit() lookup of the default src value (if any).
-     */
-    /**
-     * Cache initial value of 'src', this will be used as fallback when breakpoint
-     * activations change.
-     * NOTE: The default 'src' property is not bound using \@Input(), so perform
-     * a post-ngOnInit() lookup of the default src value (if any).
-     * @param {?=} value
-     * @return {?}
-     */
-    ImgSrcDirective.prototype.cacheDefaultSrc = /**
-     * Cache initial value of 'src', this will be used as fallback when breakpoint
-     * activations change.
-     * NOTE: The default 'src' property is not bound using \@Input(), so perform
-     * a post-ngOnInit() lookup of the default src value (if any).
-     * @param {?=} value
-     * @return {?}
-     */
-    function (value) {
-        this._cacheInput('src', value || '');
-    };
-    Object.defineProperty(ImgSrcDirective.prototype, "defaultSrc", {
-        /**
-         * Empty values are maintained, undefined values are exposed as ''
-         */
-        get: /**
-         * Empty values are maintained, undefined values are exposed as ''
-         * @return {?}
-         */
-        function () {
-            return this._queryInput('src') || '';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "hasResponsiveKeys", {
-        /**
-         * Does the <img> have 1 or more src.<xxx> responsive inputs
-         * defined... these will be mapped to activated breakpoints.
-         */
-        get: /**
-         * Does the <img> have 1 or more src.<xxx> responsive inputs
-         * defined... these will be mapped to activated breakpoints.
-         * @return {?}
-         */
-        function () {
-            return Object.keys(this._inputMap).length > 1;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ImgSrcDirective.decorators = [
+    StyleDirective.decorators = [
         { type: core.Directive, args: [{
-                    selector: "\n  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],\n  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],\n  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]\n"
+                    selector: "\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
                 },] },
     ];
     /** @nocollapse */
-    ImgSrcDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
+    StyleDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
+        { type: platformBrowser.DomSanitizer, },
+        { type: core.ElementRef, },
+        { type: core.Renderer2, },
+        { type: core.KeyValueDiffers, },
+        { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self },] },
         { type: StyleUtils, },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
-        { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] },] },
     ]; };
-    ImgSrcDirective.propDecorators = {
-        "srcBase": [{ type: core.Input, args: ['src',] },],
-        "srcXs": [{ type: core.Input, args: ['src.xs',] },],
-        "srcSm": [{ type: core.Input, args: ['src.sm',] },],
-        "srcMd": [{ type: core.Input, args: ['src.md',] },],
-        "srcLg": [{ type: core.Input, args: ['src.lg',] },],
-        "srcXl": [{ type: core.Input, args: ['src.xl',] },],
-        "srcLtSm": [{ type: core.Input, args: ['src.lt-sm',] },],
-        "srcLtMd": [{ type: core.Input, args: ['src.lt-md',] },],
-        "srcLtLg": [{ type: core.Input, args: ['src.lt-lg',] },],
-        "srcLtXl": [{ type: core.Input, args: ['src.lt-xl',] },],
-        "srcGtXs": [{ type: core.Input, args: ['src.gt-xs',] },],
-        "srcGtSm": [{ type: core.Input, args: ['src.gt-sm',] },],
-        "srcGtMd": [{ type: core.Input, args: ['src.gt-md',] },],
-        "srcGtLg": [{ type: core.Input, args: ['src.gt-lg',] },],
+    StyleDirective.propDecorators = {
+        "ngStyleBase": [{ type: core.Input, args: ['ngStyle',] },],
+        "ngStyleXs": [{ type: core.Input, args: ['ngStyle.xs',] },],
+        "ngStyleSm": [{ type: core.Input, args: ['ngStyle.sm',] },],
+        "ngStyleMd": [{ type: core.Input, args: ['ngStyle.md',] },],
+        "ngStyleLg": [{ type: core.Input, args: ['ngStyle.lg',] },],
+        "ngStyleXl": [{ type: core.Input, args: ['ngStyle.xl',] },],
+        "ngStyleLtSm": [{ type: core.Input, args: ['ngStyle.lt-sm',] },],
+        "ngStyleLtMd": [{ type: core.Input, args: ['ngStyle.lt-md',] },],
+        "ngStyleLtLg": [{ type: core.Input, args: ['ngStyle.lt-lg',] },],
+        "ngStyleLtXl": [{ type: core.Input, args: ['ngStyle.lt-xl',] },],
+        "ngStyleGtXs": [{ type: core.Input, args: ['ngStyle.gt-xs',] },],
+        "ngStyleGtSm": [{ type: core.Input, args: ['ngStyle.gt-sm',] },],
+        "ngStyleGtMd": [{ type: core.Input, args: ['ngStyle.gt-md',] },],
+        "ngStyleGtLg": [{ type: core.Input, args: ['ngStyle.gt-lg',] },],
     };
-    return ImgSrcDirective;
+    return StyleDirective;
 }(BaseFxDirective));
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var /** @type {?} */ RESPONSIVE_ALIASES = [
-    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
-];
-var /** @type {?} */ DEFAULT_BREAKPOINTS = [
-    {
-        alias: 'xs',
-        mediaQuery: '(min-width: 0px) and (max-width: 599px)'
-    },
-    {
-        alias: 'gt-xs',
-        overlapping: true,
-        mediaQuery: '(min-width: 600px)'
-    },
-    {
-        alias: 'lt-sm',
-        overlapping: true,
-        mediaQuery: '(max-width: 599px)'
-    },
-    {
-        alias: 'sm',
-        mediaQuery: '(min-width: 600px) and (max-width: 959px)'
-    },
-    {
-        alias: 'gt-sm',
-        overlapping: true,
-        mediaQuery: '(min-width: 960px)'
-    },
-    {
-        alias: 'lt-md',
-        overlapping: true,
-        mediaQuery: '(max-width: 959px)'
-    },
-    {
-        alias: 'md',
-        mediaQuery: '(min-width: 960px) and (max-width: 1279px)'
-    },
-    {
-        alias: 'gt-md',
-        overlapping: true,
-        mediaQuery: '(min-width: 1280px)'
-    },
-    {
-        alias: 'lt-lg',
-        overlapping: true,
-        mediaQuery: '(max-width: 1279px)'
-    },
-    {
-        alias: 'lg',
-        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)'
-    },
-    {
-        alias: 'gt-lg',
-        overlapping: true,
-        mediaQuery: '(min-width: 1920px)'
-    },
-    {
-        alias: 'lt-xl',
-        overlapping: true,
-        mediaQuery: '(max-width: 1920px)'
-    },
-    {
-        alias: 'xl',
-        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)'
-    }
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-
-/* tslint:disable */
-var /** @type {?} */ HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
-var /** @type {?} */ HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
-var /** @type {?} */ TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-var /** @type {?} */ TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
-var /** @type {?} */ WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
-var /** @type {?} */ WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
-var /** @type {?} */ ScreenTypes = {
-    'HANDSET': HANDSET_PORTRAIT + ", " + HANDSET_LANDSCAPE,
-    'TABLET': TABLET_PORTRAIT + " , " + TABLET_LANDSCAPE,
-    'WEB': WEB_PORTRAIT + ", " + WEB_LANDSCAPE + " ",
-    'HANDSET_PORTRAIT': "" + HANDSET_PORTRAIT,
-    'TABLET_PORTRAIT': TABLET_PORTRAIT + " ",
-    'WEB_PORTRAIT': "" + WEB_PORTRAIT,
-    'HANDSET_LANDSCAPE': HANDSET_LANDSCAPE + "]",
-    'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
-    'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
-};
-/**
- * Extended Breakpoints for handset/tablets with landscape or portrait orientations
- */
-var /** @type {?} */ ORIENTATION_BREAKPOINTS = [
-    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
-    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
-    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
-    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
-    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
-    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
-    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Base class for MediaService and pseudo-token for
- * @abstract
- */
-var   /**
- * Base class for MediaService and pseudo-token for
- * @abstract
- */
-ObservableMedia = /** @class */ (function () {
-    function ObservableMedia() {
-    }
-    return ObservableMedia;
-}());
-/**
- * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
- * This an Observable with that exposes a feature to subscribe to mediaQuery
- * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
- * currently active.
- *
- * !! Only mediaChange activations (not de-activations) are announced by the ObservableMedia
- *
- * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
- * notification. For custom mediaQuery notifications, alias information will not be injected and
- * those fields will be ''.
- *
- * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
- * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.asObservable()` with syntax like media.asObservable().map(....).
- *
- *  \@usage
- *
- *  // RxJS
- *  import {filter} from 'rxjs/operators/filter';
- *  import { ObservableMedia } from '\@angular/flex-layout';
- *
- *  \@Component({ ... })
- *  export class AppComponent {
- *    status : string = '';
- *
- *    constructor(  media:ObservableMedia ) {
- *      let onChange = (change:MediaChange) => {
- *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
- *      };
- *
- *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g.
- *      //      media.subscribe(onChange);
- *
- *      media.asObservable()
- *        .pipe(
- *          filter((change:MediaChange) => true)   // silly noop filter
- *        ).subscribe(onChange);
- *    }
- *  }
- */
-var MediaService = /** @class */ (function () {
-    function MediaService(breakpoints, mediaWatcher) {
-        this.breakpoints = breakpoints;
-        this.mediaWatcher = mediaWatcher;
-        /**
-         * Should we announce gt-<xxx> breakpoint activations ?
-         */
-        this.filterOverlaps = true;
-        this._registerBreakPoints();
-        this.observable$ = this._buildObservable();
-    }
-    /**
-     * Test if specified query/alias is active.
-     */
-    /**
-     * Test if specified query/alias is active.
-     * @param {?} alias
-     * @return {?}
-     */
-    MediaService.prototype.isActive = /**
-     * Test if specified query/alias is active.
-     * @param {?} alias
-     * @return {?}
-     */
-    function (alias) {
-        var /** @type {?} */ query = this._toMediaQuery(alias);
-        return this.mediaWatcher.isActive(query);
-    };
-    /**
-     * Proxy to the Observable subscribe method
-     */
-    /**
-     * Proxy to the Observable subscribe method
-     * @param {?=} next
-     * @param {?=} error
-     * @param {?=} complete
-     * @return {?}
-     */
-    MediaService.prototype.subscribe = /**
-     * Proxy to the Observable subscribe method
-     * @param {?=} next
-     * @param {?=} error
-     * @param {?=} complete
-     * @return {?}
-     */
-    function (next, error, complete) {
-        return this.observable$.subscribe(next, error, complete);
-    };
-    /**
-     * Access to observable for use with operators like
-     * .filter(), .map(), etc.
-     */
-    /**
-     * Access to observable for use with operators like
-     * .filter(), .map(), etc.
-     * @return {?}
-     */
-    MediaService.prototype.asObservable = /**
-     * Access to observable for use with operators like
-     * .filter(), .map(), etc.
-     * @return {?}
-     */
-    function () {
-        return this.observable$;
-    };
-    /**
-     * Register all the mediaQueries registered in the BreakPointRegistry
-     * This is needed so subscribers can be auto-notified of all standard, registered
-     * mediaQuery activations
-     * @return {?}
-     */
-    MediaService.prototype._registerBreakPoints = /**
-     * Register all the mediaQueries registered in the BreakPointRegistry
-     * This is needed so subscribers can be auto-notified of all standard, registered
-     * mediaQuery activations
-     * @return {?}
-     */
-    function () {
-        var /** @type {?} */ queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
-        this.mediaWatcher.registerQuery(queries);
-    };
-    /**
-     * Prepare internal observable
-     *
-     * NOTE: the raw MediaChange events [from MatchMedia] do not
-     *       contain important alias information; as such this info
-     *       must be injected into the MediaChange
-     * @return {?}
-     */
-    MediaService.prototype._buildObservable = /**
-     * Prepare internal observable
-     *
-     * NOTE: the raw MediaChange events [from MatchMedia] do not
-     *       contain important alias information; as such this info
-     *       must be injected into the MediaChange
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        var /** @type {?} */ self = this;
-        var /** @type {?} */ media$ = this.mediaWatcher.observe();
-        var /** @type {?} */ activationsOnly = function (change) {
-            return change.matches === true;
-        };
-        var /** @type {?} */ addAliasInformation = function (change) {
-            return mergeAlias(change, _this._findByQuery(change.mediaQuery));
-        };
-        var /** @type {?} */ excludeOverlaps = function (change) {
-            var /** @type {?} */ bp = _this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !(self.filterOverlaps && bp.overlapping);
-        };
-        /**
-             * Only pass/announce activations (not de-activations)
-             * Inject associated (if any) alias information into the MediaChange event
-             * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
-             */
-        return media$.pipe(filter.filter(activationsOnly), filter.filter(excludeOverlaps), map.map(addAliasInformation));
-    };
-    /**
-     * Breakpoint locator by alias
-     * @param {?} alias
-     * @return {?}
-     */
-    MediaService.prototype._findByAlias = /**
-     * Breakpoint locator by alias
-     * @param {?} alias
-     * @return {?}
-     */
-    function (alias) {
-        return this.breakpoints.findByAlias(alias);
-    };
-    /**
-     * Breakpoint locator by mediaQuery
-     * @param {?} query
-     * @return {?}
-     */
-    MediaService.prototype._findByQuery = /**
-     * Breakpoint locator by mediaQuery
-     * @param {?} query
-     * @return {?}
-     */
-    function (query) {
-        return this.breakpoints.findByQuery(query);
-    };
-    /**
-     * Find associated breakpoint (if any)
-     * @param {?} query
-     * @return {?}
-     */
-    MediaService.prototype._toMediaQuery = /**
-     * Find associated breakpoint (if any)
-     * @param {?} query
-     * @return {?}
-     */
-    function (query) {
-        var /** @type {?} */ bp = this._findByAlias(query) || this._findByQuery(query);
-        return bp ? bp.mediaQuery : query;
-    };
-    MediaService.decorators = [
-        { type: core.Injectable },
-    ];
-    /** @nocollapse */
-    MediaService.ctorParameters = function () { return [
-        { type: BreakPointRegistry, },
-        { type: MatchMedia, },
-    ]; };
-    return MediaService;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var /** @type {?} */ ALIAS_DELIMITERS = /(\.|-|_)/g;
-/**
- * @param {?} part
- * @return {?}
- */
-function firstUpperCase(part) {
-    var /** @type {?} */ first = part.length > 0 ? part.charAt(0) : '';
-    var /** @type {?} */ remainder = (part.length > 1) ? part.slice(1) : '';
-    return first.toUpperCase() + remainder;
-}
-/**
- * Converts snake-case to SnakeCase.
- * @param {?} name Text to UpperCamelCase
- * @return {?}
- */
-function camelCase(name) {
-    return name
-        .replace(ALIAS_DELIMITERS, '|')
-        .split('|')
-        .map(firstUpperCase)
-        .join('');
-}
-/**
- * For each breakpoint, ensure that a Suffix is defined;
- * fallback to UpperCamelCase the unique Alias value
- * @param {?} list
- * @return {?}
- */
-function validateSuffixes(list) {
-    list.forEach(function (bp) {
-        if (!bp.suffix || bp.suffix === '') {
-            bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
-            bp.overlapping = bp.overlapping || false; // ensure default value
-        }
-    });
-    return list;
-}
-/**
- * Merge a custom breakpoint list with the default list based on unique alias values
- *  - Items are added if the alias is not in the default list
- *  - Items are merged with the custom override if the alias exists in the default list
- * @param {?} defaults
- * @param {?=} custom
- * @return {?}
- */
-function mergeByAlias(defaults, custom) {
-    if (custom === void 0) { custom = []; }
-    var /** @type {?} */ merged = defaults.map(function (bp) { return extendObject({}, bp); });
-    var /** @type {?} */ findByAlias = function (alias) {
-        return merged.reduce(function (result, bp) {
-            return result || ((bp.alias === alias) ? bp : null);
-        }, null);
-    };
-    // Merge custom breakpoints
-    custom.forEach(function (bp) {
-        var /** @type {?} */ target = findByAlias(bp.alias);
-        if (target) {
-            extendObject(target, bp);
-        }
-        else {
-            merged.push(bp);
-        }
-    });
-    return validateSuffixes(merged);
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Add new custom items to the default list or override existing default with custom overrides
- * @param {?=} _custom
- * @param {?=} options
- * @return {?}
- */
-function buildMergedBreakPoints(_custom, options) {
-    options = extendObject({}, {
-        defaults: true,
-        // exclude pre-configured, internal default breakpoints
-        orientation: false // exclude pre-configured, internal orientations breakpoints
-    }, options || {});
-    return function () {
-        // Order so the defaults are loaded last; so ObservableMedia will report these last!
-        var /** @type {?} */ defaults = (options && options.orientations) ?
-            ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) : DEFAULT_BREAKPOINTS;
-        return (options && options.defaults) ?
-            mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom || []);
-    };
-}
-/**
- *  Ensure that only a single global BreakPoint list is instantiated...
- * @return {?}
- */
-function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
-    return validateSuffixes(DEFAULT_BREAKPOINTS);
-}
-/**
- * Default Provider that does not support external customization nor provide
- * the extra extended breakpoints:   "handset", "tablet", and "web"
- *
- *  NOTE: !! breakpoints are considered to have unique 'alias' properties,
- *        custom breakpoints matching existing breakpoints will override the properties
- *        of the existing (and not be added as an extra breakpoint entry).
- *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
- */
-var /** @type {?} */ DEFAULT_BREAKPOINTS_PROVIDER = {
-    // tslint:disable-line:variable-name
-    provide: BREAKPOINTS,
-    useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
-};
-/**
- * Use with FlexLayoutModule.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY!
- * @param {?=} _custom
- * @param {?=} options
- * @return {?}
- */
-function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
-    return {
-        provide: /** @type {?} */ (BREAKPOINTS),
-        useFactory: buildMergedBreakPoints(_custom, options)
-    };
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Ensure a single global ObservableMedia service provider
- * @param {?} parentService
- * @param {?} matchMedia
- * @param {?} breakpoints
- * @return {?}
- */
-function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
-    return parentService || new MediaService(breakpoints, matchMedia);
-}
-/**
- *  Provider to return global service for observable service for all MediaQuery activations
- */
-var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
-    // tslint:disable-line:variable-name
-    provide: ObservableMedia,
-    deps: [
-        [new core.Optional(), new core.SkipSelf(), ObservableMedia],
-        MatchMedia,
-        BreakPointRegistry
-    ],
-    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Ensure a single global service provider
- * @param {?} parentMonitor
- * @param {?} breakpoints
- * @param {?} matchMedia
- * @return {?}
- */
-function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
-    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
-}
-/**
- * Export provider that uses a global service factory (above)
- */
-var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
-    provide: MediaMonitor,
-    deps: [
-        [new core.Optional(), new core.SkipSelf(), MediaMonitor],
-        BreakPointRegistry,
-        MatchMedia,
-    ],
-    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Special server-only class to simulate a MediaQueryList and
- * - supports manual activation to simulate mediaQuery matching
- * - manages listeners
- */
-var   /**
- * Special server-only class to simulate a MediaQueryList and
- * - supports manual activation to simulate mediaQuery matching
- * - manages listeners
- */
-ServerMediaQueryList = /** @class */ (function () {
-    function ServerMediaQueryList(_mediaQuery) {
-        this._mediaQuery = _mediaQuery;
-        this._isActive = false;
-        this._listeners = [];
-    }
-    Object.defineProperty(ServerMediaQueryList.prototype, "matches", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._isActive;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ServerMediaQueryList.prototype, "media", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._mediaQuery;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Destroy the current list by deactivating the
-     * listeners and clearing the internal list
-     */
-    /**
-     * Destroy the current list by deactivating the
-     * listeners and clearing the internal list
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.destroy = /**
-     * Destroy the current list by deactivating the
-     * listeners and clearing the internal list
-     * @return {?}
-     */
-    function () {
-        this.deactivate();
-        this._listeners = [];
-    };
-    /** Notify all listeners that 'matches === TRUE' */
-    /**
-     * Notify all listeners that 'matches === TRUE'
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.activate = /**
-     * Notify all listeners that 'matches === TRUE'
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        if (!this._isActive) {
-            this._isActive = true;
-            this._listeners.forEach(function (callback) {
-                callback(_this);
-            });
-        }
-        return this;
-    };
-    /** Notify all listeners that 'matches === false' */
-    /**
-     * Notify all listeners that 'matches === false'
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.deactivate = /**
-     * Notify all listeners that 'matches === false'
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        if (this._isActive) {
-            this._isActive = false;
-            this._listeners.forEach(function (callback) {
-                callback(_this);
-            });
-        }
-        return this;
-    };
-    /** Add a listener to our internal list to activate later */
-    /**
-     * Add a listener to our internal list to activate later
-     * @param {?} listener
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
-     * @param {?} listener
-     * @return {?}
-     */
-    function (listener) {
-        if (this._listeners.indexOf(listener) === -1) {
-            this._listeners.push(listener);
-        }
-        if (this._isActive) {
-            listener(this);
-        }
-    };
-    /** Don't need to remove listeners in the server environment */
-    /**
-     * Don't need to remove listeners in the server environment
-     * @param {?} _
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.removeListener = /**
-     * Don't need to remove listeners in the server environment
-     * @param {?} _
-     * @return {?}
-     */
-    function (_) {
-    };
-    return ServerMediaQueryList;
-}());
-/**
- * Special server-only implementation of MatchMedia that uses the above
- * ServerMediaQueryList as its internal representation
- *
- * Also contains methods to activate and deactivate breakpoints
- */
-var ServerMatchMedia = /** @class */ (function (_super) {
-    __extends(ServerMatchMedia, _super);
-    function ServerMatchMedia(_zone, _platformId, _document) {
-        var _this = _super.call(this, _zone, _platformId, _document) || this;
-        _this._zone = _zone;
-        _this._platformId = _platformId;
-        _this._document = _document;
-        _this._registry = new Map();
-        _this._source = new BehaviorSubject.BehaviorSubject(new MediaChange(true));
-        _this._observable$ = _this._source.asObservable();
-        return _this;
-    }
-    /** Activate the specified breakpoint if we're on the server, no-op otherwise */
-    /**
-     * Activate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    ServerMatchMedia.prototype.activateBreakpoint = /**
-     * Activate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    function (bp) {
-        var /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
-        if (lookupBreakpoint) {
-            lookupBreakpoint.activate();
-        }
-    };
-    /** Deactivate the specified breakpoint if we're on the server, no-op otherwise */
-    /**
-     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    ServerMatchMedia.prototype.deactivateBreakpoint = /**
-     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    function (bp) {
-        var /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
-        if (lookupBreakpoint) {
-            lookupBreakpoint.deactivate();
-        }
-    };
-    /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     */
-    /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     * @param {?} query
-     * @return {?}
-     */
-    ServerMatchMedia.prototype._buildMQL = /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     * @param {?} query
-     * @return {?}
-     */
-    function (query) {
-        return new ServerMediaQueryList(query);
-    };
-    ServerMatchMedia.decorators = [
-        { type: core.Injectable },
-    ];
-    /** @nocollapse */
-    ServerMatchMedia.ctorParameters = function () { return [
-        { type: core.NgZone, },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
-    ]; };
-    return ServerMatchMedia;
-}(MatchMedia));
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * *****************************************************************
- * Define module for the MediaQuery API
- * *****************************************************************
- */
-var MediaQueriesModule = /** @class */ (function () {
-    function MediaQueriesModule() {
-    }
-    MediaQueriesModule.decorators = [
-        { type: core.NgModule, args: [{
-                    providers: [
-                        DEFAULT_BREAKPOINTS_PROVIDER,
-                        BreakPointRegistry,
-                        MatchMedia,
-                        MediaMonitor,
-                        OBSERVABLE_MEDIA_PROVIDER
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    MediaQueriesModule.ctorParameters = function () { return []; };
-    return MediaQueriesModule;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Find all of the server-generated stylings, if any, and remove them
- * This will be in the form of inline classes and the style block in the
- * head of the DOM
- * @param {?} _document
- * @param {?} platformId
- * @return {?}
- */
-function removeStyles(_document, platformId) {
-    return function () {
-        if (common.isPlatformBrowser(platformId)) {
-            var /** @type {?} */ elements = Array.from(_document.querySelectorAll("[class*=" + CLASS_NAME + "]"));
-            var /** @type {?} */ classRegex_1 = new RegExp(/\bflex-layout-.+?\b/, 'g');
-            elements.forEach(function (el) {
-                el.classList.contains(CLASS_NAME + "ssr") && el.parentNode ?
-                    el.parentNode.removeChild(el) : el.className.replace(classRegex_1, '');
-            });
-        }
-    };
-}
-/**
- *  Provider to remove SSR styles on the browser
- */
-var /** @type {?} */ BROWSER_PROVIDER = {
-    provide: /** @type {?} */ (core.APP_BOOTSTRAP_LISTENER),
-    useFactory: removeStyles,
-    deps: [common.DOCUMENT, core.PLATFORM_ID],
-    multi: true
-};
-var /** @type {?} */ CLASS_NAME = 'flex-layout-';
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Directive to listen for changes of direction of part of the DOM.
- *
- * Provides itself as Directionality such that descendant directives only need to ever inject
- * Directionality to get the closest direction.
- */
-var Dir = /** @class */ (function () {
-    function Dir() {
-        this._dir = 'ltr';
-        /**
-         * Whether the `value` has been set to its initial value.
-         */
-        this._isInitialized = false;
-        /**
-         * Event emitted when the direction changes.
-         */
-        this.change = new core.EventEmitter();
-    }
-    Object.defineProperty(Dir.prototype, "dir", {
-        get: /**
-         * \@docs-private
-         * @return {?}
-         */
-        function () { return this._dir; },
-        set: /**
-         * @param {?} v
-         * @return {?}
-         */
-        function (v) {
-            var /** @type {?} */ old = this._dir;
-            this._dir = v;
-            if (old !== this._dir && this._isInitialized) {
-                this.change.emit(this._dir);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Dir.prototype, "value", {
-        /** Current layout direction of the element. */
-        get: /**
-         * Current layout direction of the element.
-         * @return {?}
-         */
-        function () { return this.dir; },
-        enumerable: true,
-        configurable: true
-    });
-    /** Initialize once default value has been set. */
-    /**
-     * Initialize once default value has been set.
-     * @return {?}
-     */
-    Dir.prototype.ngAfterContentInit = /**
-     * Initialize once default value has been set.
-     * @return {?}
-     */
-    function () {
-        this._isInitialized = true;
-    };
-    /**
-     * @return {?}
-     */
-    Dir.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this.change.complete();
-    };
-    Dir.decorators = [
-        { type: core.Directive, args: [{
-                    selector: '[dir]',
-                    providers: [{ provide: Directionality, useExisting: Dir }],
-                    host: { '[dir]': 'dir' },
-                    exportAs: 'dir',
-                },] },
-    ];
-    /** @nocollapse */
-    Dir.ctorParameters = function () { return []; };
-    Dir.propDecorators = {
-        "change": [{ type: core.Output, args: ['dirChange',] },],
-        "dir": [{ type: core.Input },],
-    };
-    return Dir;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var BidiModule = /** @class */ (function () {
-    function BidiModule() {
-    }
-    BidiModule.decorators = [
-        { type: core.NgModule, args: [{
-                    exports: [Dir],
-                    declarations: [Dir],
-                    providers: [
-                        { provide: DIR_DOCUMENT, useExisting: common.DOCUMENT },
-                        Directionality,
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    BidiModule.ctorParameters = function () { return []; };
-    return BidiModule;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Since the equivalent results are easily achieved with a css class attached to each
- * layout child, these have been deprecated and removed from the API.
- *
- *  import {LayoutPaddingDirective} from './api/flexbox/layout-padding';
- *  import {LayoutMarginDirective} from './api/flexbox/layout-margin';
- */
-var /** @type {?} */ ALL_DIRECTIVES = [
-    LayoutDirective,
-    LayoutGapDirective,
-    LayoutAlignDirective,
-    FlexDirective,
-    FlexOrderDirective,
-    FlexOffsetDirective,
-    FlexFillDirective,
-    FlexAlignDirective,
+var /** @type {?} */ ALL_DIRECTIVES$1 = [
     ShowHideDirective,
     ClassDirective,
     StyleDirective,
     ImgSrcDirective
 ];
+/**
+ * *****************************************************************
+ * Define module for the Extended API
+ * *****************************************************************
+ */
+var ExtendedModule = /** @class */ (function () {
+    function ExtendedModule() {
+    }
+    ExtendedModule.decorators = [
+        { type: core.NgModule, args: [{
+                    imports: [CoreModule],
+                    declarations: ALL_DIRECTIVES$1.slice(),
+                    exports: ALL_DIRECTIVES$1.slice(),
+                    providers: [
+                        StylesheetMap,
+                        StyleUtils,
+                        BROWSER_PROVIDER,
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    ExtendedModule.ctorParameters = function () { return []; };
+    return ExtendedModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Activate all of the registered breakpoints in sequence, and then
+ * retrieve the associated stylings from the virtual stylesheet
+ * @param {?} serverSheet the virtual stylesheet that stores styles for each
+ *        element
+ * @param {?} matchMedia the service to activate/deactive breakpoints
+ * @param {?} breakpoints the registered breakpoints to activate/deactivate
+ * @return {?}
+ */
+function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
+    // Store the custom classes in the following map, that way only
+    // one class gets allocated per HTMLElement, and each class can
+    // be referenced in the static media queries
+    var /** @type {?} */ classMap = new Map();
+    // Get the initial stylings for all of the directives, and initialize
+    // the fallback block of stylings, then reverse the breakpoints list
+    // to traverse in the proper order
+    var /** @type {?} */ defaultStyles = new Map(serverSheet.stylesheet);
+    var /** @type {?} */ styleText = generateCss(defaultStyles, 'all', classMap);
+    breakpoints.reverse();
+    breakpoints.forEach(function (bp, i) {
+        serverSheet.clearStyles();
+        (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
+        var /** @type {?} */ stylesheet = new Map(serverSheet.stylesheet);
+        if (stylesheet.size > 0) {
+            styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
+        }
+        (/** @type {?} */ (matchMedia)).deactivateBreakpoint(breakpoints[i]);
+    });
+    return styleText;
+}
+/**
+ * Create a style tag populated with the dynamic stylings from Flex
+ * components and attach it to the head of the DOM
+ * @param {?} serverSheet
+ * @param {?} matchMedia
+ * @param {?} _document
+ * @param {?} breakpoints
+ * @return {?}
+ */
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints) {
+    return function () {
+        // This is the style tag that gets inserted into the head of the DOM,
+        // populated with the manual media queries
+        var /** @type {?} */ styleTag = _document.createElement('style');
+        var /** @type {?} */ styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+        styleTag.classList.add(CLASS_NAME + "ssr");
+        styleTag.textContent = styleText;
+        _document.head.appendChild(styleTag);
+    };
+}
+/**
+ *  Provider to set static styles on the server
+ */
+var /** @type {?} */ SERVER_PROVIDERS = [
+    {
+        provide: /** @type {?} */ (platformServer.BEFORE_APP_SERIALIZED),
+        useFactory: FLEX_SSR_SERIALIZER_FACTORY,
+        deps: [
+            StylesheetMap,
+            MatchMedia,
+            common.DOCUMENT,
+            BREAKPOINTS,
+        ],
+        multi: true
+    },
+    {
+        provide: SERVER_TOKEN,
+        useValue: true
+    },
+    {
+        provide: MatchMedia,
+        useClass: ServerMatchMedia
+    }
+];
+var /** @type {?} */ nextId = 0;
+var /** @type {?} */ IS_DEBUG_MODE = false;
+/**
+ * create \@media queries based on a virtual stylesheet
+ * * Adds a unique class to each element and stores it
+ *   in a shared classMap for later reuse
+ * @param {?} stylesheet the virtual stylesheet that stores styles for each
+ *        element
+ * @param {?} mediaQuery the given \@media CSS selector for the current breakpoint
+ * @param {?} classMap the map of HTML elements to class names to avoid duplications
+ * @return {?}
+ */
+function generateCss(stylesheet, mediaQuery, classMap) {
+    var /** @type {?} */ css = '';
+    stylesheet.forEach(function (styles, el) {
+        var /** @type {?} */ keyVals = '', /** @type {?} */ className = getClassName(el, classMap);
+        styles.forEach(function (v, k) {
+            keyVals += v ? format(k + ":" + v + ";") : '';
+        });
+        // Build list of CSS styles; each with a className
+        css += format("." + className + " {", keyVals, '}');
+    });
+    // Group 1 or more styles (each with className) in a specific mediaQuery
+    return format("@media " + mediaQuery + " {", css, '}');
+}
+/**
+ * For debugging purposes, prefix css segment with linefeed(s) for easy
+ * debugging purposes.
+ * @param {...?} list
+ * @return {?}
+ */
+function format() {
+    var list = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        list[_i] = arguments[_i];
+    }
+    var /** @type {?} */ result = '';
+    list.forEach(function (css, i) {
+        result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
+    });
+    return result;
+}
+/**
+ * @param {?} css
+ * @param {?=} asPrefix
+ * @return {?}
+ */
+function formatSegment(css, asPrefix) {
+    if (asPrefix === void 0) { asPrefix = true; }
+    return asPrefix ? '\n' + css : css + '\n';
+}
+/**
+ * Get className associated with CSS styling
+ * If not found, generate global className and set
+ * association.
+ * @param {?} stylesheet
+ * @param {?} classMap
+ * @return {?}
+ */
+function getClassName(stylesheet, classMap) {
+    var /** @type {?} */ className = classMap.get(stylesheet);
+    if (!className) {
+        className = "" + CLASS_NAME + nextId++;
+        classMap.set(stylesheet, className);
+    }
+    stylesheet.classList.add(className);
+    return className;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var FlexLayoutServerModule = /** @class */ (function () {
+    function FlexLayoutServerModule() {
+    }
+    FlexLayoutServerModule.decorators = [
+        { type: core.NgModule, args: [{
+                    providers: [SERVER_PROVIDERS]
+                },] },
+    ];
+    /** @nocollapse */
+    FlexLayoutServerModule.ctorParameters = function () { return []; };
+    return FlexLayoutServerModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Current version of Angular Flex-Layout.
+ */
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-1c3f99f');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 /**
  *
  */
@@ -7362,14 +7961,8 @@ var FlexLayoutModule = /** @class */ (function () {
     };
     FlexLayoutModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [MediaQueriesModule, BidiModule],
-                    exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
-                    declarations: ALL_DIRECTIVES.slice(),
-                    providers: [
-                        ServerStylesheet,
-                        StyleUtils,
-                        BROWSER_PROVIDER,
-                    ]
+                    imports: [FlexModule, ExtendedModule, CoreModule],
+                    exports: [FlexModule, ExtendedModule, CoreModule]
                 },] },
     ];
     /** @nocollapse */
@@ -7381,70 +7974,63 @@ var FlexLayoutModule = /** @class */ (function () {
 }());
 
 exports.VERSION = VERSION;
+exports.FlexLayoutModule = FlexLayoutModule;
+exports.ɵa0 = validateSuffixes;
+exports.removeStyles = removeStyles;
+exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
+exports.CLASS_NAME = CLASS_NAME;
+exports.CoreModule = CoreModule;
+exports.MediaChange = MediaChange;
+exports.RendererAdapter = RendererAdapter;
+exports.StylesheetMap = StylesheetMap;
+exports.SERVER_TOKEN = SERVER_TOKEN;
 exports.BaseFxDirective = BaseFxDirective;
 exports.BaseFxDirectiveAdapter = BaseFxDirectiveAdapter;
+exports.RESPONSIVE_ALIASES = RESPONSIVE_ALIASES;
+exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
+exports.ScreenTypes = ScreenTypes;
+exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;
+exports.BreakPointRegistry = BreakPointRegistry;
+exports.buildMergedBreakPoints = buildMergedBreakPoints;
+exports.DEFAULT_BREAKPOINTS_PROVIDER_FACTORY = DEFAULT_BREAKPOINTS_PROVIDER_FACTORY;
+exports.DEFAULT_BREAKPOINTS_PROVIDER = DEFAULT_BREAKPOINTS_PROVIDER;
+exports.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY = CUSTOM_BREAKPOINTS_PROVIDER_FACTORY;
+exports.BREAKPOINTS = BREAKPOINTS;
+exports.MatchMedia = MatchMedia;
+exports.MockMatchMedia = MockMatchMedia;
+exports.MockMediaQueryList = MockMediaQueryList;
+exports.MockMatchMediaProvider = MockMatchMediaProvider;
+exports.ServerMediaQueryList = ServerMediaQueryList;
+exports.ServerMatchMedia = ServerMatchMedia;
+exports.MediaMonitor = MediaMonitor;
+exports.MEDIA_MONITOR_PROVIDER_FACTORY = MEDIA_MONITOR_PROVIDER_FACTORY;
+exports.MEDIA_MONITOR_PROVIDER = MEDIA_MONITOR_PROVIDER;
+exports.ObservableMedia = ObservableMedia;
+exports.MediaService = MediaService;
+exports.OBSERVABLE_MEDIA_PROVIDER_FACTORY = OBSERVABLE_MEDIA_PROVIDER_FACTORY;
+exports.OBSERVABLE_MEDIA_PROVIDER = OBSERVABLE_MEDIA_PROVIDER;
 exports.KeyOptions = KeyOptions;
 exports.ResponsiveActivation = ResponsiveActivation;
-exports.LayoutDirective = LayoutDirective;
-exports.LayoutAlignDirective = LayoutAlignDirective;
-exports.LayoutGapDirective = LayoutGapDirective;
+exports.StyleUtils = StyleUtils;
+exports.ExtendedModule = ExtendedModule;
+exports.ClassDirective = ClassDirective;
+exports.ImgSrcDirective = ImgSrcDirective;
+exports.negativeOf = negativeOf;
+exports.ShowHideDirective = ShowHideDirective;
+exports.StyleDirective = StyleDirective;
+exports.FlexModule = FlexModule;
 exports.FlexDirective = FlexDirective;
 exports.FlexAlignDirective = FlexAlignDirective;
 exports.FlexFillDirective = FlexFillDirective;
 exports.FlexOffsetDirective = FlexOffsetDirective;
 exports.FlexOrderDirective = FlexOrderDirective;
-exports.ClassDirective = ClassDirective;
-exports.StyleDirective = StyleDirective;
-exports.negativeOf = negativeOf;
-exports.ShowHideDirective = ShowHideDirective;
-exports.ImgSrcDirective = ImgSrcDirective;
-exports.RESPONSIVE_ALIASES = RESPONSIVE_ALIASES;
-exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
-exports.ScreenTypes = ScreenTypes;
-exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;
-exports.BREAKPOINTS = BREAKPOINTS;
-exports.BreakPointRegistry = BreakPointRegistry;
-exports.ObservableMedia = ObservableMedia;
-exports.MediaService = MediaService;
-exports.MatchMedia = MatchMedia;
-exports.MediaChange = MediaChange;
-exports.MediaMonitor = MediaMonitor;
-exports.buildMergedBreakPoints = buildMergedBreakPoints;
-exports.DEFAULT_BREAKPOINTS_PROVIDER_FACTORY = DEFAULT_BREAKPOINTS_PROVIDER_FACTORY;
-exports.DEFAULT_BREAKPOINTS_PROVIDER = DEFAULT_BREAKPOINTS_PROVIDER;
-exports.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY = CUSTOM_BREAKPOINTS_PROVIDER_FACTORY;
-exports.OBSERVABLE_MEDIA_PROVIDER_FACTORY = OBSERVABLE_MEDIA_PROVIDER_FACTORY;
-exports.OBSERVABLE_MEDIA_PROVIDER = OBSERVABLE_MEDIA_PROVIDER;
-exports.MEDIA_MONITOR_PROVIDER_FACTORY = MEDIA_MONITOR_PROVIDER_FACTORY;
-exports.MEDIA_MONITOR_PROVIDER = MEDIA_MONITOR_PROVIDER;
-exports.ServerMediaQueryList = ServerMediaQueryList;
-exports.ServerMatchMedia = ServerMatchMedia;
-exports.MediaQueriesModule = MediaQueriesModule;
-exports.mergeAlias = mergeAlias;
-exports.applyCssPrefixes = applyCssPrefixes;
-exports.validateBasis = validateBasis;
-exports.INLINE = INLINE;
-exports.LAYOUT_VALUES = LAYOUT_VALUES;
-exports.buildLayoutCSS = buildLayoutCSS;
-exports.validateValue = validateValue;
-exports.isFlowHorizontal = isFlowHorizontal;
-exports.validateWrapValue = validateWrapValue;
-exports.validateSuffixes = validateSuffixes;
-exports.mergeByAlias = mergeByAlias;
-exports.extendObject = extendObject;
-exports.StyleUtils = StyleUtils;
-exports.NgStyleKeyValue = NgStyleKeyValue;
-exports.ngStyleUtils = ngStyleUtils;
-exports.removeStyles = removeStyles;
-exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
-exports.CLASS_NAME = CLASS_NAME;
-exports.ServerStylesheet = ServerStylesheet;
-exports.SERVER_TOKEN = SERVER_TOKEN;
-exports.FlexLayoutModule = FlexLayoutModule;
-exports.ɵc = BidiModule;
-exports.ɵd = Dir;
-exports.ɵa = DIR_DOCUMENT;
-exports.ɵb = Directionality;
+exports.LayoutDirective = LayoutDirective;
+exports.LayoutAlignDirective = LayoutAlignDirective;
+exports.LayoutGapDirective = LayoutGapDirective;
+exports.FlexLayoutServerModule = FlexLayoutServerModule;
+exports.generateStaticFlexLayoutStyles = generateStaticFlexLayoutStyles;
+exports.FLEX_SSR_SERIALIZER_FACTORY = FLEX_SSR_SERIALIZER_FACTORY;
+exports.SERVER_PROVIDERS = SERVER_PROVIDERS;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

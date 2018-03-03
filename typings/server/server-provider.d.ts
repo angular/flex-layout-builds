@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { InjectionToken } from '@angular/core';
-import { BreakPoint, MatchMedia, ServerStylesheet, ServerMatchMedia } from '@angular/flex-layout';
+import { BreakPoint, MatchMedia, StylesheetMap, ServerMatchMedia } from '@angular/flex-layout/core';
 /**
  * Activate all of the registered breakpoints in sequence, and then
  * retrieve the associated stylings from the virtual stylesheet
@@ -15,19 +15,19 @@ import { BreakPoint, MatchMedia, ServerStylesheet, ServerMatchMedia } from '@ang
  * @param matchMedia the service to activate/deactive breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
  */
-export declare function generateStaticFlexLayoutStyles(serverSheet: ServerStylesheet, matchMedia: MatchMedia, breakpoints: BreakPoint[]): string;
+export declare function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap, matchMedia: MatchMedia, breakpoints: BreakPoint[]): string;
 /**
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  */
-export declare function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: ServerStylesheet, matchMedia: MatchMedia, _document: Document, breakpoints: BreakPoint[]): () => void;
+export declare function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap, matchMedia: MatchMedia, _document: Document, breakpoints: BreakPoint[]): () => void;
 /**
  *  Provider to set static styles on the server
  */
 export declare const SERVER_PROVIDERS: ({
     provide: InjectionToken<() => void>;
-    useFactory: (serverSheet: ServerStylesheet, matchMedia: MatchMedia, _document: Document, breakpoints: BreakPoint[]) => () => void;
-    deps: (typeof ServerStylesheet | typeof MatchMedia | InjectionToken<Document>)[];
+    useFactory: (serverSheet: StylesheetMap, matchMedia: MatchMedia, _document: Document, breakpoints: BreakPoint[]) => () => void;
+    deps: (typeof StylesheetMap | typeof MatchMedia | InjectionToken<Document>)[];
     multi: boolean;
 } | {
     provide: InjectionToken<boolean>;

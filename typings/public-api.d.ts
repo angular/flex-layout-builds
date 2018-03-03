@@ -11,7 +11,8 @@
  * Entry point for all public APIs of Angular Flex-Layout.
  */
 export * from './version';
-export * from './api/index';
-export * from './media-query/index';
-export * from './utils/index';
+export * from '@angular/flex-layout/core';
+export * from '@angular/flex-layout/extended';
+export * from '@angular/flex-layout/flex';
+export * from '@angular/flex-layout/server';
 export * from './module';

@@ -6,8 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ModuleWithProviders } from '@angular/core';
-import { BreakPoint } from './media-query/breakpoints/break-point';
-import { BreakPointProviderOptions } from './media-query/breakpoints/break-points-provider';
+import { BreakPoint, BreakPointProviderOptions } from '@angular/flex-layout/core';
+/**
+ * Since the equivalent results are easily achieved with a css class attached to each
+ * layout child, these have been deprecated and removed from the API.
+ *
+ *  import {LayoutPaddingDirective} from './api/flexbox/layout-padding';
+ *  import {LayoutMarginDirective} from './api/flexbox/layout-margin';
+ */
 /**
  *
  */

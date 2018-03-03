@@ -4,6 +4,18 @@
   "metadata": {},
   "exports": [
     {
+      "from": "./core"
+    },
+    {
+      "from": "./flex"
+    },
+    {
+      "from": "./server"
+    },
+    {
+      "from": "./extended"
+    },
+    {
       "from": "./typings/index"
     }
   ],

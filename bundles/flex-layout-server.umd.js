@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/platform-server'), require('@angular/flex-layout'), require('@angular/core')) :
-	typeof define === 'function' && define.amd ? define('@angular/flex-layout/server', ['exports', '@angular/common', '@angular/platform-server', '@angular/flex-layout', '@angular/core'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].server = {}),global.ng.common,global.ng.platformServer,global.ng['flex-layout'],global.ng.core));
-}(this, (function (exports,common,platformServer,flexLayout,core) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/platform-server'), require('@angular/flex-layout/core'), require('@angular/core')) :
+	typeof define === 'function' && define.amd ? define('@angular/flex-layout/server', ['exports', '@angular/common', '@angular/platform-server', '@angular/flex-layout/core', '@angular/core'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].server = {}),global.ng.common,global.ng.platformServer,global.ng['flex-layout'].core,global.ng.core));
+}(this, (function (exports,common,platformServer,core,core$1) { 'use strict';
 
 /**
  * @fileoverview added by tsickle
@@ -61,7 +61,7 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpo
         // populated with the manual media queries
         var /** @type {?} */ styleTag = _document.createElement('style');
         var /** @type {?} */ styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
-        styleTag.classList.add(flexLayout.CLASS_NAME + "ssr");
+        styleTag.classList.add(core.CLASS_NAME + "ssr");
         styleTag.textContent = styleText;
         _document.head.appendChild(styleTag);
     };
@@ -74,20 +74,20 @@ var /** @type {?} */ SERVER_PROVIDERS = [
         provide: /** @type {?} */ (platformServer.BEFORE_APP_SERIALIZED),
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
-            flexLayout.ServerStylesheet,
-            flexLayout.MatchMedia,
+            core.StylesheetMap,
+            core.MatchMedia,
             common.DOCUMENT,
-            flexLayout.BREAKPOINTS,
+            core.BREAKPOINTS,
         ],
         multi: true
     },
     {
-        provide: flexLayout.SERVER_TOKEN,
+        provide: core.SERVER_TOKEN,
         useValue: true
     },
     {
-        provide: flexLayout.MatchMedia,
-        useClass: flexLayout.ServerMatchMedia
+        provide: core.MatchMedia,
+        useClass: core.ServerMatchMedia
     }
 ];
 var /** @type {?} */ nextId = 0;
@@ -152,7 +152,7 @@ function formatSegment(css, asPrefix) {
 function getClassName(stylesheet, classMap) {
     var /** @type {?} */ className = classMap.get(stylesheet);
     if (!className) {
-        className = "" + flexLayout.CLASS_NAME + nextId++;
+        className = "" + core.CLASS_NAME + nextId++;
         classMap.set(stylesheet, className);
     }
     stylesheet.classList.add(className);
@@ -167,7 +167,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
     function FlexLayoutServerModule() {
     }
     FlexLayoutServerModule.decorators = [
-        { type: core.NgModule, args: [{
+        { type: core$1.NgModule, args: [{
                     providers: [SERVER_PROVIDERS]
                 },] },
     ];
