@@ -7,7 +7,7 @@
  */
 import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, SecurityContext, NgModule } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
-import { BaseFxDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseFxDirectiveAdapter, RendererAdapter, BROWSER_PROVIDER, CoreModule, StylesheetMap } from '@angular/flex-layout/core';
+import { BaseFxDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseFxDirectiveAdapter, BROWSER_PROVIDER, CoreModule, StylesheetMap } from '@angular/flex-layout/core';
 import { LayoutDirective } from '@angular/flex-layout/flex';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -376,8 +376,7 @@ class ClassDirective extends BaseFxDirective {
         if (!this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            let /** @type {?} */ adapter = new RendererAdapter(this._renderer);
-            this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, /** @type {?} */ (adapter));
+            this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer);
         }
     }
     /**
@@ -1078,8 +1077,7 @@ class StyleDirective extends BaseFxDirective {
         if (!this._ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            let /** @type {?} */ adapter = new RendererAdapter(this._renderer);
-            this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, /** @type {?} */ (adapter));
+            this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
         }
         this._buildCacheInterceptor();
         this._fallbackToStyle();

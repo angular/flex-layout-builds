@@ -602,8 +602,7 @@ var ClassDirective = /** @class */ (function (_super) {
         if (!this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            var /** @type {?} */ adapter = new core$1.RendererAdapter(this._renderer);
-            this._ngClassInstance = new common.NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, /** @type {?} */ (adapter));
+            this._ngClassInstance = new common.NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer);
         }
     };
     /**
@@ -1540,8 +1539,7 @@ var StyleDirective = /** @class */ (function (_super) {
         if (!this._ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            var /** @type {?} */ adapter = new core$1.RendererAdapter(this._renderer);
-            this._ngStyleInstance = new common.NgStyle(this._differs, this._ngEl, /** @type {?} */ (adapter));
+            this._ngStyleInstance = new common.NgStyle(this._differs, this._ngEl, this._renderer);
         }
         this._buildCacheInterceptor();
         this._fallbackToStyle();

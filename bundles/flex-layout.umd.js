@@ -1189,259 +1189,6 @@ var CoreModule = /** @class */ (function () {
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
- * This is required for older versions of NgStyle and NgClass that require
- * the v1 API (but should use the v2 instances)
- */
-var   /**
- * Adapts the 'deprecated' Angular Renderer v1 API to use the new Renderer2 instance
- * This is required for older versions of NgStyle and NgClass that require
- * the v1 API (but should use the v2 instances)
- */
-RendererAdapter = /** @class */ (function () {
-    function RendererAdapter(_renderer) {
-        this._renderer = _renderer;
-    }
-    /**
-     * @param {?} el
-     * @param {?} className
-     * @param {?} isAdd
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementClass = /**
-     * @param {?} el
-     * @param {?} className
-     * @param {?} isAdd
-     * @return {?}
-     */
-    function (el, className, isAdd) {
-        if (isAdd) {
-            this._renderer.addClass(el, className);
-        }
-        else {
-            this._renderer.removeClass(el, className);
-        }
-    };
-    /**
-     * @param {?} el
-     * @param {?} styleName
-     * @param {?} styleValue
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementStyle = /**
-     * @param {?} el
-     * @param {?} styleName
-     * @param {?} styleValue
-     * @return {?}
-     */
-    function (el, styleName, styleValue) {
-        if (styleValue) {
-            this._renderer.setStyle(el, styleName, styleValue);
-        }
-        else {
-            this._renderer.removeStyle(el, styleName);
-        }
-    };
-    // new API is forwarded
-    /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    RendererAdapter.prototype.addClass = /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    function (el, name) {
-        this._renderer.addClass(el, name);
-    };
-    /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    RendererAdapter.prototype.removeClass = /**
-     * @param {?} el
-     * @param {?} name
-     * @return {?}
-     */
-    function (el, name) {
-        this._renderer.removeClass(el, name);
-    };
-    /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?} value
-     * @param {?=} flags
-     * @return {?}
-     */
-    RendererAdapter.prototype.setStyle = /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?} value
-     * @param {?=} flags
-     * @return {?}
-     */
-    function (el, style, value, flags) {
-        this._renderer.setStyle(el, style, value, flags);
-    };
-    /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?=} flags
-     * @return {?}
-     */
-    RendererAdapter.prototype.removeStyle = /**
-     * @param {?} el
-     * @param {?} style
-     * @param {?=} flags
-     * @return {?}
-     */
-    function (el, style, flags) {
-        this._renderer.removeStyle(el, style, flags);
-    };
-    // ******************************************************************
-    // !! Renderer is an abstract class with abstract methods
-    //
-    // These are implementation of those methods... and do NOTHING since
-    // we only use setElementStyle() and setElementClass()
-    // ******************************************************************
-    /* tslint:disable */
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.animate = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('animate'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.attachViewAfter = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('attachViewAfter'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.detachView = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('detachView'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.destroyView = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('destroyView'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createElement = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createElement'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createViewRoot = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createViewRoot'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createTemplateAnchor = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createTemplateAnchor'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.createText = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('createText'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.invokeElementMethod = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('invokeElementMethod'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.projectNodes = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('projectNodes'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.selectRootElement = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('selectRootElement'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setBindingDebugInfo = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setBindingDebugInfo'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementProperty = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setElementProperty'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setElementAttribute = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setElementAttribute'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.setText = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('setText'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.listen = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('listen'); };
-    /**
-     * @return {?}
-     */
-    RendererAdapter.prototype.listenGlobal = /**
-     * @return {?}
-     */
-    function () { throw _notImplemented('listenGlobal'); };
-    return RendererAdapter;
-}());
-/**
- * @param {?} methodName
- * @return {?}
- */
-function _notImplemented(methodName) {
-    return new Error("The method RendererAdapter::" + methodName + "() has not been implemented");
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
  * Utility to emulate a CSS stylesheet
  *
  * This utility class stores all of the styles for a given HTML element
@@ -6618,8 +6365,7 @@ var ClassDirective = /** @class */ (function (_super) {
         if (!this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            var /** @type {?} */ adapter = new RendererAdapter(this._renderer);
-            this._ngClassInstance = new common.NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, /** @type {?} */ (adapter));
+            this._ngClassInstance = new common.NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer);
         }
     };
     /**
@@ -7556,8 +7302,7 @@ var StyleDirective = /** @class */ (function (_super) {
         if (!this._ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            var /** @type {?} */ adapter = new RendererAdapter(this._renderer);
-            this._ngStyleInstance = new common.NgStyle(this._differs, this._ngEl, /** @type {?} */ (adapter));
+            this._ngStyleInstance = new common.NgStyle(this._differs, this._ngEl, this._renderer);
         }
         this._buildCacheInterceptor();
         this._fallbackToStyle();
@@ -7909,7 +7654,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-1c3f99f');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-3354742');
 
 /**
  * @fileoverview added by tsickle
@@ -7981,7 +7726,6 @@ exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
 exports.CLASS_NAME = CLASS_NAME;
 exports.CoreModule = CoreModule;
 exports.MediaChange = MediaChange;
-exports.RendererAdapter = RendererAdapter;
 exports.StylesheetMap = StylesheetMap;
 exports.SERVER_TOKEN = SERVER_TOKEN;
 exports.BaseFxDirective = BaseFxDirective;
