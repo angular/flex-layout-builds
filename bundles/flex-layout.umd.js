@@ -1189,6 +1189,31 @@ var CoreModule = /** @class */ (function () {
  * @suppress {checkTypes} checked by tsc
  */
 /**
+ * @deprecated use Core Module instead
+ * \@deletion-target 5.0.0-beta.15
+ * *****************************************************************
+ * Define module for the MediaQuery API
+ * *****************************************************************
+ */
+var MediaQueriesModule = /** @class */ (function () {
+    function MediaQueriesModule() {
+    }
+    MediaQueriesModule.decorators = [
+        { type: core.NgModule, args: [{
+                    imports: [CoreModule],
+                    exports: [CoreModule],
+                },] },
+    ];
+    /** @nocollapse */
+    MediaQueriesModule.ctorParameters = function () { return []; };
+    return MediaQueriesModule;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
  * Utility to emulate a CSS stylesheet
  *
  * This utility class stores all of the styles for a given HTML element
@@ -7654,7 +7679,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-3354742');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-95a6e83');
 
 /**
  * @fileoverview added by tsickle
@@ -7725,6 +7750,7 @@ exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
 exports.CLASS_NAME = CLASS_NAME;
 exports.CoreModule = CoreModule;
+exports.MediaQueriesModule = MediaQueriesModule;
 exports.MediaChange = MediaChange;
 exports.StylesheetMap = StylesheetMap;
 exports.SERVER_TOKEN = SERVER_TOKEN;

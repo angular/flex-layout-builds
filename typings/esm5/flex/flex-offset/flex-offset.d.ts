@@ -7,7 +7,7 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseFxDirective, MediaMonitor, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs/Subscription';
 import { LayoutDirective } from '../layout/layout';
 /**
@@ -69,7 +69,5 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
      *       otherwise `margin-top` is used for the offset.
      */
     protected _updateWithValue(value?: string | number): void;
-    protected _buildCSS(offset: any): {
-        [x: string]: string;
-    };
+    protected _buildCSS(offset: any): StyleDefinition;
 }
