@@ -1284,7 +1284,14 @@ var StylesheetMap = /** @class */ (function () {
      */
     function (el, styleName) {
         var /** @type {?} */ styles = this.stylesheet.get(el);
-        return (styles && styles.get(styleName)) || '';
+        var /** @type {?} */ value = '';
+        if (styles) {
+            var /** @type {?} */ style = styles.get(styleName);
+            if (typeof style === 'number' || typeof style === 'string') {
+                value = style + '';
+            }
+        }
+        return value;
     };
     StylesheetMap.decorators = [
         { type: core.Injectable },
@@ -3256,7 +3263,7 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (element, styleName) {
-        return element.style[styleName] || element.style.getPropertyValue(styleName);
+        return element.style[styleName] || element.style.getPropertyValue(styleName) || '';
     };
     /**
      * Determine the inline or inherited CSS style
@@ -3291,7 +3298,7 @@ var StyleUtils = /** @class */ (function () {
                 }
                 else {
                     if (this._serverModuleLoaded) {
-                        value = "" + this._serverStylesheet.getStyleForElement(element, styleName);
+                        value = this._serverStylesheet.getStyleForElement(element, styleName);
                     }
                 }
             }

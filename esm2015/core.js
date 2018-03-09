@@ -1009,7 +1009,14 @@ class StylesheetMap {
      */
     getStyleForElement(el, styleName) {
         const /** @type {?} */ styles = this.stylesheet.get(el);
-        return (styles && styles.get(styleName)) || '';
+        let /** @type {?} */ value = '';
+        if (styles) {
+            const /** @type {?} */ style = styles.get(styleName);
+            if (typeof style === 'number' || typeof style === 'string') {
+                value = style + '';
+            }
+        }
+        return value;
     }
 }
 StylesheetMap.decorators = [
@@ -2359,7 +2366,7 @@ class StyleUtils {
      * @return {?}
      */
     lookupInlineStyle(element, styleName) {
-        return element.style[styleName] || element.style.getPropertyValue(styleName);
+        return element.style[styleName] || element.style.getPropertyValue(styleName) || '';
     }
     /**
      * Determine the inline or inherited CSS style
@@ -2381,7 +2388,7 @@ class StyleUtils {
                 }
                 else {
                     if (this._serverModuleLoaded) {
-                        value = `${this._serverStylesheet.getStyleForElement(element, styleName)}`;
+                        value = this._serverStylesheet.getStyleForElement(element, styleName);
                     }
                 }
             }

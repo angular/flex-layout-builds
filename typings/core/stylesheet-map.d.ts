@@ -17,5 +17,5 @@ export declare class StylesheetMap {
     /**
      * Retrieve a given style for an HTML element
      */
-    getStyleForElement(el: HTMLElement, styleName: string): string | number;
+    getStyleForElement(el: HTMLElement, styleName: string): string;
 }
