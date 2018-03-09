@@ -53,7 +53,11 @@ function removeStyles(_document, platformId) {
     return function () {
         if (common.isPlatformBrowser(platformId)) {
             var /** @type {?} */ elements = Array.from(_document.querySelectorAll("[class*=" + CLASS_NAME + "]"));
-            var /** @type {?} */ classRegex_1 = new RegExp(/\bflex-layout-.+?\b/, 'g');
+            // RegExp constructor should only be used if passing a variable to the constructor.
+            // When using static regular expression it is more performant to use reg exp literal.
+            // This is also needed to provide Safari 9 compatibility, please see
+            // https://stackoverflow.com/questions/37919802 for more discussion.
+            var /** @type {?} */ classRegex_1 = /\bflex-layout-.+?\b/g;
             elements.forEach(function (el) {
                 el.classList.contains(CLASS_NAME + "ssr") && el.parentNode ?
                     el.parentNode.removeChild(el) : el.className.replace(classRegex_1, '');
@@ -7679,7 +7683,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-95a6e83');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-de7ab76');
 
 /**
  * @fileoverview added by tsickle
