@@ -1,4 +1,4 @@
-import { StylesheetMap } from '../stylesheet-map';
+import { StylesheetMap } from '../stylesheet-map/stylesheet-map';
 export declare class StyleUtils {
     private _serverStylesheet;
     private _serverModuleLoaded;

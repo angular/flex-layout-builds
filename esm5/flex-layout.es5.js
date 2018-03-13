@@ -8,7 +8,7 @@
 import { Version, Inject, NgModule, Optional, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, CoreModule, SERVER_TOKEN } from '@angular/flex-layout/core';
-export { ɵa0, removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, SERVER_TOKEN, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils } from '@angular/flex-layout/core';
+export { ɵa0, ɵc0, ɵb0, removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, SERVER_TOKEN, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils } from '@angular/flex-layout/core';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 export { ExtendedModule, ClassDirective, ImgSrcDirective, negativeOf, ShowHideDirective, StyleDirective } from '@angular/flex-layout/extended';
 import { FlexModule } from '@angular/flex-layout/flex';
@@ -22,7 +22,7 @@ export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIAL
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new Version('5.0.0-beta.13-bbe4b23');
+var /** @type {?} */ VERSION = new Version('5.0.0-beta.13-d4f2514');
 
 /**
  * @fileoverview added by tsickle

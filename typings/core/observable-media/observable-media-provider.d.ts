@@ -18,6 +18,6 @@ export declare function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService: Observa
  */
 export declare const OBSERVABLE_MEDIA_PROVIDER: {
     provide: typeof ObservableMedia;
-    deps: (typeof MatchMedia | typeof BreakPointRegistry | Optional[])[];
+    deps: (typeof BreakPointRegistry | typeof MatchMedia | Optional[])[];
     useFactory: (parentService: ObservableMedia, matchMedia: MatchMedia, breakpoints: BreakPointRegistry) => ObservableMedia;
 };

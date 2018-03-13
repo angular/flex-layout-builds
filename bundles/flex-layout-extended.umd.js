@@ -1711,6 +1711,7 @@ var ExtendedModule = /** @class */ (function () {
                         core$1.StylesheetMap,
                         core$1.StyleUtils,
                         core$1.BROWSER_PROVIDER,
+                        core$1.STYLESHEET_MAP_PROVIDER,
                     ]
                 },] },
     ];

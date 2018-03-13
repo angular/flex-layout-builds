@@ -7,7 +7,7 @@
  */
 import { __extends } from 'tslib';
 import { Directive, ElementRef, Input, Self, Optional, NgZone, SkipSelf, NgModule } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils, BROWSER_PROVIDER, CoreModule, StylesheetMap } from '@angular/flex-layout/core';
+import { BaseFxDirective, MediaMonitor, StyleUtils, BROWSER_PROVIDER, CoreModule, STYLESHEET_MAP_PROVIDER, StylesheetMap } from '@angular/flex-layout/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
@@ -2530,6 +2530,7 @@ var FlexModule = /** @class */ (function () {
                         StylesheetMap,
                         StyleUtils,
                         BROWSER_PROVIDER,
+                        STYLESHEET_MAP_PROVIDER,
                     ]
                 },] },
     ];

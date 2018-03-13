@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, Inject, Injectable, NgZone, InjectionToken, Optional, SkipSelf, NgModule, SimpleChange } from '@angular/core';
+import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, InjectionToken, Injectable, Inject, NgZone, Optional, SkipSelf, NgModule, SimpleChange } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operators/filter';
@@ -49,6 +49,100 @@ const /** @type {?} */ BROWSER_PROVIDER = {
     multi: true
 };
 const /** @type {?} */ CLASS_NAME = 'flex-layout-';
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ *  Injection token unique to the flex-layout library.
+ *  Use this token when build a custom provider (see below).
+ */
+const /** @type {?} */ BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Registry of 1..n MediaQuery breakpoint ranges
+ * This is published as a provider and may be overriden from custom, application-specific ranges
+ *
+ */
+class BreakPointRegistry {
+    /**
+     * @param {?} _registry
+     */
+    constructor(_registry) {
+        this._registry = _registry;
+    }
+    /**
+     * Accessor to raw list
+     * @return {?}
+     */
+    get items() {
+        return [...this._registry];
+    }
+    /**
+     * Accessor to sorted list used for registration with matchMedia API
+     *
+     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
+     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
+     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
+     * @return {?}
+     */
+    get sortedItems() {
+        let /** @type {?} */ overlaps = this._registry.filter(it => it.overlapping === true);
+        let /** @type {?} */ nonOverlaps = this._registry.filter(it => it.overlapping !== true);
+        return [...overlaps, ...nonOverlaps];
+    }
+    /**
+     * Search breakpoints by alias (e.g. gt-xs)
+     * @param {?} alias
+     * @return {?}
+     */
+    findByAlias(alias) {
+        return this._registry.find(bp => bp.alias == alias) || null;
+    }
+    /**
+     * @param {?} query
+     * @return {?}
+     */
+    findByQuery(query) {
+        return this._registry.find(bp => bp.mediaQuery == query) || null;
+    }
+    /**
+     * Get all the breakpoints whose ranges could overlapping `normal` ranges;
+     * e.g. gt-sm overlaps md, lg, and xl
+     * @return {?}
+     */
+    get overlappings() {
+        return this._registry.filter(it => it.overlapping == true);
+    }
+    /**
+     * Get list of all registered (non-empty) breakpoint aliases
+     * @return {?}
+     */
+    get aliases() {
+        return this._registry.map(it => it.alias);
+    }
+    /**
+     * Aliases are mapped to properties using suffixes
+     * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
+     * for property layoutGtSM.
+     * @return {?}
+     */
+    get suffixes() {
+        return this._registry.map(it => !!it.suffix ? it.suffix : '');
+    }
+}
+BreakPointRegistry.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+BreakPointRegistry.ctorParameters = () => [
+    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
+];
 
 /**
  * @fileoverview added by tsickle
@@ -247,100 +341,6 @@ function unique(list) {
         return seen.hasOwnProperty(item) ? false : (seen[item] = true);
     });
 }
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- *  Injection token unique to the flex-layout library.
- *  Use this token when build a custom provider (see below).
- */
-const /** @type {?} */ BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Registry of 1..n MediaQuery breakpoint ranges
- * This is published as a provider and may be overriden from custom, application-specific ranges
- *
- */
-class BreakPointRegistry {
-    /**
-     * @param {?} _registry
-     */
-    constructor(_registry) {
-        this._registry = _registry;
-    }
-    /**
-     * Accessor to raw list
-     * @return {?}
-     */
-    get items() {
-        return [...this._registry];
-    }
-    /**
-     * Accessor to sorted list used for registration with matchMedia API
-     *
-     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-     * @return {?}
-     */
-    get sortedItems() {
-        let /** @type {?} */ overlaps = this._registry.filter(it => it.overlapping === true);
-        let /** @type {?} */ nonOverlaps = this._registry.filter(it => it.overlapping !== true);
-        return [...overlaps, ...nonOverlaps];
-    }
-    /**
-     * Search breakpoints by alias (e.g. gt-xs)
-     * @param {?} alias
-     * @return {?}
-     */
-    findByAlias(alias) {
-        return this._registry.find(bp => bp.alias == alias) || null;
-    }
-    /**
-     * @param {?} query
-     * @return {?}
-     */
-    findByQuery(query) {
-        return this._registry.find(bp => bp.mediaQuery == query) || null;
-    }
-    /**
-     * Get all the breakpoints whose ranges could overlapping `normal` ranges;
-     * e.g. gt-sm overlaps md, lg, and xl
-     * @return {?}
-     */
-    get overlappings() {
-        return this._registry.filter(it => it.overlapping == true);
-    }
-    /**
-     * Get list of all registered (non-empty) breakpoint aliases
-     * @return {?}
-     */
-    get aliases() {
-        return this._registry.map(it => it.alias);
-    }
-    /**
-     * Aliases are mapped to properties using suffixes
-     * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
-     * for property layoutGtSM.
-     * @return {?}
-     */
-    get suffixes() {
-        return this._registry.map(it => !!it.suffix ? it.suffix : '');
-    }
-}
-BreakPointRegistry.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-BreakPointRegistry.ctorParameters = () => [
-    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
-];
 
 /**
  * @fileoverview added by tsickle
@@ -922,6 +922,35 @@ function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
  * @suppress {checkTypes} checked by tsc
  */
 /**
+ * Ensure a single global service provider
+ * @param {?} parentMedia
+ * @param {?} ngZone
+ * @param {?} platformId
+ * @param {?} _document
+ * @return {?}
+ */
+function MATCH_MEDIA_PROVIDER_FACTORY(parentMedia, ngZone, platformId, _document) {
+    return parentMedia || new MatchMedia(ngZone, platformId, _document);
+}
+/**
+ * Export provider that uses a global service factory (above)
+ */
+const /** @type {?} */ MATCH_MEDIA_PROVIDER = {
+    provide: MatchMedia,
+    deps: [
+        [new Optional(), new SkipSelf(), MatchMedia],
+        NgZone,
+        /** @type {?} */ (PLATFORM_ID),
+        /** @type {?} */ (DOCUMENT),
+    ],
+    useFactory: MATCH_MEDIA_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
  * *****************************************************************
  * Define module for the MediaQuery API
  * *****************************************************************
@@ -933,7 +962,7 @@ CoreModule.decorators = [
                 providers: [
                     DEFAULT_BREAKPOINTS_PROVIDER,
                     BreakPointRegistry,
-                    MatchMedia,
+                    MATCH_MEDIA_PROVIDER,
                     MediaMonitor,
                     OBSERVABLE_MEDIA_PROVIDER
                 ]
@@ -1024,6 +1053,34 @@ StylesheetMap.decorators = [
 ];
 /** @nocollapse */
 StylesheetMap.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Ensure a single global service provider
+ * @param {?} parentSheet
+ * @return {?}
+ */
+function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
+    return parentSheet || new StylesheetMap();
+}
+/**
+ * Export provider that uses a global service factory (above)
+ */
+const /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
+    provide: StylesheetMap,
+    deps: [
+        [new Optional(), new SkipSelf(), StylesheetMap],
+    ],
+    useFactory: STYLESHEET_MAP_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 
 /**
  * @fileoverview added by tsickle
@@ -2441,5 +2498,5 @@ const /** @type {?} */ FALLBACK_STYLE = 'block';
  * @suppress {checkTypes} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, SERVER_TOKEN, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateSuffixes as ɵa0 };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, SERVER_TOKEN, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateSuffixes as ɵa0, MATCH_MEDIA_PROVIDER as ɵc0, MATCH_MEDIA_PROVIDER_FACTORY as ɵb0 };
 //# sourceMappingURL=core.js.map
