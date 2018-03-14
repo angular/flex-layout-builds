@@ -1706,13 +1706,7 @@ var ExtendedModule = /** @class */ (function () {
         { type: core.NgModule, args: [{
                     imports: [core$1.CoreModule],
                     declarations: ALL_DIRECTIVES.slice(),
-                    exports: ALL_DIRECTIVES.slice(),
-                    providers: [
-                        core$1.StylesheetMap,
-                        core$1.StyleUtils,
-                        core$1.BROWSER_PROVIDER,
-                        core$1.STYLESHEET_MAP_PROVIDER,
-                    ]
+                    exports: ALL_DIRECTIVES.slice()
                 },] },
     ];
     /** @nocollapse */

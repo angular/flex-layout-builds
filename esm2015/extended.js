@@ -7,7 +7,7 @@
  */
 import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, SecurityContext, NgModule } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
-import { BaseFxDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseFxDirectiveAdapter, BROWSER_PROVIDER, CoreModule, STYLESHEET_MAP_PROVIDER, StylesheetMap } from '@angular/flex-layout/core';
+import { BaseFxDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseFxDirectiveAdapter, CoreModule } from '@angular/flex-layout/core';
 import { LayoutDirective } from '@angular/flex-layout/flex';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -1199,13 +1199,7 @@ ExtendedModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CoreModule],
                 declarations: [...ALL_DIRECTIVES],
-                exports: [...ALL_DIRECTIVES],
-                providers: [
-                    StylesheetMap,
-                    StyleUtils,
-                    BROWSER_PROVIDER,
-                    STYLESHEET_MAP_PROVIDER,
-                ]
+                exports: [...ALL_DIRECTIVES]
             },] },
 ];
 /** @nocollapse */

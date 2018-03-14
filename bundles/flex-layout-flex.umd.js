@@ -1168,7 +1168,7 @@ var FlexDirective = /** @class */ (function (_super) {
         };
         switch (basis || '') {
             case '':
-                basis = '0.000000001px';
+                basis = MIN_FLEX;
                 break;
             case 'initial': // default
             case 'nogrow':
@@ -1232,7 +1232,7 @@ var FlexDirective = /** @class */ (function (_super) {
         }
         // Fix for issues 277 and 534
         // TODO(CaerusKaru): convert this to just width/height
-        if (basis !== '0%') {
+        if (basis !== '0%' && basis !== MIN_FLEX) {
             css[min] = isFixed || (isPx && grow) ? basis : null;
             css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
         }
@@ -1284,6 +1284,7 @@ var FlexDirective = /** @class */ (function (_super) {
     };
     return FlexDirective;
 }(core$1.BaseFxDirective));
+var /** @type {?} */ MIN_FLEX = '0.000000001px';
 
 /**
  * @fileoverview added by tsickle
@@ -2551,13 +2552,7 @@ var FlexModule = /** @class */ (function () {
         { type: core.NgModule, args: [{
                     imports: [core$1.CoreModule, bidi.BidiModule],
                     declarations: ALL_DIRECTIVES.slice(),
-                    exports: ALL_DIRECTIVES.slice(),
-                    providers: [
-                        core$1.StylesheetMap,
-                        core$1.StyleUtils,
-                        core$1.BROWSER_PROVIDER,
-                        core$1.STYLESHEET_MAP_PROVIDER,
-                    ]
+                    exports: ALL_DIRECTIVES.slice()
                 },] },
     ];
     /** @nocollapse */

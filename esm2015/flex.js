@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { Directive, ElementRef, Input, Self, Optional, NgZone, SkipSelf, NgModule } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils, BROWSER_PROVIDER, CoreModule, STYLESHEET_MAP_PROVIDER, StylesheetMap } from '@angular/flex-layout/core';
+import { BaseFxDirective, MediaMonitor, StyleUtils, CoreModule } from '@angular/flex-layout/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
@@ -868,7 +868,7 @@ class FlexDirective extends BaseFxDirective {
         };
         switch (basis || '') {
             case '':
-                basis = '0.000000001px';
+                basis = MIN_FLEX;
                 break;
             case 'initial': // default
             case 'nogrow':
@@ -932,7 +932,7 @@ class FlexDirective extends BaseFxDirective {
         }
         // Fix for issues 277 and 534
         // TODO(CaerusKaru): convert this to just width/height
-        if (basis !== '0%') {
+        if (basis !== '0%' && basis !== MIN_FLEX) {
             css[min] = isFixed || (isPx && grow) ? basis : null;
             css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
         }
@@ -988,6 +988,7 @@ FlexDirective.propDecorators = {
     "flexLtLg": [{ type: Input, args: ['fxFlex.lt-lg',] },],
     "flexLtXl": [{ type: Input, args: ['fxFlex.lt-xl',] },],
 };
+const /** @type {?} */ MIN_FLEX = '0.000000001px';
 
 /**
  * @fileoverview added by tsickle
@@ -1929,13 +1930,7 @@ FlexModule.decorators = [
     { type: NgModule, args: [{
                 imports: [CoreModule, BidiModule],
                 declarations: [...ALL_DIRECTIVES],
-                exports: [...ALL_DIRECTIVES],
-                providers: [
-                    StylesheetMap,
-                    StyleUtils,
-                    BROWSER_PROVIDER,
-                    STYLESHEET_MAP_PROVIDER,
-                ]
+                exports: [...ALL_DIRECTIVES]
             },] },
 ];
 /** @nocollapse */

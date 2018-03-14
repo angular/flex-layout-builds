@@ -950,48 +950,66 @@ const /** @type {?} */ MATCH_MEDIA_PROVIDER = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-/**
- * *****************************************************************
- * Define module for the MediaQuery API
- * *****************************************************************
- */
-class CoreModule {
-}
-CoreModule.decorators = [
-    { type: NgModule, args: [{
-                providers: [
-                    DEFAULT_BREAKPOINTS_PROVIDER,
-                    BreakPointRegistry,
-                    MATCH_MEDIA_PROVIDER,
-                    MediaMonitor,
-                    OBSERVABLE_MEDIA_PROVIDER
-                ]
-            },] },
-];
-/** @nocollapse */
-CoreModule.ctorParameters = () => [];
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * Applies CSS prefixes to appropriate style keys.
+ *
+ * Note: `-ms-`, `-moz` and `-webkit-box` are no longer supported. e.g.
+ *    {
+ *      display: -webkit-flex;     NEW - Safari 6.1+. iOS 7.1+, BB10
+ *      display: flex;             NEW, Spec - Firefox, Chrome, Opera
+ *      // display: -webkit-box;   OLD - iOS 6-, Safari 3.1-6, BB7
+ *      // display: -ms-flexbox;   TWEENER - IE 10
+ *      // display: -moz-flexbox;  OLD - Firefox
+ *    }
+ * @param {?} target
+ * @return {?}
  */
-/**
- * @deprecated use Core Module instead
- * \@deletion-target 5.0.0-beta.15
- * *****************************************************************
- * Define module for the MediaQuery API
- * *****************************************************************
- */
-class MediaQueriesModule {
+function applyCssPrefixes(target) {
+    for (let /** @type {?} */ key in target) {
+        let /** @type {?} */ value = target[key] || '';
+        switch (key) {
+            case 'display':
+                if (value === 'flex') {
+                    target['display'] = [
+                        '-webkit-flex',
+                        'flex'
+                    ];
+                }
+                else if (value === 'inline-flex') {
+                    target['display'] = [
+                        '-webkit-inline-flex',
+                        'inline-flex'
+                    ];
+                }
+                else {
+                    target['display'] = value;
+                }
+                break;
+            case 'align-items':
+            case 'align-self':
+            case 'align-content':
+            case 'flex':
+            case 'flex-basis':
+            case 'flex-flow':
+            case 'flex-grow':
+            case 'flex-shrink':
+            case 'flex-wrap':
+            case 'justify-content':
+                target['-webkit-' + key] = value;
+                break;
+            case 'flex-direction':
+                value = value || 'row';
+                target['-webkit-flex-direction'] = value;
+                target['flex-direction'] = value;
+                break;
+            case 'order':
+                target['order'] = target['-webkit-' + key] = isNaN(value) ? '0' : value;
+                break;
+        }
+    }
+    return target;
 }
-MediaQueriesModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [CoreModule],
-                exports: [CoreModule],
-            },] },
-];
-/** @nocollapse */
-MediaQueriesModule.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
@@ -1059,6 +1077,159 @@ StylesheetMap.ctorParameters = () => [];
  * @suppress {checkTypes} checked by tsc
  */
 /**
+ * Token that is provided to tell whether the FlexLayoutServerModule
+ * has been included in the bundle
+ *
+ * NOTE: This can be manually provided to disable styles when using SSR
+ */
+const /** @type {?} */ SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+class StyleUtils {
+    /**
+     * @param {?} _serverStylesheet
+     * @param {?} _serverModuleLoaded
+     * @param {?} _platformId
+     */
+    constructor(_serverStylesheet, _serverModuleLoaded, _platformId) {
+        this._serverStylesheet = _serverStylesheet;
+        this._serverModuleLoaded = _serverModuleLoaded;
+        this._platformId = _platformId;
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive element
+     * @param {?} element
+     * @param {?} style
+     * @param {?=} value
+     * @return {?}
+     */
+    applyStyleToElement(element, style, value) {
+        let /** @type {?} */ styles = {};
+        if (typeof style === 'string') {
+            styles[style] = value;
+            style = styles;
+        }
+        styles = applyCssPrefixes(style);
+        this._applyMultiValueStyleToElement(styles, element);
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive's element
+     * @param {?} style
+     * @param {?=} elements
+     * @return {?}
+     */
+    applyStyleToElements(style, elements = []) {
+        const /** @type {?} */ styles = applyCssPrefixes(style);
+        elements.forEach(el => {
+            this._applyMultiValueStyleToElement(styles, el);
+        });
+    }
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction)
+     *
+     * Check inline style first then check computed (stylesheet) style
+     * @param {?} target
+     * @return {?}
+     */
+    getFlowDirection(target) {
+        const /** @type {?} */ query = 'flex-direction';
+        let /** @type {?} */ value = this.lookupStyle(target, query);
+        if (value === FALLBACK_STYLE) {
+            value = '';
+        }
+        const /** @type {?} */ hasInlineValue = this.lookupInlineStyle(target, query) ||
+            (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
+        return [value || 'row', hasInlineValue];
+    }
+    /**
+     * Find the DOM element's raw attribute value (if any)
+     * @param {?} element
+     * @param {?} attribute
+     * @return {?}
+     */
+    lookupAttributeValue(element, attribute) {
+        return element.getAttribute(attribute) || '';
+    }
+    /**
+     * Find the DOM element's inline style value (if any)
+     * @param {?} element
+     * @param {?} styleName
+     * @return {?}
+     */
+    lookupInlineStyle(element, styleName) {
+        return element.style[styleName] || element.style.getPropertyValue(styleName) || '';
+    }
+    /**
+     * Determine the inline or inherited CSS style
+     * NOTE: platform-server has no implementation for getComputedStyle
+     * @param {?} element
+     * @param {?} styleName
+     * @param {?=} inlineOnly
+     * @return {?}
+     */
+    lookupStyle(element, styleName, inlineOnly = false) {
+        let /** @type {?} */ value = '';
+        if (element) {
+            let /** @type {?} */ immediateValue = value = this.lookupInlineStyle(element, styleName);
+            if (!immediateValue) {
+                if (isPlatformBrowser(this._platformId)) {
+                    if (!inlineOnly) {
+                        value = getComputedStyle(element).getPropertyValue(styleName);
+                    }
+                }
+                else {
+                    if (this._serverModuleLoaded) {
+                        value = this._serverStylesheet.getStyleForElement(element, styleName);
+                    }
+                }
+            }
+        }
+        // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
+        //       in which case getComputedStyle() should determine a valid value.
+        return value ? value.trim() : FALLBACK_STYLE;
+    }
+    /**
+     * Applies the styles to the element. The styles object map may contain an array of values
+     * Each value will be added as element style
+     * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     * @param {?} styles
+     * @param {?} element
+     * @return {?}
+     */
+    _applyMultiValueStyleToElement(styles, element) {
+        Object.keys(styles).sort().forEach(key => {
+            const /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+            values.sort();
+            for (let /** @type {?} */ value of values) {
+                if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
+                    element.style.setProperty(key, value);
+                }
+                else {
+                    this._serverStylesheet.addStyleToElement(element, key, value);
+                }
+            }
+        });
+    }
+}
+StyleUtils.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+StyleUtils.ctorParameters = () => [
+    { type: StylesheetMap, decorators: [{ type: Optional },] },
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
+    { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+];
+const /** @type {?} */ FALLBACK_STYLE = 'block';
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
  * Ensure a single global service provider
  * @param {?} parentSheet
  * @return {?}
@@ -1081,18 +1252,56 @@ const /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * *****************************************************************
+ * Define module for the MediaQuery API
+ * *****************************************************************
+ */
+class CoreModule {
+}
+CoreModule.decorators = [
+    { type: NgModule, args: [{
+                providers: [
+                    DEFAULT_BREAKPOINTS_PROVIDER,
+                    BreakPointRegistry,
+                    MATCH_MEDIA_PROVIDER,
+                    MediaMonitor,
+                    OBSERVABLE_MEDIA_PROVIDER,
+                    STYLESHEET_MAP_PROVIDER,
+                    StyleUtils,
+                    BROWSER_PROVIDER,
+                ]
+            },] },
+];
+/** @nocollapse */
+CoreModule.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 /**
- * Token that is provided to tell whether the FlexLayoutServerModule
- * has been included in the bundle
- *
- * NOTE: This can be manually provided to disable styles when using SSR
+ * @deprecated use Core Module instead
+ * \@deletion-target 5.0.0-beta.15
+ * *****************************************************************
+ * Define module for the MediaQuery API
+ * *****************************************************************
  */
-const /** @type {?} */ SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded');
+class MediaQueriesModule {
+}
+MediaQueriesModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [CoreModule],
+                exports: [CoreModule],
+            },] },
+];
+/** @nocollapse */
+MediaQueriesModule.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 
 /**
  * @fileoverview added by tsickle
@@ -2281,212 +2490,6 @@ const /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-
-/**
- * Applies CSS prefixes to appropriate style keys.
- *
- * Note: `-ms-`, `-moz` and `-webkit-box` are no longer supported. e.g.
- *    {
- *      display: -webkit-flex;     NEW - Safari 6.1+. iOS 7.1+, BB10
- *      display: flex;             NEW, Spec - Firefox, Chrome, Opera
- *      // display: -webkit-box;   OLD - iOS 6-, Safari 3.1-6, BB7
- *      // display: -ms-flexbox;   TWEENER - IE 10
- *      // display: -moz-flexbox;  OLD - Firefox
- *    }
- * @param {?} target
- * @return {?}
- */
-function applyCssPrefixes(target) {
-    for (let /** @type {?} */ key in target) {
-        let /** @type {?} */ value = target[key] || '';
-        switch (key) {
-            case 'display':
-                if (value === 'flex') {
-                    target['display'] = [
-                        '-webkit-flex',
-                        'flex'
-                    ];
-                }
-                else if (value === 'inline-flex') {
-                    target['display'] = [
-                        '-webkit-inline-flex',
-                        'inline-flex'
-                    ];
-                }
-                else {
-                    target['display'] = value;
-                }
-                break;
-            case 'align-items':
-            case 'align-self':
-            case 'align-content':
-            case 'flex':
-            case 'flex-basis':
-            case 'flex-flow':
-            case 'flex-grow':
-            case 'flex-shrink':
-            case 'flex-wrap':
-            case 'justify-content':
-                target['-webkit-' + key] = value;
-                break;
-            case 'flex-direction':
-                value = value || 'row';
-                target['-webkit-flex-direction'] = value;
-                target['flex-direction'] = value;
-                break;
-            case 'order':
-                target['order'] = target['-webkit-' + key] = isNaN(value) ? '0' : value;
-                break;
-        }
-    }
-    return target;
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-class StyleUtils {
-    /**
-     * @param {?} _serverStylesheet
-     * @param {?} _serverModuleLoaded
-     * @param {?} _platformId
-     */
-    constructor(_serverStylesheet, _serverModuleLoaded, _platformId) {
-        this._serverStylesheet = _serverStylesheet;
-        this._serverModuleLoaded = _serverModuleLoaded;
-        this._platformId = _platformId;
-    }
-    /**
-     * Applies styles given via string pair or object map to the directive element
-     * @param {?} element
-     * @param {?} style
-     * @param {?=} value
-     * @return {?}
-     */
-    applyStyleToElement(element, style, value) {
-        let /** @type {?} */ styles = {};
-        if (typeof style === 'string') {
-            styles[style] = value;
-            style = styles;
-        }
-        styles = applyCssPrefixes(style);
-        this._applyMultiValueStyleToElement(styles, element);
-    }
-    /**
-     * Applies styles given via string pair or object map to the directive's element
-     * @param {?} style
-     * @param {?=} elements
-     * @return {?}
-     */
-    applyStyleToElements(style, elements = []) {
-        const /** @type {?} */ styles = applyCssPrefixes(style);
-        elements.forEach(el => {
-            this._applyMultiValueStyleToElement(styles, el);
-        });
-    }
-    /**
-     * Determine the DOM element's Flexbox flow (flex-direction)
-     *
-     * Check inline style first then check computed (stylesheet) style
-     * @param {?} target
-     * @return {?}
-     */
-    getFlowDirection(target) {
-        const /** @type {?} */ query = 'flex-direction';
-        let /** @type {?} */ value = this.lookupStyle(target, query);
-        if (value === FALLBACK_STYLE) {
-            value = '';
-        }
-        const /** @type {?} */ hasInlineValue = this.lookupInlineStyle(target, query) ||
-            (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
-        return [value || 'row', hasInlineValue];
-    }
-    /**
-     * Find the DOM element's raw attribute value (if any)
-     * @param {?} element
-     * @param {?} attribute
-     * @return {?}
-     */
-    lookupAttributeValue(element, attribute) {
-        return element.getAttribute(attribute) || '';
-    }
-    /**
-     * Find the DOM element's inline style value (if any)
-     * @param {?} element
-     * @param {?} styleName
-     * @return {?}
-     */
-    lookupInlineStyle(element, styleName) {
-        return element.style[styleName] || element.style.getPropertyValue(styleName) || '';
-    }
-    /**
-     * Determine the inline or inherited CSS style
-     * NOTE: platform-server has no implementation for getComputedStyle
-     * @param {?} element
-     * @param {?} styleName
-     * @param {?=} inlineOnly
-     * @return {?}
-     */
-    lookupStyle(element, styleName, inlineOnly = false) {
-        let /** @type {?} */ value = '';
-        if (element) {
-            let /** @type {?} */ immediateValue = value = this.lookupInlineStyle(element, styleName);
-            if (!immediateValue) {
-                if (isPlatformBrowser(this._platformId)) {
-                    if (!inlineOnly) {
-                        value = getComputedStyle(element).getPropertyValue(styleName);
-                    }
-                }
-                else {
-                    if (this._serverModuleLoaded) {
-                        value = this._serverStylesheet.getStyleForElement(element, styleName);
-                    }
-                }
-            }
-        }
-        // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
-        //       in which case getComputedStyle() should determine a valid value.
-        return value ? value.trim() : FALLBACK_STYLE;
-    }
-    /**
-     * Applies the styles to the element. The styles object map may contain an array of values
-     * Each value will be added as element style
-     * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
-     * @param {?} styles
-     * @param {?} element
-     * @return {?}
-     */
-    _applyMultiValueStyleToElement(styles, element) {
-        Object.keys(styles).sort().forEach(key => {
-            const /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
-            values.sort();
-            for (let /** @type {?} */ value of values) {
-                if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
-                    element.style.setProperty(key, value);
-                }
-                else {
-                    this._serverStylesheet.addStyleToElement(element, key, value);
-                }
-            }
-        });
-    }
-}
-StyleUtils.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-StyleUtils.ctorParameters = () => [
-    { type: StylesheetMap, decorators: [{ type: Optional },] },
-    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
-    { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
-];
-const /** @type {?} */ FALLBACK_STYLE = 'block';
 
 /**
  * @fileoverview added by tsickle
