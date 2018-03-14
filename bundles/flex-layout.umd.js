@@ -4616,6 +4616,12 @@ var FlexDirective = /** @class */ (function (_super) {
                 });
             }
         }
+        else {
+            // Fix for issue 660
+            css[hasCalc ? 'flex-basis' : 'flex'] = css[max] ?
+                (hasCalc ? css[max] : grow + " " + shrink + " " + css[max]) :
+                (hasCalc ? css[min] : grow + " " + shrink + " " + css[min]);
+        }
         return extendObject$1(css, { 'box-sizing': 'border-box' });
     };
     FlexDirective.decorators = [
@@ -7774,7 +7780,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-2079aea');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-3809608');
 
 /**
  * @fileoverview added by tsickle

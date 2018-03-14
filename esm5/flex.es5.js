@@ -1225,6 +1225,12 @@ var FlexDirective = /** @class */ (function (_super) {
                 });
             }
         }
+        else {
+            // Fix for issue 660
+            css[hasCalc ? 'flex-basis' : 'flex'] = css[max] ?
+                (hasCalc ? css[max] : grow + " " + shrink + " " + css[max]) :
+                (hasCalc ? css[min] : grow + " " + shrink + " " + css[min]);
+        }
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
     FlexDirective.decorators = [
