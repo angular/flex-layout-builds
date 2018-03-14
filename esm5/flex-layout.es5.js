@@ -22,7 +22,7 @@ export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIAL
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new Version('5.0.0-beta.13-b152998');
+var /** @type {?} */ VERSION = new Version('5.0.0-beta.13-2079aea');
 
 /**
  * @fileoverview added by tsickle
