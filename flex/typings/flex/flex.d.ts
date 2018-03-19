@@ -8,7 +8,7 @@
 import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs/Subscription';
-import { LayoutDirective } from '../layout/layout';
+import { Layout, LayoutDirective } from '../layout/layout';
 /** Built-in aliases for different flex-basis values. */
 export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';
 /**
@@ -22,7 +22,7 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     protected styleUtils: StyleUtils;
     protected addFlexStyles: boolean | null;
     /** The flex-direction of this element's flex container. Defaults to 'row'. */
-    protected _layout: string;
+    protected _layout: Layout;
     /**
      * Subscription to the parent flex container's layout changes.
      * Stored so we can unsubscribe when this directive is destroyed.
@@ -59,7 +59,7 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      */
-    protected _onLayoutChange(direction?: string): void;
+    protected _onLayoutChange(layout?: Layout): void;
     protected _updateStyle(value?: string | number): void;
     /**
      * Validate the value to be one of the acceptable value options

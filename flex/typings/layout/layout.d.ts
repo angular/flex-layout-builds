@@ -9,6 +9,10 @@ import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angula
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+export declare type Layout = {
+    direction: string;
+    wrap: boolean;
+};
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -21,12 +25,12 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
      * Create Observable for nested/child 'flex' directives. This allows
      * child flex directives to subscribe/listen for flexbox direction changes.
      */
-    protected _announcer: ReplaySubject<string>;
+    protected _announcer: ReplaySubject<Layout>;
     /**
      * Publish observer to enabled nested, dependent directives to listen
      * to parent 'layout' direction changes
      */
-    layout$: Observable<string>;
+    layout$: Observable<Layout>;
     layout: any;
     layoutXs: any;
     layoutSm: any;

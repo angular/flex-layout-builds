@@ -9,7 +9,7 @@ import { ElementRef, OnChanges, SimpleChanges, AfterContentInit, OnDestroy, NgZo
 import { Directionality } from '@angular/cdk/bidi';
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs/Subscription';
-import { LayoutDirective } from '../layout/layout';
+import { Layout, LayoutDirective } from '../layout/layout';
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
@@ -51,7 +51,7 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
      */
-    protected _onLayoutChange(direction: any): void;
+    protected _onLayoutChange(layout: Layout): void;
     /**
      *
      */

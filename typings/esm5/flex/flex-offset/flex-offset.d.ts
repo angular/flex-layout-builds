@@ -9,7 +9,7 @@ import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angula
 import { Directionality } from '@angular/cdk/bidi';
 import { BaseFxDirective, MediaMonitor, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs/Subscription';
-import { LayoutDirective } from '../layout/layout';
+import { Layout, LayoutDirective } from '../layout/layout';
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
@@ -47,7 +47,10 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
      */
     ngOnInit(): void;
     /** The flex-direction of this element's host container. Defaults to 'row'. */
-    protected _layout: string;
+    protected _layout: {
+        direction: string;
+        wrap: boolean;
+    };
     /**
      * Subscription to the parent flex container's layout changes.
      * Stored so we can unsubscribe when this directive is destroyed.
@@ -62,7 +65,7 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      */
-    protected _onLayoutChange(direction?: string): void;
+    protected _onLayoutChange(layout?: Layout): void;
     /**
      * Using the current fxFlexOffset value, update the inline CSS
      * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',

@@ -8,7 +8,7 @@
 import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs/Subscription';
-import { LayoutDirective } from '../layout/layout';
+import { Layout, LayoutDirective } from '../layout/layout';
 /**
  * 'layout-align' flexbox styling directive
  *  Defines positioning of child elements along main and cross axis in a layout container
@@ -50,7 +50,7 @@ export declare class LayoutAlignDirective extends BaseFxDirective implements OnI
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
-    protected _onLayoutChange(direction: any): void;
+    protected _onLayoutChange(layout: Layout): void;
     protected _buildCSS(align: any): any;
     /**
      * Update container element to 'stretch' as needed...

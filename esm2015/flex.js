@@ -247,7 +247,10 @@ class LayoutDirective extends BaseFxDirective {
         // Update styles and announce to subscribers the *new* direction
         let /** @type {?} */ css = buildLayoutCSS(!!value ? value : '');
         this._applyStyleToElement(css);
-        this._announcer.next(css['flex-direction']);
+        this._announcer.next({
+            direction: css['flex-direction'],
+            wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
+        });
     }
 }
 LayoutDirective.decorators = [
@@ -452,11 +455,11 @@ class LayoutGapDirective extends BaseFxDirective {
     }
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
-     * @param {?} direction
+     * @param {?} layout
      * @return {?}
      */
-    _onLayoutChange(direction) {
-        this._layout = (direction || '').toLowerCase();
+    _onLayoutChange(layout) {
+        this._layout = (layout.direction || '').toLowerCase();
         if (!LAYOUT_VALUES.find(x => x === this._layout)) {
             this._layout = 'row';
         }
@@ -667,9 +670,9 @@ class FlexDirective extends BaseFxDirective {
         if (_container) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
-            this._layoutWatcher = _container.layout$.subscribe((direction) => {
+            this._layoutWatcher = _container.layout$.subscribe((layout) => {
                 // `direction` === null if parent container does not have a `fxLayout`
-                this._onLayoutChange(direction);
+                this._onLayoutChange(layout);
             });
         }
     }
@@ -803,11 +806,11 @@ class FlexDirective extends BaseFxDirective {
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} direction
+     * @param {?=} layout
      * @return {?}
      */
-    _onLayoutChange(direction) {
-        this._layout = direction || this._layout || 'row';
+    _onLayoutChange(layout) {
+        this._layout = layout || this._layout || { direction: 'row', wrap: false };
         this._updateStyle();
     }
     /**
@@ -870,7 +873,7 @@ class FlexDirective extends BaseFxDirective {
         };
         switch (basis || '') {
             case '':
-                basis = MIN_FLEX;
+                basis = direction === 'row' ? '0%' : 'auto';
                 break;
             case 'initial': // default
             case 'nogrow':
@@ -933,8 +936,7 @@ class FlexDirective extends BaseFxDirective {
             }
         }
         // Fix for issues 277 and 534
-        // TODO(CaerusKaru): convert this to just width/height
-        if (basis !== '0%' && basis !== MIN_FLEX) {
+        if (basis !== '0%') {
             css[min] = isFixed || (isPx && grow) ? basis : null;
             css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
         }
@@ -955,9 +957,11 @@ class FlexDirective extends BaseFxDirective {
         }
         else {
             // Fix for issue 660
-            css[hasCalc ? 'flex-basis' : 'flex'] = css[max] ?
-                (hasCalc ? css[max] : `${grow} ${shrink} ${css[max]}`) :
-                (hasCalc ? css[min] : `${grow} ${shrink} ${css[min]}`);
+            if (this._layout && this._layout.wrap) {
+                css[hasCalc ? 'flex-basis' : 'flex'] = css[max] ?
+                    (hasCalc ? css[max] : `${grow} ${shrink} ${css[max]}`) :
+                    (hasCalc ? css[min] : `${grow} ${shrink} ${css[min]}`);
+            }
         }
         return extendObject(css, { 'box-sizing': 'border-box' });
     }
@@ -997,7 +1001,6 @@ FlexDirective.propDecorators = {
     "flexLtLg": [{ type: Input, args: ['fxFlex.lt-lg',] },],
     "flexLtXl": [{ type: Input, args: ['fxFlex.lt-xl',] },],
 };
-const /** @type {?} */ MIN_FLEX = '0.000000001px';
 
 /**
  * @fileoverview added by tsickle
@@ -1195,7 +1198,7 @@ class FlexOffsetDirective extends BaseFxDirective {
         /**
          * The flex-direction of this element's host container. Defaults to 'row'.
          */
-        this._layout = 'row';
+        this._layout = { direction: 'row', wrap: false };
         this._directionWatcher =
             this._directionality.change.subscribe(this._updateWithValue.bind(this));
         this.watchParentFlow();
@@ -1324,20 +1327,20 @@ class FlexOffsetDirective extends BaseFxDirective {
     watchParentFlow() {
         if (this._container) {
             // Subscribe to layout immediate parent direction changes (if any)
-            this._layoutWatcher = this._container.layout$.subscribe((direction) => {
+            this._layoutWatcher = this._container.layout$.subscribe((layout) => {
                 // `direction` === null if parent container does not have a `fxLayout`
-                this._onLayoutChange(direction);
+                this._onLayoutChange(layout);
             });
         }
     }
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} direction
+     * @param {?=} layout
      * @return {?}
      */
-    _onLayoutChange(direction) {
-        this._layout = direction || this._layout || 'row';
+    _onLayoutChange(layout) {
+        this._layout = layout || this._layout || { direction: 'row', wrap: false };
         this._updateWithValue();
     }
     /**
@@ -1791,11 +1794,11 @@ class LayoutAlignDirective extends BaseFxDirective {
     }
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
-     * @param {?} direction
+     * @param {?} layout
      * @return {?}
      */
-    _onLayoutChange(direction) {
-        this._layout = (direction || '').toLowerCase();
+    _onLayoutChange(layout) {
+        this._layout = (layout.direction || '').toLowerCase();
         if (!LAYOUT_VALUES.find(x => x === this._layout)) {
             this._layout = 'row';
         }
