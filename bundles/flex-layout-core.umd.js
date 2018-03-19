@@ -3508,9 +3508,9 @@ exports.OBSERVABLE_MEDIA_PROVIDER = OBSERVABLE_MEDIA_PROVIDER;
 exports.KeyOptions = KeyOptions;
 exports.ResponsiveActivation = ResponsiveActivation;
 exports.StyleUtils = StyleUtils;
-exports.ɵc0 = validateSuffixes;
-exports.ɵb0 = MATCH_MEDIA_PROVIDER;
-exports.ɵa0 = MATCH_MEDIA_PROVIDER_FACTORY;
+exports.ɵc = validateSuffixes;
+exports.ɵb = MATCH_MEDIA_PROVIDER;
+exports.ɵa = MATCH_MEDIA_PROVIDER_FACTORY;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
