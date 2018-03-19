@@ -7843,7 +7843,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-a425035');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-605f4d1');
 
 /**
  * @fileoverview added by tsickle
