@@ -3,7 +3,8 @@ export declare class StyleUtils {
     private _serverStylesheet;
     private _serverModuleLoaded;
     private _platformId;
-    constructor(_serverStylesheet: StylesheetMap, _serverModuleLoaded: boolean, _platformId: any);
+    private noVendorPrefixes;
+    constructor(_serverStylesheet: StylesheetMap, _serverModuleLoaded: boolean, _platformId: any, noVendorPrefixes: boolean);
     /**
      * Applies styles given via string pair or object map to the directive element
      */

@@ -66,7 +66,7 @@ const /** @type {?} */ BREAKPOINTS = new InjectionToken('Token (@angular/flex-la
  */
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
- * This is published as a provider and may be overriden from custom, application-specific ranges
+ * This is published as a provider and may be overridden from custom, application-specific ranges
  *
  */
 class BreakPointRegistry {
@@ -826,9 +826,9 @@ function camelCase(name) {
  */
 function validateSuffixes(list) {
     list.forEach((bp) => {
-        if (!bp.suffix || bp.suffix === '') {
+        if (!bp.suffix) {
             bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
-            bp.overlapping = bp.overlapping || false; // ensure default value
+            bp.overlapping = !!bp.overlapping; // ensure default value
         }
     });
     return list;
@@ -842,22 +842,29 @@ function validateSuffixes(list) {
  * @return {?}
  */
 function mergeByAlias(defaults, custom = []) {
-    const /** @type {?} */ merged = defaults.map((bp) => extendObject({}, bp));
-    const /** @type {?} */ findByAlias = (alias) => merged.reduce((result, bp) => {
-        return result || ((bp.alias === alias) ? bp : null);
-    }, null);
+    const /** @type {?} */ dict = {};
+    defaults.forEach(bp => {
+        dict[bp.alias] = bp;
+    });
     // Merge custom breakpoints
     custom.forEach((bp) => {
-        let /** @type {?} */ target = findByAlias(bp.alias);
-        if (target) {
-            extendObject(target, bp);
+        if (dict[bp.alias]) {
+            extendObject(dict[bp.alias], bp);
         }
         else {
-            merged.push(bp);
+            dict[bp.alias] = bp;
         }
     });
-    return validateSuffixes(merged);
+    return validateSuffixes(Object.keys(dict).map(k => dict[k]));
 }
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+const /** @type {?} */ DISABLE_DEFAULT_BREAKPOINTS = new InjectionToken('Flex Layout token, disable the default breakpoints');
+const /** @type {?} */ ADD_ORIENTATION_BREAKPOINTS = new InjectionToken('Flex Layout token, add the orientation breakpoints');
+const /** @type {?} */ BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints into one provider');
 
 /**
  * @fileoverview added by tsickle
@@ -865,6 +872,8 @@ function mergeByAlias(defaults, custom = []) {
  */
 /**
  * Add new custom items to the default list or override existing default with custom overrides
+ * @deprecated
+ * \@deletion-target v6.0.0-beta.15
  * @param {?=} _custom
  * @param {?=} options
  * @return {?}
@@ -885,6 +894,8 @@ function buildMergedBreakPoints(_custom, options) {
 }
 /**
  *  Ensure that only a single global BreakPoint list is instantiated...
+ *  \@deprecated
+ *  \@deletion-target v6.0.0-beta.15
  * @return {?}
  */
 function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
@@ -898,22 +909,55 @@ function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
  *        custom breakpoints matching existing breakpoints will override the properties
  *        of the existing (and not be added as an extra breakpoint entry).
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
+ * @deprecated
+ * \@deletion-target v6.0.0-beta.15
  */
 const /** @type {?} */ DEFAULT_BREAKPOINTS_PROVIDER = {
-    // tslint:disable-line:variable-name
     provide: BREAKPOINTS,
     useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
 };
 /**
+ * Factory that combines the configured breakpoints into one array and then merges
+ * them using a utility function
+ * @param {?} parentBreakpoints
+ * @param {?} breakpoints
+ * @param {?} disableDefaults
+ * @param {?} addOrientation
+ * @return {?}
+ */
+function BREAKPOINTS_PROVIDER_FACTORY(parentBreakpoints, breakpoints, disableDefaults, addOrientation) {
+    const /** @type {?} */ bpFlattenArray = [].concat.apply([], (breakpoints || [])
+        .map(v => Array.isArray(v) ? v : [v]));
+    const /** @type {?} */ builtIns = DEFAULT_BREAKPOINTS.concat(addOrientation ? ORIENTATION_BREAKPOINTS : []);
+    return parentBreakpoints || disableDefaults ?
+        mergeByAlias(bpFlattenArray) : mergeByAlias(builtIns, bpFlattenArray);
+}
+/**
+ * Provider that combines the provided extra breakpoints with the default and
+ * orientation breakpoints based on configuration
+ */
+const /** @type {?} */ BREAKPOINTS_PROVIDER = {
+    provide: BREAKPOINTS,
+    useFactory: BREAKPOINTS_PROVIDER_FACTORY,
+    deps: [
+        [new Optional(), new SkipSelf(), BREAKPOINTS],
+        [new Optional(), BREAKPOINT],
+        [new Optional(), DISABLE_DEFAULT_BREAKPOINTS],
+        [new Optional(), ADD_ORIENTATION_BREAKPOINTS],
+    ]
+};
+/**
  * Use with FlexLayoutModule.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY!
- * @param {?=} _custom
+ * @deprecated
+ * \@deletion-target v6.0.0-beta.15
+ * @param {?=} custom
  * @param {?=} options
  * @return {?}
  */
-function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
+function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(custom, options) {
     return {
         provide: /** @type {?} */ (BREAKPOINTS),
-        useFactory: buildMergedBreakPoints(_custom, options)
+        useFactory: buildMergedBreakPoints(custom, options)
     };
 }
 
@@ -1088,16 +1132,24 @@ const /** @type {?} */ SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+const /** @type {?} */ DISABLE_VENDOR_PREFIXES = new InjectionToken('Flex Layout token, whether to add vendor prefix styles inline for elements');
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 class StyleUtils {
     /**
      * @param {?} _serverStylesheet
      * @param {?} _serverModuleLoaded
      * @param {?} _platformId
+     * @param {?} noVendorPrefixes
      */
-    constructor(_serverStylesheet, _serverModuleLoaded, _platformId) {
+    constructor(_serverStylesheet, _serverModuleLoaded, _platformId, noVendorPrefixes) {
         this._serverStylesheet = _serverStylesheet;
         this._serverModuleLoaded = _serverModuleLoaded;
         this._platformId = _platformId;
+        this.noVendorPrefixes = noVendorPrefixes;
     }
     /**
      * Applies styles given via string pair or object map to the directive element
@@ -1112,7 +1164,7 @@ class StyleUtils {
             styles[style] = value;
             style = styles;
         }
-        styles = applyCssPrefixes(style);
+        styles = this.noVendorPrefixes ? style : applyCssPrefixes(style);
         this._applyMultiValueStyleToElement(styles, element);
     }
     /**
@@ -1122,7 +1174,7 @@ class StyleUtils {
      * @return {?}
      */
     applyStyleToElements(style, elements = []) {
-        const /** @type {?} */ styles = applyCssPrefixes(style);
+        const /** @type {?} */ styles = this.noVendorPrefixes ? style : applyCssPrefixes(style);
         elements.forEach(el => {
             this._applyMultiValueStyleToElement(styles, el);
         });
@@ -1222,6 +1274,7 @@ StyleUtils.ctorParameters = () => [
     { type: StylesheetMap, decorators: [{ type: Optional },] },
     { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
     { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [DISABLE_VENDOR_PREFIXES,] },] },
 ];
 const /** @type {?} */ FALLBACK_STYLE = 'block';
 
@@ -1262,7 +1315,7 @@ class CoreModule {
 CoreModule.decorators = [
     { type: NgModule, args: [{
                 providers: [
-                    DEFAULT_BREAKPOINTS_PROVIDER,
+                    BREAKPOINTS_PROVIDER,
                     BreakPointRegistry,
                     MATCH_MEDIA_PROVIDER,
                     MediaMonitor,
@@ -1297,6 +1350,17 @@ MediaQueriesModule.decorators = [
 ];
 /** @nocollapse */
 MediaQueriesModule.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+const /** @type {?} */ ADD_FLEX_STYLES = new InjectionToken('Flex Layout token, should flex stylings be applied to parents automatically');
 
 /**
  * @fileoverview added by tsickle
@@ -2501,5 +2565,5 @@ const /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
  * @suppress {checkTypes} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, SERVER_TOKEN, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateSuffixes as ɵa0, MATCH_MEDIA_PROVIDER as ɵc0, MATCH_MEDIA_PROVIDER_FACTORY as ɵb0 };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateSuffixes as ɵc0, MATCH_MEDIA_PROVIDER as ɵb0, MATCH_MEDIA_PROVIDER_FACTORY as ɵa0 };
 //# sourceMappingURL=core.js.map

@@ -1,7 +1,7 @@
 import { BreakPoint } from './break-point';
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
- * This is published as a provider and may be overriden from custom, application-specific ranges
+ * This is published as a provider and may be overridden from custom, application-specific ranges
  *
  */
 export declare class BreakPointRegistry {

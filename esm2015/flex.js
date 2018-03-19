@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Self, Optional, NgZone, SkipSelf, NgModule } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils, CoreModule } from '@angular/flex-layout/core';
+import { Directive, ElementRef, Input, Self, Optional, NgZone, Inject, SkipSelf, NgModule } from '@angular/core';
+import { BaseFxDirective, MediaMonitor, StyleUtils, ADD_FLEX_STYLES, CoreModule } from '@angular/flex-layout/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
@@ -654,11 +654,13 @@ class FlexDirective extends BaseFxDirective {
      * @param {?} elRef
      * @param {?} _container
      * @param {?} styleUtils
+     * @param {?} addFlexStyles
      */
-    constructor(monitor, elRef, _container, styleUtils) {
+    constructor(monitor, elRef, _container, styleUtils, addFlexStyles) {
         super(monitor, elRef, styleUtils);
         this._container = _container;
         this.styleUtils = styleUtils;
+        this.addFlexStyles = addFlexStyles;
         this._cacheInput('flex', '');
         this._cacheInput('shrink', 1);
         this._cacheInput('grow', 1);
@@ -831,7 +833,7 @@ class FlexDirective extends BaseFxDirective {
      */
     _validateValue(grow, shrink, basis) {
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        let /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
+        let /** @type {?} */ layout = this._getFlowDirection(this.parentElement, !!this.addFlexStyles);
         let /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         let /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         let /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -975,6 +977,7 @@ FlexDirective.ctorParameters = () => [
     { type: ElementRef, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
     { type: StyleUtils, },
+    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [ADD_FLEX_STYLES,] },] },
 ];
 FlexDirective.propDecorators = {
     "shrink": [{ type: Input, args: ['fxShrink',] },],

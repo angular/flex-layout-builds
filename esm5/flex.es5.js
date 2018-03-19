@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { __extends } from 'tslib';
-import { Directive, ElementRef, Input, Self, Optional, NgZone, SkipSelf, NgModule } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils, CoreModule } from '@angular/flex-layout/core';
+import { Directive, ElementRef, Input, Self, Optional, NgZone, Inject, SkipSelf, NgModule } from '@angular/core';
+import { BaseFxDirective, MediaMonitor, StyleUtils, ADD_FLEX_STYLES, CoreModule } from '@angular/flex-layout/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
@@ -830,10 +830,11 @@ var FlexDirective = /** @class */ (function (_super) {
     /* tslint:enable */
     // Note: Explicitly @SkipSelf on LayoutDirective because we are looking
     //       for the parent flex container for this flex item.
-    function FlexDirective(monitor, elRef, _container, styleUtils) {
+    function FlexDirective(monitor, elRef, _container, styleUtils, addFlexStyles) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
         _this._container = _container;
         _this.styleUtils = styleUtils;
+        _this.addFlexStyles = addFlexStyles;
         _this._cacheInput('flex', '');
         _this._cacheInput('shrink', 1);
         _this._cacheInput('grow', 1);
@@ -1105,7 +1106,7 @@ var FlexDirective = /** @class */ (function (_super) {
      */
     function (grow, shrink, basis) {
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        var /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
+        var /** @type {?} */ layout = this._getFlowDirection(this.parentElement, !!this.addFlexStyles);
         var /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         var /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         var /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -1243,6 +1244,7 @@ var FlexDirective = /** @class */ (function (_super) {
         { type: ElementRef, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
         { type: StyleUtils, },
+        { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [ADD_FLEX_STYLES,] },] },
     ]; };
     FlexDirective.propDecorators = {
         "shrink": [{ type: Input, args: ['fxShrink',] },],
