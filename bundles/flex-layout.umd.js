@@ -18,7 +18,7 @@
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-8f8cc99');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-0d4144c');
 
 /**
  * @fileoverview added by tsickle
@@ -39,6 +39,8 @@ var FlexLayoutModule = /** @class */ (function () {
      *
      * !! Selector aliases are not auto-configured. Developers must subclass
      * the API directives to support extra selectors for the orientations breakpoints !!
+     * @deprecated use BREAKPOINT multi-provider instead
+     * @deletion-target v6.0.0-beta.15
      */
     /**
      * External uses can easily add custom breakpoints AND include internal orientations
@@ -46,6 +48,8 @@ var FlexLayoutModule = /** @class */ (function () {
      *
      * !! Selector aliases are not auto-configured. Developers must subclass
      * the API directives to support extra selectors for the orientations breakpoints !!
+     * @deprecated use BREAKPOINT multi-provider instead
+     * \@deletion-target v6.0.0-beta.15
      * @param {?} breakpoints
      * @param {?=} options
      * @return {?}
@@ -56,6 +60,8 @@ var FlexLayoutModule = /** @class */ (function () {
      *
      * !! Selector aliases are not auto-configured. Developers must subclass
      * the API directives to support extra selectors for the orientations breakpoints !!
+     * @deprecated use BREAKPOINT multi-provider instead
+     * \@deletion-target v6.0.0-beta.15
      * @param {?} breakpoints
      * @param {?=} options
      * @return {?}

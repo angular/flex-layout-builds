@@ -25,6 +25,8 @@ export declare class FlexLayoutModule {
      *
      * !! Selector aliases are not auto-configured. Developers must subclass
      * the API directives to support extra selectors for the orientations breakpoints !!
+     * @deprecated use BREAKPOINT multi-provider instead
+     * @deletion-target v6.0.0-beta.15
      */
     static provideBreakPoints(breakpoints: BreakPoint[], options?: BreakPointProviderOptions): ModuleWithProviders;
 }
