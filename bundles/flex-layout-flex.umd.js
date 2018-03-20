@@ -664,9 +664,9 @@ var LayoutGapDirective = /** @class */ (function (_super) {
      */
     function (value) {
         var _this = this;
-        value = value || this._queryInput('gap') || '0';
+        var /** @type {?} */ gapValue = value || this._queryInput('gap') || '0';
         if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
+            gapValue = this._mqActivation.activatedInput;
         }
         // Gather all non-hidden Element nodes
         var /** @type {?} */ items = this.childrenNodes
@@ -682,13 +682,66 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             }
         });
         if (items.length > 0) {
-            var /** @type {?} */ lastItem = items.pop();
-            // For each `element` children EXCEPT the last,
-            // set the margin right/bottom styles...
-            this._applyStyleToElements(this._buildCSS(value), items);
-            // Clear all gaps for all visible elements
-            this._applyStyleToElements(this._buildCSS(), [lastItem]);
+            if (gapValue.endsWith(GRID_SPECIFIER)) {
+                gapValue = gapValue.substring(0, gapValue.indexOf(GRID_SPECIFIER));
+                // For each `element` children, set the padding
+                this._applyStyleToElements(this._buildGridPadding(gapValue), items);
+                // Add the margin to the host element
+                this._applyStyleToElement(this._buildGridMargin(gapValue));
+            }
+            else {
+                var /** @type {?} */ lastItem = items.pop();
+                // For each `element` children EXCEPT the last,
+                // set the margin right/bottom styles...
+                this._applyStyleToElements(this._buildCSS(gapValue), items);
+                // Clear all gaps for all visible elements
+                this._applyStyleToElements(this._buildCSS(), [lastItem]);
+            }
         }
+    };
+    /**
+     *
+     * @param {?} value
+     * @return {?}
+     */
+    LayoutGapDirective.prototype._buildGridPadding = /**
+     *
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        var /** @type {?} */ paddingTop = '0px', /** @type {?} */ paddingRight = '0px', /** @type {?} */ paddingBottom = value, /** @type {?} */ paddingLeft = '0px';
+        if (this._directionality.value === 'rtl') {
+            paddingLeft = value;
+        }
+        else {
+            paddingRight = value;
+        }
+        return { 'padding': paddingTop + " " + paddingRight + " " + paddingBottom + " " + paddingLeft };
+    };
+    /**
+     * Prepare margin CSS, remove any previous explicitly
+     * assigned margin assignments
+     * Note: this will not work with calc values (negative calc values are invalid)
+     * @param {?} value
+     * @return {?}
+     */
+    LayoutGapDirective.prototype._buildGridMargin = /**
+     * Prepare margin CSS, remove any previous explicitly
+     * assigned margin assignments
+     * Note: this will not work with calc values (negative calc values are invalid)
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        var /** @type {?} */ marginTop = '0px', /** @type {?} */ marginRight = '0px', /** @type {?} */ marginBottom = '-' + value, /** @type {?} */ marginLeft = '0px';
+        if (this._directionality.value === 'rtl') {
+            marginLeft = '-' + value;
+        }
+        else {
+            marginRight = '-' + value;
+        }
+        return { 'margin': marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft };
     };
     /**
      * Prepare margin CSS, remove any previous explicitly
@@ -756,6 +809,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     };
     return LayoutGapDirective;
 }(core$1.BaseFxDirective));
+var /** @type {?} */ GRID_SPECIFIER = ' grid';
 
 /**
  * @fileoverview added by tsickle

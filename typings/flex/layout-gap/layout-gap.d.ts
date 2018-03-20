@@ -57,6 +57,16 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
      */
     protected _updateWithValue(value?: string): void;
     /**
+     *
+     */
+    private _buildGridPadding(value);
+    /**
+     * Prepare margin CSS, remove any previous explicitly
+     * assigned margin assignments
+     * Note: this will not work with calc values (negative calc values are invalid)
+     */
+    private _buildGridMargin(value);
+    /**
      * Prepare margin CSS, remove any previous explicitly
      * assigned margin assignments
      */
