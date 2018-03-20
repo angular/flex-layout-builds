@@ -648,6 +648,31 @@ var MediaMonitor = /** @class */ (function () {
  * @suppress {checkTypes} checked by tsc
  */
 /**
+ * Ensure a single global service provider
+ * @param {?} parentRegistry
+ * @param {?} breakpoints
+ * @return {?}
+ */
+function BREAKPOINT_REGISTRY_PROVIDER_FACTORY(parentRegistry, breakpoints) {
+    return parentRegistry || new BreakPointRegistry(breakpoints);
+}
+/**
+ * Export provider that uses a global service factory (above)
+ */
+var /** @type {?} */ BREAKPOINT_REGISTRY_PROVIDER = {
+    provide: BreakPointRegistry,
+    deps: [
+        [new Optional(), new SkipSelf(), BreakPointRegistry],
+        /** @type {?} */ (BREAKPOINTS),
+    ],
+    useFactory: BREAKPOINT_REGISTRY_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
  * Base class for MediaService and pseudo-token for
  * @abstract
  */
@@ -1629,7 +1654,7 @@ var CoreModule = /** @class */ (function () {
         { type: NgModule, args: [{
                     providers: [
                         BREAKPOINTS_PROVIDER,
-                        BreakPointRegistry,
+                        BREAKPOINT_REGISTRY_PROVIDER,
                         MATCH_MEDIA_PROVIDER,
                         MediaMonitor,
                         OBSERVABLE_MEDIA_PROVIDER,
@@ -3458,5 +3483,5 @@ var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
  * @suppress {checkTypes} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateSuffixes as ɵc, MATCH_MEDIA_PROVIDER as ɵb, MATCH_MEDIA_PROVIDER_FACTORY as ɵa };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaQueriesModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, BREAKPOINT_REGISTRY_PROVIDER as ɵb, BREAKPOINT_REGISTRY_PROVIDER_FACTORY as ɵa, validateSuffixes as ɵe, MATCH_MEDIA_PROVIDER as ɵd, MATCH_MEDIA_PROVIDER_FACTORY as ɵc };
 //# sourceMappingURL=core.es5.js.map

@@ -18,7 +18,7 @@
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-84ca5c3');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.13-7cedf6f');
 
 /**
  * @fileoverview added by tsickle
@@ -88,9 +88,11 @@ var FlexLayoutModule = /** @class */ (function () {
     return FlexLayoutModule;
 }());
 
-exports.ɵc = core$1.ɵc;
 exports.ɵb = core$1.ɵb;
 exports.ɵa = core$1.ɵa;
+exports.ɵe = core$1.ɵe;
+exports.ɵd = core$1.ɵd;
+exports.ɵc = core$1.ɵc;
 exports.removeStyles = core$1.removeStyles;
 exports.BROWSER_PROVIDER = core$1.BROWSER_PROVIDER;
 exports.CLASS_NAME = core$1.CLASS_NAME;

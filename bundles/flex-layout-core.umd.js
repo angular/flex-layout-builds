@@ -673,6 +673,31 @@ var MediaMonitor = /** @class */ (function () {
  * @suppress {checkTypes} checked by tsc
  */
 /**
+ * Ensure a single global service provider
+ * @param {?} parentRegistry
+ * @param {?} breakpoints
+ * @return {?}
+ */
+function BREAKPOINT_REGISTRY_PROVIDER_FACTORY(parentRegistry, breakpoints) {
+    return parentRegistry || new BreakPointRegistry(breakpoints);
+}
+/**
+ * Export provider that uses a global service factory (above)
+ */
+var /** @type {?} */ BREAKPOINT_REGISTRY_PROVIDER = {
+    provide: BreakPointRegistry,
+    deps: [
+        [new core.Optional(), new core.SkipSelf(), BreakPointRegistry],
+        /** @type {?} */ (BREAKPOINTS),
+    ],
+    useFactory: BREAKPOINT_REGISTRY_PROVIDER_FACTORY
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
  * Base class for MediaService and pseudo-token for
  * @abstract
  */
@@ -1654,7 +1679,7 @@ var CoreModule = /** @class */ (function () {
         { type: core.NgModule, args: [{
                     providers: [
                         BREAKPOINTS_PROVIDER,
-                        BreakPointRegistry,
+                        BREAKPOINT_REGISTRY_PROVIDER,
                         MATCH_MEDIA_PROVIDER,
                         MediaMonitor,
                         OBSERVABLE_MEDIA_PROVIDER,
@@ -3508,9 +3533,11 @@ exports.OBSERVABLE_MEDIA_PROVIDER = OBSERVABLE_MEDIA_PROVIDER;
 exports.KeyOptions = KeyOptions;
 exports.ResponsiveActivation = ResponsiveActivation;
 exports.StyleUtils = StyleUtils;
-exports.ɵc = validateSuffixes;
-exports.ɵb = MATCH_MEDIA_PROVIDER;
-exports.ɵa = MATCH_MEDIA_PROVIDER_FACTORY;
+exports.ɵb = BREAKPOINT_REGISTRY_PROVIDER;
+exports.ɵa = BREAKPOINT_REGISTRY_PROVIDER_FACTORY;
+exports.ɵe = validateSuffixes;
+exports.ɵd = MATCH_MEDIA_PROVIDER;
+exports.ɵc = MATCH_MEDIA_PROVIDER_FACTORY;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
