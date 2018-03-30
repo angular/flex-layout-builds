@@ -8,7 +8,7 @@
 import { __extends } from 'tslib';
 import { Directive, ElementRef, Input, Self, Optional, NgZone, Inject, SkipSelf, NgModule } from '@angular/core';
 import { BaseFxDirective, MediaMonitor, StyleUtils, ADD_FLEX_STYLES, CoreModule } from '@angular/flex-layout/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
 /**

@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { BreakPoint } from '../breakpoints/break-point';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';

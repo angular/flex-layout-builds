@@ -7,7 +7,7 @@
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
 /** Built-in aliases for different flex-basis values. */
 export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';

@@ -18,7 +18,7 @@
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.14-8605cd6');
+var /** @type {?} */ VERSION = new core.Version('5.0.0-beta.14-b3f3404');
 
 /**
  * @fileoverview added by tsickle
@@ -33,51 +33,10 @@ var FlexLayoutModule = /** @class */ (function () {
             console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
         }
     }
-    /**
-     * External uses can easily add custom breakpoints AND include internal orientations
-     * breakpoints; which are not available by default.
-     *
-     * !! Selector aliases are not auto-configured. Developers must subclass
-     * the API directives to support extra selectors for the orientations breakpoints !!
-     * @deprecated use BREAKPOINT multi-provider instead
-     * @deletion-target v6.0.0-beta.15
-     */
-    /**
-     * External uses can easily add custom breakpoints AND include internal orientations
-     * breakpoints; which are not available by default.
-     *
-     * !! Selector aliases are not auto-configured. Developers must subclass
-     * the API directives to support extra selectors for the orientations breakpoints !!
-     * @deprecated use BREAKPOINT multi-provider instead
-     * \@deletion-target v6.0.0-beta.15
-     * @param {?} breakpoints
-     * @param {?=} options
-     * @return {?}
-     */
-    FlexLayoutModule.provideBreakPoints = /**
-     * External uses can easily add custom breakpoints AND include internal orientations
-     * breakpoints; which are not available by default.
-     *
-     * !! Selector aliases are not auto-configured. Developers must subclass
-     * the API directives to support extra selectors for the orientations breakpoints !!
-     * @deprecated use BREAKPOINT multi-provider instead
-     * \@deletion-target v6.0.0-beta.15
-     * @param {?} breakpoints
-     * @param {?=} options
-     * @return {?}
-     */
-    function (breakpoints, options) {
-        return {
-            ngModule: FlexLayoutModule,
-            providers: [
-                core$1.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(breakpoints, options || { orientations: false })
-            ]
-        };
-    };
     FlexLayoutModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [flex.FlexModule, extended.ExtendedModule, core$1.CoreModule],
-                    exports: [flex.FlexModule, extended.ExtendedModule, core$1.CoreModule]
+                    imports: [flex.FlexModule, extended.ExtendedModule],
+                    exports: [flex.FlexModule, extended.ExtendedModule]
                 },] },
     ];
     /** @nocollapse */
@@ -88,16 +47,10 @@ var FlexLayoutModule = /** @class */ (function () {
     return FlexLayoutModule;
 }());
 
-exports.ɵb = core$1.ɵb;
-exports.ɵa = core$1.ɵa;
-exports.ɵe = core$1.ɵe;
-exports.ɵd = core$1.ɵd;
-exports.ɵc = core$1.ɵc;
 exports.removeStyles = core$1.removeStyles;
 exports.BROWSER_PROVIDER = core$1.BROWSER_PROVIDER;
 exports.CLASS_NAME = core$1.CLASS_NAME;
 exports.CoreModule = core$1.CoreModule;
-exports.MediaQueriesModule = core$1.MediaQueriesModule;
 exports.MediaChange = core$1.MediaChange;
 exports.StylesheetMap = core$1.StylesheetMap;
 exports.STYLESHEET_MAP_PROVIDER_FACTORY = core$1.STYLESHEET_MAP_PROVIDER_FACTORY;
@@ -115,12 +68,8 @@ exports.DEFAULT_BREAKPOINTS = core$1.DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = core$1.ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = core$1.ORIENTATION_BREAKPOINTS;
 exports.BreakPointRegistry = core$1.BreakPointRegistry;
-exports.buildMergedBreakPoints = core$1.buildMergedBreakPoints;
-exports.DEFAULT_BREAKPOINTS_PROVIDER_FACTORY = core$1.DEFAULT_BREAKPOINTS_PROVIDER_FACTORY;
-exports.DEFAULT_BREAKPOINTS_PROVIDER = core$1.DEFAULT_BREAKPOINTS_PROVIDER;
 exports.BREAKPOINTS_PROVIDER_FACTORY = core$1.BREAKPOINTS_PROVIDER_FACTORY;
 exports.BREAKPOINTS_PROVIDER = core$1.BREAKPOINTS_PROVIDER;
-exports.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY = core$1.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY;
 exports.BREAKPOINTS = core$1.BREAKPOINTS;
 exports.MatchMedia = core$1.MatchMedia;
 exports.MockMatchMedia = core$1.MockMatchMedia;
@@ -133,6 +82,7 @@ exports.MEDIA_MONITOR_PROVIDER_FACTORY = core$1.MEDIA_MONITOR_PROVIDER_FACTORY;
 exports.MEDIA_MONITOR_PROVIDER = core$1.MEDIA_MONITOR_PROVIDER;
 exports.ObservableMedia = core$1.ObservableMedia;
 exports.MediaService = core$1.MediaService;
+exports.ObservableMediaProvider = core$1.ObservableMediaProvider;
 exports.OBSERVABLE_MEDIA_PROVIDER_FACTORY = core$1.OBSERVABLE_MEDIA_PROVIDER_FACTORY;
 exports.OBSERVABLE_MEDIA_PROVIDER = core$1.OBSERVABLE_MEDIA_PROVIDER;
 exports.KeyOptions = core$1.KeyOptions;

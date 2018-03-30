@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { Subscription } from 'rxjs';
 import { LayoutDirective } from '@angular/flex-layout/flex';
 /**
  * For fxHide selectors, we invert the 'value'

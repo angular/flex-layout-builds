@@ -11,13 +11,17 @@ import { MatchMedia } from '../match-media/match-media';
 import { ObservableMedia } from './observable-media';
 /**
  * Ensure a single global ObservableMedia service provider
+ * @deprecated
+ * @deletion-target v6.0.0-beta.16
  */
 export declare function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService: ObservableMedia, matchMedia: MatchMedia, breakpoints: BreakPointRegistry): ObservableMedia;
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
+ *  @deprecated
+ *  @deletion-target v6.0.0-beta.16
  */
 export declare const OBSERVABLE_MEDIA_PROVIDER: {
     provide: typeof ObservableMedia;
     deps: (typeof BreakPointRegistry | typeof MatchMedia | Optional[])[];
-    useFactory: (parentService: ObservableMedia, matchMedia: MatchMedia, breakpoints: BreakPointRegistry) => ObservableMedia;
+    useFactory: typeof OBSERVABLE_MEDIA_PROVIDER_FACTORY;
 };

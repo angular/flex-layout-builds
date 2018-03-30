@@ -7,8 +7,7 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable, ReplaySubject } from 'rxjs';
 export declare type Layout = {
     direction: string;
     wrap: boolean;

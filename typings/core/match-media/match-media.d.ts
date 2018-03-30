@@ -6,8 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { NgZone } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { MediaChange } from '../media-change';
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to

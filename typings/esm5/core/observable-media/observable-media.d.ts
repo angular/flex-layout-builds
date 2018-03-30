@@ -1,5 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Observable, Subscribable } from 'rxjs/Observable';
+import { Observable, Subscribable, Subscription } from 'rxjs';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MediaChange } from '../media-change';
 import { MatchMedia } from '../match-media/match-media';
@@ -103,3 +102,7 @@ export declare class MediaService implements ObservableMedia {
     private _toMediaQuery(query);
     private observable$;
 }
+export declare const ObservableMediaProvider: {
+    provide: typeof ObservableMedia;
+    useClass: typeof MediaService;
+};

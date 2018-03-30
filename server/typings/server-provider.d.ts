@@ -26,15 +26,25 @@ export declare function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap, 
  */
 export declare const SERVER_PROVIDERS: ({
     provide: InjectionToken<() => void>;
-    useFactory: (serverSheet: StylesheetMap, matchMedia: MatchMedia, _document: Document, breakpoints: BreakPoint[]) => () => void;
-    deps: (typeof StylesheetMap | typeof MatchMedia | InjectionToken<Document>)[];
+    useFactory: typeof FLEX_SSR_SERIALIZER_FACTORY;
+    deps: (typeof StylesheetMap | typeof MatchMedia | InjectionToken<Document> | InjectionToken<BreakPoint[]>)[];
     multi: boolean;
+    useValue?: undefined;
+    useClass?: undefined;
 } | {
     provide: InjectionToken<boolean>;
     useValue: boolean;
+    useFactory?: undefined;
+    deps?: undefined;
+    multi?: undefined;
+    useClass?: undefined;
 } | {
     provide: typeof MatchMedia;
     useClass: typeof ServerMatchMedia;
+    useFactory?: undefined;
+    deps?: undefined;
+    multi?: undefined;
+    useValue?: undefined;
 })[];
 export declare type StyleSheet = Map<HTMLElement, Map<string, string | number>>;
 export declare type ClassMap = Map<HTMLElement, string>;

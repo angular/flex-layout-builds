@@ -8,7 +8,7 @@
 import { ElementRef, OnChanges, SimpleChanges, AfterContentInit, OnDestroy, NgZone } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
 /**
  * 'layout-padding' styling directive
