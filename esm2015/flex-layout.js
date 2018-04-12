@@ -21,7 +21,7 @@ export { FlexModule, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexO
 /**
  * Current version of Angular Flex-Layout.
  */
-const /** @type {?} */ VERSION = new Version('5.0.0-beta.14-b3f3404');
+const /** @type {?} */ VERSION = new Version('5.0.0-beta.14-4f3250d');
 
 /**
  * @fileoverview added by tsickle
