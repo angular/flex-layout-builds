@@ -3407,6 +3407,60 @@ var StyleUtils = /** @class */ (function () {
 }());
 var /** @type {?} */ FALLBACK_STYLE = 'block';
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+
+/**
+ * The flex API permits 3 or 1 parts of the value:
+ *    - `flex-grow flex-shrink flex-basis`, or
+ *    - `flex-basis`
+ * @param {?} basis
+ * @param {?=} grow
+ * @param {?=} shrink
+ * @return {?}
+ */
+function validateBasis(basis, grow, shrink) {
+    if (grow === void 0) { grow = '1'; }
+    if (shrink === void 0) { shrink = '1'; }
+    var /** @type {?} */ parts = [grow, shrink, basis];
+    var /** @type {?} */ j = basis.indexOf('calc');
+    if (j > 0) {
+        parts[2] = _validateCalcValue(basis.substring(j).trim());
+        var /** @type {?} */ matches = basis.substr(0, j).trim().split(' ');
+        if (matches.length == 2) {
+            parts[0] = matches[0];
+            parts[1] = matches[1];
+        }
+    }
+    else if (j == 0) {
+        parts[2] = _validateCalcValue(basis.trim());
+    }
+    else {
+        var /** @type {?} */ matches = basis.split(' ');
+        parts = (matches.length === 3) ? matches : [
+            grow, shrink, basis
+        ];
+    }
+    return parts;
+}
+/**
+ * Calc expressions require whitespace before & after any expression operators
+ * This is a simple, crude whitespace padding solution.
+ *   - '3 3 calc(15em + 20px)'
+ *   - calc(100% / 7 * 2)
+ *   - 'calc(15em + 20px)'
+ *   - 'calc(15em+20px)'
+ *   - '37px'
+ *   = '43%'
+ * @param {?} calc
+ * @return {?}
+ */
+function _validateCalcValue(calc) {
+    return calc.replace(/[\s]/g, '').replace(/[\/\*\+\-]/g, ' $& ');
+}
+
 exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
 exports.CLASS_NAME = CLASS_NAME;
@@ -3448,6 +3502,7 @@ exports.OBSERVABLE_MEDIA_PROVIDER = OBSERVABLE_MEDIA_PROVIDER;
 exports.KeyOptions = KeyOptions;
 exports.ResponsiveActivation = ResponsiveActivation;
 exports.StyleUtils = StyleUtils;
+exports.validateBasis = validateBasis;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
