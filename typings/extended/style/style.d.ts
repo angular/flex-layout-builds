@@ -8,13 +8,13 @@
 import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer2, SimpleChanges, OnInit } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { BaseFxDirective, BaseFxDirectiveAdapter, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, BaseDirectiveAdapter, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { NgStyleType } from './style-transforms';
 /**
  * Directive to add responsive support for ngStyle.
  *
  */
-export declare class StyleDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
+export declare class StyleDirective extends BaseDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
     private monitor;
     protected _sanitizer: DomSanitizer;
     protected _ngEl: ElementRef;
@@ -86,5 +86,5 @@ export declare class StyleDirective extends BaseFxDirective implements DoCheck, 
      * Special adapter to cross-cut responsive behaviors
      * into the StyleDirective
      */
-    protected _base: BaseFxDirectiveAdapter;
+    protected _base: BaseDirectiveAdapter;
 }

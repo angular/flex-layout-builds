@@ -8,7 +8,7 @@
 import { __extends } from 'tslib';
 import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, SecurityContext, NgModule } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
-import { BaseFxDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseFxDirectiveAdapter, CoreModule } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseDirectiveAdapter, CoreModule } from '@angular/flex-layout/core';
 import { LayoutDirective } from '@angular/flex-layout/flex';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -327,7 +327,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         "srcGtLg": [{ type: Input, args: ['src.gt-lg',] },],
     };
     return ImgSrcDirective;
-}(BaseFxDirective));
+}(BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -573,7 +573,7 @@ var ClassDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
+        this._base = new BaseDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
         if (!this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
@@ -644,7 +644,7 @@ var ClassDirective = /** @class */ (function (_super) {
         "ngClassGtLg": [{ type: Input, args: ['ngClass.gt-lg',] },],
     };
     return ClassDirective;
-}(BaseFxDirective));
+}(BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1126,7 +1126,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         "hideGtLg": [{ type: Input, args: ['fxHide.gt-lg',] },],
     };
     return ShowHideDirective;
-}(BaseFxDirective));
+}(BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1510,7 +1510,7 @@ var StyleDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
+        this._base = new BaseDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
         if (!this._ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -1657,7 +1657,7 @@ var StyleDirective = /** @class */ (function (_super) {
         "ngStyleGtLg": [{ type: Input, args: ['ngStyle.gt-lg',] },],
     };
     return StyleDirective;
-}(BaseFxDirective));
+}(BaseDirective));
 
 /**
  * @fileoverview added by tsickle

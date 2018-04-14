@@ -1570,6 +1570,714 @@ var   /**
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
+BaseDirective = /** @class */ (function () {
+    /**
+     * Constructor
+     */
+    function BaseDirective(_mediaMonitor, _elementRef, _styler) {
+        this._mediaMonitor = _mediaMonitor;
+        this._elementRef = _elementRef;
+        this._styler = _styler;
+        /**
+         *  Dictionary of input keys with associated values
+         */
+        this._inputMap = {};
+        /**
+         * Has the `ngOnInit()` method fired
+         *
+         * Used to allow *ngFor tasks to finish and support queries like
+         * getComputedStyle() during ngOnInit().
+         */
+        this._hasInitialized = false;
+    }
+    Object.defineProperty(BaseDirective.prototype, "hasMediaQueryListener", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return !!this._mqActivation;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseDirective.prototype, "activatedValue", {
+        /**
+         * Imperatively determine the current activated [input] value;
+         * if called before ngOnInit() this will return `undefined`
+         */
+        get: /**
+         * Imperatively determine the current activated [input] value;
+         * if called before ngOnInit() this will return `undefined`
+         * @return {?}
+         */
+        function () {
+            return this._mqActivation ? this._mqActivation.activatedInput : undefined;
+        },
+        /**
+         * Change the currently activated input value and force-update
+         * the injected CSS (by-passing change detection).
+         *
+         * NOTE: Only the currently activated input value will be modified;
+         *       other input values will NOT be affected.
+         */
+        set: /**
+         * Change the currently activated input value and force-update
+         * the injected CSS (by-passing change detection).
+         *
+         * NOTE: Only the currently activated input value will be modified;
+         *       other input values will NOT be affected.
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            var /** @type {?} */ key = 'baseKey', /** @type {?} */ previousVal;
+            if (this._mqActivation) {
+                key = this._mqActivation.activatedInputKey;
+                previousVal = this._inputMap[key];
+                this._inputMap[key] = value;
+            }
+            var /** @type {?} */ change = new core.SimpleChange(previousVal, value, false);
+            this.ngOnChanges(/** @type {?} */ (_a = {}, _a[key] = change, _a));
+            var _a;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseDirective.prototype, "parentElement", {
+        // *********************************************
+        // Accessor Methods
+        // *********************************************
+        /**
+         * Access to host element's parent DOM node
+         */
+        get: /**
+         * Access to host element's parent DOM node
+         * @return {?}
+         */
+        function () {
+            return this._elementRef.nativeElement.parentNode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseDirective.prototype, "nativeElement", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._elementRef.nativeElement;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Access the current value (if any) of the @Input property.
+     */
+    /**
+     * Access the current value (if any) of the \@Input property.
+     * @param {?} key
+     * @return {?}
+     */
+    BaseDirective.prototype._queryInput = /**
+     * Access the current value (if any) of the \@Input property.
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        return this._inputMap[key];
+    };
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
+    /**
+     * Use post-component-initialization event to perform extra
+     * querying such as computed Display style
+     */
+    /**
+     * Use post-component-initialization event to perform extra
+     * querying such as computed Display style
+     * @return {?}
+     */
+    BaseDirective.prototype.ngOnInit = /**
+     * Use post-component-initialization event to perform extra
+     * querying such as computed Display style
+     * @return {?}
+     */
+    function () {
+        this._display = this._getDisplayStyle();
+        this._hasInitialized = true;
+    };
+    /**
+     * @param {?} change
+     * @return {?}
+     */
+    BaseDirective.prototype.ngOnChanges = /**
+     * @param {?} change
+     * @return {?}
+     */
+    function (change) {
+        throw new Error("BaseDirective::ngOnChanges should be overridden in subclass: " + change);
+    };
+    /**
+     * @return {?}
+     */
+    BaseDirective.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        if (this._mqActivation) {
+            this._mqActivation.destroy();
+        }
+        delete this._mediaMonitor;
+    };
+    // *********************************************
+    // Protected Methods
+    // *********************************************
+    /**
+     * Was the directive's default selector used ?
+     * If not, use the fallback value!
+     */
+    /**
+     * Was the directive's default selector used ?
+     * If not, use the fallback value!
+     * @param {?} key
+     * @param {?} fallbackVal
+     * @return {?}
+     */
+    BaseDirective.prototype._getDefaultVal = /**
+     * Was the directive's default selector used ?
+     * If not, use the fallback value!
+     * @param {?} key
+     * @param {?} fallbackVal
+     * @return {?}
+     */
+    function (key, fallbackVal) {
+        var /** @type {?} */ val = this._queryInput(key);
+        var /** @type {?} */ hasDefaultVal = (val !== undefined && val !== null);
+        return (hasDefaultVal && val !== '') ? val : fallbackVal;
+    };
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows us to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     */
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows us to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     * @param {?=} source
+     * @return {?}
+     */
+    BaseDirective.prototype._getDisplayStyle = /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows us to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     * @param {?=} source
+     * @return {?}
+     */
+    function (source) {
+        if (source === void 0) { source = this.nativeElement; }
+        var /** @type {?} */ query = 'display';
+        return this._styler.lookupStyle(source, query);
+    };
+    /**
+     * Quick accessor to raw attribute value on the target DOM element
+     */
+    /**
+     * Quick accessor to raw attribute value on the target DOM element
+     * @param {?} attribute
+     * @param {?=} source
+     * @return {?}
+     */
+    BaseDirective.prototype._getAttributeValue = /**
+     * Quick accessor to raw attribute value on the target DOM element
+     * @param {?} attribute
+     * @param {?=} source
+     * @return {?}
+     */
+    function (attribute, source) {
+        if (source === void 0) { source = this.nativeElement; }
+        return this._styler.lookupAttributeValue(source, attribute);
+    };
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction).
+     *
+     * Check inline style first then check computed (stylesheet) style.
+     * And optionally add the flow value to element's inline style.
+     */
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction).
+     *
+     * Check inline style first then check computed (stylesheet) style.
+     * And optionally add the flow value to element's inline style.
+     * @param {?} target
+     * @param {?=} addIfMissing
+     * @return {?}
+     */
+    BaseDirective.prototype._getFlexFlowDirection = /**
+     * Determine the DOM element's Flexbox flow (flex-direction).
+     *
+     * Check inline style first then check computed (stylesheet) style.
+     * And optionally add the flow value to element's inline style.
+     * @param {?} target
+     * @param {?=} addIfMissing
+     * @return {?}
+     */
+    function (target, addIfMissing) {
+        if (addIfMissing === void 0) { addIfMissing = false; }
+        var /** @type {?} */ value = 'row';
+        var /** @type {?} */ hasInlineValue = '';
+        if (target) {
+            _a = this._styler.getFlowDirection(target), value = _a[0], hasInlineValue = _a[1];
+            if (!hasInlineValue && addIfMissing) {
+                var /** @type {?} */ style = buildLayoutCSS(value);
+                var /** @type {?} */ elements = [target];
+                this._styler.applyStyleToElements(style, elements);
+            }
+        }
+        return value.trim() || 'row';
+        var _a;
+    };
+    /**
+     * Applies styles given via string pair or object map to the directive element.
+     */
+    /**
+     * Applies styles given via string pair or object map to the directive element.
+     * @param {?} style
+     * @param {?=} value
+     * @param {?=} element
+     * @return {?}
+     */
+    BaseDirective.prototype._applyStyleToElement = /**
+     * Applies styles given via string pair or object map to the directive element.
+     * @param {?} style
+     * @param {?=} value
+     * @param {?=} element
+     * @return {?}
+     */
+    function (style, value, element) {
+        if (element === void 0) { element = this.nativeElement; }
+        this._styler.applyStyleToElement(element, style, value);
+    };
+    /**
+     * Applies styles given via string pair or object map to the directive's element.
+     */
+    /**
+     * Applies styles given via string pair or object map to the directive's element.
+     * @param {?} style
+     * @param {?} elements
+     * @return {?}
+     */
+    BaseDirective.prototype._applyStyleToElements = /**
+     * Applies styles given via string pair or object map to the directive's element.
+     * @param {?} style
+     * @param {?} elements
+     * @return {?}
+     */
+    function (style, elements) {
+        this._styler.applyStyleToElements(style, elements);
+    };
+    /**
+     *  Save the property value; which may be a complex object.
+     *  Complex objects support property chains
+     */
+    /**
+     *  Save the property value; which may be a complex object.
+     *  Complex objects support property chains
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    BaseDirective.prototype._cacheInput = /**
+     *  Save the property value; which may be a complex object.
+     *  Complex objects support property chains
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    function (key, source) {
+        if (typeof source === 'object') {
+            for (var /** @type {?} */ prop in source) {
+                this._inputMap[prop] = source[prop];
+            }
+        }
+        else {
+            if (!!key) {
+                this._inputMap[key] = source;
+            }
+        }
+    };
+    /**
+     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
+     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
+     *  (or closest match).
+     */
+    /**
+     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
+     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
+     *  (or closest match).
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
+    BaseDirective.prototype._listenForMediaQueryChanges = /**
+     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
+     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
+     *  (or closest match).
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
+    function (key, defaultValue, onMediaQueryChange) {
+        // tslint:disable-line:max-line-length
+        if (!this._mqActivation) {
+            var /** @type {?} */ keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+            this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange(change); });
+        }
+        return this._mqActivation;
+    };
+    Object.defineProperty(BaseDirective.prototype, "childrenNodes", {
+        /**
+         * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
+         */
+        get: /**
+         * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
+         * @return {?}
+         */
+        function () {
+            var /** @type {?} */ obj = this.nativeElement.children;
+            var /** @type {?} */ buffer = [];
+            // iterate backwards ensuring that length is an UInt32
+            for (var /** @type {?} */ i = obj.length; i--;) {
+                buffer[i] = obj[i];
+            }
+            return buffer;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     */
+    /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @param {?} baseKey
+     * @return {?}
+     */
+    BaseDirective.prototype.hasResponsiveAPI = /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @param {?} baseKey
+     * @return {?}
+     */
+    function (baseKey) {
+        var /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
+        var /** @type {?} */ baseValue = this._inputMap[baseKey];
+        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
+    };
+    /**
+     * Fast validator for presence of attribute on the host element
+     */
+    /**
+     * Fast validator for presence of attribute on the host element
+     * @param {?} key
+     * @return {?}
+     */
+    BaseDirective.prototype.hasKeyValue = /**
+     * Fast validator for presence of attribute on the host element
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        return this._mqActivation.hasKeyValue(key);
+    };
+    Object.defineProperty(BaseDirective.prototype, "hasInitialized", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._hasInitialized;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return BaseDirective;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Adapter to the BaseDirective abstract class so it can be used via composition.
+ * @see BaseDirective
+ */
+var   /**
+ * Adapter to the BaseDirective abstract class so it can be used via composition.
+ * @see BaseDirective
+ */
+BaseDirectiveAdapter = /** @class */ (function (_super) {
+    __extends(BaseDirectiveAdapter, _super);
+    /**
+     * BaseDirectiveAdapter constructor
+     */
+    function BaseDirectiveAdapter(_baseKey, // non-responsive @Input property name
+    // non-responsive @Input property name
+    _mediaMonitor, _elementRef, _styler) {
+        var _this = _super.call(this, _mediaMonitor, _elementRef, _styler) || this;
+        _this._baseKey = _baseKey;
+        _this._mediaMonitor = _mediaMonitor;
+        _this._elementRef = _elementRef;
+        _this._styler = _styler;
+        return _this;
+    }
+    Object.defineProperty(BaseDirectiveAdapter.prototype, "activeKey", {
+        /**
+         * Accessor to determine which @Input property is "active"
+         * e.g. which property value will be used.
+         */
+        get: /**
+         * Accessor to determine which \@Input property is "active"
+         * e.g. which property value will be used.
+         * @return {?}
+         */
+        function () {
+            var /** @type {?} */ mqa = this._mqActivation;
+            var /** @type {?} */ key = mqa ? mqa.activatedInputKey : this._baseKey;
+            // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
+            return (key === 'class') ? 'klazz' : key;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseDirectiveAdapter.prototype, "inputMap", {
+        /** Hash map of all @Input keys/values defined/used */
+        get: /**
+         * Hash map of all \@Input keys/values defined/used
+         * @return {?}
+         */
+        function () {
+            return this._inputMap;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseDirectiveAdapter.prototype, "mqActivation", {
+        /**
+         * @see BaseDirective._mqActivation
+         */
+        get: /**
+         * @see BaseDirective._mqActivation
+         * @return {?}
+         */
+        function () {
+            return this._mqActivation;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+      * Does this directive have 1 or more responsive keys defined
+      * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+      */
+    /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype.hasResponsiveAPI = /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @return {?}
+     */
+    function () {
+        return _super.prototype.hasResponsiveAPI.call(this, this._baseKey);
+    };
+    /**
+     * @see BaseDirective._queryInput
+     */
+    /**
+     * @see BaseDirective._queryInput
+     * @param {?} key
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype.queryInput = /**
+     * @see BaseDirective._queryInput
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        return key ? this._queryInput(key) : undefined;
+    };
+    /**
+     *  Save the property value.
+     */
+    /**
+     *  Save the property value.
+     * @param {?=} key
+     * @param {?=} source
+     * @param {?=} cacheRaw
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype.cacheInput = /**
+     *  Save the property value.
+     * @param {?=} key
+     * @param {?=} source
+     * @param {?=} cacheRaw
+     * @return {?}
+     */
+    function (key, source, cacheRaw) {
+        if (cacheRaw === void 0) { cacheRaw = false; }
+        if (cacheRaw) {
+            this._cacheInputRaw(key, source);
+        }
+        else if (Array.isArray(source)) {
+            this._cacheInputArray(key, source);
+        }
+        else if (typeof source === 'object') {
+            this._cacheInputObject(key, source);
+        }
+        else if (typeof source === 'string') {
+            this._cacheInputString(key, source);
+        }
+        else {
+            throw new Error("Invalid class value '" + key + "' provided. Did you want to cache the raw value?");
+        }
+    };
+    /**
+     * @see BaseDirective._listenForMediaQueryChanges
+     */
+    /**
+     * @see BaseDirective._listenForMediaQueryChanges
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype.listenForMediaQueryChanges = /**
+     * @see BaseDirective._listenForMediaQueryChanges
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
+    function (key, defaultValue, onMediaQueryChange) {
+        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
+    };
+    // ************************************************************
+    // Protected Methods
+    // ************************************************************
+    /**
+     * No implicit transforms of the source.
+     * Required when caching values expected later for KeyValueDiffers
+     */
+    /**
+     * No implicit transforms of the source.
+     * Required when caching values expected later for KeyValueDiffers
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype._cacheInputRaw = /**
+     * No implicit transforms of the source.
+     * Required when caching values expected later for KeyValueDiffers
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    function (key, source) {
+        if (key) {
+            this._inputMap[key] = source;
+        }
+    };
+    /**
+     *  Save the property value for Array values.
+     */
+    /**
+     *  Save the property value for Array values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype._cacheInputArray = /**
+     *  Save the property value for Array values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    function (key, source) {
+        if (key === void 0) { key = ''; }
+        this._inputMap[key] = source ? source.join(' ') : '';
+    };
+    /**
+     *  Save the property value for key/value pair values.
+     */
+    /**
+     *  Save the property value for key/value pair values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype._cacheInputObject = /**
+     *  Save the property value for key/value pair values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    function (key, source) {
+        if (key === void 0) { key = ''; }
+        var /** @type {?} */ classes = [];
+        if (source) {
+            for (var /** @type {?} */ prop in source) {
+                if (!!source[prop]) {
+                    classes.push(prop);
+                }
+            }
+        }
+        this._inputMap[key] = classes.join(' ');
+    };
+    /**
+     *  Save the property value for string values.
+     */
+    /**
+     *  Save the property value for string values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    BaseDirectiveAdapter.prototype._cacheInputString = /**
+     *  Save the property value for string values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    function (key, source) {
+        if (key === void 0) { key = ''; }
+        this._inputMap[key] = source;
+    };
+    return BaseDirectiveAdapter;
+}(BaseDirective));
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @deprecated
+ * \@deletion-target v6.0.0-beta.17
+ * Abstract base class for the Layout API styling directives.
+ * @abstract
+ */
+var   /**
+ * @deprecated
+ * \@deletion-target v6.0.0-beta.17
+ * Abstract base class for the Layout API styling directives.
+ * @abstract
+ */
 BaseFxDirective = /** @class */ (function () {
     /**
      * Constructor
@@ -2007,260 +2715,6 @@ BaseFxDirective = /** @class */ (function () {
     });
     return BaseFxDirective;
 }());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Adapter to the BaseFxDirective abstract class so it can be used via composition.
- * @see BaseFxDirective
- */
-var   /**
- * Adapter to the BaseFxDirective abstract class so it can be used via composition.
- * @see BaseFxDirective
- */
-BaseFxDirectiveAdapter = /** @class */ (function (_super) {
-    __extends(BaseFxDirectiveAdapter, _super);
-    /**
-     * BaseFxDirectiveAdapter constructor
-     */
-    function BaseFxDirectiveAdapter(_baseKey, // non-responsive @Input property name
-    // non-responsive @Input property name
-    _mediaMonitor, _elementRef, _styler) {
-        var _this = _super.call(this, _mediaMonitor, _elementRef, _styler) || this;
-        _this._baseKey = _baseKey;
-        _this._mediaMonitor = _mediaMonitor;
-        _this._elementRef = _elementRef;
-        _this._styler = _styler;
-        return _this;
-    }
-    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "activeKey", {
-        /**
-         * Accessor to determine which @Input property is "active"
-         * e.g. which property value will be used.
-         */
-        get: /**
-         * Accessor to determine which \@Input property is "active"
-         * e.g. which property value will be used.
-         * @return {?}
-         */
-        function () {
-            var /** @type {?} */ mqa = this._mqActivation;
-            var /** @type {?} */ key = mqa ? mqa.activatedInputKey : this._baseKey;
-            // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
-            return (key === 'class') ? 'klazz' : key;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "inputMap", {
-        /** Hash map of all @Input keys/values defined/used */
-        get: /**
-         * Hash map of all \@Input keys/values defined/used
-         * @return {?}
-         */
-        function () {
-            return this._inputMap;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "mqActivation", {
-        /**
-         * @see BaseFxDirective._mqActivation
-         */
-        get: /**
-         * @see BaseFxDirective._mqActivation
-         * @return {?}
-         */
-        function () {
-            return this._mqActivation;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-      * Does this directive have 1 or more responsive keys defined
-      * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-      */
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype.hasResponsiveAPI = /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @return {?}
-     */
-    function () {
-        return _super.prototype.hasResponsiveAPI.call(this, this._baseKey);
-    };
-    /**
-     * @see BaseFxDirective._queryInput
-     */
-    /**
-     * @see BaseFxDirective._queryInput
-     * @param {?} key
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype.queryInput = /**
-     * @see BaseFxDirective._queryInput
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
-        return key ? this._queryInput(key) : undefined;
-    };
-    /**
-     *  Save the property value.
-     */
-    /**
-     *  Save the property value.
-     * @param {?=} key
-     * @param {?=} source
-     * @param {?=} cacheRaw
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype.cacheInput = /**
-     *  Save the property value.
-     * @param {?=} key
-     * @param {?=} source
-     * @param {?=} cacheRaw
-     * @return {?}
-     */
-    function (key, source, cacheRaw) {
-        if (cacheRaw === void 0) { cacheRaw = false; }
-        if (cacheRaw) {
-            this._cacheInputRaw(key, source);
-        }
-        else if (Array.isArray(source)) {
-            this._cacheInputArray(key, source);
-        }
-        else if (typeof source === 'object') {
-            this._cacheInputObject(key, source);
-        }
-        else if (typeof source === 'string') {
-            this._cacheInputString(key, source);
-        }
-        else {
-            throw new Error("Invalid class value '" + key + "' provided. Did you want to cache the raw value?");
-        }
-    };
-    /**
-     * @see BaseFxDirective._listenForMediaQueryChanges
-     */
-    /**
-     * @see BaseFxDirective._listenForMediaQueryChanges
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype.listenForMediaQueryChanges = /**
-     * @see BaseFxDirective._listenForMediaQueryChanges
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    function (key, defaultValue, onMediaQueryChange) {
-        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-    };
-    // ************************************************************
-    // Protected Methods
-    // ************************************************************
-    /**
-     * No implicit transforms of the source.
-     * Required when caching values expected later for KeyValueDiffers
-     */
-    /**
-     * No implicit transforms of the source.
-     * Required when caching values expected later for KeyValueDiffers
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype._cacheInputRaw = /**
-     * No implicit transforms of the source.
-     * Required when caching values expected later for KeyValueDiffers
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    function (key, source) {
-        if (key) {
-            this._inputMap[key] = source;
-        }
-    };
-    /**
-     *  Save the property value for Array values.
-     */
-    /**
-     *  Save the property value for Array values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype._cacheInputArray = /**
-     *  Save the property value for Array values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    function (key, source) {
-        if (key === void 0) { key = ''; }
-        this._inputMap[key] = source ? source.join(' ') : '';
-    };
-    /**
-     *  Save the property value for key/value pair values.
-     */
-    /**
-     *  Save the property value for key/value pair values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype._cacheInputObject = /**
-     *  Save the property value for key/value pair values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    function (key, source) {
-        if (key === void 0) { key = ''; }
-        var /** @type {?} */ classes = [];
-        if (source) {
-            for (var /** @type {?} */ prop in source) {
-                if (!!source[prop]) {
-                    classes.push(prop);
-                }
-            }
-        }
-        this._inputMap[key] = classes.join(' ');
-    };
-    /**
-     *  Save the property value for string values.
-     */
-    /**
-     *  Save the property value for string values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    BaseFxDirectiveAdapter.prototype._cacheInputString = /**
-     *  Save the property value for string values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    function (key, source) {
-        if (key === void 0) { key = ''; }
-        this._inputMap[key] = source;
-    };
-    return BaseFxDirectiveAdapter;
-}(BaseFxDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -3316,7 +3770,8 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (element, styleName) {
-        return element.style[styleName] || element.style.getPropertyValue(styleName) || '';
+        return common.isPlatformBrowser(this._platformId) ?
+            element.style[styleName] : this._getServerStyle(element, styleName);
     };
     /**
      * Determine the inline or inherited CSS style
@@ -3384,13 +3839,93 @@ var StyleUtils = /** @class */ (function () {
             for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
                 var value = values_1[_i];
                 if (common.isPlatformBrowser(_this._platformId) || !_this._serverModuleLoaded) {
-                    element.style.setProperty(key, value);
+                    common.isPlatformBrowser(_this._platformId) ?
+                        element.style.setProperty(key, value) : _this._setServerStyle(element, key, value);
                 }
                 else {
                     _this._serverStylesheet.addStyleToElement(element, key, value);
                 }
             }
         });
+    };
+    /**
+     * @param {?} element
+     * @param {?} styleName
+     * @param {?=} styleValue
+     * @return {?}
+     */
+    StyleUtils.prototype._setServerStyle = /**
+     * @param {?} element
+     * @param {?} styleName
+     * @param {?=} styleValue
+     * @return {?}
+     */
+    function (element, styleName, styleValue) {
+        styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        var /** @type {?} */ styleMap = this._readStyleAttribute(element);
+        styleMap[styleName] = styleValue || '';
+        this._writeStyleAttribute(element, styleMap);
+    };
+    /**
+     * @param {?} element
+     * @param {?} styleName
+     * @return {?}
+     */
+    StyleUtils.prototype._getServerStyle = /**
+     * @param {?} element
+     * @param {?} styleName
+     * @return {?}
+     */
+    function (element, styleName) {
+        var /** @type {?} */ styleMap = this._readStyleAttribute(element);
+        return styleMap[styleName] || '';
+    };
+    /**
+     * @param {?} element
+     * @return {?}
+     */
+    StyleUtils.prototype._readStyleAttribute = /**
+     * @param {?} element
+     * @return {?}
+     */
+    function (element) {
+        var /** @type {?} */ styleMap = {};
+        var /** @type {?} */ styleAttribute = element.getAttribute('style');
+        if (styleAttribute) {
+            var /** @type {?} */ styleList = styleAttribute.split(/;+/g);
+            for (var /** @type {?} */ i = 0; i < styleList.length; i++) {
+                var /** @type {?} */ style = styleList[i].trim();
+                if (style.length > 0) {
+                    var /** @type {?} */ colonIndex = style.indexOf(':');
+                    if (colonIndex === -1) {
+                        throw new Error("Invalid CSS style: " + style);
+                    }
+                    var /** @type {?} */ name_1 = style.substr(0, colonIndex).trim();
+                    styleMap[name_1] = style.substr(colonIndex + 1).trim();
+                }
+            }
+        }
+        return styleMap;
+    };
+    /**
+     * @param {?} element
+     * @param {?} styleMap
+     * @return {?}
+     */
+    StyleUtils.prototype._writeStyleAttribute = /**
+     * @param {?} element
+     * @param {?} styleMap
+     * @return {?}
+     */
+    function (element, styleMap) {
+        var /** @type {?} */ styleAttrValue = '';
+        for (var /** @type {?} */ key in styleMap) {
+            var /** @type {?} */ newValue = styleMap[key];
+            if (newValue) {
+                styleAttrValue += key + ':' + styleMap[key] + ';';
+            }
+        }
+        element.setAttribute('style', styleAttrValue);
     };
     StyleUtils.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -3475,8 +4010,9 @@ exports.DISABLE_DEFAULT_BREAKPOINTS = DISABLE_DEFAULT_BREAKPOINTS;
 exports.ADD_ORIENTATION_BREAKPOINTS = ADD_ORIENTATION_BREAKPOINTS;
 exports.BREAKPOINT = BREAKPOINT;
 exports.DISABLE_VENDOR_PREFIXES = DISABLE_VENDOR_PREFIXES;
+exports.BaseDirective = BaseDirective;
+exports.BaseDirectiveAdapter = BaseDirectiveAdapter;
 exports.BaseFxDirective = BaseFxDirective;
-exports.BaseFxDirectiveAdapter = BaseFxDirectiveAdapter;
 exports.RESPONSIVE_ALIASES = RESPONSIVE_ALIASES;
 exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = ScreenTypes;

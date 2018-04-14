@@ -7,14 +7,14 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { BaseFxDirective, MediaMonitor, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
  */
-export declare class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export declare class FlexOffsetDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     protected _container: LayoutDirective;
     private _directionality;
     private _directionWatcher;

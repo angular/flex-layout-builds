@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { LayoutDirective } from '@angular/flex-layout/flex';
 /**
@@ -20,7 +20,7 @@ export declare function negativeOf(hide: any): boolean;
  * 'show' Layout API directive
  *
  */
-export declare class ShowHideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export declare class ShowHideDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     protected layout: LayoutDirective;
     protected elRef: ElementRef;
     protected styleUtils: StyleUtils;

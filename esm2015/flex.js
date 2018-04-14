@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { Directive, ElementRef, Input, Self, Optional, NgZone, Inject, SkipSelf, NgModule } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils, ADD_FLEX_STYLES, validateBasis, CoreModule } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils, ADD_FLEX_STYLES, validateBasis, CoreModule } from '@angular/flex-layout/core';
 import { ReplaySubject } from 'rxjs';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
@@ -114,7 +114,7 @@ function buildCSS(direction, wrap = null, inline = false) {
  * @see https://css-tricks.com/almanac/properties/f/flex-direction/
  *
  */
-class LayoutDirective extends BaseFxDirective {
+class LayoutDirective extends BaseDirective {
     /**
      *
      * @param {?} monitor
@@ -292,7 +292,7 @@ LayoutDirective.propDecorators = {
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
-class LayoutGapDirective extends BaseFxDirective {
+class LayoutGapDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
@@ -647,7 +647,7 @@ function extendObject(dest, ...sources) {
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-class FlexDirective extends BaseFxDirective {
+class FlexDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
@@ -832,7 +832,7 @@ class FlexDirective extends BaseFxDirective {
      */
     _validateValue(grow, shrink, basis) {
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        let /** @type {?} */ layout = this._getFlowDirection(this.parentElement, !!this.addFlexStyles);
+        let /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, !!this.addFlexStyles);
         let /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         let /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         let /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -1007,7 +1007,7 @@ FlexDirective.propDecorators = {
  * Configures the positional ordering of the element in a sorted layout container
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
-class FlexOrderDirective extends BaseFxDirective {
+class FlexOrderDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
@@ -1179,7 +1179,7 @@ FlexOrderDirective.propDecorators = {
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
  */
-class FlexOffsetDirective extends BaseFxDirective {
+class FlexOffsetDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
@@ -1365,7 +1365,7 @@ class FlexOffsetDirective extends BaseFxDirective {
         }
         // The flex-direction of this element's flex container. Defaults to 'row'.
         const /** @type {?} */ isRtl = this._directionality.value === 'rtl';
-        const /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
+        const /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, true);
         const /** @type {?} */ horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
         return isFlowHorizontal(layout) ? { [horizontalLayoutKey]: `${offset}` } :
             { 'margin-top': `${offset}` };
@@ -1413,7 +1413,7 @@ FlexOffsetDirective.propDecorators = {
  * Allows element-specific overrides for cross-axis alignments in a layout container
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
-class FlexAlignDirective extends BaseFxDirective {
+class FlexAlignDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
@@ -1610,7 +1610,7 @@ const /** @type {?} */ FLEX_FILL_CSS = {
  *
  *  NOTE: fxFill is NOT responsive API!!
  */
-class FlexFillDirective extends BaseFxDirective {
+class FlexFillDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef
@@ -1648,7 +1648,7 @@ FlexFillDirective.ctorParameters = () => [
  *  \@see https://css-tricks.com/almanac/properties/a/align-items/
  *  \@see https://css-tricks.com/almanac/properties/a/align-content/
  */
-class LayoutAlignDirective extends BaseFxDirective {
+class LayoutAlignDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} elRef

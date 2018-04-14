@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 /**
  * 'flex-align' flexbox styling directive
  * Allows element-specific overrides for cross-axis alignments in a layout container
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
-export declare class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export declare class FlexAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     align: any;
     alignXs: any;
     alignSm: any;

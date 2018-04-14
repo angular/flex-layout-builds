@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
  * and will update the img.src property upon each responsive activation.
@@ -16,7 +16,7 @@ import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/
  *
  * @see https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-src/
  */
-export declare class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChanges {
+export declare class ImgSrcDirective extends BaseDirective implements OnInit, OnChanges {
     protected _elRef: ElementRef;
     protected _monitor: MediaMonitor;
     protected _styler: StyleUtils;

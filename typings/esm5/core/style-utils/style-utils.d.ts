@@ -38,6 +38,10 @@ export declare class StyleUtils {
      * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
      */
     private _applyMultiValueStyleToElement(styles, element);
+    private _setServerStyle(element, styleName, styleValue?);
+    private _getServerStyle(element, styleName);
+    private _readStyleAttribute(element);
+    private _writeStyleAttribute(element, styleMap);
 }
 /**
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object

@@ -11,7 +11,7 @@ import { ResponsiveActivation } from '../responsive-activation/responsive-activa
 import { MediaMonitor } from '../media-monitor/media-monitor';
 import { MediaQuerySubscriber } from '../media-change';
 /** Abstract base class for the Layout API styling directives. */
-export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
+export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
     protected _styler: StyleUtils;
@@ -69,7 +69,7 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
      * Check inline style first then check computed (stylesheet) style.
      * And optionally add the flow value to element's inline style.
      */
-    protected _getFlowDirection(target: HTMLElement, addIfMissing?: boolean): string;
+    protected _getFlexFlowDirection(target: HTMLElement, addIfMissing?: boolean): string;
     /**
      * Applies styles given via string pair or object map to the directive element.
      */

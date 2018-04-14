@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
 /** Built-in aliases for different flex-basis values. */
@@ -17,7 +17,7 @@ export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nog
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-export declare class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export declare class FlexDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     protected _container: LayoutDirective;
     protected styleUtils: StyleUtils;
     protected addFlexStyles: boolean | null;

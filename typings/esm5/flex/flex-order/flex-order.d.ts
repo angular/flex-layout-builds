@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 /**
  * 'flex-order' flexbox styling directive
  * Configures the positional ordering of the element in a sorted layout container
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
-export declare class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export declare class FlexOrderDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     order: any;
     orderXs: any;
     orderSm: any;

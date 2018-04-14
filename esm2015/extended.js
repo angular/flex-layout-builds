@@ -7,7 +7,7 @@
  */
 import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, SecurityContext, NgModule } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
-import { BaseFxDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseFxDirectiveAdapter, CoreModule } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseDirectiveAdapter, CoreModule } from '@angular/flex-layout/core';
 import { LayoutDirective } from '@angular/flex-layout/flex';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -24,7 +24,7 @@ import { DomSanitizer } from '@angular/platform-browser';
  *
  * @see https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-src/
  */
-class ImgSrcDirective extends BaseFxDirective {
+class ImgSrcDirective extends BaseDirective {
     /**
      * @param {?} _elRef
      * @param {?} _monitor
@@ -227,7 +227,7 @@ ImgSrcDirective.propDecorators = {
  * This maintains the core functionality of 'ngClass' and adds responsive API
  * Note: this class is a no-op when rendered on the server
  */
-class ClassDirective extends BaseFxDirective {
+class ClassDirective extends BaseDirective {
     /**
      * @param {?} monitor
      * @param {?} _iterableDiffers
@@ -372,7 +372,7 @@ class ClassDirective extends BaseFxDirective {
      * @return {?}
      */
     _configureAdapters() {
-        this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
+        this._base = new BaseDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
         if (!this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
@@ -453,7 +453,7 @@ function negativeOf(hide) {
  * 'show' Layout API directive
  *
  */
-class ShowHideDirective extends BaseFxDirective {
+class ShowHideDirective extends BaseDirective {
     /**
      *
      * @param {?} monitor
@@ -926,7 +926,7 @@ function keyValuesToMap(map, entry) {
  * Directive to add responsive support for ngStyle.
  *
  */
-class StyleDirective extends BaseFxDirective {
+class StyleDirective extends BaseDirective {
     /**
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter
@@ -1073,7 +1073,7 @@ class StyleDirective extends BaseFxDirective {
      * @return {?}
      */
     _configureAdapters() {
-        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
+        this._base = new BaseDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
         if (!this._ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...

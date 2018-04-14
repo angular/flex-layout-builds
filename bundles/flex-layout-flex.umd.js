@@ -385,7 +385,7 @@ var LayoutDirective = /** @class */ (function (_super) {
         "layoutLtXl": [{ type: core.Input, args: ['fxLayout.lt-xl',] },],
     };
     return LayoutDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -814,7 +814,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         "gapLtXl": [{ type: core.Input, args: ['fxLayoutGap.lt-xl',] },],
     };
     return LayoutGapDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 var /** @type {?} */ GRID_SPECIFIER = ' grid';
 
 /**
@@ -1141,7 +1141,7 @@ var FlexDirective = /** @class */ (function (_super) {
      */
     function (grow, shrink, basis) {
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        var /** @type {?} */ layout = this._getFlowDirection(this.parentElement, !!this.addFlexStyles);
+        var /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, !!this.addFlexStyles);
         var /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         var /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         var /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -1301,7 +1301,7 @@ var FlexDirective = /** @class */ (function (_super) {
         "flexLtXl": [{ type: core.Input, args: ['fxFlex.lt-xl',] },],
     };
     return FlexDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1543,7 +1543,7 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         "orderLtXl": [{ type: core.Input, args: ['fxFlexOrder.lt-xl',] },],
     };
     return FlexOrderDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1844,7 +1844,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         }
         // The flex-direction of this element's flex container. Defaults to 'row'.
         var /** @type {?} */ isRtl = this._directionality.value === 'rtl';
-        var /** @type {?} */ layout = this._getFlowDirection(this.parentElement, true);
+        var /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, true);
         var /** @type {?} */ horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
         return isFlowHorizontal(layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) :
             { 'margin-top': "" + offset };
@@ -1878,7 +1878,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         "offsetGtLg": [{ type: core.Input, args: ['fxFlexOffset.gt-lg',] },],
     };
     return FlexOffsetDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -2134,7 +2134,7 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         "alignGtLg": [{ type: core.Input, args: ['fxFlexAlign.gt-lg',] },],
     };
     return FlexAlignDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -2171,7 +2171,7 @@ var FlexFillDirective = /** @class */ (function (_super) {
         { type: core$1.StyleUtils, },
     ]; };
     return FlexFillDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -2541,7 +2541,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         "alignLtXl": [{ type: core.Input, args: ['fxLayoutAlign.lt-xl',] },],
     };
     return LayoutAlignDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle

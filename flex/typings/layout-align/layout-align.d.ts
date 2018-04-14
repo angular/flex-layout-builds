@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
 /**
@@ -18,7 +18,7 @@ import { Layout, LayoutDirective } from '../layout/layout';
  *  @see https://css-tricks.com/almanac/properties/a/align-items/
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
-export declare class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export declare class LayoutAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     protected _layout: string;
     protected _layoutWatcher: Subscription;
     align: any;

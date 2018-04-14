@@ -8,11 +8,13 @@
 import { Version, Inject, NgModule, Optional, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { SERVER_TOKEN } from '@angular/flex-layout/core';
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis } from '@angular/flex-layout/core';
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseDirective, BaseDirectiveAdapter, BaseFxDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis } from '@angular/flex-layout/core';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 export { ExtendedModule, ClassDirective, ImgSrcDirective, negativeOf, ShowHideDirective, StyleDirective } from '@angular/flex-layout/extended';
 import { FlexModule } from '@angular/flex-layout/flex';
 export { FlexModule, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, LayoutDirective, LayoutAlignDirective, LayoutGapDirective } from '@angular/flex-layout/flex';
+import { GridModule } from '@angular/flex-layout/grid';
+export { ɵb, ɵc, ɵd, ɵe, ɵf, ɵg, ɵh, ɵi, ɵa, ɵj, ɵk, GridModule } from '@angular/flex-layout/grid';
 
 /**
  * @fileoverview added by tsickle
@@ -21,7 +23,7 @@ export { FlexModule, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexO
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new Version('6.0.0-beta.15-85aa013');
+var /** @type {?} */ VERSION = new Version('6.0.0-beta.15-b8c86be');
 
 /**
  * @fileoverview added by tsickle
@@ -38,8 +40,8 @@ var FlexLayoutModule = /** @class */ (function () {
     }
     FlexLayoutModule.decorators = [
         { type: NgModule, args: [{
-                    imports: [FlexModule, ExtendedModule],
-                    exports: [FlexModule, ExtendedModule]
+                    imports: [FlexModule, ExtendedModule, GridModule],
+                    exports: [FlexModule, ExtendedModule, GridModule]
                 },] },
     ];
     /** @nocollapse */

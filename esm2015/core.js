@@ -1220,6 +1220,416 @@ class ResponsiveActivation {
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
+class BaseDirective {
+    /**
+     * Constructor
+     * @param {?} _mediaMonitor
+     * @param {?} _elementRef
+     * @param {?} _styler
+     */
+    constructor(_mediaMonitor, _elementRef, _styler) {
+        this._mediaMonitor = _mediaMonitor;
+        this._elementRef = _elementRef;
+        this._styler = _styler;
+        /**
+         *  Dictionary of input keys with associated values
+         */
+        this._inputMap = {};
+        /**
+         * Has the `ngOnInit()` method fired
+         *
+         * Used to allow *ngFor tasks to finish and support queries like
+         * getComputedStyle() during ngOnInit().
+         */
+        this._hasInitialized = false;
+    }
+    /**
+     * @return {?}
+     */
+    get hasMediaQueryListener() {
+        return !!this._mqActivation;
+    }
+    /**
+     * Imperatively determine the current activated [input] value;
+     * if called before ngOnInit() this will return `undefined`
+     * @return {?}
+     */
+    get activatedValue() {
+        return this._mqActivation ? this._mqActivation.activatedInput : undefined;
+    }
+    /**
+     * Change the currently activated input value and force-update
+     * the injected CSS (by-passing change detection).
+     *
+     * NOTE: Only the currently activated input value will be modified;
+     *       other input values will NOT be affected.
+     * @param {?} value
+     * @return {?}
+     */
+    set activatedValue(value) {
+        let /** @type {?} */ key = 'baseKey', /** @type {?} */ previousVal;
+        if (this._mqActivation) {
+            key = this._mqActivation.activatedInputKey;
+            previousVal = this._inputMap[key];
+            this._inputMap[key] = value;
+        }
+        let /** @type {?} */ change = new SimpleChange(previousVal, value, false);
+        this.ngOnChanges(/** @type {?} */ ({ [key]: change }));
+    }
+    /**
+     * Access to host element's parent DOM node
+     * @return {?}
+     */
+    get parentElement() {
+        return this._elementRef.nativeElement.parentNode;
+    }
+    /**
+     * @return {?}
+     */
+    get nativeElement() {
+        return this._elementRef.nativeElement;
+    }
+    /**
+     * Access the current value (if any) of the \@Input property.
+     * @param {?} key
+     * @return {?}
+     */
+    _queryInput(key) {
+        return this._inputMap[key];
+    }
+    /**
+     * Use post-component-initialization event to perform extra
+     * querying such as computed Display style
+     * @return {?}
+     */
+    ngOnInit() {
+        this._display = this._getDisplayStyle();
+        this._hasInitialized = true;
+    }
+    /**
+     * @param {?} change
+     * @return {?}
+     */
+    ngOnChanges(change) {
+        throw new Error(`BaseDirective::ngOnChanges should be overridden in subclass: ${change}`);
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        if (this._mqActivation) {
+            this._mqActivation.destroy();
+        }
+        delete this._mediaMonitor;
+    }
+    /**
+     * Was the directive's default selector used ?
+     * If not, use the fallback value!
+     * @param {?} key
+     * @param {?} fallbackVal
+     * @return {?}
+     */
+    _getDefaultVal(key, fallbackVal) {
+        let /** @type {?} */ val = this._queryInput(key);
+        let /** @type {?} */ hasDefaultVal = (val !== undefined && val !== null);
+        return (hasDefaultVal && val !== '') ? val : fallbackVal;
+    }
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows us to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     * @param {?=} source
+     * @return {?}
+     */
+    _getDisplayStyle(source = this.nativeElement) {
+        const /** @type {?} */ query = 'display';
+        return this._styler.lookupStyle(source, query);
+    }
+    /**
+     * Quick accessor to raw attribute value on the target DOM element
+     * @param {?} attribute
+     * @param {?=} source
+     * @return {?}
+     */
+    _getAttributeValue(attribute, source = this.nativeElement) {
+        return this._styler.lookupAttributeValue(source, attribute);
+    }
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction).
+     *
+     * Check inline style first then check computed (stylesheet) style.
+     * And optionally add the flow value to element's inline style.
+     * @param {?} target
+     * @param {?=} addIfMissing
+     * @return {?}
+     */
+    _getFlexFlowDirection(target, addIfMissing = false) {
+        let /** @type {?} */ value = 'row';
+        let /** @type {?} */ hasInlineValue = '';
+        if (target) {
+            [value, hasInlineValue] = this._styler.getFlowDirection(target);
+            if (!hasInlineValue && addIfMissing) {
+                const /** @type {?} */ style = buildLayoutCSS(value);
+                const /** @type {?} */ elements = [target];
+                this._styler.applyStyleToElements(style, elements);
+            }
+        }
+        return value.trim() || 'row';
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive element.
+     * @param {?} style
+     * @param {?=} value
+     * @param {?=} element
+     * @return {?}
+     */
+    _applyStyleToElement(style, value, element = this.nativeElement) {
+        this._styler.applyStyleToElement(element, style, value);
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive's element.
+     * @param {?} style
+     * @param {?} elements
+     * @return {?}
+     */
+    _applyStyleToElements(style, elements) {
+        this._styler.applyStyleToElements(style, elements);
+    }
+    /**
+     *  Save the property value; which may be a complex object.
+     *  Complex objects support property chains
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    _cacheInput(key, source) {
+        if (typeof source === 'object') {
+            for (let /** @type {?} */ prop in source) {
+                this._inputMap[prop] = source[prop];
+            }
+        }
+        else {
+            if (!!key) {
+                this._inputMap[key] = source;
+            }
+        }
+    }
+    /**
+     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
+     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
+     *  (or closest match).
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
+    _listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
+        // tslint:disable-line:max-line-length
+        if (!this._mqActivation) {
+            let /** @type {?} */ keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+            this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, (change) => onMediaQueryChange(change));
+        }
+        return this._mqActivation;
+    }
+    /**
+     * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
+     * @return {?}
+     */
+    get childrenNodes() {
+        const /** @type {?} */ obj = this.nativeElement.children;
+        const /** @type {?} */ buffer = [];
+        // iterate backwards ensuring that length is an UInt32
+        for (let /** @type {?} */ i = obj.length; i--;) {
+            buffer[i] = obj[i];
+        }
+        return buffer;
+    }
+    /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @param {?} baseKey
+     * @return {?}
+     */
+    hasResponsiveAPI(baseKey) {
+        const /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
+        const /** @type {?} */ baseValue = this._inputMap[baseKey];
+        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
+    }
+    /**
+     * Fast validator for presence of attribute on the host element
+     * @param {?} key
+     * @return {?}
+     */
+    hasKeyValue(key) {
+        return this._mqActivation.hasKeyValue(key);
+    }
+    /**
+     * @return {?}
+     */
+    get hasInitialized() {
+        return this._hasInitialized;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * Adapter to the BaseDirective abstract class so it can be used via composition.
+ * @see BaseDirective
+ */
+class BaseDirectiveAdapter extends BaseDirective {
+    /**
+     * BaseDirectiveAdapter constructor
+     * @param {?} _baseKey
+     * @param {?} _mediaMonitor
+     * @param {?} _elementRef
+     * @param {?} _styler
+     */
+    constructor(_baseKey, // non-responsive @Input property name
+    // non-responsive @Input property name
+    _mediaMonitor, _elementRef, _styler) {
+        super(_mediaMonitor, _elementRef, _styler);
+        this._baseKey = _baseKey;
+        this._mediaMonitor = _mediaMonitor;
+        this._elementRef = _elementRef;
+        this._styler = _styler;
+    }
+    /**
+     * Accessor to determine which \@Input property is "active"
+     * e.g. which property value will be used.
+     * @return {?}
+     */
+    get activeKey() {
+        let /** @type {?} */ mqa = this._mqActivation;
+        let /** @type {?} */ key = mqa ? mqa.activatedInputKey : this._baseKey;
+        // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
+        return (key === 'class') ? 'klazz' : key;
+    }
+    /**
+     * Hash map of all \@Input keys/values defined/used
+     * @return {?}
+     */
+    get inputMap() {
+        return this._inputMap;
+    }
+    /**
+     * @see BaseDirective._mqActivation
+     * @return {?}
+     */
+    get mqActivation() {
+        return this._mqActivation;
+    }
+    /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @return {?}
+     */
+    hasResponsiveAPI() {
+        return super.hasResponsiveAPI(this._baseKey);
+    }
+    /**
+     * @see BaseDirective._queryInput
+     * @param {?} key
+     * @return {?}
+     */
+    queryInput(key) {
+        return key ? this._queryInput(key) : undefined;
+    }
+    /**
+     *  Save the property value.
+     * @param {?=} key
+     * @param {?=} source
+     * @param {?=} cacheRaw
+     * @return {?}
+     */
+    cacheInput(key, source, cacheRaw = false) {
+        if (cacheRaw) {
+            this._cacheInputRaw(key, source);
+        }
+        else if (Array.isArray(source)) {
+            this._cacheInputArray(key, source);
+        }
+        else if (typeof source === 'object') {
+            this._cacheInputObject(key, source);
+        }
+        else if (typeof source === 'string') {
+            this._cacheInputString(key, source);
+        }
+        else {
+            throw new Error(`Invalid class value '${key}' provided. Did you want to cache the raw value?`);
+        }
+    }
+    /**
+     * @see BaseDirective._listenForMediaQueryChanges
+     * @param {?} key
+     * @param {?} defaultValue
+     * @param {?} onMediaQueryChange
+     * @return {?}
+     */
+    listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
+        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
+    }
+    /**
+     * No implicit transforms of the source.
+     * Required when caching values expected later for KeyValueDiffers
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    _cacheInputRaw(key, source) {
+        if (key) {
+            this._inputMap[key] = source;
+        }
+    }
+    /**
+     *  Save the property value for Array values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    _cacheInputArray(key = '', source) {
+        this._inputMap[key] = source ? source.join(' ') : '';
+    }
+    /**
+     *  Save the property value for key/value pair values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    _cacheInputObject(key = '', source) {
+        let /** @type {?} */ classes = [];
+        if (source) {
+            for (let /** @type {?} */ prop in source) {
+                if (!!source[prop]) {
+                    classes.push(prop);
+                }
+            }
+        }
+        this._inputMap[key] = classes.join(' ');
+    }
+    /**
+     *  Save the property value for string values.
+     * @param {?=} key
+     * @param {?=} source
+     * @return {?}
+     */
+    _cacheInputString(key = '', source) {
+        this._inputMap[key] = source;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+/**
+ * @deprecated
+ * \@deletion-target v6.0.0-beta.17
+ * Abstract base class for the Layout API styling directives.
+ * @abstract
+ */
 class BaseFxDirective {
     /**
      * Constructor
@@ -1468,155 +1878,6 @@ class BaseFxDirective {
      */
     get hasInitialized() {
         return this._hasInitialized;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-/**
- * Adapter to the BaseFxDirective abstract class so it can be used via composition.
- * @see BaseFxDirective
- */
-class BaseFxDirectiveAdapter extends BaseFxDirective {
-    /**
-     * BaseFxDirectiveAdapter constructor
-     * @param {?} _baseKey
-     * @param {?} _mediaMonitor
-     * @param {?} _elementRef
-     * @param {?} _styler
-     */
-    constructor(_baseKey, // non-responsive @Input property name
-    // non-responsive @Input property name
-    _mediaMonitor, _elementRef, _styler) {
-        super(_mediaMonitor, _elementRef, _styler);
-        this._baseKey = _baseKey;
-        this._mediaMonitor = _mediaMonitor;
-        this._elementRef = _elementRef;
-        this._styler = _styler;
-    }
-    /**
-     * Accessor to determine which \@Input property is "active"
-     * e.g. which property value will be used.
-     * @return {?}
-     */
-    get activeKey() {
-        let /** @type {?} */ mqa = this._mqActivation;
-        let /** @type {?} */ key = mqa ? mqa.activatedInputKey : this._baseKey;
-        // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
-        return (key === 'class') ? 'klazz' : key;
-    }
-    /**
-     * Hash map of all \@Input keys/values defined/used
-     * @return {?}
-     */
-    get inputMap() {
-        return this._inputMap;
-    }
-    /**
-     * @see BaseFxDirective._mqActivation
-     * @return {?}
-     */
-    get mqActivation() {
-        return this._mqActivation;
-    }
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @return {?}
-     */
-    hasResponsiveAPI() {
-        return super.hasResponsiveAPI(this._baseKey);
-    }
-    /**
-     * @see BaseFxDirective._queryInput
-     * @param {?} key
-     * @return {?}
-     */
-    queryInput(key) {
-        return key ? this._queryInput(key) : undefined;
-    }
-    /**
-     *  Save the property value.
-     * @param {?=} key
-     * @param {?=} source
-     * @param {?=} cacheRaw
-     * @return {?}
-     */
-    cacheInput(key, source, cacheRaw = false) {
-        if (cacheRaw) {
-            this._cacheInputRaw(key, source);
-        }
-        else if (Array.isArray(source)) {
-            this._cacheInputArray(key, source);
-        }
-        else if (typeof source === 'object') {
-            this._cacheInputObject(key, source);
-        }
-        else if (typeof source === 'string') {
-            this._cacheInputString(key, source);
-        }
-        else {
-            throw new Error(`Invalid class value '${key}' provided. Did you want to cache the raw value?`);
-        }
-    }
-    /**
-     * @see BaseFxDirective._listenForMediaQueryChanges
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
-        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-    }
-    /**
-     * No implicit transforms of the source.
-     * Required when caching values expected later for KeyValueDiffers
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputRaw(key, source) {
-        if (key) {
-            this._inputMap[key] = source;
-        }
-    }
-    /**
-     *  Save the property value for Array values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputArray(key = '', source) {
-        this._inputMap[key] = source ? source.join(' ') : '';
-    }
-    /**
-     *  Save the property value for key/value pair values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputObject(key = '', source) {
-        let /** @type {?} */ classes = [];
-        if (source) {
-            for (let /** @type {?} */ prop in source) {
-                if (!!source[prop]) {
-                    classes.push(prop);
-                }
-            }
-        }
-        this._inputMap[key] = classes.join(' ');
-    }
-    /**
-     *  Save the property value for string values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputString(key = '', source) {
-        this._inputMap[key] = source;
     }
 }
 
@@ -2424,7 +2685,8 @@ class StyleUtils {
      * @return {?}
      */
     lookupInlineStyle(element, styleName) {
-        return element.style[styleName] || element.style.getPropertyValue(styleName) || '';
+        return isPlatformBrowser(this._platformId) ?
+            element.style[styleName] : this._getServerStyle(element, styleName);
     }
     /**
      * Determine the inline or inherited CSS style
@@ -2469,13 +2731,73 @@ class StyleUtils {
             values.sort();
             for (let /** @type {?} */ value of values) {
                 if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
-                    element.style.setProperty(key, value);
+                    isPlatformBrowser(this._platformId) ?
+                        element.style.setProperty(key, value) : this._setServerStyle(element, key, value);
                 }
                 else {
                     this._serverStylesheet.addStyleToElement(element, key, value);
                 }
             }
         });
+    }
+    /**
+     * @param {?} element
+     * @param {?} styleName
+     * @param {?=} styleValue
+     * @return {?}
+     */
+    _setServerStyle(element, styleName, styleValue) {
+        styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        const /** @type {?} */ styleMap = this._readStyleAttribute(element);
+        styleMap[styleName] = styleValue || '';
+        this._writeStyleAttribute(element, styleMap);
+    }
+    /**
+     * @param {?} element
+     * @param {?} styleName
+     * @return {?}
+     */
+    _getServerStyle(element, styleName) {
+        const /** @type {?} */ styleMap = this._readStyleAttribute(element);
+        return styleMap[styleName] || '';
+    }
+    /**
+     * @param {?} element
+     * @return {?}
+     */
+    _readStyleAttribute(element) {
+        const /** @type {?} */ styleMap = {};
+        const /** @type {?} */ styleAttribute = element.getAttribute('style');
+        if (styleAttribute) {
+            const /** @type {?} */ styleList = styleAttribute.split(/;+/g);
+            for (let /** @type {?} */ i = 0; i < styleList.length; i++) {
+                const /** @type {?} */ style = styleList[i].trim();
+                if (style.length > 0) {
+                    const /** @type {?} */ colonIndex = style.indexOf(':');
+                    if (colonIndex === -1) {
+                        throw new Error(`Invalid CSS style: ${style}`);
+                    }
+                    const /** @type {?} */ name = style.substr(0, colonIndex).trim();
+                    styleMap[name] = style.substr(colonIndex + 1).trim();
+                }
+            }
+        }
+        return styleMap;
+    }
+    /**
+     * @param {?} element
+     * @param {?} styleMap
+     * @return {?}
+     */
+    _writeStyleAttribute(element, styleMap) {
+        let /** @type {?} */ styleAttrValue = '';
+        for (const /** @type {?} */ key in styleMap) {
+            const /** @type {?} */ newValue = styleMap[key];
+            if (newValue) {
+                styleAttrValue += key + ':' + styleMap[key] + ';';
+            }
+        }
+        element.setAttribute('style', styleAttrValue);
     }
 }
 StyleUtils.decorators = [
@@ -2553,5 +2875,5 @@ function _validateCalcValue(calc) {
  * @suppress {checkTypes} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseFxDirective, BaseFxDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseDirective, BaseDirectiveAdapter, BaseFxDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis };
 //# sourceMappingURL=core.js.map

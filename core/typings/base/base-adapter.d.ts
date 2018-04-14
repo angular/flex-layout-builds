@@ -6,16 +6,16 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef } from '@angular/core';
-import { BaseFxDirective } from './base';
+import { BaseDirective } from './base';
 import { ResponsiveActivation } from '../responsive-activation/responsive-activation';
 import { MediaQuerySubscriber } from '../media-change';
 import { MediaMonitor } from '../media-monitor/media-monitor';
 import { StyleUtils } from '../style-utils/style-utils';
 /**
- * Adapter to the BaseFxDirective abstract class so it can be used via composition.
- * @see BaseFxDirective
+ * Adapter to the BaseDirective abstract class so it can be used via composition.
+ * @see BaseDirective
  */
-export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
+export declare class BaseDirectiveAdapter extends BaseDirective {
     protected _baseKey: string;
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
@@ -28,11 +28,11 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
     /** Hash map of all @Input keys/values defined/used */
     readonly inputMap: {};
     /**
-     * @see BaseFxDirective._mqActivation
+     * @see BaseDirective._mqActivation
      */
     readonly mqActivation: ResponsiveActivation;
     /**
-     * BaseFxDirectiveAdapter constructor
+     * BaseDirectiveAdapter constructor
      */
     constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils);
     /**
@@ -41,7 +41,7 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
       */
     hasResponsiveAPI(): boolean;
     /**
-     * @see BaseFxDirective._queryInput
+     * @see BaseDirective._queryInput
      */
     queryInput(key: any): any;
     /**
@@ -49,7 +49,7 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
      */
     cacheInput(key?: string, source?: any, cacheRaw?: boolean): void;
     /**
-     * @see BaseFxDirective._listenForMediaQueryChanges
+     * @see BaseDirective._listenForMediaQueryChanges
      */
     listenForMediaQueryChanges(key: string, defaultValue: any, onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation;
     /**

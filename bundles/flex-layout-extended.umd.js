@@ -352,7 +352,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         "srcGtLg": [{ type: core.Input, args: ['src.gt-lg',] },],
     };
     return ImgSrcDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -598,7 +598,7 @@ var ClassDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._base = new core$1.BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
+        this._base = new core$1.BaseDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
         if (!this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
@@ -669,7 +669,7 @@ var ClassDirective = /** @class */ (function (_super) {
         "ngClassGtLg": [{ type: core.Input, args: ['ngClass.gt-lg',] },],
     };
     return ClassDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1151,7 +1151,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         "hideGtLg": [{ type: core.Input, args: ['fxHide.gt-lg',] },],
     };
     return ShowHideDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1535,7 +1535,7 @@ var StyleDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._base = new core$1.BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
+        this._base = new core$1.BaseDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
         if (!this._ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -1682,7 +1682,7 @@ var StyleDirective = /** @class */ (function (_super) {
         "ngStyleGtLg": [{ type: core.Input, args: ['ngStyle.gt-lg',] },],
     };
     return StyleDirective;
-}(core$1.BaseFxDirective));
+}(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle

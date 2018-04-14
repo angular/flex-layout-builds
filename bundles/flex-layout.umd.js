@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/flex-layout/core'), require('@angular/flex-layout/extended'), require('@angular/flex-layout/flex')) :
-	typeof define === 'function' && define.amd ? define('@angular/flex-layout', ['exports', '@angular/core', '@angular/common', '@angular/flex-layout/core', '@angular/flex-layout/extended', '@angular/flex-layout/flex'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.flexLayout.extended,global.ng.flexLayout.flex));
-}(this, (function (exports,core,common,core$1,extended,flex) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/flex-layout/core'), require('@angular/flex-layout/extended'), require('@angular/flex-layout/flex'), require('@angular/flex-layout/grid')) :
+	typeof define === 'function' && define.amd ? define('@angular/flex-layout', ['exports', '@angular/core', '@angular/common', '@angular/flex-layout/core', '@angular/flex-layout/extended', '@angular/flex-layout/flex', '@angular/flex-layout/grid'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.flexLayout.extended,global.ng.flexLayout.flex,global.ng.flexLayout.grid));
+}(this, (function (exports,core,common,core$1,extended,flex,grid) { 'use strict';
 
 /**
  * @fileoverview added by tsickle
@@ -18,7 +18,7 @@
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('6.0.0-beta.15-85aa013');
+var /** @type {?} */ VERSION = new core.Version('6.0.0-beta.15-b8c86be');
 
 /**
  * @fileoverview added by tsickle
@@ -35,8 +35,8 @@ var FlexLayoutModule = /** @class */ (function () {
     }
     FlexLayoutModule.decorators = [
         { type: core.NgModule, args: [{
-                    imports: [flex.FlexModule, extended.ExtendedModule],
-                    exports: [flex.FlexModule, extended.ExtendedModule]
+                    imports: [flex.FlexModule, extended.ExtendedModule, grid.GridModule],
+                    exports: [flex.FlexModule, extended.ExtendedModule, grid.GridModule]
                 },] },
     ];
     /** @nocollapse */
@@ -61,8 +61,9 @@ exports.DISABLE_DEFAULT_BREAKPOINTS = core$1.DISABLE_DEFAULT_BREAKPOINTS;
 exports.ADD_ORIENTATION_BREAKPOINTS = core$1.ADD_ORIENTATION_BREAKPOINTS;
 exports.BREAKPOINT = core$1.BREAKPOINT;
 exports.DISABLE_VENDOR_PREFIXES = core$1.DISABLE_VENDOR_PREFIXES;
+exports.BaseDirective = core$1.BaseDirective;
+exports.BaseDirectiveAdapter = core$1.BaseDirectiveAdapter;
 exports.BaseFxDirective = core$1.BaseFxDirective;
-exports.BaseFxDirectiveAdapter = core$1.BaseFxDirectiveAdapter;
 exports.RESPONSIVE_ALIASES = core$1.RESPONSIVE_ALIASES;
 exports.DEFAULT_BREAKPOINTS = core$1.DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = core$1.ScreenTypes;
@@ -104,6 +105,18 @@ exports.FlexOrderDirective = flex.FlexOrderDirective;
 exports.LayoutDirective = flex.LayoutDirective;
 exports.LayoutAlignDirective = flex.LayoutAlignDirective;
 exports.LayoutGapDirective = flex.LayoutGapDirective;
+exports.ɵb = grid.ɵb;
+exports.ɵc = grid.ɵc;
+exports.ɵd = grid.ɵd;
+exports.ɵe = grid.ɵe;
+exports.ɵf = grid.ɵf;
+exports.ɵg = grid.ɵg;
+exports.ɵh = grid.ɵh;
+exports.ɵi = grid.ɵi;
+exports.ɵa = grid.ɵa;
+exports.ɵj = grid.ɵj;
+exports.ɵk = grid.ɵk;
+exports.GridModule = grid.GridModule;
 exports.VERSION = VERSION;
 exports.FlexLayoutModule = FlexLayoutModule;
 

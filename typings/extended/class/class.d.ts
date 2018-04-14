@@ -7,7 +7,7 @@
  */
 import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, OnChanges, OnDestroy, Renderer2, SimpleChanges, OnInit } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { BaseFxDirective, BaseFxDirectiveAdapter, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, BaseDirectiveAdapter, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 /** NgClass allowed inputs **/
 export declare type NgClassType = string | string[] | Set<string> | {
     [klass: string]: any;
@@ -17,7 +17,7 @@ export declare type NgClassType = string | string[] | Set<string> | {
  * This maintains the core functionality of 'ngClass' and adds responsive API
  * Note: this class is a no-op when rendered on the server
  */
-export declare class ClassDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
+export declare class ClassDirective extends BaseDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
     protected monitor: MediaMonitor;
     protected _iterableDiffers: IterableDiffers;
     protected _keyValueDiffers: KeyValueDiffers;
@@ -76,5 +76,5 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
      * Special adapter to cross-cut responsive behaviors and capture mediaQuery changes
      * Delegate value changes to the internal `_ngClassInstance` for processing
      */
-    protected _base: BaseFxDirectiveAdapter;
+    protected _base: BaseDirectiveAdapter;
 }

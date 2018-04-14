@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseFxDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Observable, ReplaySubject } from 'rxjs';
 export declare type Layout = {
     direction: string;
@@ -19,7 +19,7 @@ export declare type Layout = {
  * @see https://css-tricks.com/almanac/properties/f/flex-direction/
  *
  */
-export declare class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export declare class LayoutDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     /**
      * Create Observable for nested/child 'flex' directives. This allows
      * child flex directives to subscribe/listen for flexbox direction changes.
