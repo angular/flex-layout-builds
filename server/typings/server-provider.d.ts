@@ -27,7 +27,7 @@ export declare function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap, 
 export declare const SERVER_PROVIDERS: ({
     provide: InjectionToken<() => void>;
     useFactory: typeof FLEX_SSR_SERIALIZER_FACTORY;
-    deps: (typeof StylesheetMap | typeof MatchMedia | InjectionToken<Document> | InjectionToken<BreakPoint[]>)[];
+    deps: (typeof StylesheetMap | typeof MatchMedia | InjectionToken<Document>)[];
     multi: boolean;
     useValue?: undefined;
     useClass?: undefined;

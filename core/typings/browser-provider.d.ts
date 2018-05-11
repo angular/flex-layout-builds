@@ -18,7 +18,7 @@ export declare function removeStyles(_document: Document, platformId: Object): (
 export declare const BROWSER_PROVIDER: {
     provide: InjectionToken<(() => void)[]>;
     useFactory: typeof removeStyles;
-    deps: InjectionToken<Object>[];
+    deps: InjectionToken<Document>[];
     multi: boolean;
 };
 export declare const CLASS_NAME = "flex-layout-";

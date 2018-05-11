@@ -3911,7 +3911,7 @@ var StyleUtils = /** @class */ (function () {
         { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
         { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [DISABLE_VENDOR_PREFIXES,] },] },
     ]; };
-    /** @nocollapse */ StyleUtils.ngInjectableDef = defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(inject(StylesheetMap, null, 0), inject(SERVER_TOKEN, null, 0), inject(PLATFORM_ID), inject(DISABLE_VENDOR_PREFIXES, null, 0)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ngInjectableDef = defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(inject(StylesheetMap, 8), inject(SERVER_TOKEN, 8), inject(PLATFORM_ID), inject(DISABLE_VENDOR_PREFIXES, 8)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 var /** @type {?} */ FALLBACK_STYLE = 'block';
