@@ -18,7 +18,7 @@
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('6.0.0-beta.15-ffb5c79');
+var /** @type {?} */ VERSION = new core.Version('6.0.0-beta.15-f01e551');
 
 /**
  * @fileoverview added by tsickle
@@ -33,6 +33,46 @@ var FlexLayoutModule = /** @class */ (function () {
             console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
         }
     }
+    /**
+     * Initialize the FlexLayoutModule with a set of config options,
+     * which sets the corresponding tokens accordingly
+     */
+    /**
+     * Initialize the FlexLayoutModule with a set of config options,
+     * which sets the corresponding tokens accordingly
+     * @param {?} configOptions
+     * @param {?=} breakpoints
+     * @return {?}
+     */
+    FlexLayoutModule.withConfig = /**
+     * Initialize the FlexLayoutModule with a set of config options,
+     * which sets the corresponding tokens accordingly
+     * @param {?} configOptions
+     * @param {?=} breakpoints
+     * @return {?}
+     */
+    function (configOptions, breakpoints) {
+        var /** @type {?} */ config = Object.assign({}, core$1.DEFAULT_CONFIG);
+        var /** @type {?} */ moduleProviders = [];
+        for (var /** @type {?} */ key in configOptions) {
+            // If the setting is different and not undefined or null, change it
+            if (configOptions[key] !== config[key] &&
+                (configOptions[key] === false || configOptions[key] === true)) {
+                config[key] = configOptions[key];
+            }
+        }
+        if (configOptions.serverLoaded) {
+            moduleProviders.push({ provide: core$1.SERVER_TOKEN, useValue: true });
+        }
+        if (Array.isArray(breakpoints)) {
+            moduleProviders.push({ provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true });
+        }
+        moduleProviders.push({ provide: core$1.LAYOUT_CONFIG, useValue: config });
+        return {
+            ngModule: FlexLayoutModule,
+            providers: moduleProviders
+        };
+    };
     FlexLayoutModule.decorators = [
         { type: core.NgModule, args: [{
                     imports: [flex.FlexModule, extended.ExtendedModule, grid.GridModule],
@@ -55,12 +95,10 @@ exports.MediaChange = core$1.MediaChange;
 exports.StylesheetMap = core$1.StylesheetMap;
 exports.STYLESHEET_MAP_PROVIDER_FACTORY = core$1.STYLESHEET_MAP_PROVIDER_FACTORY;
 exports.STYLESHEET_MAP_PROVIDER = core$1.STYLESHEET_MAP_PROVIDER;
-exports.ADD_FLEX_STYLES = core$1.ADD_FLEX_STYLES;
+exports.DEFAULT_CONFIG = core$1.DEFAULT_CONFIG;
+exports.LAYOUT_CONFIG = core$1.LAYOUT_CONFIG;
 exports.SERVER_TOKEN = core$1.SERVER_TOKEN;
-exports.DISABLE_DEFAULT_BREAKPOINTS = core$1.DISABLE_DEFAULT_BREAKPOINTS;
-exports.ADD_ORIENTATION_BREAKPOINTS = core$1.ADD_ORIENTATION_BREAKPOINTS;
 exports.BREAKPOINT = core$1.BREAKPOINT;
-exports.DISABLE_VENDOR_PREFIXES = core$1.DISABLE_VENDOR_PREFIXES;
 exports.BaseDirective = core$1.BaseDirective;
 exports.BaseDirectiveAdapter = core$1.BaseDirectiveAdapter;
 exports.BaseFxDirective = core$1.BaseFxDirective;
@@ -69,8 +107,6 @@ exports.DEFAULT_BREAKPOINTS = core$1.DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = core$1.ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = core$1.ORIENTATION_BREAKPOINTS;
 exports.BreakPointRegistry = core$1.BreakPointRegistry;
-exports.BREAKPOINTS_PROVIDER_FACTORY = core$1.BREAKPOINTS_PROVIDER_FACTORY;
-exports.BREAKPOINTS_PROVIDER = core$1.BREAKPOINTS_PROVIDER;
 exports.BREAKPOINTS = core$1.BREAKPOINTS;
 exports.MatchMedia = core$1.MatchMedia;
 exports.MockMatchMedia = core$1.MockMatchMedia;

@@ -54,14 +54,6 @@ var /** @type {?} */ CLASS_NAME = 'flex-layout-';
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var /** @type {?} */ DISABLE_DEFAULT_BREAKPOINTS = new InjectionToken('Flex Layout token, disable the default breakpoints', {
-    providedIn: 'root',
-    factory: function () { return false; }
-});
-var /** @type {?} */ ADD_ORIENTATION_BREAKPOINTS = new InjectionToken('Flex Layout token, add the orientation breakpoints', {
-    providedIn: 'root',
-    factory: function () { return false; }
-});
 var /** @type {?} */ BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
     providedIn: 'root',
     factory: function () { return null; }
@@ -279,6 +271,23 @@ function mergeByAlias(defaults, custom) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var /** @type {?} */ DEFAULT_CONFIG = {
+    addFlexToParent: true,
+    addOrientationBps: false,
+    disableDefaultBps: false,
+    disableVendorPrefixes: false,
+    serverLoaded: false,
+    useColumnBasisZero: true,
+};
+var /** @type {?} */ LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
+    providedIn: 'root',
+    factory: function () { return DEFAULT_CONFIG; }
+});
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 /**
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
@@ -287,13 +296,12 @@ var /** @type {?} */ BREAKPOINTS = new InjectionToken('Token (@angular/flex-layo
     providedIn: 'root',
     factory: function () {
         var /** @type {?} */ breakpoints = inject(BREAKPOINT);
-        var /** @type {?} */ disableDefaults = inject(DISABLE_DEFAULT_BREAKPOINTS);
-        var /** @type {?} */ addOrientation = inject(ADD_ORIENTATION_BREAKPOINTS);
+        var /** @type {?} */ layoutConfig = inject(LAYOUT_CONFIG);
         var /** @type {?} */ bpFlattenArray = [].concat.apply([], (breakpoints || [])
             .map(function (v) { return Array.isArray(v) ? v : [v]; }));
-        var /** @type {?} */ builtIns = DEFAULT_BREAKPOINTS.concat(addOrientation ? ORIENTATION_BREAKPOINTS : []);
-        return disableDefaults ?
-            mergeByAlias(bpFlattenArray) : mergeByAlias(builtIns, bpFlattenArray);
+        var /** @type {?} */ builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
+            .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
+        return mergeByAlias(builtIns, bpFlattenArray);
     }
 });
 
@@ -1089,15 +1097,6 @@ var /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var /** @type {?} */ ADD_FLEX_STYLES = new InjectionToken('Flex Layout token, should flex stylings be applied to parents automatically', {
-    providedIn: 'root',
-    factory: function () { return false; }
-});
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
 /**
  * Token that is provided to tell whether the FlexLayoutServerModule
  * has been included in the bundle
@@ -1105,15 +1104,6 @@ var /** @type {?} */ ADD_FLEX_STYLES = new InjectionToken('Flex Layout token, sh
  * NOTE: This can be manually provided to disable styles when using SSR
  */
 var /** @type {?} */ SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded', {
-    providedIn: 'root',
-    factory: function () { return false; }
-});
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var /** @type {?} */ DISABLE_VENDOR_PREFIXES = new InjectionToken('Flex Layout token, whether to add vendor prefix styles inline for elements', {
     providedIn: 'root',
     factory: function () { return false; }
 });
@@ -2699,45 +2689,6 @@ BaseFxDirective = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-/**
- * Factory that combines the configured breakpoints into one array and then merges
- * them using a utility function
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- * @param {?} parentBreakpoints
- * @param {?} breakpoints
- * @param {?} disableDefaults
- * @param {?} addOrientation
- * @return {?}
- */
-function BREAKPOINTS_PROVIDER_FACTORY(parentBreakpoints, breakpoints, disableDefaults, addOrientation) {
-    var /** @type {?} */ bpFlattenArray = [].concat.apply([], (breakpoints || [])
-        .map(function (v) { return Array.isArray(v) ? v : [v]; }));
-    var /** @type {?} */ builtIns = DEFAULT_BREAKPOINTS.concat(addOrientation ? ORIENTATION_BREAKPOINTS : []);
-    return parentBreakpoints || disableDefaults ?
-        mergeByAlias(bpFlattenArray) : mergeByAlias(builtIns, bpFlattenArray);
-}
-/**
- * Provider that combines the provided extra breakpoints with the default and
- * orientation breakpoints based on configuration
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- */
-var /** @type {?} */ BREAKPOINTS_PROVIDER = {
-    provide: /** @type {?} */ (BREAKPOINTS),
-    useFactory: BREAKPOINTS_PROVIDER_FACTORY,
-    deps: [
-        [new Optional(), new SkipSelf(), BREAKPOINTS],
-        [new Optional(), BREAKPOINT],
-        [new Optional(), DISABLE_DEFAULT_BREAKPOINTS],
-        [new Optional(), ADD_ORIENTATION_BREAKPOINTS],
-    ]
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
 
 /**
  * @fileoverview added by tsickle
@@ -3626,11 +3577,11 @@ function applyCssPrefixes(target) {
  * @suppress {checkTypes} checked by tsc
  */
 var StyleUtils = /** @class */ (function () {
-    function StyleUtils(_serverStylesheet, _serverModuleLoaded, _platformId, noVendorPrefixes) {
+    function StyleUtils(_serverStylesheet, _serverModuleLoaded, _platformId, layoutConfig) {
         this._serverStylesheet = _serverStylesheet;
         this._serverModuleLoaded = _serverModuleLoaded;
         this._platformId = _platformId;
-        this.noVendorPrefixes = noVendorPrefixes;
+        this.layoutConfig = layoutConfig;
     }
     /**
      * Applies styles given via string pair or object map to the directive element
@@ -3655,7 +3606,7 @@ var StyleUtils = /** @class */ (function () {
             styles[style] = value;
             style = styles;
         }
-        styles = this.noVendorPrefixes ? style : applyCssPrefixes(style);
+        styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
         this._applyMultiValueStyleToElement(styles, element);
     };
     /**
@@ -3676,7 +3627,7 @@ var StyleUtils = /** @class */ (function () {
     function (style, elements) {
         var _this = this;
         if (elements === void 0) { elements = []; }
-        var /** @type {?} */ styles = this.noVendorPrefixes ? style : applyCssPrefixes(style);
+        var /** @type {?} */ styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
         elements.forEach(function (el) {
             _this._applyMultiValueStyleToElement(styles, el);
         });
@@ -3909,9 +3860,9 @@ var StyleUtils = /** @class */ (function () {
         { type: StylesheetMap, decorators: [{ type: Optional },] },
         { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
         { type: undefined, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
-        { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [DISABLE_VENDOR_PREFIXES,] },] },
+        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] },] },
     ]; };
-    /** @nocollapse */ StyleUtils.ngInjectableDef = defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(inject(StylesheetMap, 8), inject(SERVER_TOKEN, 8), inject(PLATFORM_ID), inject(DISABLE_VENDOR_PREFIXES, 8)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ngInjectableDef = defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(inject(StylesheetMap, 8), inject(SERVER_TOKEN, 8), inject(PLATFORM_ID), inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 var /** @type {?} */ FALLBACK_STYLE = 'block';
@@ -3980,5 +3931,5 @@ function _validateCalcValue(calc) {
  * @suppress {checkTypes} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, ADD_FLEX_STYLES, SERVER_TOKEN, DISABLE_DEFAULT_BREAKPOINTS, ADD_ORIENTATION_BREAKPOINTS, BREAKPOINT, DISABLE_VENDOR_PREFIXES, BaseDirective, BaseDirectiveAdapter, BaseFxDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS_PROVIDER_FACTORY, BREAKPOINTS_PROVIDER, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective, BaseDirectiveAdapter, BaseFxDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis };
 //# sourceMappingURL=core.es5.js.map

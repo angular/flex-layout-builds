@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { Directive, ElementRef, Input, Self, Optional, NgZone, Inject, SkipSelf, NgModule } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleUtils, ADD_FLEX_STYLES, validateBasis, CoreModule } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleUtils, LAYOUT_CONFIG, validateBasis, CoreModule } from '@angular/flex-layout/core';
 import { ReplaySubject } from 'rxjs';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
@@ -653,13 +653,13 @@ class FlexDirective extends BaseDirective {
      * @param {?} elRef
      * @param {?} _container
      * @param {?} styleUtils
-     * @param {?} addFlexStyles
+     * @param {?} layoutConfig
      */
-    constructor(monitor, elRef, _container, styleUtils, addFlexStyles) {
+    constructor(monitor, elRef, _container, styleUtils, layoutConfig) {
         super(monitor, elRef, styleUtils);
         this._container = _container;
         this.styleUtils = styleUtils;
-        this.addFlexStyles = addFlexStyles;
+        this.layoutConfig = layoutConfig;
         this._cacheInput('flex', '');
         this._cacheInput('shrink', 1);
         this._cacheInput('grow', 1);
@@ -832,7 +832,7 @@ class FlexDirective extends BaseDirective {
      */
     _validateValue(grow, shrink, basis) {
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        let /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, !!this.addFlexStyles);
+        let /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, this.layoutConfig.addFlexToParent);
         let /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         let /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         let /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -869,7 +869,8 @@ class FlexDirective extends BaseDirective {
         };
         switch (basis || '') {
             case '':
-                basis = direction === 'row' ? '0%' : 'auto';
+                basis = direction === 'row' ? '0%' :
+                    (this.layoutConfig.useColumnBasisZero ? '0.000000001px' : 'auto');
                 break;
             case 'initial': // default
             case 'nogrow':
@@ -931,8 +932,8 @@ class FlexDirective extends BaseDirective {
                 });
             }
         }
-        // Fix for issues 277 and 534
-        if (basis !== '0%') {
+        // Fix for issues 277, 534, and 728
+        if (basis !== '0%' && basis !== '0px' && basis !== '0.000000001px' && basis !== 'auto') {
             css[min] = isFixed || (isPx && grow) ? basis : null;
             css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
         }
@@ -977,7 +978,7 @@ FlexDirective.ctorParameters = () => [
     { type: ElementRef, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
     { type: StyleUtils, },
-    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [ADD_FLEX_STYLES,] },] },
+    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] },] },
 ];
 FlexDirective.propDecorators = {
     "shrink": [{ type: Input, args: ['fxShrink',] },],

@@ -1,10 +1,11 @@
 import { StylesheetMap } from '../stylesheet-map/stylesheet-map';
+import { LayoutConfigOptions } from '../tokens/library-config';
 export declare class StyleUtils {
     private _serverStylesheet;
     private _serverModuleLoaded;
     private _platformId;
-    private noVendorPrefixes;
-    constructor(_serverStylesheet: StylesheetMap, _serverModuleLoaded: boolean, _platformId: any, noVendorPrefixes: boolean);
+    private layoutConfig;
+    constructor(_serverStylesheet: StylesheetMap, _serverModuleLoaded: boolean, _platformId: any, layoutConfig: LayoutConfigOptions);
     /**
      * Applies styles given via string pair or object map to the directive element
      */

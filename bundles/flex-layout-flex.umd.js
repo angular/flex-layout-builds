@@ -865,11 +865,11 @@ var FlexDirective = /** @class */ (function (_super) {
     /* tslint:enable */
     // Note: Explicitly @SkipSelf on LayoutDirective because we are looking
     //       for the parent flex container for this flex item.
-    function FlexDirective(monitor, elRef, _container, styleUtils, addFlexStyles) {
+    function FlexDirective(monitor, elRef, _container, styleUtils, layoutConfig) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
         _this._container = _container;
         _this.styleUtils = styleUtils;
-        _this.addFlexStyles = addFlexStyles;
+        _this.layoutConfig = layoutConfig;
         _this._cacheInput('flex', '');
         _this._cacheInput('shrink', 1);
         _this._cacheInput('grow', 1);
@@ -1141,7 +1141,7 @@ var FlexDirective = /** @class */ (function (_super) {
      */
     function (grow, shrink, basis) {
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        var /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, !!this.addFlexStyles);
+        var /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, this.layoutConfig.addFlexToParent);
         var /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         var /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         var /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -1178,7 +1178,8 @@ var FlexDirective = /** @class */ (function (_super) {
         };
         switch (basis || '') {
             case '':
-                basis = direction === 'row' ? '0%' : 'auto';
+                basis = direction === 'row' ? '0%' :
+                    (this.layoutConfig.useColumnBasisZero ? '0.000000001px' : 'auto');
                 break;
             case 'initial': // default
             case 'nogrow':
@@ -1240,8 +1241,8 @@ var FlexDirective = /** @class */ (function (_super) {
                 });
             }
         }
-        // Fix for issues 277 and 534
-        if (basis !== '0%') {
+        // Fix for issues 277, 534, and 728
+        if (basis !== '0%' && basis !== '0px' && basis !== '0.000000001px' && basis !== 'auto') {
             css[min] = isFixed || (isPx && grow) ? basis : null;
             css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
         }
@@ -1280,7 +1281,7 @@ var FlexDirective = /** @class */ (function (_super) {
         { type: core.ElementRef, },
         { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.SkipSelf },] },
         { type: core$1.StyleUtils, },
-        { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.ADD_FLEX_STYLES,] },] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] },] },
     ]; };
     FlexDirective.propDecorators = {
         "shrink": [{ type: core.Input, args: ['fxShrink',] },],
