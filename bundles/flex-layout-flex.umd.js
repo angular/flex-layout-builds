@@ -8,7 +8,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/flex-layout/core'), require('rxjs'), require('@angular/cdk/bidi')) :
 	typeof define === 'function' && define.amd ? define('@angular/flex-layout/flex', ['exports', '@angular/core', '@angular/flex-layout/core', 'rxjs', '@angular/cdk/bidi'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].flex = {}),global.ng.core,global.ng.flexLayout.core,global.Rx,global.ng.cdk.bidi));
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].flex = {}),global.ng.core,global.ng.flexLayout.core,global.rxjs,global.ng.cdk.bidi));
 }(this, (function (exports,core,core$1,rxjs,bidi) { 'use strict';
 
 /*! *****************************************************************************
