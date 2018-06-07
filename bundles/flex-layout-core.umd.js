@@ -161,12 +161,12 @@ var /** @type {?} */ DEFAULT_BREAKPOINTS = [
  */
 
 /* tslint:disable */
-var /** @type {?} */ HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
-var /** @type {?} */ HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
-var /** @type {?} */ TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-var /** @type {?} */ TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
-var /** @type {?} */ WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
-var /** @type {?} */ WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
+var /** @type {?} */ HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599px)';
+var /** @type {?} */ HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
+var /** @type {?} */ TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
+var /** @type {?} */ TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
+var /** @type {?} */ WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
+var /** @type {?} */ WEB_LANDSCAPE = '(orientation: landscape) and (min-width: 1280px)';
 var /** @type {?} */ ScreenTypes = {
     'HANDSET': HANDSET_PORTRAIT + ", " + HANDSET_LANDSCAPE,
     'TABLET': TABLET_PORTRAIT + " , " + TABLET_LANDSCAPE,

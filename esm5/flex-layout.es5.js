@@ -23,7 +23,7 @@ export { ɵb, ɵc, ɵd, ɵe, ɵf, ɵg, ɵh, ɵi, ɵa, ɵj, ɵk, GridModule } fro
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new Version('6.0.0-beta.15-d1a87cf');
+var /** @type {?} */ VERSION = new Version('6.0.0-beta.15-666aa0a');
 
 /**
  * @fileoverview added by tsickle

@@ -134,12 +134,12 @@ const /** @type {?} */ DEFAULT_BREAKPOINTS = [
  */
 
 /* tslint:disable */
-const /** @type {?} */ HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
-const /** @type {?} */ HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
-const /** @type {?} */ TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-const /** @type {?} */ TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
-const /** @type {?} */ WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
-const /** @type {?} */ WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
+const /** @type {?} */ HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599px)';
+const /** @type {?} */ HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
+const /** @type {?} */ TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
+const /** @type {?} */ TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
+const /** @type {?} */ WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
+const /** @type {?} */ WEB_LANDSCAPE = '(orientation: landscape) and (min-width: 1280px)';
 const /** @type {?} */ ScreenTypes = {
     'HANDSET': `${HANDSET_PORTRAIT}, ${HANDSET_LANDSCAPE}`,
     'TABLET': `${TABLET_PORTRAIT} , ${TABLET_LANDSCAPE}`,
