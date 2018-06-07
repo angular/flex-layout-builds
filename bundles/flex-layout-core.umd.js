@@ -1094,7 +1094,7 @@ var StylesheetMap = /** @class */ (function () {
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16
+ * \@deletion-target v6.0.0-beta.16-cb74357
  * @param {?} parentSheet
  * @return {?}
  */
@@ -1104,7 +1104,7 @@ function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16
+ * \@deletion-target v6.0.0-beta.16-cb74357
  */
 var /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
     provide: StylesheetMap,
@@ -3467,7 +3467,7 @@ var MediaMonitor = /** @class */ (function () {
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16
+ * \@deletion-target v6.0.0-beta.16-cb74357
  * @param {?} parentMonitor
  * @param {?} breakpoints
  * @param {?} matchMedia
@@ -3479,7 +3479,7 @@ function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) 
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16
+ * \@deletion-target v6.0.0-beta.16-cb74357
  */
 var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
@@ -3503,7 +3503,7 @@ var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
 /**
  * Ensure a single global ObservableMedia service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16
+ * \@deletion-target v6.0.0-beta.16-cb74357
  * @param {?} parentService
  * @param {?} matchMedia
  * @param {?} breakpoints
@@ -3515,7 +3515,7 @@ function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoint
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
  *  \@deprecated
- *  \@deletion-target v6.0.0-beta.16
+ *  \@deletion-target v6.0.0-beta.16-cb74357
  */
 var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
     // tslint:disable-line:variable-name
