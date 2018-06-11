@@ -1441,9 +1441,7 @@ var StyleDirective = /** @class */ (function (_super) {
     // ******************************************************************
     // Lifecycle Hooks
     // ******************************************************************
-    /**
-     * For @Input changes on the current mq activation property
-     */
+    /** For @Input changes on the current mq activation property */
     /**
      * For \@Input changes on the current mq activation property
      * @param {?} changes
@@ -1468,9 +1466,7 @@ var StyleDirective = /** @class */ (function (_super) {
     function () {
         this._configureMQListener();
     };
-    /**
-     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-     */
+    /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
     /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
@@ -1496,9 +1492,9 @@ var StyleDirective = /** @class */ (function (_super) {
     // Internal Methods
     // ******************************************************************
     /**
-       * Configure adapters (that delegate to an internal ngClass instance) if responsive
-       * keys have been defined.
-       */
+     * Configure adapters (that delegate to an internal ngClass instance) if responsive
+     * keys have been defined.
+     */
     /**
      * Configure adapters (that delegate to an internal ngClass instance) if responsive
      * keys have been defined.
@@ -1547,9 +1543,7 @@ var StyleDirective = /** @class */ (function (_super) {
     // ************************************************************************
     // Private Internal Methods
     // ************************************************************************
-    /**
-     * Build intercept to convert raw strings to ngStyleMap
-     */
+    /** Build intercept to convert raw strings to ngStyleMap */
     /**
      * Build intercept to convert raw strings to ngStyleMap
      * @return {?}
@@ -1609,9 +1603,7 @@ var StyleDirective = /** @class */ (function (_super) {
         }
         return styles;
     };
-    /**
-     * Initial lookup of raw 'class' value (if any)
-     */
+    /** Initial lookup of raw 'class' value (if any) */
     /**
      * Initial lookup of raw 'class' value (if any)
      * @return {?}

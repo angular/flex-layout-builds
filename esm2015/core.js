@@ -861,7 +861,7 @@ StylesheetMap.ctorParameters = () => [];
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  * @param {?} parentSheet
  * @return {?}
  */
@@ -871,7 +871,7 @@ function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  */
 const /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
     provide: StylesheetMap,
@@ -1212,7 +1212,6 @@ class ResponsiveActivation {
  */
 class BaseDirective {
     /**
-     * Constructor
      * @param {?} _mediaMonitor
      * @param {?} _elementRef
      * @param {?} _styler
@@ -1222,7 +1221,7 @@ class BaseDirective {
         this._elementRef = _elementRef;
         this._styler = _styler;
         /**
-         *  Dictionary of input keys with associated values
+         * Dictionary of input keys with associated values
          */
         this._inputMap = {};
         /**
@@ -1267,25 +1266,15 @@ class BaseDirective {
         this.ngOnChanges(/** @type {?} */ ({ [key]: change }));
     }
     /**
-     * Access to host element's parent DOM node
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @param {?} baseKey
      * @return {?}
      */
-    get parentElement() {
-        return this._elementRef.nativeElement.parentNode;
-    }
-    /**
-     * @return {?}
-     */
-    get nativeElement() {
-        return this._elementRef.nativeElement;
-    }
-    /**
-     * Access the current value (if any) of the \@Input property.
-     * @param {?} key
-     * @return {?}
-     */
-    _queryInput(key) {
-        return this._inputMap[key];
+    hasResponsiveAPI(baseKey) {
+        const /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
+        const /** @type {?} */ baseValue = this._inputMap[baseKey];
+        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     }
     /**
      * Use post-component-initialization event to perform extra
@@ -1311,6 +1300,27 @@ class BaseDirective {
             this._mqActivation.destroy();
         }
         delete this._mediaMonitor;
+    }
+    /**
+     * Access to host element's parent DOM node
+     * @return {?}
+     */
+    get parentElement() {
+        return this._elementRef.nativeElement.parentNode;
+    }
+    /**
+     * @return {?}
+     */
+    get nativeElement() {
+        return this._elementRef.nativeElement;
+    }
+    /**
+     * Access the current value (if any) of the \@Input property
+     * @param {?} key
+     * @return {?}
+     */
+    _queryInput(key) {
+        return this._inputMap[key];
     }
     /**
      * Was the directive's default selector used ?
@@ -1367,7 +1377,7 @@ class BaseDirective {
         return value.trim() || 'row';
     }
     /**
-     * Applies styles given via string pair or object map to the directive element.
+     * Applies styles given via string pair or object map to the directive element
      * @param {?} style
      * @param {?=} value
      * @param {?=} element
@@ -1377,7 +1387,7 @@ class BaseDirective {
         this._styler.applyStyleToElement(element, style, value);
     }
     /**
-     * Applies styles given via string pair or object map to the directive's element.
+     * Applies styles given via string pair or object map to the directive's element
      * @param {?} style
      * @param {?} elements
      * @return {?}
@@ -1422,7 +1432,7 @@ class BaseDirective {
         return this._mqActivation;
     }
     /**
-     * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
+     * Special accessor to query for all child 'element' nodes regardless of type, class, etc
      * @return {?}
      */
     get childrenNodes() {
@@ -1433,17 +1443,6 @@ class BaseDirective {
             buffer[i] = obj[i];
         }
         return buffer;
-    }
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @param {?} baseKey
-     * @return {?}
-     */
-    hasResponsiveAPI(baseKey) {
-        const /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
-        const /** @type {?} */ baseValue = this._inputMap[baseKey];
-        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     }
     /**
      * Fast validator for presence of attribute on the host element
@@ -2427,7 +2426,7 @@ MediaMonitor.ctorParameters = () => [
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  * @param {?} parentMonitor
  * @param {?} breakpoints
  * @param {?} matchMedia
@@ -2439,7 +2438,7 @@ function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) 
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  */
 const /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
@@ -2463,7 +2462,7 @@ const /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
 /**
  * Ensure a single global ObservableMedia service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  * @param {?} parentService
  * @param {?} matchMedia
  * @param {?} breakpoints
@@ -2475,7 +2474,7 @@ function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoint
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
  *  \@deprecated
- *  \@deletion-target v6.0.0-beta.16-cb74357
+ *  \@deletion-target v6.0.0-beta.16-dc431d8
  */
 const /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
     // tslint:disable-line:variable-name

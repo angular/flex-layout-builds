@@ -45,29 +45,23 @@ export declare class StyleDirective extends BaseDirective implements DoCheck, On
      *  a MediaQuery Activation Adapter
      */
     constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _ngStyleInstance: NgStyle, _styler: StyleUtils);
-    /**
-     * For @Input changes on the current mq activation property
-     */
+    /** For @Input changes on the current mq activation property */
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
-    /**
-     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-     */
+    /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
     ngDoCheck(): void;
     ngOnDestroy(): void;
     /**
-       * Configure adapters (that delegate to an internal ngClass instance) if responsive
-       * keys have been defined.
-       */
+     * Configure adapters (that delegate to an internal ngClass instance) if responsive
+     * keys have been defined.
+     */
     protected _configureAdapters(): void;
     /**
      * Build an mqActivation object that bridges
      * mql change events to onMediaQueryChange handlers
      */
     protected _configureMQListener(baseKey?: string): void;
-    /**
-     * Build intercept to convert raw strings to ngStyleMap
-     */
+    /** Build intercept to convert raw strings to ngStyleMap */
     protected _buildCacheInterceptor(): void;
     /**
      * Convert raw strings to ngStyleMap; which is required by ngStyle
@@ -78,9 +72,7 @@ export declare class StyleDirective extends BaseDirective implements DoCheck, On
     protected _buildStyleMap(styles: NgStyleType): string | {
         [klass: string]: string;
     };
-    /**
-     * Initial lookup of raw 'class' value (if any)
-     */
+    /** Initial lookup of raw 'class' value (if any) */
     protected _fallbackToStyle(): void;
     /**
      * Special adapter to cross-cut responsive behaviors

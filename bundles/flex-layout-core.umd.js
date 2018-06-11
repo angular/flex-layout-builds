@@ -1094,7 +1094,7 @@ var StylesheetMap = /** @class */ (function () {
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  * @param {?} parentSheet
  * @return {?}
  */
@@ -1104,7 +1104,7 @@ function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  */
 var /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
     provide: StylesheetMap,
@@ -1561,15 +1561,12 @@ var   /**
  * @abstract
  */
 BaseDirective = /** @class */ (function () {
-    /**
-     * Constructor
-     */
     function BaseDirective(_mediaMonitor, _elementRef, _styler) {
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
         this._styler = _styler;
         /**
-         *  Dictionary of input keys with associated values
+         * Dictionary of input keys with associated values
          */
         this._inputMap = {};
         /**
@@ -1633,48 +1630,26 @@ BaseDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(BaseDirective.prototype, "parentElement", {
-        // *********************************************
-        // Accessor Methods
-        // *********************************************
-        /**
-         * Access to host element's parent DOM node
-         */
-        get: /**
-         * Access to host element's parent DOM node
-         * @return {?}
-         */
-        function () {
-            return this._elementRef.nativeElement.parentNode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseDirective.prototype, "nativeElement", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._elementRef.nativeElement;
-        },
-        enumerable: true,
-        configurable: true
-    });
     /**
-     * Access the current value (if any) of the @Input property.
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
      */
     /**
-     * Access the current value (if any) of the \@Input property.
-     * @param {?} key
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @param {?} baseKey
      * @return {?}
      */
-    BaseDirective.prototype._queryInput = /**
-     * Access the current value (if any) of the \@Input property.
-     * @param {?} key
+    BaseDirective.prototype.hasResponsiveAPI = /**
+     * Does this directive have 1 or more responsive keys defined
+     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+     * @param {?} baseKey
      * @return {?}
      */
-    function (key) {
-        return this._inputMap[key];
+    function (baseKey) {
+        var /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
+        var /** @type {?} */ baseValue = this._inputMap[baseKey];
+        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     };
     // *********************************************
     // Lifecycle Methods
@@ -1720,9 +1695,45 @@ BaseDirective = /** @class */ (function () {
         }
         delete this._mediaMonitor;
     };
-    // *********************************************
-    // Protected Methods
-    // *********************************************
+    Object.defineProperty(BaseDirective.prototype, "parentElement", {
+        // *********************************************
+        // Protected Methods
+        // *********************************************
+        /** Access to host element's parent DOM node */
+        get: /**
+         * Access to host element's parent DOM node
+         * @return {?}
+         */
+        function () {
+            return this._elementRef.nativeElement.parentNode;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseDirective.prototype, "nativeElement", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this._elementRef.nativeElement;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** Access the current value (if any) of the @Input property */
+    /**
+     * Access the current value (if any) of the \@Input property
+     * @param {?} key
+     * @return {?}
+     */
+    BaseDirective.prototype._queryInput = /**
+     * Access the current value (if any) of the \@Input property
+     * @param {?} key
+     * @return {?}
+     */
+    function (key) {
+        return this._inputMap[key];
+    };
     /**
      * Was the directive's default selector used ?
      * If not, use the fallback value!
@@ -1770,9 +1781,7 @@ BaseDirective = /** @class */ (function () {
         var /** @type {?} */ query = 'display';
         return this._styler.lookupStyle(source, query);
     };
-    /**
-     * Quick accessor to raw attribute value on the target DOM element
-     */
+    /** Quick accessor to raw attribute value on the target DOM element */
     /**
      * Quick accessor to raw attribute value on the target DOM element
      * @param {?} attribute
@@ -1828,18 +1837,16 @@ BaseDirective = /** @class */ (function () {
         return value.trim() || 'row';
         var _a;
     };
+    /** Applies styles given via string pair or object map to the directive element */
     /**
-     * Applies styles given via string pair or object map to the directive element.
-     */
-    /**
-     * Applies styles given via string pair or object map to the directive element.
+     * Applies styles given via string pair or object map to the directive element
      * @param {?} style
      * @param {?=} value
      * @param {?=} element
      * @return {?}
      */
     BaseDirective.prototype._applyStyleToElement = /**
-     * Applies styles given via string pair or object map to the directive element.
+     * Applies styles given via string pair or object map to the directive element
      * @param {?} style
      * @param {?=} value
      * @param {?=} element
@@ -1849,17 +1856,15 @@ BaseDirective = /** @class */ (function () {
         if (element === void 0) { element = this.nativeElement; }
         this._styler.applyStyleToElement(element, style, value);
     };
+    /** Applies styles given via string pair or object map to the directive's element */
     /**
-     * Applies styles given via string pair or object map to the directive's element.
-     */
-    /**
-     * Applies styles given via string pair or object map to the directive's element.
+     * Applies styles given via string pair or object map to the directive's element
      * @param {?} style
      * @param {?} elements
      * @return {?}
      */
     BaseDirective.prototype._applyStyleToElements = /**
-     * Applies styles given via string pair or object map to the directive's element.
+     * Applies styles given via string pair or object map to the directive's element
      * @param {?} style
      * @param {?} elements
      * @return {?}
@@ -1929,11 +1934,9 @@ BaseDirective = /** @class */ (function () {
         return this._mqActivation;
     };
     Object.defineProperty(BaseDirective.prototype, "childrenNodes", {
-        /**
-         * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
-         */
+        /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
         get: /**
-         * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
+         * Special accessor to query for all child 'element' nodes regardless of type, class, etc
          * @return {?}
          */
         function () {
@@ -1948,30 +1951,7 @@ BaseDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     */
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @param {?} baseKey
-     * @return {?}
-     */
-    BaseDirective.prototype.hasResponsiveAPI = /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @param {?} baseKey
-     * @return {?}
-     */
-    function (baseKey) {
-        var /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
-        var /** @type {?} */ baseValue = this._inputMap[baseKey];
-        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
-    };
-    /**
-     * Fast validator for presence of attribute on the host element
-     */
+    /** Fast validator for presence of attribute on the host element */
     /**
      * Fast validator for presence of attribute on the host element
      * @param {?} key
@@ -3467,7 +3447,7 @@ var MediaMonitor = /** @class */ (function () {
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  * @param {?} parentMonitor
  * @param {?} breakpoints
  * @param {?} matchMedia
@@ -3479,7 +3459,7 @@ function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) 
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  */
 var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
@@ -3503,7 +3483,7 @@ var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
 /**
  * Ensure a single global ObservableMedia service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cb74357
+ * \@deletion-target v6.0.0-beta.16-dc431d8
  * @param {?} parentService
  * @param {?} matchMedia
  * @param {?} breakpoints
@@ -3515,7 +3495,7 @@ function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoint
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
  *  \@deprecated
- *  \@deletion-target v6.0.0-beta.16-cb74357
+ *  \@deletion-target v6.0.0-beta.16-dc431d8
  */
 var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
     // tslint:disable-line:variable-name

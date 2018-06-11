@@ -873,17 +873,6 @@ var FlexDirective = /** @class */ (function (_super) {
         _this._cacheInput('flex', '');
         _this._cacheInput('shrink', 1);
         _this._cacheInput('grow', 1);
-        if (_container) {
-            // If this flex item is inside of a flex container marked with
-            // Subscribe to layout immediate parent direction changes
-            // If this flex item is inside of a flex container marked with
-            // Subscribe to layout immediate parent direction changes
-            _this._layoutWatcher = _container.layout$.subscribe(function (layout) {
-                // `direction` === null if parent container does not have a `fxLayout`
-                // `direction` === null if parent container does not have a `fxLayout`
-                _this._onLayoutChange(layout);
-            });
-        }
         return _this;
     }
     Object.defineProperty(FlexDirective.prototype, "shrink", {
@@ -1069,6 +1058,15 @@ var FlexDirective = /** @class */ (function (_super) {
             _this._updateStyle(changes.value);
         });
         this._updateStyle();
+        if (this._container) {
+            // If this flex item is inside of a flex container marked with
+            // Subscribe to layout immediate parent direction changes
+            this._layoutWatcher = this._container.layout$.subscribe(function (layout) {
+                // `direction` === null if parent container does not have a `fxLayout`
+                // `direction` === null if parent container does not have a `fxLayout`
+                _this._onLayoutChange(layout);
+            });
+        }
     };
     /**
      * @return {?}
