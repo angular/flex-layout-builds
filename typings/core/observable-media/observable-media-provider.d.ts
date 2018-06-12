@@ -12,13 +12,13 @@ import { ObservableMedia } from './observable-media';
 /**
  * Ensure a single global ObservableMedia service provider
  * @deprecated
- * @deletion-target v6.0.0-beta.16-dc431d8
+ * @deletion-target v6.0.0-beta.16-28bc2ae
  */
 export declare function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService: ObservableMedia, matchMedia: MatchMedia, breakpoints: BreakPointRegistry): ObservableMedia;
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
  *  @deprecated
- *  @deletion-target v6.0.0-beta.16-dc431d8
+ *  @deletion-target v6.0.0-beta.16-28bc2ae
  */
 export declare const OBSERVABLE_MEDIA_PROVIDER: {
     provide: typeof ObservableMedia;
