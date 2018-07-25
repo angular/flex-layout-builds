@@ -7,7 +7,7 @@
  */
 import { Version, Inject, NgModule, Optional, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
-import { SERVER_TOKEN, DEFAULT_CONFIG, LAYOUT_CONFIG, BREAKPOINT } from '@angular/flex-layout/core';
+import { SERVER_TOKEN, LAYOUT_CONFIG, BREAKPOINT } from '@angular/flex-layout/core';
 export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective, BaseDirectiveAdapter, BaseFxDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis } from '@angular/flex-layout/core';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 export { ExtendedModule, ClassDirective, ImgSrcDirective, negativeOf, ShowHideDirective, StyleDirective } from '@angular/flex-layout/extended';
@@ -23,14 +23,17 @@ export { ɵb, ɵc, ɵd, ɵe, ɵf, ɵg, ɵh, ɵi, ɵa, ɵj, ɵk, GridModule } fro
 /**
  * Current version of Angular Flex-Layout.
  */
-const /** @type {?} */ VERSION = new Version('6.0.0-beta.16-28bc2ae');
+const /** @type {?} */ VERSION = new Version('6.0.0-beta.16-4fb0979');
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 /**
- *
+ * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
+ * * Will automatically provide Flex, Grid, and Extended modules for use in the application
+ * * Can be configured using the static withConfig method, options viewable on the Wiki's
+ *   Configuration page
  */
 class FlexLayoutModule {
     /**
@@ -50,25 +53,27 @@ class FlexLayoutModule {
      * @return {?}
      */
     static withConfig(configOptions, breakpoints) {
-        const /** @type {?} */ config = Object.assign({}, DEFAULT_CONFIG);
-        const /** @type {?} */ moduleProviders = [];
-        for (const /** @type {?} */ key in configOptions) {
-            // If the setting is different and not undefined or null, change it
-            if (configOptions[key] !== config[key] &&
-                (configOptions[key] === false || configOptions[key] === true)) {
-                config[key] = configOptions[key];
-            }
-        }
-        if (configOptions.serverLoaded) {
-            moduleProviders.push({ provide: SERVER_TOKEN, useValue: true });
-        }
-        if (Array.isArray(breakpoints)) {
-            moduleProviders.push({ provide: BREAKPOINT, useValue: breakpoints, multi: true });
-        }
-        moduleProviders.push({ provide: LAYOUT_CONFIG, useValue: config });
         return {
             ngModule: FlexLayoutModule,
-            providers: moduleProviders
+            providers: Array.isArray(breakpoints) ?
+                configOptions.serverLoaded ?
+                    [
+                        { provide: LAYOUT_CONFIG, useValue: configOptions },
+                        { provide: BREAKPOINT, useValue: breakpoints, multi: true },
+                        { provide: SERVER_TOKEN, useValue: true },
+                    ] : [
+                    { provide: LAYOUT_CONFIG, useValue: configOptions },
+                    { provide: BREAKPOINT, useValue: breakpoints, multi: true },
+                ]
+                :
+                    configOptions.serverLoaded ?
+                        [
+                            { provide: LAYOUT_CONFIG, useValue: configOptions },
+                            { provide: SERVER_TOKEN, useValue: true },
+                        ] :
+                        [
+                            { provide: LAYOUT_CONFIG, useValue: configOptions },
+                        ]
         };
     }
 }

@@ -831,8 +831,9 @@ class FlexDirective extends BaseDirective {
      * @return {?}
      */
     _validateValue(grow, shrink, basis) {
+        let /** @type {?} */ addFlexToParent = this.layoutConfig.addFlexToParent !== false;
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        let /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, this.layoutConfig.addFlexToParent);
+        let /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
         let /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         let /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         let /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -869,8 +870,8 @@ class FlexDirective extends BaseDirective {
         };
         switch (basis || '') {
             case '':
-                basis = direction === 'row' ? '0%' :
-                    (this.layoutConfig.useColumnBasisZero ? '0.000000001px' : 'auto');
+                const /** @type {?} */ useColumnBasisZero = this.layoutConfig.useColumnBasisZero !== false;
+                basis = direction === 'row' ? '0%' : (useColumnBasisZero ? '0.000000001px' : 'auto');
                 break;
             case 'initial': // default
             case 'nogrow':

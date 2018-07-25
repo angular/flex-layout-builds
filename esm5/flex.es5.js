@@ -1112,8 +1112,9 @@ var FlexDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (grow, shrink, basis) {
+        var /** @type {?} */ addFlexToParent = this.layoutConfig.addFlexToParent !== false;
         // The flex-direction of this element's flex container. Defaults to 'row'.
-        var /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, this.layoutConfig.addFlexToParent);
+        var /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
         var /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         var /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
         var /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
@@ -1150,8 +1151,8 @@ var FlexDirective = /** @class */ (function (_super) {
         };
         switch (basis || '') {
             case '':
-                basis = direction === 'row' ? '0%' :
-                    (this.layoutConfig.useColumnBasisZero ? '0.000000001px' : 'auto');
+                var /** @type {?} */ useColumnBasisZero = this.layoutConfig.useColumnBasisZero !== false;
+                basis = direction === 'row' ? '0%' : (useColumnBasisZero ? '0.000000001px' : 'auto');
                 break;
             case 'initial': // default
             case 'nogrow':

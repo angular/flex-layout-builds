@@ -18,14 +18,17 @@
 /**
  * Current version of Angular Flex-Layout.
  */
-var /** @type {?} */ VERSION = new core.Version('6.0.0-beta.16-28bc2ae');
+var /** @type {?} */ VERSION = new core.Version('6.0.0-beta.16-4fb0979');
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
 /**
- *
+ * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
+ * * Will automatically provide Flex, Grid, and Extended modules for use in the application
+ * * Can be configured using the static withConfig method, options viewable on the Wiki's
+ *   Configuration page
  */
 var FlexLayoutModule = /** @class */ (function () {
     function FlexLayoutModule(serverModuleLoaded, platformId) {
@@ -52,25 +55,27 @@ var FlexLayoutModule = /** @class */ (function () {
      * @return {?}
      */
     function (configOptions, breakpoints) {
-        var /** @type {?} */ config = Object.assign({}, core$1.DEFAULT_CONFIG);
-        var /** @type {?} */ moduleProviders = [];
-        for (var /** @type {?} */ key in configOptions) {
-            // If the setting is different and not undefined or null, change it
-            if (configOptions[key] !== config[key] &&
-                (configOptions[key] === false || configOptions[key] === true)) {
-                config[key] = configOptions[key];
-            }
-        }
-        if (configOptions.serverLoaded) {
-            moduleProviders.push({ provide: core$1.SERVER_TOKEN, useValue: true });
-        }
-        if (Array.isArray(breakpoints)) {
-            moduleProviders.push({ provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true });
-        }
-        moduleProviders.push({ provide: core$1.LAYOUT_CONFIG, useValue: config });
         return {
             ngModule: FlexLayoutModule,
-            providers: moduleProviders
+            providers: Array.isArray(breakpoints) ?
+                configOptions.serverLoaded ?
+                    [
+                        { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                        { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
+                        { provide: core$1.SERVER_TOKEN, useValue: true },
+                    ] : [
+                    { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                    { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
+                ]
+                :
+                    configOptions.serverLoaded ?
+                        [
+                            { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                            { provide: core$1.SERVER_TOKEN, useValue: true },
+                        ] :
+                        [
+                            { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                        ]
         };
     };
     FlexLayoutModule.decorators = [

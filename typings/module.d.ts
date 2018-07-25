@@ -8,14 +8,10 @@
 import { ModuleWithProviders } from '@angular/core';
 import { LayoutConfigOptions, BreakPoint } from '@angular/flex-layout/core';
 /**
- * Since the equivalent results are easily achieved with a css class attached to each
- * layout child, these have been deprecated and removed from the API.
- *
- *  import {LayoutPaddingDirective} from './api/flexbox/layout-padding';
- *  import {LayoutMarginDirective} from './api/flexbox/layout-margin';
- */
-/**
- *
+ * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
+ * * Will automatically provide Flex, Grid, and Extended modules for use in the application
+ * * Can be configured using the static withConfig method, options viewable on the Wiki's
+ *   Configuration page
  */
 export declare class FlexLayoutModule {
     /**
