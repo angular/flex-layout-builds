@@ -455,7 +455,6 @@ function negativeOf(hide) {
  */
 class ShowHideDirective extends BaseDirective {
     /**
-     *
      * @param {?} monitor
      * @param {?} layout
      * @param {?} elRef
@@ -670,6 +669,7 @@ class ShowHideDirective extends BaseDirective {
      */
     ngOnInit() {
         super.ngOnInit();
+        this._display = this._getDisplayStyle();
         let /** @type {?} */ value = this._getDefaultVal('show', true);
         // Build _mqActivation controller
         this._listenForMediaQueryChanges('show', value, (changes) => {

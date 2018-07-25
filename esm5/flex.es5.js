@@ -120,9 +120,6 @@ function buildCSS(direction, wrap, inline) {
 var LayoutDirective = /** @class */ (function (_super) {
     __extends(LayoutDirective, _super);
     /* tslint:enable */
-    /**
-     *
-     */
     function LayoutDirective(monitor, elRef, styleUtils) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
         _this._announcer = new ReplaySubject(1);
@@ -302,14 +299,11 @@ var LayoutDirective = /** @class */ (function (_super) {
         this._listenForMediaQueryChanges('layout', 'row', function (changes) {
             _this._updateWithDirection(changes.value);
         });
-        this._updateWithDirection();
     };
     // *********************************************
     // Protected methods
     // *********************************************
-    /**
-     * Validate the direction value and then update the host's inline flexbox styles
-     */
+    /** Validate the direction value and then update the host's inline flexbox styles */
     /**
      * Validate the direction value and then update the host's inline flexbox styles
      * @param {?=} value
@@ -1031,7 +1025,6 @@ var FlexDirective = /** @class */ (function (_super) {
         this._listenForMediaQueryChanges('flex', '', function (changes) {
             _this._updateStyle(changes.value);
         });
-        this._updateStyle();
         if (this._container) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
@@ -1459,7 +1452,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         this._listenForMediaQueryChanges('order', '0', function (changes) {
             _this._updateWithValue(changes.value);
         });
-        this._updateWithValue();
     };
     // *********************************************
     // Protected methods
@@ -2036,7 +2028,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         this._listenForMediaQueryChanges('align', 'stretch', function (changes) {
             _this._updateWithValue(changes.value);
         });
-        this._updateWithValue();
     };
     // *********************************************
     // Protected methods
@@ -2334,7 +2325,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         this._listenForMediaQueryChanges('align', 'start stretch', function (changes) {
             _this._updateWithValue(changes.value);
         });
-        this._updateWithValue();
     };
     /**
      * @return {?}

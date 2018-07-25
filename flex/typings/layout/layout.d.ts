@@ -44,9 +44,6 @@ export declare class LayoutDirective extends BaseDirective implements OnInit, On
     layoutLtMd: any;
     layoutLtLg: any;
     layoutLtXl: any;
-    /**
-     *
-     */
     constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils);
     /**
      * On changes to any @Input properties...
@@ -59,8 +56,6 @@ export declare class LayoutDirective extends BaseDirective implements OnInit, On
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit(): void;
-    /**
-     * Validate the direction value and then update the host's inline flexbox styles
-     */
+    /** Validate the direction value and then update the host's inline flexbox styles */
     protected _updateWithDirection(value?: string): void;
 }

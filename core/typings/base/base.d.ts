@@ -86,8 +86,6 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     /** Fast validator for presence of attribute on the host element */
     protected hasKeyValue(key: any): boolean;
     protected readonly hasInitialized: boolean;
-    /** Original dom Elements CSS display style */
-    protected _display: any;
     /** MediaQuery Activation Tracker */
     protected _mqActivation: ResponsiveActivation;
     /** Dictionary of input keys with associated values */

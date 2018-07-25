@@ -31,6 +31,8 @@ export declare class ShowHideDirective extends BaseDirective implements OnInit, 
      * Stored so we can unsubscribe when this directive is destroyed.
      */
     protected _layoutWatcher: Subscription;
+    /** Original dom Elements CSS display style */
+    protected _display: string;
     show: any;
     showXs: any;
     showSm: any;
@@ -59,9 +61,6 @@ export declare class ShowHideDirective extends BaseDirective implements OnInit, 
     hideGtSm: any;
     hideGtMd: any;
     hideGtLg: any;
-    /**
-     *
-     */
     constructor(monitor: MediaMonitor, layout: LayoutDirective, elRef: ElementRef, styleUtils: StyleUtils, platformId: Object, serverModuleLoaded: boolean);
     /**
      * Override accessor to the current HTMLElement's `display` style
@@ -85,7 +84,7 @@ export declare class ShowHideDirective extends BaseDirective implements OnInit, 
     protected _updateWithValue(value?: string | number | boolean): void;
     /** Build the CSS that should be assigned to the element instance */
     protected _buildCSS(show: any): {
-        'display': any;
+        'display': string;
     };
     /**  Validate the to be not FALSY */
     _validateTruthy(show: any): boolean;

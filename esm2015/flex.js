@@ -116,7 +116,6 @@ function buildCSS(direction, wrap = null, inline = false) {
  */
 class LayoutDirective extends BaseDirective {
     /**
-     *
      * @param {?} monitor
      * @param {?} elRef
      * @param {?} styleUtils
@@ -232,7 +231,6 @@ class LayoutDirective extends BaseDirective {
         this._listenForMediaQueryChanges('layout', 'row', (changes) => {
             this._updateWithDirection(changes.value);
         });
-        this._updateWithDirection();
     }
     /**
      * Validate the direction value and then update the host's inline flexbox styles
@@ -780,7 +778,6 @@ class FlexDirective extends BaseDirective {
         this._listenForMediaQueryChanges('flex', '', (changes) => {
             this._updateStyle(changes.value);
         });
-        this._updateStyle();
         if (this._container) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
@@ -1120,7 +1117,6 @@ class FlexOrderDirective extends BaseDirective {
         this._listenForMediaQueryChanges('order', '0', (changes) => {
             this._updateWithValue(changes.value);
         });
-        this._updateWithValue();
     }
     /**
      * @param {?=} value
@@ -1528,7 +1524,6 @@ class FlexAlignDirective extends BaseDirective {
         this._listenForMediaQueryChanges('align', 'stretch', (changes) => {
             this._updateWithValue(changes.value);
         });
-        this._updateWithValue();
     }
     /**
      * @param {?=} value
@@ -1766,7 +1761,6 @@ class LayoutAlignDirective extends BaseDirective {
         this._listenForMediaQueryChanges('align', 'start stretch', (changes) => {
             this._updateWithValue(changes.value);
         });
-        this._updateWithValue();
     }
     /**
      * @return {?}

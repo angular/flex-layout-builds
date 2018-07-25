@@ -695,9 +695,6 @@ function negativeOf(hide) {
 var ShowHideDirective = /** @class */ (function (_super) {
     __extends(ShowHideDirective, _super);
     /* tslint:enable */
-    /**
-     *
-     */
     function ShowHideDirective(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
         _this.layout = layout;
@@ -1034,6 +1031,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
     function () {
         var _this = this;
         _super.prototype.ngOnInit.call(this);
+        this._display = this._getDisplayStyle();
         var /** @type {?} */ value = this._getDefaultVal('show', true);
         // Build _mqActivation controller
         this._listenForMediaQueryChanges('show', value, function (changes) {
