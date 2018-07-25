@@ -12,13 +12,13 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 /**
  * Ensure a single global service provider
  * @deprecated
- * @deletion-target v6.0.0-beta.16-bc7f77f
+ * @deletion-target v6.0.0-beta.16-af0bc5b
  */
 export declare function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor: MediaMonitor, breakpoints: BreakPointRegistry, matchMedia: MatchMedia): MediaMonitor;
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * @deletion-target v6.0.0-beta.16-bc7f77f
+ * @deletion-target v6.0.0-beta.16-af0bc5b
  */
 export declare const MEDIA_MONITOR_PROVIDER: {
     provide: typeof MediaMonitor;
