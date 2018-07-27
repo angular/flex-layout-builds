@@ -12,7 +12,7 @@ import { MediaMonitor } from '../media-monitor/media-monitor';
 import { MediaQuerySubscriber } from '../media-change';
 /**
  * @deprecated
- * @deletion-target v6.0.0-beta.17
+ * @deletion-target v6.0.0-beta.17-19474ff
  * Abstract base class for the Layout API styling directives.
  */
 export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {

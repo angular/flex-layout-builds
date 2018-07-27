@@ -1068,7 +1068,7 @@ var StylesheetMap = /** @class */ (function () {
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cdf1368
+ * \@deletion-target v6.0.0-beta.16
  * @param {?} parentSheet
  * @return {?}
  */
@@ -1078,7 +1078,7 @@ function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cdf1368
+ * \@deletion-target v6.0.0-beta.16
  */
 var /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
     provide: StylesheetMap,
@@ -2211,13 +2211,13 @@ BaseDirectiveAdapter = /** @class */ (function (_super) {
  */
 /**
  * @deprecated
- * \@deletion-target v6.0.0-beta.17
+ * \@deletion-target v6.0.0-beta.17-19474ff
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
 var  /**
  * @deprecated
- * \@deletion-target v6.0.0-beta.17
+ * \@deletion-target v6.0.0-beta.17-19474ff
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
@@ -3420,7 +3420,7 @@ var MediaMonitor = /** @class */ (function () {
 /**
  * Ensure a single global service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cdf1368
+ * \@deletion-target v6.0.0-beta.16
  * @param {?} parentMonitor
  * @param {?} breakpoints
  * @param {?} matchMedia
@@ -3432,7 +3432,7 @@ function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) 
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cdf1368
+ * \@deletion-target v6.0.0-beta.16
  */
 var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
@@ -3456,7 +3456,7 @@ var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
 /**
  * Ensure a single global ObservableMedia service provider
  * @deprecated
- * \@deletion-target v6.0.0-beta.16-cdf1368
+ * \@deletion-target v6.0.0-beta.16
  * @param {?} parentService
  * @param {?} matchMedia
  * @param {?} breakpoints
@@ -3468,7 +3468,7 @@ function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoint
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
  *  \@deprecated
- *  \@deletion-target v6.0.0-beta.16-cdf1368
+ *  \@deletion-target v6.0.0-beta.16
  */
 var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
     // tslint:disable-line:variable-name

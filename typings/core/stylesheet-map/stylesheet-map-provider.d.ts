@@ -10,13 +10,13 @@ import { StylesheetMap } from './stylesheet-map';
 /**
  * Ensure a single global service provider
  * @deprecated
- * @deletion-target v6.0.0-beta.16-cdf1368
+ * @deletion-target v6.0.0-beta.16
  */
 export declare function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet: StylesheetMap): StylesheetMap;
 /**
  * Export provider that uses a global service factory (above)
  * @deprecated
- * @deletion-target v6.0.0-beta.16-cdf1368
+ * @deletion-target v6.0.0-beta.16
  */
 export declare const STYLESHEET_MAP_PROVIDER: {
     provide: typeof StylesheetMap;
