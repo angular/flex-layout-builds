@@ -1692,7 +1692,7 @@ class BaseDirectiveAdapter extends BaseDirective {
  */
 /**
  * @deprecated
- * \@deletion-target v6.0.0-beta.17-aa8fb8c
+ * \@deletion-target v6.0.0-beta.17
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
