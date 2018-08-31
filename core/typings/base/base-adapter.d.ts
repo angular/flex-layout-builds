@@ -34,7 +34,8 @@ export declare class BaseDirectiveAdapter extends BaseDirective {
     /**
      * BaseDirectiveAdapter constructor
      */
-    constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils);
+    constructor(_baseKey: string, // non-responsive @Input property name
+    _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils);
     /**
       * Does this directive have 1 or more responsive keys defined
       * Note: we exclude the 'baseKey' key (which is NOT considered responsive)

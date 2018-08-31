@@ -59,16 +59,16 @@ export declare class LayoutGapDirective extends BaseDirective implements AfterCo
     /**
      *
      */
-    private _buildGridPadding(value);
+    private _buildGridPadding;
     /**
      * Prepare margin CSS, remove any previous explicitly
      * assigned margin assignments
      * Note: this will not work with calc values (negative calc values are invalid)
      */
-    private _buildGridMargin(value);
+    private _buildGridMargin;
     /**
      * Prepare margin CSS, remove any previous explicitly
      * assigned margin assignments
      */
-    private _buildCSS(value?);
+    private _buildCSS;
 }

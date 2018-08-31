@@ -21,12 +21,12 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
      * if called before ngOnInit() this will return `undefined`
      */
     /**
-     * Change the currently activated input value and force-update
-     * the injected CSS (by-passing change detection).
-     *
-     * NOTE: Only the currently activated input value will be modified;
-     *       other input values will NOT be affected.
-     */
+    * Change the currently activated input value and force-update
+    * the injected CSS (by-passing change detection).
+    *
+    * NOTE: Only the currently activated input value will be modified;
+    *       other input values will NOT be affected.
+    */
     activatedValue: string | number;
     protected constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils);
     /**

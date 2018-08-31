@@ -18,16 +18,16 @@ export { ɵb, ɵc, ɵd, ɵe, ɵf, ɵg, ɵh, ɵi, ɵa, ɵj, ɵk, GridModule } fro
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
+/** *
  * Current version of Angular Flex-Layout.
- */
-var /** @type {?} */ VERSION = new Version('6.0.0-beta.17-19474ff');
+  @type {?} */
+var VERSION = new Version('6.0.0-beta.17-aa8fb8c');
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -91,20 +91,20 @@ var FlexLayoutModule = /** @class */ (function () {
     ];
     /** @nocollapse */
     FlexLayoutModule.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
-        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
+        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
     ]; };
     return FlexLayoutModule;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 export { VERSION, FlexLayoutModule };

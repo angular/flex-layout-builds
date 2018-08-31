@@ -12,11 +12,18 @@ import { Directionality, BidiModule } from '@angular/cdk/bidi';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-
-const /** @type {?} */ INLINE = 'inline';
-const /** @type {?} */ LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+/** *
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+  @type {?} */
+const INLINE = 'inline';
+/** @type {?} */
+const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
  * @param {?} value
@@ -105,7 +112,7 @@ function buildCSS(direction, wrap = null, inline = false) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * 'layout' flexbox styling directive
@@ -242,8 +249,8 @@ class LayoutDirective extends BaseDirective {
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        // Update styles and announce to subscribers the *new* direction
-        let /** @type {?} */ css = buildLayoutCSS(!!value ? value : '');
+        /** @type {?} */
+        let css = buildLayoutCSS(!!value ? value : '');
         this._applyStyleToElement(css);
         this._announcer.next({
             direction: css['flex-direction'],
@@ -261,30 +268,30 @@ LayoutDirective.decorators = [
 ];
 /** @nocollapse */
 LayoutDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: StyleUtils }
 ];
 LayoutDirective.propDecorators = {
-    "layout": [{ type: Input, args: ['fxLayout',] },],
-    "layoutXs": [{ type: Input, args: ['fxLayout.xs',] },],
-    "layoutSm": [{ type: Input, args: ['fxLayout.sm',] },],
-    "layoutMd": [{ type: Input, args: ['fxLayout.md',] },],
-    "layoutLg": [{ type: Input, args: ['fxLayout.lg',] },],
-    "layoutXl": [{ type: Input, args: ['fxLayout.xl',] },],
-    "layoutGtXs": [{ type: Input, args: ['fxLayout.gt-xs',] },],
-    "layoutGtSm": [{ type: Input, args: ['fxLayout.gt-sm',] },],
-    "layoutGtMd": [{ type: Input, args: ['fxLayout.gt-md',] },],
-    "layoutGtLg": [{ type: Input, args: ['fxLayout.gt-lg',] },],
-    "layoutLtSm": [{ type: Input, args: ['fxLayout.lt-sm',] },],
-    "layoutLtMd": [{ type: Input, args: ['fxLayout.lt-md',] },],
-    "layoutLtLg": [{ type: Input, args: ['fxLayout.lt-lg',] },],
-    "layoutLtXl": [{ type: Input, args: ['fxLayout.lt-xl',] },],
+    layout: [{ type: Input, args: ['fxLayout',] }],
+    layoutXs: [{ type: Input, args: ['fxLayout.xs',] }],
+    layoutSm: [{ type: Input, args: ['fxLayout.sm',] }],
+    layoutMd: [{ type: Input, args: ['fxLayout.md',] }],
+    layoutLg: [{ type: Input, args: ['fxLayout.lg',] }],
+    layoutXl: [{ type: Input, args: ['fxLayout.xl',] }],
+    layoutGtXs: [{ type: Input, args: ['fxLayout.gt-xs',] }],
+    layoutGtSm: [{ type: Input, args: ['fxLayout.gt-sm',] }],
+    layoutGtMd: [{ type: Input, args: ['fxLayout.gt-md',] }],
+    layoutGtLg: [{ type: Input, args: ['fxLayout.gt-lg',] }],
+    layoutLtSm: [{ type: Input, args: ['fxLayout.lt-sm',] }],
+    layoutLtMd: [{ type: Input, args: ['fxLayout.lt-md',] }],
+    layoutLtLg: [{ type: Input, args: ['fxLayout.lt-lg',] }],
+    layoutLtXl: [{ type: Input, args: ['fxLayout.lt-xl',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * 'layout-padding' styling directive
@@ -304,7 +311,7 @@ class LayoutGapDirective extends BaseDirective {
         this._zone = _zone;
         this._directionality = _directionality;
         this._layout = 'row';
-        if (container) {
+        if (container) { // Subscribe to layout direction changes
             // Subscribe to layout direction changes
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
         }
@@ -438,7 +445,8 @@ class LayoutGapDirective extends BaseDirective {
         this._zone.runOutsideAngular(() => {
             if (typeof MutationObserver !== 'undefined') {
                 this._observer = new MutationObserver((mutations) => {
-                    const /** @type {?} */ validatedChanges = (it) => {
+                    /** @type {?} */
+                    const validatedChanges = (it) => {
                         return (it.addedNodes && it.addedNodes.length > 0) ||
                             (it.removedNodes && it.removedNodes.length > 0);
                     };
@@ -469,16 +477,19 @@ class LayoutGapDirective extends BaseDirective {
      * @return {?}
      */
     _updateWithValue(value) {
-        let /** @type {?} */ gapValue = value || this._queryInput('gap') || '0';
+        /** @type {?} */
+        let gapValue = value || this._queryInput('gap') || '0';
         if (this._mqActivation) {
             gapValue = this._mqActivation.activatedInput;
         }
-        // Gather all non-hidden Element nodes
-        const /** @type {?} */ items = this.childrenNodes
+        /** @type {?} */
+        const items = this.childrenNodes
             .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none')
             .sort((a, b) => {
-            const /** @type {?} */ orderA = +this._styler.lookupStyle(a, 'order');
-            const /** @type {?} */ orderB = +this._styler.lookupStyle(b, 'order');
+            /** @type {?} */
+            const orderA = +this._styler.lookupStyle(a, 'order');
+            /** @type {?} */
+            const orderB = +this._styler.lookupStyle(b, 'order');
             if (isNaN(orderA) || isNaN(orderB) || orderA === orderB) {
                 return 0;
             }
@@ -495,7 +506,8 @@ class LayoutGapDirective extends BaseDirective {
                 this._applyStyleToElement(this._buildGridMargin(gapValue));
             }
             else {
-                const /** @type {?} */ lastItem = items.pop();
+                /** @type {?} */
+                const lastItem = items.pop();
                 // For each `element` children EXCEPT the last,
                 // set the margin right/bottom styles...
                 this._applyStyleToElements(this._buildCSS(gapValue), items);
@@ -510,7 +522,14 @@ class LayoutGapDirective extends BaseDirective {
      * @return {?}
      */
     _buildGridPadding(value) {
-        let /** @type {?} */ paddingTop = '0px', /** @type {?} */ paddingRight = '0px', /** @type {?} */ paddingBottom = value, /** @type {?} */ paddingLeft = '0px';
+        /** @type {?} */
+        let paddingTop = '0px';
+        /** @type {?} */
+        let paddingRight = '0px';
+        /** @type {?} */
+        let paddingBottom = value;
+        /** @type {?} */
+        let paddingLeft = '0px';
         if (this._directionality.value === 'rtl') {
             paddingLeft = value;
         }
@@ -527,7 +546,14 @@ class LayoutGapDirective extends BaseDirective {
      * @return {?}
      */
     _buildGridMargin(value) {
-        let /** @type {?} */ marginTop = '0px', /** @type {?} */ marginRight = '0px', /** @type {?} */ marginBottom = '-' + value, /** @type {?} */ marginLeft = '0px';
+        /** @type {?} */
+        let marginTop = '0px';
+        /** @type {?} */
+        let marginRight = '0px';
+        /** @type {?} */
+        let marginBottom = '-' + value;
+        /** @type {?} */
+        let marginLeft = '0px';
         if (this._directionality.value === 'rtl') {
             marginLeft = '-' + value;
         }
@@ -543,7 +569,10 @@ class LayoutGapDirective extends BaseDirective {
      * @return {?}
      */
     _buildCSS(value = null) {
-        let /** @type {?} */ key, /** @type {?} */ margins = {
+        /** @type {?} */
+        let key;
+        /** @type {?} */
+        let margins = {
             'margin-left': null,
             'margin-right': null,
             'margin-top': null,
@@ -582,34 +611,35 @@ LayoutGapDirective.decorators = [
 ];
 /** @nocollapse */
 LayoutGapDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: NgZone, },
-    { type: Directionality, },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self }] },
+    { type: NgZone },
+    { type: Directionality },
+    { type: StyleUtils }
 ];
 LayoutGapDirective.propDecorators = {
-    "gap": [{ type: Input, args: ['fxLayoutGap',] },],
-    "gapXs": [{ type: Input, args: ['fxLayoutGap.xs',] },],
-    "gapSm": [{ type: Input, args: ['fxLayoutGap.sm',] },],
-    "gapMd": [{ type: Input, args: ['fxLayoutGap.md',] },],
-    "gapLg": [{ type: Input, args: ['fxLayoutGap.lg',] },],
-    "gapXl": [{ type: Input, args: ['fxLayoutGap.xl',] },],
-    "gapGtXs": [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
-    "gapGtSm": [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
-    "gapGtMd": [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
-    "gapGtLg": [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
-    "gapLtSm": [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
-    "gapLtMd": [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
-    "gapLtLg": [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
-    "gapLtXl": [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
+    gap: [{ type: Input, args: ['fxLayoutGap',] }],
+    gapXs: [{ type: Input, args: ['fxLayoutGap.xs',] }],
+    gapSm: [{ type: Input, args: ['fxLayoutGap.sm',] }],
+    gapMd: [{ type: Input, args: ['fxLayoutGap.md',] }],
+    gapLg: [{ type: Input, args: ['fxLayoutGap.lg',] }],
+    gapXl: [{ type: Input, args: ['fxLayoutGap.xl',] }],
+    gapGtXs: [{ type: Input, args: ['fxLayoutGap.gt-xs',] }],
+    gapGtSm: [{ type: Input, args: ['fxLayoutGap.gt-sm',] }],
+    gapGtMd: [{ type: Input, args: ['fxLayoutGap.gt-md',] }],
+    gapGtLg: [{ type: Input, args: ['fxLayoutGap.gt-lg',] }],
+    gapLtSm: [{ type: Input, args: ['fxLayoutGap.lt-sm',] }],
+    gapLtMd: [{ type: Input, args: ['fxLayoutGap.lt-md',] }],
+    gapLtLg: [{ type: Input, args: ['fxLayoutGap.lt-lg',] }],
+    gapLtXl: [{ type: Input, args: ['fxLayoutGap.lt-xl',] }]
 };
-const /** @type {?} */ GRID_SPECIFIER = ' grid';
+/** @type {?} */
+const GRID_SPECIFIER = ' grid';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
@@ -623,9 +653,9 @@ function extendObject(dest, ...sources) {
     if (dest == null) {
         throw TypeError('Cannot convert undefined or null to object');
     }
-    for (let /** @type {?} */ source of sources) {
+    for (let source of sources) {
         if (source != null) {
-            for (let /** @type {?} */ key in source) {
+            for (let key in source) {
                 if (source.hasOwnProperty(key)) {
                     dest[key] = source[key];
                 }
@@ -637,7 +667,7 @@ function extendObject(dest, ...sources) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
@@ -811,12 +841,15 @@ class FlexDirective extends BaseDirective {
      * @return {?}
      */
     _updateStyle(value) {
-        let /** @type {?} */ flexBasis = value || this._queryInput('flex') || '';
+        /** @type {?} */
+        let flexBasis = value || this._queryInput('flex') || '';
         if (this._mqActivation) {
             flexBasis = this._mqActivation.activatedInput;
         }
-        let /** @type {?} */ basis = String(flexBasis).replace(';', '');
-        let /** @type {?} */ parts = validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
+        /** @type {?} */
+        let basis = String(flexBasis).replace(';', '');
+        /** @type {?} */
+        let parts = validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
         this._applyStyleToElement(this._validateValue.apply(this, parts));
     }
     /**
@@ -828,38 +861,37 @@ class FlexDirective extends BaseDirective {
      * @return {?}
      */
     _validateValue(grow, shrink, basis) {
-        let /** @type {?} */ addFlexToParent = this.layoutConfig.addFlexToParent !== false;
-        // The flex-direction of this element's flex container. Defaults to 'row'.
-        let /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
-        let /** @type {?} */ direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
-        let /** @type {?} */ max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
-        let /** @type {?} */ min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
-        let /** @type {?} */ hasCalc = String(basis).indexOf('calc') > -1;
-        let /** @type {?} */ usingCalc = hasCalc || (basis == 'auto');
-        let /** @type {?} */ isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
-        let /** @type {?} */ hasUnits = String(basis).indexOf('px') > -1 || String(basis).indexOf('em') > -1 ||
+        /** @type {?} */
+        let addFlexToParent = this.layoutConfig.addFlexToParent !== false;
+        /** @type {?} */
+        let layout = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
+        /** @type {?} */
+        let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
+        /** @type {?} */
+        let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
+        /** @type {?} */
+        let min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
+        /** @type {?} */
+        let hasCalc = String(basis).indexOf('calc') > -1;
+        /** @type {?} */
+        let usingCalc = hasCalc || (basis == 'auto');
+        /** @type {?} */
+        let isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
+        /** @type {?} */
+        let hasUnits = String(basis).indexOf('px') > -1 || String(basis).indexOf('em') > -1 ||
             String(basis).indexOf('vw') > -1 || String(basis).indexOf('vh') > -1;
-        let /** @type {?} */ isPx = String(basis).indexOf('px') > -1 || usingCalc;
-        let /** @type {?} */ isValue = (hasCalc || hasUnits);
+        /** @type {?} */
+        let isPx = String(basis).indexOf('px') > -1 || usingCalc;
+        /** @type {?} */
+        let isValue = (hasCalc || hasUnits);
         grow = (grow == '0') ? 0 : grow;
         shrink = (shrink == '0') ? 0 : shrink;
-        // make box inflexible when shrink and grow are both zero
-        // should not set a min when the grow is zero
-        // should not set a max when the shrink is zero
-        let /** @type {?} */ isFixed = !grow && !shrink;
-        let /** @type {?} */ css = {};
-        // flex-basis allows you to specify the initial/starting main-axis size of the element,
-        // before anything else is computed. It can either be a percentage or an absolute value.
-        // It is, however, not the breaking point for flex-grow/shrink properties
-        //
-        // flex-grow can be seen as this:
-        //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
-        //   1: (Default value). Stretch; will be the same size to all other flex items on
-        //       the same row since they have a default value of 1.
-        //   ≥2 (integer n): Stretch. Will be n times the size of other elements
-        //      with 'flex-grow: 1' on the same row.
-        // Use `null` to clear existing styles.
-        let /** @type {?} */ clearStyles = {
+        /** @type {?} */
+        let isFixed = !grow && !shrink;
+        /** @type {?} */
+        let css = {};
+        /** @type {?} */
+        let clearStyles = {
             'max-width': null,
             'max-height': null,
             'min-width': null,
@@ -867,7 +899,8 @@ class FlexDirective extends BaseDirective {
         };
         switch (basis || '') {
             case '':
-                const /** @type {?} */ useColumnBasisZero = this.layoutConfig.useColumnBasisZero !== false;
+                /** @type {?} */
+                const useColumnBasisZero = this.layoutConfig.useColumnBasisZero !== false;
                 basis = direction === 'row' ? '0%' : (useColumnBasisZero ? '0.000000001px' : 'auto');
                 break;
             case 'initial': // default
@@ -972,34 +1005,34 @@ FlexDirective.decorators = [
 ];
 /** @nocollapse */
 FlexDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    { type: StyleUtils, },
-    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] },] },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf }] },
+    { type: StyleUtils },
+    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
 ];
 FlexDirective.propDecorators = {
-    "shrink": [{ type: Input, args: ['fxShrink',] },],
-    "grow": [{ type: Input, args: ['fxGrow',] },],
-    "flex": [{ type: Input, args: ['fxFlex',] },],
-    "flexXs": [{ type: Input, args: ['fxFlex.xs',] },],
-    "flexSm": [{ type: Input, args: ['fxFlex.sm',] },],
-    "flexMd": [{ type: Input, args: ['fxFlex.md',] },],
-    "flexLg": [{ type: Input, args: ['fxFlex.lg',] },],
-    "flexXl": [{ type: Input, args: ['fxFlex.xl',] },],
-    "flexGtXs": [{ type: Input, args: ['fxFlex.gt-xs',] },],
-    "flexGtSm": [{ type: Input, args: ['fxFlex.gt-sm',] },],
-    "flexGtMd": [{ type: Input, args: ['fxFlex.gt-md',] },],
-    "flexGtLg": [{ type: Input, args: ['fxFlex.gt-lg',] },],
-    "flexLtSm": [{ type: Input, args: ['fxFlex.lt-sm',] },],
-    "flexLtMd": [{ type: Input, args: ['fxFlex.lt-md',] },],
-    "flexLtLg": [{ type: Input, args: ['fxFlex.lt-lg',] },],
-    "flexLtXl": [{ type: Input, args: ['fxFlex.lt-xl',] },],
+    shrink: [{ type: Input, args: ['fxShrink',] }],
+    grow: [{ type: Input, args: ['fxGrow',] }],
+    flex: [{ type: Input, args: ['fxFlex',] }],
+    flexXs: [{ type: Input, args: ['fxFlex.xs',] }],
+    flexSm: [{ type: Input, args: ['fxFlex.sm',] }],
+    flexMd: [{ type: Input, args: ['fxFlex.md',] }],
+    flexLg: [{ type: Input, args: ['fxFlex.lg',] }],
+    flexXl: [{ type: Input, args: ['fxFlex.xl',] }],
+    flexGtXs: [{ type: Input, args: ['fxFlex.gt-xs',] }],
+    flexGtSm: [{ type: Input, args: ['fxFlex.gt-sm',] }],
+    flexGtMd: [{ type: Input, args: ['fxFlex.gt-md',] }],
+    flexGtLg: [{ type: Input, args: ['fxFlex.gt-lg',] }],
+    flexLtSm: [{ type: Input, args: ['fxFlex.lt-sm',] }],
+    flexLtMd: [{ type: Input, args: ['fxFlex.lt-md',] }],
+    flexLtLg: [{ type: Input, args: ['fxFlex.lt-lg',] }],
+    flexLtXl: [{ type: Input, args: ['fxFlex.lt-xl',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * 'flex-order' flexbox styling directive
@@ -1148,30 +1181,30 @@ FlexOrderDirective.decorators = [
 ];
 /** @nocollapse */
 FlexOrderDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: StyleUtils }
 ];
 FlexOrderDirective.propDecorators = {
-    "order": [{ type: Input, args: ['fxFlexOrder',] },],
-    "orderXs": [{ type: Input, args: ['fxFlexOrder.xs',] },],
-    "orderSm": [{ type: Input, args: ['fxFlexOrder.sm',] },],
-    "orderMd": [{ type: Input, args: ['fxFlexOrder.md',] },],
-    "orderLg": [{ type: Input, args: ['fxFlexOrder.lg',] },],
-    "orderXl": [{ type: Input, args: ['fxFlexOrder.xl',] },],
-    "orderGtXs": [{ type: Input, args: ['fxFlexOrder.gt-xs',] },],
-    "orderGtSm": [{ type: Input, args: ['fxFlexOrder.gt-sm',] },],
-    "orderGtMd": [{ type: Input, args: ['fxFlexOrder.gt-md',] },],
-    "orderGtLg": [{ type: Input, args: ['fxFlexOrder.gt-lg',] },],
-    "orderLtSm": [{ type: Input, args: ['fxFlexOrder.lt-sm',] },],
-    "orderLtMd": [{ type: Input, args: ['fxFlexOrder.lt-md',] },],
-    "orderLtLg": [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
-    "orderLtXl": [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
+    order: [{ type: Input, args: ['fxFlexOrder',] }],
+    orderXs: [{ type: Input, args: ['fxFlexOrder.xs',] }],
+    orderSm: [{ type: Input, args: ['fxFlexOrder.sm',] }],
+    orderMd: [{ type: Input, args: ['fxFlexOrder.md',] }],
+    orderLg: [{ type: Input, args: ['fxFlexOrder.lg',] }],
+    orderXl: [{ type: Input, args: ['fxFlexOrder.xl',] }],
+    orderGtXs: [{ type: Input, args: ['fxFlexOrder.gt-xs',] }],
+    orderGtSm: [{ type: Input, args: ['fxFlexOrder.gt-sm',] }],
+    orderGtMd: [{ type: Input, args: ['fxFlexOrder.gt-md',] }],
+    orderGtLg: [{ type: Input, args: ['fxFlexOrder.gt-lg',] }],
+    orderLtSm: [{ type: Input, args: ['fxFlexOrder.lt-sm',] }],
+    orderLtMd: [{ type: Input, args: ['fxFlexOrder.lt-md',] }],
+    orderLtLg: [{ type: Input, args: ['fxFlexOrder.lt-lg',] }],
+    orderLtXl: [{ type: Input, args: ['fxFlexOrder.lt-xl',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * 'flex-offset' flexbox styling directive
@@ -1356,15 +1389,19 @@ class FlexOffsetDirective extends BaseDirective {
      * @return {?}
      */
     _buildCSS(offset) {
-        let /** @type {?} */ isPercent = String(offset).indexOf('%') > -1;
-        let /** @type {?} */ isPx = String(offset).indexOf('px') > -1;
+        /** @type {?} */
+        let isPercent = String(offset).indexOf('%') > -1;
+        /** @type {?} */
+        let isPx = String(offset).indexOf('px') > -1;
         if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
         }
-        // The flex-direction of this element's flex container. Defaults to 'row'.
-        const /** @type {?} */ isRtl = this._directionality.value === 'rtl';
-        const /** @type {?} */ layout = this._getFlexFlowDirection(this.parentElement, true);
-        const /** @type {?} */ horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
+        /** @type {?} */
+        const isRtl = this._directionality.value === 'rtl';
+        /** @type {?} */
+        const layout = this._getFlexFlowDirection(this.parentElement, true);
+        /** @type {?} */
+        const horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
         return isFlowHorizontal(layout) ? { [horizontalLayoutKey]: `${offset}` } :
             { 'margin-top': `${offset}` };
     }
@@ -1379,32 +1416,32 @@ FlexOffsetDirective.decorators = [
 ];
 /** @nocollapse */
 FlexOffsetDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    { type: Directionality, },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf }] },
+    { type: Directionality },
+    { type: StyleUtils }
 ];
 FlexOffsetDirective.propDecorators = {
-    "offset": [{ type: Input, args: ['fxFlexOffset',] },],
-    "offsetXs": [{ type: Input, args: ['fxFlexOffset.xs',] },],
-    "offsetSm": [{ type: Input, args: ['fxFlexOffset.sm',] },],
-    "offsetMd": [{ type: Input, args: ['fxFlexOffset.md',] },],
-    "offsetLg": [{ type: Input, args: ['fxFlexOffset.lg',] },],
-    "offsetXl": [{ type: Input, args: ['fxFlexOffset.xl',] },],
-    "offsetLtSm": [{ type: Input, args: ['fxFlexOffset.lt-sm',] },],
-    "offsetLtMd": [{ type: Input, args: ['fxFlexOffset.lt-md',] },],
-    "offsetLtLg": [{ type: Input, args: ['fxFlexOffset.lt-lg',] },],
-    "offsetLtXl": [{ type: Input, args: ['fxFlexOffset.lt-xl',] },],
-    "offsetGtXs": [{ type: Input, args: ['fxFlexOffset.gt-xs',] },],
-    "offsetGtSm": [{ type: Input, args: ['fxFlexOffset.gt-sm',] },],
-    "offsetGtMd": [{ type: Input, args: ['fxFlexOffset.gt-md',] },],
-    "offsetGtLg": [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
+    offset: [{ type: Input, args: ['fxFlexOffset',] }],
+    offsetXs: [{ type: Input, args: ['fxFlexOffset.xs',] }],
+    offsetSm: [{ type: Input, args: ['fxFlexOffset.sm',] }],
+    offsetMd: [{ type: Input, args: ['fxFlexOffset.md',] }],
+    offsetLg: [{ type: Input, args: ['fxFlexOffset.lg',] }],
+    offsetXl: [{ type: Input, args: ['fxFlexOffset.xl',] }],
+    offsetLtSm: [{ type: Input, args: ['fxFlexOffset.lt-sm',] }],
+    offsetLtMd: [{ type: Input, args: ['fxFlexOffset.lt-md',] }],
+    offsetLtLg: [{ type: Input, args: ['fxFlexOffset.lt-lg',] }],
+    offsetLtXl: [{ type: Input, args: ['fxFlexOffset.lt-xl',] }],
+    offsetGtXs: [{ type: Input, args: ['fxFlexOffset.gt-xs',] }],
+    offsetGtSm: [{ type: Input, args: ['fxFlexOffset.gt-sm',] }],
+    offsetGtMd: [{ type: Input, args: ['fxFlexOffset.gt-md',] }],
+    offsetGtLg: [{ type: Input, args: ['fxFlexOffset.gt-lg',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * 'flex-align' flexbox styling directive
@@ -1541,7 +1578,8 @@ class FlexAlignDirective extends BaseDirective {
      * @return {?}
      */
     _buildCSS(align) {
-        let /** @type {?} */ css = {};
+        /** @type {?} */
+        let css = {};
         // Cross-axis
         switch (align) {
             case 'start':
@@ -1569,32 +1607,33 @@ FlexAlignDirective.decorators = [
 ];
 /** @nocollapse */
 FlexAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: StyleUtils }
 ];
 FlexAlignDirective.propDecorators = {
-    "align": [{ type: Input, args: ['fxFlexAlign',] },],
-    "alignXs": [{ type: Input, args: ['fxFlexAlign.xs',] },],
-    "alignSm": [{ type: Input, args: ['fxFlexAlign.sm',] },],
-    "alignMd": [{ type: Input, args: ['fxFlexAlign.md',] },],
-    "alignLg": [{ type: Input, args: ['fxFlexAlign.lg',] },],
-    "alignXl": [{ type: Input, args: ['fxFlexAlign.xl',] },],
-    "alignLtSm": [{ type: Input, args: ['fxFlexAlign.lt-sm',] },],
-    "alignLtMd": [{ type: Input, args: ['fxFlexAlign.lt-md',] },],
-    "alignLtLg": [{ type: Input, args: ['fxFlexAlign.lt-lg',] },],
-    "alignLtXl": [{ type: Input, args: ['fxFlexAlign.lt-xl',] },],
-    "alignGtXs": [{ type: Input, args: ['fxFlexAlign.gt-xs',] },],
-    "alignGtSm": [{ type: Input, args: ['fxFlexAlign.gt-sm',] },],
-    "alignGtMd": [{ type: Input, args: ['fxFlexAlign.gt-md',] },],
-    "alignGtLg": [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
+    align: [{ type: Input, args: ['fxFlexAlign',] }],
+    alignXs: [{ type: Input, args: ['fxFlexAlign.xs',] }],
+    alignSm: [{ type: Input, args: ['fxFlexAlign.sm',] }],
+    alignMd: [{ type: Input, args: ['fxFlexAlign.md',] }],
+    alignLg: [{ type: Input, args: ['fxFlexAlign.lg',] }],
+    alignXl: [{ type: Input, args: ['fxFlexAlign.xl',] }],
+    alignLtSm: [{ type: Input, args: ['fxFlexAlign.lt-sm',] }],
+    alignLtMd: [{ type: Input, args: ['fxFlexAlign.lt-md',] }],
+    alignLtLg: [{ type: Input, args: ['fxFlexAlign.lt-lg',] }],
+    alignLtXl: [{ type: Input, args: ['fxFlexAlign.lt-xl',] }],
+    alignGtXs: [{ type: Input, args: ['fxFlexAlign.gt-xs',] }],
+    alignGtSm: [{ type: Input, args: ['fxFlexAlign.gt-sm',] }],
+    alignGtMd: [{ type: Input, args: ['fxFlexAlign.gt-md',] }],
+    alignGtLg: [{ type: Input, args: ['fxFlexAlign.gt-lg',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-const /** @type {?} */ FLEX_FILL_CSS = {
+/** @type {?} */
+const FLEX_FILL_CSS = {
     'margin': 0,
     'width': '100%',
     'height': '100%',
@@ -1627,23 +1666,23 @@ FlexFillDirective.decorators = [
 ];
 /** @nocollapse */
 FlexFillDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: StyleUtils }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * 'layout-align' flexbox styling directive
  *  Defines positioning of child elements along main and cross axis in a layout container
  *  Optional values: {main-axis} values or {main-axis cross-axis} value pairs
  *
- *  \@see https://css-tricks.com/almanac/properties/j/justify-content/
- *  \@see https://css-tricks.com/almanac/properties/a/align-items/
- *  \@see https://css-tricks.com/almanac/properties/a/align-content/
+ * @see https://css-tricks.com/almanac/properties/j/justify-content/
+ * @see https://css-tricks.com/almanac/properties/a/align-items/
+ * @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 class LayoutAlignDirective extends BaseDirective {
     /**
@@ -1655,7 +1694,7 @@ class LayoutAlignDirective extends BaseDirective {
     constructor(monitor, elRef, container, styleUtils) {
         super(monitor, elRef, styleUtils);
         this._layout = 'row';
-        if (container) {
+        if (container) { // Subscribe to layout direction changes
             // Subscribe to layout direction changes
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
         }
@@ -1794,7 +1833,8 @@ class LayoutAlignDirective extends BaseDirective {
         if (!LAYOUT_VALUES.find(x => x === this._layout)) {
             this._layout = 'row';
         }
-        let /** @type {?} */ value = this._queryInput('align') || 'start stretch';
+        /** @type {?} */
+        let value = this._queryInput('align') || 'start stretch';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
@@ -1805,7 +1845,9 @@ class LayoutAlignDirective extends BaseDirective {
      * @return {?}
      */
     _buildCSS(align) {
-        let /** @type {?} */ css = {}, [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
+        /** @type {?} */
+        let css = {};
+        let [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
         // Main axis
         switch (main_axis) {
             case 'center':
@@ -1847,7 +1889,7 @@ class LayoutAlignDirective extends BaseDirective {
                 css['align-items'] = css['align-content'] = 'flex-end';
                 break;
             case 'stretch':
-            default:
+            default: // 'stretch'
                 // 'stretch'
                 css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
                 break;
@@ -1887,33 +1929,34 @@ LayoutAlignDirective.decorators = [
 ];
 /** @nocollapse */
 LayoutAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: ElementRef },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self }] },
+    { type: StyleUtils }
 ];
 LayoutAlignDirective.propDecorators = {
-    "align": [{ type: Input, args: ['fxLayoutAlign',] },],
-    "alignXs": [{ type: Input, args: ['fxLayoutAlign.xs',] },],
-    "alignSm": [{ type: Input, args: ['fxLayoutAlign.sm',] },],
-    "alignMd": [{ type: Input, args: ['fxLayoutAlign.md',] },],
-    "alignLg": [{ type: Input, args: ['fxLayoutAlign.lg',] },],
-    "alignXl": [{ type: Input, args: ['fxLayoutAlign.xl',] },],
-    "alignGtXs": [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
-    "alignGtSm": [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
-    "alignGtMd": [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
-    "alignGtLg": [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
-    "alignLtSm": [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
-    "alignLtMd": [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
-    "alignLtLg": [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
-    "alignLtXl": [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
+    align: [{ type: Input, args: ['fxLayoutAlign',] }],
+    alignXs: [{ type: Input, args: ['fxLayoutAlign.xs',] }],
+    alignSm: [{ type: Input, args: ['fxLayoutAlign.sm',] }],
+    alignMd: [{ type: Input, args: ['fxLayoutAlign.md',] }],
+    alignLg: [{ type: Input, args: ['fxLayoutAlign.lg',] }],
+    alignXl: [{ type: Input, args: ['fxLayoutAlign.xl',] }],
+    alignGtXs: [{ type: Input, args: ['fxLayoutAlign.gt-xs',] }],
+    alignGtSm: [{ type: Input, args: ['fxLayoutAlign.gt-sm',] }],
+    alignGtMd: [{ type: Input, args: ['fxLayoutAlign.gt-md',] }],
+    alignGtLg: [{ type: Input, args: ['fxLayoutAlign.gt-lg',] }],
+    alignLtSm: [{ type: Input, args: ['fxLayoutAlign.lt-sm',] }],
+    alignLtMd: [{ type: Input, args: ['fxLayoutAlign.lt-md',] }],
+    alignLtLg: [{ type: Input, args: ['fxLayoutAlign.lt-lg',] }],
+    alignLtXl: [{ type: Input, args: ['fxLayoutAlign.lt-xl',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-const /** @type {?} */ ALL_DIRECTIVES = [
+/** @type {?} */
+const ALL_DIRECTIVES = [
     LayoutDirective,
     LayoutGapDirective,
     LayoutAlignDirective,
@@ -1937,17 +1980,15 @@ FlexModule.decorators = [
                 exports: [...ALL_DIRECTIVES]
             },] },
 ];
-/** @nocollapse */
-FlexModule.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 export { FlexModule, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, LayoutDirective, LayoutAlignDirective, LayoutGapDirective };

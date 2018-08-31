@@ -69,9 +69,7 @@ export declare class StyleDirective extends BaseDirective implements DoCheck, On
      *       Comma-delimiters are not supported due to complexities of
      *       possible style values such as `rgba(x,x,x,x)` and others
      */
-    protected _buildStyleMap(styles: NgStyleType): string | {
-        [klass: string]: string;
-    };
+    protected _buildStyleMap(styles: NgStyleType): string | import("./style-transforms").NgStyleMap;
     /** Initial lookup of raw 'class' value (if any) */
     protected _fallbackToStyle(): void;
     /**

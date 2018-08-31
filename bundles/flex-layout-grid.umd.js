@@ -27,9 +27,12 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
 
 function __extends(d, b) {
     extendStatics(d, b);
@@ -39,18 +42,21 @@ function __extends(d, b) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY = 'align';
-var /** @type {?} */ ROW_DEFAULT = 'stretch';
-var /** @type {?} */ COL_DEFAULT = 'stretch';
+/** @type {?} */
+var CACHE_KEY = 'align';
+/** @type {?} */
+var ROW_DEFAULT = 'stretch';
+/** @type {?} */
+var COL_DEFAULT = 'stretch';
 /**
  * 'align' CSS Grid styling directive for grid children
  *  Defines positioning of child elements along row and column axis in a grid container
  *  Optional values: {row-axis} values or {row-axis column-axis} value pairs
  *
- *  \@see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-justify-self
- *  \@see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-align-self
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-justify-self
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-align-self
  */
 var GridAlignDirective = /** @class */ (function (_super) {
     __extends(GridAlignDirective, _super);
@@ -59,6 +65,7 @@ var GridAlignDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridAlignDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -254,7 +261,9 @@ var GridAlignDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (align) {
-        var /** @type {?} */ css = {}, _a = align.split(' '), rowAxis = _a[0], columnAxis = _a[1];
+        /** @type {?} */
+        var css = {};
+        var _a = align.split(' '), rowAxis = _a[0], columnAxis = _a[1];
         // Row axis
         switch (rowAxis) {
             case 'end':
@@ -298,32 +307,32 @@ var GridAlignDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridAlignDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridAlignDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdGridAlign',] },],
-        "alignXs": [{ type: core.Input, args: ['gdGridAlign.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdGridAlign.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdGridAlign.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdGridAlign.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdGridAlign.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdGridAlign.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdGridAlign.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdGridAlign.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdGridAlign.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdGridAlign.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdGridAlign.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdGridAlign.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdGridAlign.lt-xl',] },],
+        align: [{ type: core.Input, args: ['gdGridAlign',] }],
+        alignXs: [{ type: core.Input, args: ['gdGridAlign.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdGridAlign.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdGridAlign.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdGridAlign.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdGridAlign.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdGridAlign.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdGridAlign.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdGridAlign.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdGridAlign.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdGridAlign.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdGridAlign.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdGridAlign.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdGridAlign.lt-xl',] }]
     };
     return GridAlignDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
@@ -344,7 +353,7 @@ function extendObject(dest) {
     for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
         var source = sources_1[_a];
         if (source != null) {
-            for (var /** @type {?} */ key in source) {
+            for (var key in source) {
                 if (source.hasOwnProperty(key)) {
                     dest[key] = source[key];
                 }
@@ -356,11 +365,14 @@ function extendObject(dest) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$1 = 'alignColumns';
-var /** @type {?} */ DEFAULT_MAIN = 'start';
-var /** @type {?} */ DEFAULT_CROSS = 'stretch';
+/** @type {?} */
+var CACHE_KEY$1 = 'alignColumns';
+/** @type {?} */
+var DEFAULT_MAIN = 'start';
+/** @type {?} */
+var DEFAULT_CROSS = 'stretch';
 /**
  * 'column alignment' CSS Grid styling directive
  * Configures the alignment in the column direction
@@ -374,6 +386,7 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridAlignColumnsDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -578,7 +591,9 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (align) {
-        var /** @type {?} */ css = {}, _a = align.split(' '), mainAxis = _a[0], crossAxis = _a[1];
+        /** @type {?} */
+        var css = {};
+        var _a = align.split(' '), mainAxis = _a[0], crossAxis = _a[1];
         // Main axis
         switch (mainAxis) {
             case 'center':
@@ -620,7 +635,7 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
             case 'stretch':
                 css['align-items'] = 'stretch';
                 break;
-            default:
+            default: // 'stretch'
                 // 'stretch'
                 css['align-items'] = DEFAULT_CROSS; // default cross axis
                 break;
@@ -632,37 +647,40 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridAlignColumnsDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridAlignColumnsDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdAlignColumns',] },],
-        "alignXs": [{ type: core.Input, args: ['gdAlignColumns.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdAlignColumns.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdAlignColumns.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdAlignColumns.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdAlignColumns.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdAlignColumns.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdAlignColumns.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdAlignColumns.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdAlignColumns.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdAlignColumns.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdAlignColumns.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdAlignColumns.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdAlignColumns.lt-xl',] },],
-        "inline": [{ type: core.Input, args: ['gdInline',] },],
+        align: [{ type: core.Input, args: ['gdAlignColumns',] }],
+        alignXs: [{ type: core.Input, args: ['gdAlignColumns.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdAlignColumns.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdAlignColumns.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdAlignColumns.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdAlignColumns.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdAlignColumns.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdAlignColumns.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdAlignColumns.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdAlignColumns.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdAlignColumns.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdAlignColumns.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdAlignColumns.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdAlignColumns.lt-xl',] }],
+        inline: [{ type: core.Input, args: ['gdInline',] }]
     };
     return GridAlignColumnsDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$2 = 'alignRows';
-var /** @type {?} */ DEFAULT_MAIN$1 = 'start';
-var /** @type {?} */ DEFAULT_CROSS$1 = 'stretch';
+/** @type {?} */
+var CACHE_KEY$2 = 'alignRows';
+/** @type {?} */
+var DEFAULT_MAIN$1 = 'start';
+/** @type {?} */
+var DEFAULT_CROSS$1 = 'stretch';
 /**
  * 'row alignment' CSS Grid styling directive
  * Configures the alignment in the row direction
@@ -676,6 +694,7 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridAlignRowsDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -880,7 +899,9 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (align) {
-        var /** @type {?} */ css = {}, _a = align.split(' '), mainAxis = _a[0], crossAxis = _a[1];
+        /** @type {?} */
+        var css = {};
+        var _a = align.split(' '), mainAxis = _a[0], crossAxis = _a[1];
         // Main axis
         switch (mainAxis) {
             case 'center':
@@ -904,7 +925,7 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
             case 'stretch':
                 css['justify-items'] = crossAxis;
                 break;
-            default:
+            default: // 'stretch'
                 // 'stretch'
                 css['justify-items'] = DEFAULT_CROSS$1; // default cross axis
                 break;
@@ -916,36 +937,38 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridAlignRowsDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridAlignRowsDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdAlignRows',] },],
-        "alignXs": [{ type: core.Input, args: ['gdAlignRows.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdAlignRows.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdAlignRows.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdAlignRows.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdAlignRows.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdAlignRows.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdAlignRows.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdAlignRows.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdAlignRows.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdAlignRows.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdAlignRows.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdAlignRows.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdAlignRows.lt-xl',] },],
-        "inline": [{ type: core.Input, args: ['gdInline',] },],
+        align: [{ type: core.Input, args: ['gdAlignRows',] }],
+        alignXs: [{ type: core.Input, args: ['gdAlignRows.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdAlignRows.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdAlignRows.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdAlignRows.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdAlignRows.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdAlignRows.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdAlignRows.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdAlignRows.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdAlignRows.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdAlignRows.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdAlignRows.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdAlignRows.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdAlignRows.lt-xl',] }],
+        inline: [{ type: core.Input, args: ['gdInline',] }]
     };
     return GridAlignRowsDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$3 = 'area';
-var /** @type {?} */ DEFAULT_VALUE = 'auto';
+/** @type {?} */
+var CACHE_KEY$3 = 'area';
+/** @type {?} */
+var DEFAULT_VALUE = 'auto';
 /**
  * 'grid-area' CSS Grid styling directive
  * Configures the name or position of an element within the grid
@@ -958,6 +981,7 @@ var GridAreaDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridAreaDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -1160,36 +1184,39 @@ var GridAreaDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridAreaDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridAreaDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdArea',] },],
-        "alignXs": [{ type: core.Input, args: ['gdArea.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdArea.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdArea.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdArea.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdArea.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdArea.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdArea.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdArea.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdArea.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdArea.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdArea.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdArea.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdArea.lt-xl',] },],
+        align: [{ type: core.Input, args: ['gdArea',] }],
+        alignXs: [{ type: core.Input, args: ['gdArea.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdArea.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdArea.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdArea.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdArea.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdArea.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdArea.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdArea.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdArea.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdArea.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdArea.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdArea.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdArea.lt-xl',] }]
     };
     return GridAreaDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$4 = 'areas';
-var /** @type {?} */ DEFAULT_VALUE$1 = 'none';
-var /** @type {?} */ DELIMETER = '|';
+/** @type {?} */
+var CACHE_KEY$4 = 'areas';
+/** @type {?} */
+var DEFAULT_VALUE$1 = 'none';
+/** @type {?} */
+var DELIMETER = '|';
 /**
  * 'grid-template-areas' CSS Grid styling directive
  * Configures the names of elements within the grid
@@ -1202,6 +1229,7 @@ var GridAreasDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridAreasDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -1406,7 +1434,8 @@ var GridAreasDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (value) {
-        var /** @type {?} */ areas = value.split(DELIMETER).map(function (v) { return "\"" + v.trim() + "\""; });
+        /** @type {?} */
+        var areas = value.split(DELIMETER).map(function (v) { return "\"" + v.trim() + "\""; });
         return {
             'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
             'grid-template-areas': areas.join(' ')
@@ -1417,36 +1446,38 @@ var GridAreasDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridAreasDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridAreasDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdAreas',] },],
-        "alignXs": [{ type: core.Input, args: ['gdAreas.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdAreas.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdAreas.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdAreas.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdAreas.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdAreas.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdAreas.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdAreas.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdAreas.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdAreas.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdAreas.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdAreas.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdAreas.lt-xl',] },],
-        "inline": [{ type: core.Input, args: ['gdInline',] },],
+        align: [{ type: core.Input, args: ['gdAreas',] }],
+        alignXs: [{ type: core.Input, args: ['gdAreas.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdAreas.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdAreas.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdAreas.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdAreas.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdAreas.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdAreas.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdAreas.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdAreas.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdAreas.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdAreas.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdAreas.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdAreas.lt-xl',] }],
+        inline: [{ type: core.Input, args: ['gdInline',] }]
     };
     return GridAreasDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$5 = 'autoFlow';
-var /** @type {?} */ DEFAULT_VALUE$2 = 'initial';
+/** @type {?} */
+var CACHE_KEY$5 = 'autoFlow';
+/** @type {?} */
+var DEFAULT_VALUE$2 = 'initial';
 /**
  * 'grid-auto-flow' CSS Grid styling directive
  * Configures the auto placement algorithm for the grid
@@ -1459,6 +1490,7 @@ var GridAutoDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridAutoDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -1678,36 +1710,38 @@ var GridAutoDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridAutoDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridAutoDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdAuto',] },],
-        "alignXs": [{ type: core.Input, args: ['gdAuto.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdAuto.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdAuto.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdAuto.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdAuto.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdAuto.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdAuto.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdAuto.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdAuto.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdAuto.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdAuto.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdAuto.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdAuto.lt-xl',] },],
-        "inline": [{ type: core.Input, args: ['gdInline',] },],
+        align: [{ type: core.Input, args: ['gdAuto',] }],
+        alignXs: [{ type: core.Input, args: ['gdAuto.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdAuto.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdAuto.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdAuto.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdAuto.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdAuto.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdAuto.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdAuto.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdAuto.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdAuto.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdAuto.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdAuto.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdAuto.lt-xl',] }],
+        inline: [{ type: core.Input, args: ['gdInline',] }]
     };
     return GridAutoDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$6 = 'column';
-var /** @type {?} */ DEFAULT_VALUE$3 = 'auto';
+/** @type {?} */
+var CACHE_KEY$6 = 'column';
+/** @type {?} */
+var DEFAULT_VALUE$3 = 'auto';
 /**
  * 'grid-column' CSS Grid styling directive
  * Configures the name or position of an element within the grid
@@ -1720,6 +1754,7 @@ var GridColumnDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridColumnDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -1922,36 +1957,39 @@ var GridColumnDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridColumnDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridColumnDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdColumn',] },],
-        "alignXs": [{ type: core.Input, args: ['gdColumn.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdColumn.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdColumn.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdColumn.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdColumn.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdColumn.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdColumn.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdColumn.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdColumn.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdColumn.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdColumn.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdColumn.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdColumn.lt-xl',] },],
+        align: [{ type: core.Input, args: ['gdColumn',] }],
+        alignXs: [{ type: core.Input, args: ['gdColumn.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdColumn.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdColumn.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdColumn.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdColumn.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdColumn.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdColumn.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdColumn.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdColumn.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdColumn.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdColumn.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdColumn.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdColumn.lt-xl',] }]
     };
     return GridColumnDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$7 = 'columns';
-var /** @type {?} */ DEFAULT_VALUE$4 = 'none';
-var /** @type {?} */ AUTO_SPECIFIER = '!';
+/** @type {?} */
+var CACHE_KEY$7 = 'columns';
+/** @type {?} */
+var DEFAULT_VALUE$4 = 'none';
+/** @type {?} */
+var AUTO_SPECIFIER = '!';
 /**
  * 'grid-template-columns' CSS Grid styling directive
  * Configures the sizing for the columns in the grid
@@ -1965,6 +2003,7 @@ var GridColumnsDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridColumnsDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -2169,17 +2208,20 @@ var GridColumnsDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (value) {
-        var /** @type {?} */ auto = false;
+        /** @type {?} */
+        var auto = false;
         if (value.endsWith(AUTO_SPECIFIER)) {
             value = value.substring(0, value.indexOf(AUTO_SPECIFIER));
             auto = true;
         }
-        var /** @type {?} */ css = {
+        /** @type {?} */
+        var css = {
             'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
             'grid-auto-columns': '',
             'grid-template-columns': '',
         };
-        var /** @type {?} */ key = (auto ? 'grid-auto-columns' : 'grid-template-columns');
+        /** @type {?} */
+        var key = (auto ? 'grid-auto-columns' : 'grid-template-columns');
         css[key] = value;
         return css;
     };
@@ -2188,36 +2230,38 @@ var GridColumnsDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridColumnsDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridColumnsDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdColumns',] },],
-        "alignXs": [{ type: core.Input, args: ['gdColumns.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdColumns.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdColumns.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdColumns.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdColumns.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdColumns.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdColumns.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdColumns.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdColumns.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdColumns.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdColumns.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdColumns.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdColumns.lt-xl',] },],
-        "inline": [{ type: core.Input, args: ['gdInline',] },],
+        align: [{ type: core.Input, args: ['gdColumns',] }],
+        alignXs: [{ type: core.Input, args: ['gdColumns.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdColumns.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdColumns.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdColumns.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdColumns.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdColumns.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdColumns.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdColumns.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdColumns.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdColumns.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdColumns.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdColumns.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdColumns.lt-xl',] }],
+        inline: [{ type: core.Input, args: ['gdInline',] }]
     };
     return GridColumnsDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$8 = 'gap';
-var /** @type {?} */ DEFAULT_VALUE$5 = '0';
+/** @type {?} */
+var CACHE_KEY$8 = 'gap';
+/** @type {?} */
+var DEFAULT_VALUE$5 = '0';
 /**
  * 'grid-gap' CSS Grid styling directive
  * Configures the gap between items in the grid
@@ -2231,6 +2275,7 @@ var GridGapDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridGapDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -2445,36 +2490,38 @@ var GridGapDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridGapDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridGapDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdGap',] },],
-        "alignXs": [{ type: core.Input, args: ['gdGap.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdGap.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdGap.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdGap.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdGap.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdGap.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdGap.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdGap.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdGap.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdGap.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdGap.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdGap.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdGap.lt-xl',] },],
-        "inline": [{ type: core.Input, args: ['gdInline',] },],
+        align: [{ type: core.Input, args: ['gdGap',] }],
+        alignXs: [{ type: core.Input, args: ['gdGap.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdGap.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdGap.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdGap.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdGap.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdGap.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdGap.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdGap.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdGap.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdGap.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdGap.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdGap.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdGap.lt-xl',] }],
+        inline: [{ type: core.Input, args: ['gdInline',] }]
     };
     return GridGapDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$9 = 'row';
-var /** @type {?} */ DEFAULT_VALUE$6 = 'auto';
+/** @type {?} */
+var CACHE_KEY$9 = 'row';
+/** @type {?} */
+var DEFAULT_VALUE$6 = 'auto';
 /**
  * 'grid-row' CSS Grid styling directive
  * Configures the name or position of an element within the grid
@@ -2487,6 +2534,7 @@ var GridRowDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridRowDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -2689,36 +2737,39 @@ var GridRowDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridRowDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridRowDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdRow',] },],
-        "alignXs": [{ type: core.Input, args: ['gdRow.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdRow.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdRow.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdRow.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdRow.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdRow.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdRow.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdRow.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdRow.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdRow.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdRow.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdRow.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdRow.lt-xl',] },],
+        align: [{ type: core.Input, args: ['gdRow',] }],
+        alignXs: [{ type: core.Input, args: ['gdRow.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdRow.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdRow.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdRow.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdRow.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdRow.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdRow.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdRow.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdRow.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdRow.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdRow.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdRow.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdRow.lt-xl',] }]
     };
     return GridRowDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ CACHE_KEY$10 = 'rows';
-var /** @type {?} */ DEFAULT_VALUE$7 = 'none';
-var /** @type {?} */ AUTO_SPECIFIER$1 = '!';
+/** @type {?} */
+var CACHE_KEY$10 = 'rows';
+/** @type {?} */
+var DEFAULT_VALUE$7 = 'none';
+/** @type {?} */
+var AUTO_SPECIFIER$1 = '!';
 /**
  * 'grid-template-rows' CSS Grid styling directive
  * Configures the sizing for the rows in the grid
@@ -2732,6 +2783,7 @@ var GridRowsDirective = /** @class */ (function (_super) {
         return _super.call(this, monitor, elRef, styleUtils) || this;
     }
     Object.defineProperty(GridRowsDirective.prototype, "align", {
+        /* tslint:disable */
         set: /**
          * @param {?} val
          * @return {?}
@@ -2936,17 +2988,20 @@ var GridRowsDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (value) {
-        var /** @type {?} */ auto = false;
+        /** @type {?} */
+        var auto = false;
         if (value.endsWith(AUTO_SPECIFIER$1)) {
             value = value.substring(0, value.indexOf(AUTO_SPECIFIER$1));
             auto = true;
         }
-        var /** @type {?} */ css = {
+        /** @type {?} */
+        var css = {
             'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
             'grid-auto-rows': '',
             'grid-template-rows': '',
         };
-        var /** @type {?} */ key = (auto ? 'grid-auto-rows' : 'grid-template-rows');
+        /** @type {?} */
+        var key = (auto ? 'grid-auto-rows' : 'grid-template-rows');
         css[key] = value;
         return css;
     };
@@ -2955,35 +3010,36 @@ var GridRowsDirective = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     GridRowsDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor, },
-        { type: core.ElementRef, },
-        { type: core$1.StyleUtils, },
+        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils }
     ]; };
     GridRowsDirective.propDecorators = {
-        "align": [{ type: core.Input, args: ['gdRows',] },],
-        "alignXs": [{ type: core.Input, args: ['gdRows.xs',] },],
-        "alignSm": [{ type: core.Input, args: ['gdRows.sm',] },],
-        "alignMd": [{ type: core.Input, args: ['gdRows.md',] },],
-        "alignLg": [{ type: core.Input, args: ['gdRows.lg',] },],
-        "alignXl": [{ type: core.Input, args: ['gdRows.xl',] },],
-        "alignGtXs": [{ type: core.Input, args: ['gdRows.gt-xs',] },],
-        "alignGtSm": [{ type: core.Input, args: ['gdRows.gt-sm',] },],
-        "alignGtMd": [{ type: core.Input, args: ['gdRows.gt-md',] },],
-        "alignGtLg": [{ type: core.Input, args: ['gdRows.gt-lg',] },],
-        "alignLtSm": [{ type: core.Input, args: ['gdRows.lt-sm',] },],
-        "alignLtMd": [{ type: core.Input, args: ['gdRows.lt-md',] },],
-        "alignLtLg": [{ type: core.Input, args: ['gdRows.lt-lg',] },],
-        "alignLtXl": [{ type: core.Input, args: ['gdRows.lt-xl',] },],
-        "inline": [{ type: core.Input, args: ['gdInline',] },],
+        align: [{ type: core.Input, args: ['gdRows',] }],
+        alignXs: [{ type: core.Input, args: ['gdRows.xs',] }],
+        alignSm: [{ type: core.Input, args: ['gdRows.sm',] }],
+        alignMd: [{ type: core.Input, args: ['gdRows.md',] }],
+        alignLg: [{ type: core.Input, args: ['gdRows.lg',] }],
+        alignXl: [{ type: core.Input, args: ['gdRows.xl',] }],
+        alignGtXs: [{ type: core.Input, args: ['gdRows.gt-xs',] }],
+        alignGtSm: [{ type: core.Input, args: ['gdRows.gt-sm',] }],
+        alignGtMd: [{ type: core.Input, args: ['gdRows.gt-md',] }],
+        alignGtLg: [{ type: core.Input, args: ['gdRows.gt-lg',] }],
+        alignLtSm: [{ type: core.Input, args: ['gdRows.lt-sm',] }],
+        alignLtMd: [{ type: core.Input, args: ['gdRows.lt-md',] }],
+        alignLtLg: [{ type: core.Input, args: ['gdRows.lt-lg',] }],
+        alignLtXl: [{ type: core.Input, args: ['gdRows.lt-xl',] }],
+        inline: [{ type: core.Input, args: ['gdInline',] }]
     };
     return GridRowsDirective;
 }(core$1.BaseDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ ALL_DIRECTIVES = [
+/** @type {?} */
+var ALL_DIRECTIVES = [
     GridAlignDirective,
     GridAlignColumnsDirective,
     GridAlignRowsDirective,
@@ -3011,8 +3067,6 @@ var GridModule = /** @class */ (function () {
                     exports: ALL_DIRECTIVES.slice()
                 },] },
     ];
-    /** @nocollapse */
-    GridModule.ctorParameters = function () { return []; };
     return GridModule;
 }());
 

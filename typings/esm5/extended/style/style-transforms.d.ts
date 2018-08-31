@@ -14,20 +14,27 @@ export declare type NgStyleType = string | Set<string> | NgStyleRawList | NgStyl
  * Callback function for SecurityContext.STYLE sanitization
  */
 export declare type NgStyleSanitizer = (val: any) => string;
-/**
- * NgStyle allowed inputs
- */
+/** NgStyle allowed inputs */
 export declare class NgStyleKeyValue {
     key: string;
     value: string;
     constructor(key: string, value: string, noQuotes?: boolean);
 }
-/**
- * Transform Operators for @angular/flex-layout NgStyle Directive
- */
+/** Transform Operators for @angular/flex-layout NgStyle Directive */
 export declare const ngStyleUtils: {
-    getType: (target: any) => string;
-    buildRawList: (source: any, delimiter?: string) => string[];
-    buildMapFromList: (styles: string[], sanitize?: NgStyleSanitizer | undefined) => NgStyleMap;
-    buildMapFromSet: (source: any, sanitize?: NgStyleSanitizer | undefined) => NgStyleMap;
+    getType: typeof getType;
+    buildRawList: typeof buildRawList;
+    buildMapFromList: typeof buildMapFromList;
+    buildMapFromSet: typeof buildMapFromSet;
 };
+declare function getType(target: any): string;
+/**
+ * Split string of key:value pairs into Array of k-v pairs
+ * e.g.  'key:value; key:value; key:value;' -> ['key:value',...]
+ */
+declare function buildRawList(source: any, delimiter?: string): NgStyleRawList;
+/** Convert array of key:value strings to a iterable map object */
+declare function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): NgStyleMap;
+/** Convert Set<string> or raw Object to an iterable NgStyleMap */
+declare function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap;
+export {};

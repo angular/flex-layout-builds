@@ -40,5 +40,5 @@ export declare class MediaMonitor {
      * Immediate calls to matchMedia() to establish listeners
      * and prepare for immediate subscription notifications
      */
-    private _registerBreakpoints();
+    private _registerBreakpoints;
 }

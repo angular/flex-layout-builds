@@ -13,7 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
@@ -148,7 +148,8 @@ class ImgSrcDirective extends BaseDirective {
      */
     _updateSrcFor() {
         if (this.hasResponsiveKeys) {
-            let /** @type {?} */ url = this.activatedValue || this.defaultSrc;
+            /** @type {?} */
+            let url = this.activatedValue || this.defaultSrc;
             if (isPlatformServer(this._platformId) && this._serverModuleLoaded) {
                 this._styler.applyStyleToElement(this.nativeElement, { 'content': url ? `url(${url})` : '' });
             }
@@ -195,32 +196,32 @@ ImgSrcDirective.decorators = [
 ];
 /** @nocollapse */
 ImgSrcDirective.ctorParameters = () => [
-    { type: ElementRef, },
-    { type: MediaMonitor, },
-    { type: StyleUtils, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
-    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
+    { type: ElementRef },
+    { type: MediaMonitor },
+    { type: StyleUtils },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] }
 ];
 ImgSrcDirective.propDecorators = {
-    "srcBase": [{ type: Input, args: ['src',] },],
-    "srcXs": [{ type: Input, args: ['src.xs',] },],
-    "srcSm": [{ type: Input, args: ['src.sm',] },],
-    "srcMd": [{ type: Input, args: ['src.md',] },],
-    "srcLg": [{ type: Input, args: ['src.lg',] },],
-    "srcXl": [{ type: Input, args: ['src.xl',] },],
-    "srcLtSm": [{ type: Input, args: ['src.lt-sm',] },],
-    "srcLtMd": [{ type: Input, args: ['src.lt-md',] },],
-    "srcLtLg": [{ type: Input, args: ['src.lt-lg',] },],
-    "srcLtXl": [{ type: Input, args: ['src.lt-xl',] },],
-    "srcGtXs": [{ type: Input, args: ['src.gt-xs',] },],
-    "srcGtSm": [{ type: Input, args: ['src.gt-sm',] },],
-    "srcGtMd": [{ type: Input, args: ['src.gt-md',] },],
-    "srcGtLg": [{ type: Input, args: ['src.gt-lg',] },],
+    srcBase: [{ type: Input, args: ['src',] }],
+    srcXs: [{ type: Input, args: ['src.xs',] }],
+    srcSm: [{ type: Input, args: ['src.sm',] }],
+    srcMd: [{ type: Input, args: ['src.md',] }],
+    srcLg: [{ type: Input, args: ['src.lg',] }],
+    srcXl: [{ type: Input, args: ['src.xl',] }],
+    srcLtSm: [{ type: Input, args: ['src.lt-sm',] }],
+    srcLtMd: [{ type: Input, args: ['src.lt-md',] }],
+    srcLtLg: [{ type: Input, args: ['src.lt-lg',] }],
+    srcLtXl: [{ type: Input, args: ['src.lt-xl',] }],
+    srcGtXs: [{ type: Input, args: ['src.gt-xs',] }],
+    srcGtSm: [{ type: Input, args: ['src.gt-sm',] }],
+    srcGtMd: [{ type: Input, args: ['src.gt-md',] }],
+    srcGtLg: [{ type: Input, args: ['src.gt-lg',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Directive to add responsive support for ngClass.
@@ -256,7 +257,8 @@ class ClassDirective extends BaseDirective {
      * @return {?}
      */
     set ngClassBase(val) {
-        const /** @type {?} */ key = 'ngClass';
+        /** @type {?} */
+        const key = 'ngClass';
         this._base.cacheInput(key, val, true);
         this._ngClassInstance.ngClass = this._base.queryInput(key);
     }
@@ -267,7 +269,8 @@ class ClassDirective extends BaseDirective {
      * @return {?}
      */
     set klazz(val) {
-        const /** @type {?} */ key = 'class';
+        /** @type {?} */
+        const key = 'class';
         this._base.cacheInput(key, val);
         this._ngClassInstance.klass = val;
     }
@@ -388,7 +391,8 @@ class ClassDirective extends BaseDirective {
      * @return {?}
      */
     _configureMQListener(baseKey = 'ngClass') {
-        const /** @type {?} */ fallbackValue = this._base.queryInput(baseKey);
+        /** @type {?} */
+        const fallbackValue = this._base.queryInput(baseKey);
         this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes) => {
             this._ngClassInstance.ngClass = changes.value || '';
             this._ngClassInstance.ngDoCheck();
@@ -406,37 +410,38 @@ ClassDirective.decorators = [
 ];
 /** @nocollapse */
 ClassDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: IterableDiffers, },
-    { type: KeyValueDiffers, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: NgClass, decorators: [{ type: Optional }, { type: Self },] },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: IterableDiffers },
+    { type: KeyValueDiffers },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: NgClass, decorators: [{ type: Optional }, { type: Self }] },
+    { type: StyleUtils }
 ];
 ClassDirective.propDecorators = {
-    "ngClassBase": [{ type: Input, args: ['ngClass',] },],
-    "klazz": [{ type: Input, args: ['class',] },],
-    "ngClassXs": [{ type: Input, args: ['ngClass.xs',] },],
-    "ngClassSm": [{ type: Input, args: ['ngClass.sm',] },],
-    "ngClassMd": [{ type: Input, args: ['ngClass.md',] },],
-    "ngClassLg": [{ type: Input, args: ['ngClass.lg',] },],
-    "ngClassXl": [{ type: Input, args: ['ngClass.xl',] },],
-    "ngClassLtSm": [{ type: Input, args: ['ngClass.lt-sm',] },],
-    "ngClassLtMd": [{ type: Input, args: ['ngClass.lt-md',] },],
-    "ngClassLtLg": [{ type: Input, args: ['ngClass.lt-lg',] },],
-    "ngClassLtXl": [{ type: Input, args: ['ngClass.lt-xl',] },],
-    "ngClassGtXs": [{ type: Input, args: ['ngClass.gt-xs',] },],
-    "ngClassGtSm": [{ type: Input, args: ['ngClass.gt-sm',] },],
-    "ngClassGtMd": [{ type: Input, args: ['ngClass.gt-md',] },],
-    "ngClassGtLg": [{ type: Input, args: ['ngClass.gt-lg',] },],
+    ngClassBase: [{ type: Input, args: ['ngClass',] }],
+    klazz: [{ type: Input, args: ['class',] }],
+    ngClassXs: [{ type: Input, args: ['ngClass.xs',] }],
+    ngClassSm: [{ type: Input, args: ['ngClass.sm',] }],
+    ngClassMd: [{ type: Input, args: ['ngClass.md',] }],
+    ngClassLg: [{ type: Input, args: ['ngClass.lg',] }],
+    ngClassXl: [{ type: Input, args: ['ngClass.xl',] }],
+    ngClassLtSm: [{ type: Input, args: ['ngClass.lt-sm',] }],
+    ngClassLtMd: [{ type: Input, args: ['ngClass.lt-md',] }],
+    ngClassLtLg: [{ type: Input, args: ['ngClass.lt-lg',] }],
+    ngClassLtXl: [{ type: Input, args: ['ngClass.lt-xl',] }],
+    ngClassGtXs: [{ type: Input, args: ['ngClass.gt-xs',] }],
+    ngClassGtSm: [{ type: Input, args: ['ngClass.gt-sm',] }],
+    ngClassGtMd: [{ type: Input, args: ['ngClass.gt-md',] }],
+    ngClassGtLg: [{ type: Input, args: ['ngClass.gt-lg',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-const /** @type {?} */ FALSY = ['false', false, 0];
+/** @type {?} */
+const FALSY = ['false', false, 0];
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
@@ -670,7 +675,8 @@ class ShowHideDirective extends BaseDirective {
     ngOnInit() {
         super.ngOnInit();
         this._display = this._getDisplayStyle();
-        let /** @type {?} */ value = this._getDefaultVal('show', true);
+        /** @type {?} */
+        let value = this._getDefaultVal('show', true);
         // Build _mqActivation controller
         this._listenForMediaQueryChanges('show', value, (changes) => {
             this._updateWithValue(changes.value);
@@ -696,7 +702,8 @@ class ShowHideDirective extends BaseDirective {
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        let /** @type {?} */ shouldShow = this._validateTruthy(value);
+        /** @type {?} */
+        let shouldShow = this._validateTruthy(value);
         this._applyStyleToElement(this._buildCSS(shouldShow));
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
@@ -735,47 +742,47 @@ ShowHideDirective.decorators = [
 ];
 /** @nocollapse */
 ShowHideDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: ElementRef, },
-    { type: StyleUtils, },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] },] },
-    { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] },] },
+    { type: MediaMonitor },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self }] },
+    { type: ElementRef },
+    { type: StyleUtils },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] }
 ];
 ShowHideDirective.propDecorators = {
-    "show": [{ type: Input, args: ['fxShow',] },],
-    "showXs": [{ type: Input, args: ['fxShow.xs',] },],
-    "showSm": [{ type: Input, args: ['fxShow.sm',] },],
-    "showMd": [{ type: Input, args: ['fxShow.md',] },],
-    "showLg": [{ type: Input, args: ['fxShow.lg',] },],
-    "showXl": [{ type: Input, args: ['fxShow.xl',] },],
-    "showLtSm": [{ type: Input, args: ['fxShow.lt-sm',] },],
-    "showLtMd": [{ type: Input, args: ['fxShow.lt-md',] },],
-    "showLtLg": [{ type: Input, args: ['fxShow.lt-lg',] },],
-    "showLtXl": [{ type: Input, args: ['fxShow.lt-xl',] },],
-    "showGtXs": [{ type: Input, args: ['fxShow.gt-xs',] },],
-    "showGtSm": [{ type: Input, args: ['fxShow.gt-sm',] },],
-    "showGtMd": [{ type: Input, args: ['fxShow.gt-md',] },],
-    "showGtLg": [{ type: Input, args: ['fxShow.gt-lg',] },],
-    "hide": [{ type: Input, args: ['fxHide',] },],
-    "hideXs": [{ type: Input, args: ['fxHide.xs',] },],
-    "hideSm": [{ type: Input, args: ['fxHide.sm',] },],
-    "hideMd": [{ type: Input, args: ['fxHide.md',] },],
-    "hideLg": [{ type: Input, args: ['fxHide.lg',] },],
-    "hideXl": [{ type: Input, args: ['fxHide.xl',] },],
-    "hideLtSm": [{ type: Input, args: ['fxHide.lt-sm',] },],
-    "hideLtMd": [{ type: Input, args: ['fxHide.lt-md',] },],
-    "hideLtLg": [{ type: Input, args: ['fxHide.lt-lg',] },],
-    "hideLtXl": [{ type: Input, args: ['fxHide.lt-xl',] },],
-    "hideGtXs": [{ type: Input, args: ['fxHide.gt-xs',] },],
-    "hideGtSm": [{ type: Input, args: ['fxHide.gt-sm',] },],
-    "hideGtMd": [{ type: Input, args: ['fxHide.gt-md',] },],
-    "hideGtLg": [{ type: Input, args: ['fxHide.gt-lg',] },],
+    show: [{ type: Input, args: ['fxShow',] }],
+    showXs: [{ type: Input, args: ['fxShow.xs',] }],
+    showSm: [{ type: Input, args: ['fxShow.sm',] }],
+    showMd: [{ type: Input, args: ['fxShow.md',] }],
+    showLg: [{ type: Input, args: ['fxShow.lg',] }],
+    showXl: [{ type: Input, args: ['fxShow.xl',] }],
+    showLtSm: [{ type: Input, args: ['fxShow.lt-sm',] }],
+    showLtMd: [{ type: Input, args: ['fxShow.lt-md',] }],
+    showLtLg: [{ type: Input, args: ['fxShow.lt-lg',] }],
+    showLtXl: [{ type: Input, args: ['fxShow.lt-xl',] }],
+    showGtXs: [{ type: Input, args: ['fxShow.gt-xs',] }],
+    showGtSm: [{ type: Input, args: ['fxShow.gt-sm',] }],
+    showGtMd: [{ type: Input, args: ['fxShow.gt-md',] }],
+    showGtLg: [{ type: Input, args: ['fxShow.gt-lg',] }],
+    hide: [{ type: Input, args: ['fxHide',] }],
+    hideXs: [{ type: Input, args: ['fxHide.xs',] }],
+    hideSm: [{ type: Input, args: ['fxHide.sm',] }],
+    hideMd: [{ type: Input, args: ['fxHide.md',] }],
+    hideLg: [{ type: Input, args: ['fxHide.lg',] }],
+    hideXl: [{ type: Input, args: ['fxHide.xl',] }],
+    hideLtSm: [{ type: Input, args: ['fxHide.lt-sm',] }],
+    hideLtMd: [{ type: Input, args: ['fxHide.lt-md',] }],
+    hideLtLg: [{ type: Input, args: ['fxHide.lt-lg',] }],
+    hideLtXl: [{ type: Input, args: ['fxHide.lt-xl',] }],
+    hideGtXs: [{ type: Input, args: ['fxHide.gt-xs',] }],
+    hideGtSm: [{ type: Input, args: ['fxHide.gt-sm',] }],
+    hideGtMd: [{ type: Input, args: ['fxHide.gt-md',] }],
+    hideGtLg: [{ type: Input, args: ['fxHide.gt-lg',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
@@ -789,9 +796,9 @@ function extendObject(dest, ...sources) {
     if (dest == null) {
         throw TypeError('Cannot convert undefined or null to object');
     }
-    for (let /** @type {?} */ source of sources) {
+    for (let source of sources) {
         if (source != null) {
-            for (let /** @type {?} */ key in source) {
+            for (let key in source) {
                 if (source.hasOwnProperty(key)) {
                     dest[key] = source[key];
                 }
@@ -803,9 +810,8 @@ function extendObject(dest, ...sources) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-
 /**
  * NgStyle allowed inputs
  */
@@ -823,10 +829,10 @@ class NgStyleKeyValue {
         this.value = this.value.replace(/;/, '');
     }
 }
-/**
+/** *
  * Transform Operators for \@angular/flex-layout NgStyle Directive
- */
-const /** @type {?} */ ngStyleUtils = {
+  @type {?} */
+const ngStyleUtils = {
     getType,
     buildRawList,
     buildMapFromList,
@@ -837,7 +843,8 @@ const /** @type {?} */ ngStyleUtils = {
  * @return {?}
  */
 function getType(target) {
-    let /** @type {?} */ what = typeof target;
+    /** @type {?} */
+    let what = typeof target;
     if (what === 'object') {
         return (target.constructor === Array) ? 'array' :
             (target.constructor === Set) ? 'set' : 'object';
@@ -865,7 +872,8 @@ function buildRawList(source, delimiter = ';') {
  * @return {?}
  */
 function buildMapFromList(styles, sanitize) {
-    let /** @type {?} */ sanitizeValue = (it) => {
+    /** @type {?} */
+    let sanitizeValue = (it) => {
         if (sanitize) {
             it.value = sanitize(it.value);
         }
@@ -884,11 +892,12 @@ function buildMapFromList(styles, sanitize) {
  * @return {?}
  */
 function buildMapFromSet(source, sanitize) {
-    let /** @type {?} */ list = new Array();
+    /** @type {?} */
+    let list = new Array();
     if (getType(source) == 'set') {
         source.forEach(entry => list.push(entry));
     }
-    else {
+    else { // simple hashmap
         // simple hashmap
         Object.keys(source).forEach(key => {
             list.push(`${key}:${source[key]}`);
@@ -903,7 +912,7 @@ function buildMapFromSet(source, sanitize) {
  */
 function stringToKeyValue(it) {
     let [key, val] = it.split(':');
-    return val ? new NgStyleKeyValue(key, val) : null;
+    return new NgStyleKeyValue(key, val);
 }
 /**
  * Convert [ [key,value] ] -> { key : value }
@@ -920,7 +929,7 @@ function keyValuesToMap(map, entry) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Directive to add responsive support for ngStyle.
@@ -956,7 +965,8 @@ class StyleDirective extends BaseDirective {
      * @return {?}
      */
     set ngStyleBase(val) {
-        const /** @type {?} */ key = 'ngStyle';
+        /** @type {?} */
+        const key = 'ngStyle';
         this._base.cacheInput(key, val, true); // convert val to hashmap
         this._ngStyleInstance.ngStyle = this._base.queryInput(key);
     }
@@ -1089,7 +1099,8 @@ class StyleDirective extends BaseDirective {
      * @return {?}
      */
     _configureMQListener(baseKey = 'ngStyle') {
-        const /** @type {?} */ fallbackValue = this._base.queryInput(baseKey);
+        /** @type {?} */
+        const fallbackValue = this._base.queryInput(baseKey);
         this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes) => {
             this._ngStyleInstance.ngStyle = changes.value || '';
             this._ngStyleInstance.ngDoCheck();
@@ -1100,9 +1111,11 @@ class StyleDirective extends BaseDirective {
      * @return {?}
      */
     _buildCacheInterceptor() {
-        let /** @type {?} */ cacheInput = this._base.cacheInput.bind(this._base);
+        /** @type {?} */
+        let cacheInput = this._base.cacheInput.bind(this._base);
         this._base.cacheInput = (key, source, cacheRaw = false, merge = true) => {
-            let /** @type {?} */ styles = this._buildStyleMap(source);
+            /** @type {?} */
+            let styles = this._buildStyleMap(source);
             if (merge) {
                 styles = extendObject({}, this._base.inputMap['ngStyle'], styles);
             }
@@ -1118,7 +1131,8 @@ class StyleDirective extends BaseDirective {
      * @return {?}
      */
     _buildStyleMap(styles) {
-        let /** @type {?} */ sanitizer = (val) => {
+        /** @type {?} */
+        let sanitizer = (val) => {
             // Always safe-guard (aka sanitize) style property values
             return this._sanitizer.sanitize(SecurityContext.STYLE, val) || '';
         };
@@ -1153,36 +1167,37 @@ StyleDirective.decorators = [
 ];
 /** @nocollapse */
 StyleDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: DomSanitizer, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: KeyValueDiffers, },
-    { type: NgStyle, decorators: [{ type: Optional }, { type: Self },] },
-    { type: StyleUtils, },
+    { type: MediaMonitor },
+    { type: DomSanitizer },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: KeyValueDiffers },
+    { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] },
+    { type: StyleUtils }
 ];
 StyleDirective.propDecorators = {
-    "ngStyleBase": [{ type: Input, args: ['ngStyle',] },],
-    "ngStyleXs": [{ type: Input, args: ['ngStyle.xs',] },],
-    "ngStyleSm": [{ type: Input, args: ['ngStyle.sm',] },],
-    "ngStyleMd": [{ type: Input, args: ['ngStyle.md',] },],
-    "ngStyleLg": [{ type: Input, args: ['ngStyle.lg',] },],
-    "ngStyleXl": [{ type: Input, args: ['ngStyle.xl',] },],
-    "ngStyleLtSm": [{ type: Input, args: ['ngStyle.lt-sm',] },],
-    "ngStyleLtMd": [{ type: Input, args: ['ngStyle.lt-md',] },],
-    "ngStyleLtLg": [{ type: Input, args: ['ngStyle.lt-lg',] },],
-    "ngStyleLtXl": [{ type: Input, args: ['ngStyle.lt-xl',] },],
-    "ngStyleGtXs": [{ type: Input, args: ['ngStyle.gt-xs',] },],
-    "ngStyleGtSm": [{ type: Input, args: ['ngStyle.gt-sm',] },],
-    "ngStyleGtMd": [{ type: Input, args: ['ngStyle.gt-md',] },],
-    "ngStyleGtLg": [{ type: Input, args: ['ngStyle.gt-lg',] },],
+    ngStyleBase: [{ type: Input, args: ['ngStyle',] }],
+    ngStyleXs: [{ type: Input, args: ['ngStyle.xs',] }],
+    ngStyleSm: [{ type: Input, args: ['ngStyle.sm',] }],
+    ngStyleMd: [{ type: Input, args: ['ngStyle.md',] }],
+    ngStyleLg: [{ type: Input, args: ['ngStyle.lg',] }],
+    ngStyleXl: [{ type: Input, args: ['ngStyle.xl',] }],
+    ngStyleLtSm: [{ type: Input, args: ['ngStyle.lt-sm',] }],
+    ngStyleLtMd: [{ type: Input, args: ['ngStyle.lt-md',] }],
+    ngStyleLtLg: [{ type: Input, args: ['ngStyle.lt-lg',] }],
+    ngStyleLtXl: [{ type: Input, args: ['ngStyle.lt-xl',] }],
+    ngStyleGtXs: [{ type: Input, args: ['ngStyle.gt-xs',] }],
+    ngStyleGtSm: [{ type: Input, args: ['ngStyle.gt-sm',] }],
+    ngStyleGtMd: [{ type: Input, args: ['ngStyle.gt-md',] }],
+    ngStyleGtLg: [{ type: Input, args: ['ngStyle.gt-lg',] }]
 };
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-const /** @type {?} */ ALL_DIRECTIVES = [
+/** @type {?} */
+const ALL_DIRECTIVES = [
     ShowHideDirective,
     ClassDirective,
     StyleDirective,
@@ -1202,17 +1217,15 @@ ExtendedModule.decorators = [
                 exports: [...ALL_DIRECTIVES]
             },] },
 ];
-/** @nocollapse */
-ExtendedModule.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 export { ExtendedModule, ClassDirective, ImgSrcDirective, negativeOf, ShowHideDirective, StyleDirective };

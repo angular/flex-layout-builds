@@ -13,7 +13,7 @@
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Activate all of the registered breakpoints in sequence, and then
@@ -25,20 +25,18 @@
  * @return {?}
  */
 function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
-    // Store the custom classes in the following map, that way only
-    // one class gets allocated per HTMLElement, and each class can
-    // be referenced in the static media queries
-    var /** @type {?} */ classMap = new Map();
-    // Get the initial stylings for all of the directives, and initialize
-    // the fallback block of stylings, then reverse the breakpoints list
-    // to traverse in the proper order
-    var /** @type {?} */ defaultStyles = new Map(serverSheet.stylesheet);
-    var /** @type {?} */ styleText = generateCss(defaultStyles, 'all', classMap);
+    /** @type {?} */
+    var classMap = new Map();
+    /** @type {?} */
+    var defaultStyles = new Map(serverSheet.stylesheet);
+    /** @type {?} */
+    var styleText = generateCss(defaultStyles, 'all', classMap);
     breakpoints.reverse();
     breakpoints.forEach(function (bp, i) {
         serverSheet.clearStyles();
         (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
-        var /** @type {?} */ stylesheet = new Map(serverSheet.stylesheet);
+        /** @type {?} */
+        var stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
@@ -57,19 +55,19 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
  */
 function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints) {
     return function () {
-        // This is the style tag that gets inserted into the head of the DOM,
-        // populated with the manual media queries
-        var /** @type {?} */ styleTag = _document.createElement('style');
-        var /** @type {?} */ styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+        /** @type {?} */
+        var styleTag = _document.createElement('style');
+        /** @type {?} */
+        var styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
         styleTag.classList.add(core.CLASS_NAME + "ssr");
         styleTag.textContent = styleText;
         _document.head.appendChild(styleTag);
     };
 }
-/**
+/** *
  *  Provider to set static styles on the server
- */
-var /** @type {?} */ SERVER_PROVIDERS = [
+  @type {?} */
+var SERVER_PROVIDERS = [
     {
         provide: /** @type {?} */ (platformServer.BEFORE_APP_SERIALIZED),
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
@@ -90,8 +88,10 @@ var /** @type {?} */ SERVER_PROVIDERS = [
         useClass: core.ServerMatchMedia
     }
 ];
-var /** @type {?} */ nextId = 0;
-var /** @type {?} */ IS_DEBUG_MODE = false;
+/** @type {?} */
+var nextId = 0;
+/** @type {?} */
+var IS_DEBUG_MODE = false;
 /**
  * create \@media queries based on a virtual stylesheet
  * * Adds a unique class to each element and stores it
@@ -103,9 +103,13 @@ var /** @type {?} */ IS_DEBUG_MODE = false;
  * @return {?}
  */
 function generateCss(stylesheet, mediaQuery, classMap) {
-    var /** @type {?} */ css = '';
+    /** @type {?} */
+    var css = '';
     stylesheet.forEach(function (styles, el) {
-        var /** @type {?} */ keyVals = '', /** @type {?} */ className = getClassName(el, classMap);
+        /** @type {?} */
+        var keyVals = '';
+        /** @type {?} */
+        var className = getClassName(el, classMap);
         styles.forEach(function (v, k) {
             keyVals += v ? format(k + ":" + v + ";") : '';
         });
@@ -126,7 +130,8 @@ function format() {
     for (var _i = 0; _i < arguments.length; _i++) {
         list[_i] = arguments[_i];
     }
-    var /** @type {?} */ result = '';
+    /** @type {?} */
+    var result = '';
     list.forEach(function (css, i) {
         result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
     });
@@ -150,7 +155,8 @@ function formatSegment(css, asPrefix) {
  * @return {?}
  */
 function getClassName(stylesheet, classMap) {
-    var /** @type {?} */ className = classMap.get(stylesheet);
+    /** @type {?} */
+    var className = classMap.get(stylesheet);
     if (!className) {
         className = "" + core.CLASS_NAME + nextId++;
         classMap.set(stylesheet, className);
@@ -161,7 +167,7 @@ function getClassName(stylesheet, classMap) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 var FlexLayoutServerModule = /** @class */ (function () {
     function FlexLayoutServerModule() {
@@ -171,8 +177,6 @@ var FlexLayoutServerModule = /** @class */ (function () {
                     providers: [SERVER_PROVIDERS]
                 },] },
     ];
-    /** @nocollapse */
-    FlexLayoutServerModule.ctorParameters = function () { return []; };
     return FlexLayoutServerModule;
 }());
 

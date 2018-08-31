@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Activate all of the registered breakpoints in sequence, and then
@@ -24,20 +24,18 @@ import { NgModule } from '@angular/core';
  * @return {?}
  */
 function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
-    // Store the custom classes in the following map, that way only
-    // one class gets allocated per HTMLElement, and each class can
-    // be referenced in the static media queries
-    const /** @type {?} */ classMap = new Map();
-    // Get the initial stylings for all of the directives, and initialize
-    // the fallback block of stylings, then reverse the breakpoints list
-    // to traverse in the proper order
-    const /** @type {?} */ defaultStyles = new Map(serverSheet.stylesheet);
-    let /** @type {?} */ styleText = generateCss(defaultStyles, 'all', classMap);
+    /** @type {?} */
+    const classMap = new Map();
+    /** @type {?} */
+    const defaultStyles = new Map(serverSheet.stylesheet);
+    /** @type {?} */
+    let styleText = generateCss(defaultStyles, 'all', classMap);
     breakpoints.reverse();
     breakpoints.forEach((bp, i) => {
         serverSheet.clearStyles();
         (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
-        const /** @type {?} */ stylesheet = new Map(serverSheet.stylesheet);
+        /** @type {?} */
+        const stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
@@ -56,19 +54,19 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
  */
 function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints) {
     return () => {
-        // This is the style tag that gets inserted into the head of the DOM,
-        // populated with the manual media queries
-        const /** @type {?} */ styleTag = _document.createElement('style');
-        const /** @type {?} */ styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+        /** @type {?} */
+        const styleTag = _document.createElement('style');
+        /** @type {?} */
+        const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
         styleTag.classList.add(`${CLASS_NAME}ssr`);
         styleTag.textContent = styleText;
         _document.head.appendChild(styleTag);
     };
 }
-/**
+/** *
  *  Provider to set static styles on the server
- */
-const /** @type {?} */ SERVER_PROVIDERS = [
+  @type {?} */
+const SERVER_PROVIDERS = [
     {
         provide: /** @type {?} */ (BEFORE_APP_SERIALIZED),
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
@@ -89,8 +87,10 @@ const /** @type {?} */ SERVER_PROVIDERS = [
         useClass: ServerMatchMedia
     }
 ];
-let /** @type {?} */ nextId = 0;
-const /** @type {?} */ IS_DEBUG_MODE = false;
+/** @type {?} */
+let nextId = 0;
+/** @type {?} */
+const IS_DEBUG_MODE = false;
 /**
  * create \@media queries based on a virtual stylesheet
  * * Adds a unique class to each element and stores it
@@ -102,9 +102,13 @@ const /** @type {?} */ IS_DEBUG_MODE = false;
  * @return {?}
  */
 function generateCss(stylesheet, mediaQuery, classMap) {
-    let /** @type {?} */ css = '';
+    /** @type {?} */
+    let css = '';
     stylesheet.forEach((styles, el) => {
-        let /** @type {?} */ keyVals = '', /** @type {?} */ className = getClassName(el, classMap);
+        /** @type {?} */
+        let keyVals = '';
+        /** @type {?} */
+        let className = getClassName(el, classMap);
         styles.forEach((v, k) => {
             keyVals += v ? format(`${k}:${v};`) : '';
         });
@@ -121,7 +125,8 @@ function generateCss(stylesheet, mediaQuery, classMap) {
  * @return {?}
  */
 function format(...list) {
-    let /** @type {?} */ result = '';
+    /** @type {?} */
+    let result = '';
     list.forEach((css, i) => {
         result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
     });
@@ -144,7 +149,8 @@ function formatSegment(css, asPrefix = true) {
  * @return {?}
  */
 function getClassName(stylesheet, classMap) {
-    let /** @type {?} */ className = classMap.get(stylesheet);
+    /** @type {?} */
+    let className = classMap.get(stylesheet);
     if (!className) {
         className = `${CLASS_NAME}${nextId++}`;
         classMap.set(stylesheet, className);
@@ -155,7 +161,7 @@ function getClassName(stylesheet, classMap) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 class FlexLayoutServerModule {
 }
@@ -164,17 +170,15 @@ FlexLayoutServerModule.decorators = [
                 providers: [SERVER_PROVIDERS]
             },] },
 ];
-/** @nocollapse */
-FlexLayoutServerModule.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS };

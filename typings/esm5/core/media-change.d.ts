@@ -16,6 +16,9 @@ export declare class MediaChange {
     suffix: string;
     property: string;
     value: any;
-    constructor(matches?: boolean, mediaQuery?: string, mqAlias?: string, suffix?: string);
+    constructor(matches?: boolean, // Is the mq currently activated
+    mediaQuery?: string, // e.g.   (min-width: 600px) and (max-width: 959px)
+    mqAlias?: string, // e.g.   gt-sm, md, gt-lg
+    suffix?: string);
     clone(): MediaChange;
 }

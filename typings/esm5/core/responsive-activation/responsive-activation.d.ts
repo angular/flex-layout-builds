@@ -85,12 +85,12 @@ export declare class ResponsiveActivation {
      * For each *defined* API property, register a callback to `_onMonitorEvents( )`
      * Cache 1..n subscriptions for internal auto-unsubscribes when the the directive destructs
      */
-    private _configureChangeObservers();
+    private _configureChangeObservers;
     /**
      * Build mediaQuery key-hashmap; only for the directive properties that are actually defined/used
      * in the HTML markup
      */
-    private _buildRegistryMap();
+    private _buildRegistryMap;
     /**
      * Synchronizes change notifications with the current mq-activated @Input and calculates the
      * mq-activated input value or the default value
@@ -100,7 +100,7 @@ export declare class ResponsiveActivation {
      * Has the key been specified in the HTML markup and thus is intended
      * to participate in activation processes.
      */
-    private _keyInUse(key);
+    private _keyInUse;
     /**
      *  Map input key associated with mediaQuery activation to closest defined input key
      *  then return the values associated with the targeted input property
@@ -109,16 +109,16 @@ export declare class ResponsiveActivation {
      *     so make sure the deactivate is used ONLY when the keys match
      *     (since a different activate may be in use)
      */
-    private _calculateActivatedValue(current);
+    private _calculateActivatedValue;
     /**
      * For the specified input property key, validate it is defined (used in the markup)
      * If not see if a overlapping mediaQuery-related input key fallback has been defined
      *
      * NOTE: scans in the order defined by activeOverLaps (largest viewport ranges -> smallest ranges)
      */
-    private _validateInputKey(inputKey);
+    private _validateInputKey;
     /**
      * Get the value (if any) for the directive instances @Input property (aka key)
      */
-    private _lookupKeyValue(key);
+    private _lookupKeyValue;
 }

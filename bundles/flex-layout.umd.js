@@ -13,16 +13,16 @@
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
+/** *
  * Current version of Angular Flex-Layout.
- */
-var /** @type {?} */ VERSION = new core.Version('6.0.0-beta.17-19474ff');
+  @type {?} */
+var VERSION = new core.Version('6.0.0-beta.17-aa8fb8c');
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -86,8 +86,8 @@ var FlexLayoutModule = /** @class */ (function () {
     ];
     /** @nocollapse */
     FlexLayoutModule.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] },] },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
+        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] }] },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] }
     ]; };
     return FlexLayoutModule;
 }());

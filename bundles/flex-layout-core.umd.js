@@ -27,9 +27,12 @@ and limitations under the License.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
 
 function __extends(d, b) {
     extendStatics(d, b);
@@ -39,7 +42,7 @@ function __extends(d, b) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Find all of the server-generated stylings, if any, and remove them
@@ -52,12 +55,10 @@ function __extends(d, b) {
 function removeStyles(_document, platformId) {
     return function () {
         if (common.isPlatformBrowser(platformId)) {
-            var /** @type {?} */ elements = Array.from(_document.querySelectorAll("[class*=" + CLASS_NAME + "]"));
-            // RegExp constructor should only be used if passing a variable to the constructor.
-            // When using static regular expression it is more performant to use reg exp literal.
-            // This is also needed to provide Safari 9 compatibility, please see
-            // https://stackoverflow.com/questions/37919802 for more discussion.
-            var /** @type {?} */ classRegex_1 = /\bflex-layout-.+?\b/g;
+            /** @type {?} */
+            var elements = Array.from(_document.querySelectorAll("[class*=" + CLASS_NAME + "]"));
+            /** @type {?} */
+            var classRegex_1 = /\bflex-layout-.+?\b/g;
             elements.forEach(function (el) {
                 el.classList.contains(CLASS_NAME + "ssr") && el.parentNode ?
                     el.parentNode.removeChild(el) : el.className.replace(classRegex_1, '');
@@ -65,34 +66,38 @@ function removeStyles(_document, platformId) {
         }
     };
 }
-/**
+/** *
  *  Provider to remove SSR styles on the browser
- */
-var /** @type {?} */ BROWSER_PROVIDER = {
+  @type {?} */
+var BROWSER_PROVIDER = {
     provide: /** @type {?} */ (core.APP_BOOTSTRAP_LISTENER),
     useFactory: removeStyles,
     deps: [common.DOCUMENT, core.PLATFORM_ID],
     multi: true
 };
-var /** @type {?} */ CLASS_NAME = 'flex-layout-';
+/** @type {?} */
+var CLASS_NAME = 'flex-layout-';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ BREAKPOINT = new core.InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
+/** @type {?} */
+var BREAKPOINT = new core.InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
     providedIn: 'root',
     factory: function () { return null; }
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ RESPONSIVE_ALIASES = [
+/** @type {?} */
+var RESPONSIVE_ALIASES = [
     'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
 ];
-var /** @type {?} */ DEFAULT_BREAKPOINTS = [
+/** @type {?} */
+var DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
         mediaQuery: '(min-width: 0px) and (max-width: 599px)'
@@ -157,17 +162,23 @@ var /** @type {?} */ DEFAULT_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-/* tslint:disable */
-var /** @type {?} */ HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599px)';
-var /** @type {?} */ HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
-var /** @type {?} */ TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
-var /** @type {?} */ TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
-var /** @type {?} */ WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
-var /** @type {?} */ WEB_LANDSCAPE = '(orientation: landscape) and (min-width: 1280px)';
-var /** @type {?} */ ScreenTypes = {
+/** @type {?} */
+var HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599px)';
+/** @type {?} */
+var HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
+/** @type {?} */
+var TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
+/** @type {?} */
+var TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
+/** @type {?} */
+var WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
+/** @type {?} */
+var WEB_LANDSCAPE = '(orientation: landscape) and (min-width: 1280px)';
+/** @type {?} */
+var ScreenTypes = {
     'HANDSET': HANDSET_PORTRAIT + ", " + HANDSET_LANDSCAPE,
     'TABLET': TABLET_PORTRAIT + " , " + TABLET_LANDSCAPE,
     'WEB': WEB_PORTRAIT + ", " + WEB_LANDSCAPE + " ",
@@ -178,10 +189,10 @@ var /** @type {?} */ ScreenTypes = {
     'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
     'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
 };
-/**
+/** *
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
- */
-var /** @type {?} */ ORIENTATION_BREAKPOINTS = [
+  @type {?} */
+var ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
     { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
     { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
@@ -195,7 +206,7 @@ var /** @type {?} */ ORIENTATION_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
@@ -216,7 +227,7 @@ function extendObject(dest) {
     for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
         var source = sources_1[_a];
         if (source != null) {
-            for (var /** @type {?} */ key in source) {
+            for (var key in source) {
                 if (source.hasOwnProperty(key)) {
                     dest[key] = source[key];
                 }
@@ -228,16 +239,19 @@ function extendObject(dest) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ ALIAS_DELIMITERS = /(\.|-|_)/g;
+/** @type {?} */
+var ALIAS_DELIMITERS = /(\.|-|_)/g;
 /**
  * @param {?} part
  * @return {?}
  */
 function firstUpperCase(part) {
-    var /** @type {?} */ first = part.length > 0 ? part.charAt(0) : '';
-    var /** @type {?} */ remainder = (part.length > 1) ? part.slice(1) : '';
+    /** @type {?} */
+    var first = part.length > 0 ? part.charAt(0) : '';
+    /** @type {?} */
+    var remainder = (part.length > 1) ? part.slice(1) : '';
     return first.toUpperCase() + remainder;
 }
 /**
@@ -277,7 +291,8 @@ function validateSuffixes(list) {
  */
 function mergeByAlias(defaults, custom) {
     if (custom === void 0) { custom = []; }
-    var /** @type {?} */ dict = {};
+    /** @type {?} */
+    var dict = {};
     defaults.forEach(function (bp) {
         dict[bp.alias] = bp;
     });
@@ -295,9 +310,10 @@ function mergeByAlias(defaults, custom) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var /** @type {?} */ DEFAULT_CONFIG = {
+/** @type {?} */
+var DEFAULT_CONFIG = {
     addFlexToParent: true,
     addOrientationBps: false,
     disableDefaultBps: false,
@@ -305,27 +321,32 @@ var /** @type {?} */ DEFAULT_CONFIG = {
     serverLoaded: false,
     useColumnBasisZero: true,
 };
-var /** @type {?} */ LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options for the library', {
+/** @type {?} */
+var LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options for the library', {
     providedIn: 'root',
     factory: function () { return DEFAULT_CONFIG; }
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
+/** *
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
- */
-var /** @type {?} */ BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoints', {
+  @type {?} */
+var BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoints', {
     providedIn: 'root',
     factory: function () {
-        var /** @type {?} */ breakpoints = core.inject(BREAKPOINT);
-        var /** @type {?} */ layoutConfig = core.inject(LAYOUT_CONFIG);
-        var /** @type {?} */ bpFlattenArray = [].concat.apply([], (breakpoints || [])
+        /** @type {?} */
+        var breakpoints = core.inject(BREAKPOINT);
+        /** @type {?} */
+        var layoutConfig = core.inject(LAYOUT_CONFIG);
+        /** @type {?} */
+        var bpFlattenArray = [].concat.apply([], (breakpoints || [])
             .map(function (v) { return Array.isArray(v) ? v : [v]; }));
-        var /** @type {?} */ builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
+        /** @type {?} */
+        var builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
             .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
         return mergeByAlias(builtIns, bpFlattenArray);
     }
@@ -333,7 +354,7 @@ var /** @type {?} */ BREAKPOINTS = new core.InjectionToken('Token (@angular/flex
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
@@ -375,8 +396,10 @@ var BreakPointRegistry = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            var /** @type {?} */ overlaps = this._registry.filter(function (it) { return it.overlapping === true; });
-            var /** @type {?} */ nonOverlaps = this._registry.filter(function (it) { return it.overlapping !== true; });
+            /** @type {?} */
+            var overlaps = this._registry.filter(function (it) { return it.overlapping === true; });
+            /** @type {?} */
+            var nonOverlaps = this._registry.filter(function (it) { return it.overlapping !== true; });
             return overlaps.concat(nonOverlaps);
         },
         enumerable: true,
@@ -462,7 +485,7 @@ var BreakPointRegistry = /** @class */ (function () {
     ];
     /** @nocollapse */
     BreakPointRegistry.ctorParameters = function () { return [
-        { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] },] },
+        { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] }] }
     ]; };
     /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
@@ -470,7 +493,7 @@ var BreakPointRegistry = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Class instances emitted [to observers] for each mql notification
@@ -504,7 +527,7 @@ MediaChange = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -536,7 +559,8 @@ var MatchMedia = /** @class */ (function () {
      * @return {?}
      */
     function (mediaQuery) {
-        var /** @type {?} */ mql = this._registry.get(mediaQuery);
+        /** @type {?} */
+        var mql = this._registry.get(mediaQuery);
         return !!mql ? mql.matches : false;
     };
     /**
@@ -593,14 +617,18 @@ var MatchMedia = /** @class */ (function () {
      */
     function (mediaQuery) {
         var _this = this;
-        var /** @type {?} */ list = normalizeQuery(mediaQuery);
+        /** @type {?} */
+        var list = normalizeQuery(mediaQuery);
         if (list.length > 0) {
             this._prepareQueryCSS(list, this._document);
             list.forEach(function (query) {
-                var /** @type {?} */ mql = _this._registry.get(query);
-                var /** @type {?} */ onMQLEvent = function (e) {
+                /** @type {?} */
+                var mql = _this._registry.get(query);
+                /** @type {?} */
+                var onMQLEvent = function (e) {
                     _this._zone.run(function () {
-                        var /** @type {?} */ change = new MediaChange(e.matches, query);
+                        /** @type {?} */
+                        var change = new MediaChange(e.matches, query);
                         _this._source.next(change);
                     });
                 };
@@ -632,7 +660,8 @@ var MatchMedia = /** @class */ (function () {
      * @return {?}
      */
     function (query) {
-        var /** @type {?} */ canListen = common.isPlatformBrowser(this._platformId) &&
+        /** @type {?} */
+        var canListen = common.isPlatformBrowser(this._platformId) &&
             !!(/** @type {?} */ (window)).matchMedia('all').addListener;
         return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
             matches: query === 'all' || query === '',
@@ -667,21 +696,25 @@ var MatchMedia = /** @class */ (function () {
      * @return {?}
      */
     function (mediaQueries, _document) {
-        var /** @type {?} */ list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
+        /** @type {?} */
+        var list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
         if (list.length > 0) {
-            var /** @type {?} */ query = list.join(', ');
+            /** @type {?} */
+            var query = list.join(', ');
             try {
-                var /** @type {?} */ styleEl_1 = _document.createElement('style');
+                /** @type {?} */
+                var styleEl_1 = _document.createElement('style');
                 styleEl_1.setAttribute('type', 'text/css');
                 if (!styleEl_1['styleSheet']) {
-                    var /** @type {?} */ cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
+                    /** @type {?} */
+                    var cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
                     styleEl_1.appendChild(_document.createTextNode(cssText));
                 }
                 _document.head.appendChild(styleEl_1);
                 // Store in private global registry
                 list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
             }
-            catch (/** @type {?} */ e) {
+            catch (e) {
                 console.error(e);
             }
         }
@@ -691,18 +724,18 @@ var MatchMedia = /** @class */ (function () {
     ];
     /** @nocollapse */
     MatchMedia.ctorParameters = function () { return [
-        { type: core.NgZone, },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
+        { type: core.NgZone },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
     /** @nocollapse */ MatchMedia.ngInjectableDef = core.defineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.inject(core.NgZone), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
-/**
+/** *
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
- */
-var /** @type {?} */ ALL_STYLES = {};
+  @type {?} */
+var ALL_STYLES = {};
 /**
  * Always convert to unique list of queries; for iteration in ::registerQuery()
  * @param {?} mediaQuery
@@ -718,7 +751,8 @@ function normalizeQuery(mediaQuery) {
  * @return {?}
  */
 function unique(list) {
-    var /** @type {?} */ seen = {};
+    /** @type {?} */
+    var seen = {};
     return list.filter(function (item) {
         return seen.hasOwnProperty(item) ? false : (seen[item] = true);
     });
@@ -726,7 +760,7 @@ function unique(list) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * For the specified MediaChange, make sure it contains the breakpoint alias
@@ -744,7 +778,7 @@ function mergeAlias(dest, source) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Base class for MediaService and pseudo-token for
@@ -775,13 +809,13 @@ ObservableMedia = /** @class */ (function () {
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
  * `.asObservable()` with syntax like media.asObservable().map(....).
  *
- *  \@usage
+ * \@usage
  *
  *  // RxJS
  *  import {filter} from 'rxjs/operators/filter';
  *  import { ObservableMedia } from '\@angular/flex-layout';
  *
- *  \@Component({ ... })
+ * \@Component({ ... })
  *  export class AppComponent {
  *    status : string = '';
  *
@@ -826,7 +860,8 @@ var MediaService = /** @class */ (function () {
      * @return {?}
      */
     function (alias) {
-        var /** @type {?} */ query = this._toMediaQuery(alias);
+        /** @type {?} */
+        var query = this._toMediaQuery(alias);
         return this.mediaWatcher.isActive(query);
     };
     /**
@@ -834,20 +869,25 @@ var MediaService = /** @class */ (function () {
      */
     /**
      * Proxy to the Observable subscribe method
-     * @param {?=} next
+     * @param {?=} observerOrNext
      * @param {?=} error
      * @param {?=} complete
      * @return {?}
      */
     MediaService.prototype.subscribe = /**
      * Proxy to the Observable subscribe method
-     * @param {?=} next
+     * @param {?=} observerOrNext
      * @param {?=} error
      * @param {?=} complete
      * @return {?}
      */
-    function (next, error, complete) {
-        return this.observable$.subscribe(next, error, complete);
+    function (observerOrNext, error, complete) {
+        if (observerOrNext) {
+            if (typeof observerOrNext === 'object') {
+                return this.observable$.subscribe(observerOrNext.next, observerOrNext.error, observerOrNext.complete);
+            }
+        }
+        return this.observable$.subscribe(observerOrNext, error, complete);
     };
     /**
      * Access to observable for use with operators like
@@ -879,7 +919,8 @@ var MediaService = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        var /** @type {?} */ queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        /** @type {?} */
+        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
         this.mediaWatcher.registerQuery(queries);
     };
     /**
@@ -900,16 +941,22 @@ var MediaService = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        var /** @type {?} */ self = this;
-        var /** @type {?} */ media$ = this.mediaWatcher.observe();
-        var /** @type {?} */ activationsOnly = function (change) {
+        /** @type {?} */
+        var self = this;
+        /** @type {?} */
+        var media$ = this.mediaWatcher.observe();
+        /** @type {?} */
+        var activationsOnly = function (change) {
             return change.matches === true;
         };
-        var /** @type {?} */ addAliasInformation = function (change) {
+        /** @type {?} */
+        var addAliasInformation = function (change) {
             return mergeAlias(change, _this._findByQuery(change.mediaQuery));
         };
-        var /** @type {?} */ excludeOverlaps = function (change) {
-            var /** @type {?} */ bp = _this.breakpoints.findByQuery(change.mediaQuery);
+        /** @type {?} */
+        var excludeOverlaps = function (change) {
+            /** @type {?} */
+            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
             return !bp ? true : !(self.filterOverlaps && bp.overlapping);
         };
         /**
@@ -956,7 +1003,8 @@ var MediaService = /** @class */ (function () {
      * @return {?}
      */
     function (query) {
-        var /** @type {?} */ bp = this._findByAlias(query) || this._findByQuery(query);
+        /** @type {?} */
+        var bp = this._findByAlias(query) || this._findByQuery(query);
         return bp ? bp.mediaQuery : query;
     };
     MediaService.decorators = [
@@ -964,13 +1012,14 @@ var MediaService = /** @class */ (function () {
     ];
     /** @nocollapse */
     MediaService.ctorParameters = function () { return [
-        { type: BreakPointRegistry, },
-        { type: MatchMedia, },
+        { type: BreakPointRegistry },
+        { type: MatchMedia }
     ]; };
     /** @nocollapse */ MediaService.ngInjectableDef = core.defineInjectable({ factory: function MediaService_Factory() { return new MediaService(core.inject(BreakPointRegistry), core.inject(MatchMedia)); }, token: MediaService, providedIn: "root" });
     return MediaService;
 }());
-var /** @type {?} */ ObservableMediaProvider = {
+/** @type {?} */
+var ObservableMediaProvider = {
     // tslint:disable-line:variable-name
     provide: ObservableMedia,
     useClass: MediaService
@@ -978,7 +1027,7 @@ var /** @type {?} */ ObservableMediaProvider = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * *****************************************************************
@@ -993,14 +1042,12 @@ var CoreModule = /** @class */ (function () {
                     providers: [ObservableMediaProvider, BROWSER_PROVIDER]
                 },] },
     ];
-    /** @nocollapse */
-    CoreModule.ctorParameters = function () { return []; };
     return CoreModule;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Utility to emulate a CSS stylesheet
@@ -1030,7 +1077,8 @@ var StylesheetMap = /** @class */ (function () {
      * @return {?}
      */
     function (element, style, value) {
-        var /** @type {?} */ stylesheet = this.stylesheet.get(element);
+        /** @type {?} */
+        var stylesheet = this.stylesheet.get(element);
         if (stylesheet) {
             stylesheet.set(style, value);
         }
@@ -1068,10 +1116,13 @@ var StylesheetMap = /** @class */ (function () {
      * @return {?}
      */
     function (el, styleName) {
-        var /** @type {?} */ styles = this.stylesheet.get(el);
-        var /** @type {?} */ value = '';
+        /** @type {?} */
+        var styles = this.stylesheet.get(el);
+        /** @type {?} */
+        var value = '';
         if (styles) {
-            var /** @type {?} */ style = styles.get(styleName);
+            /** @type {?} */
+            var style = styles.get(styleName);
             if (typeof style === 'number' || typeof style === 'string') {
                 value = style + '';
             }
@@ -1081,15 +1132,13 @@ var StylesheetMap = /** @class */ (function () {
     StylesheetMap.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */
-    StylesheetMap.ctorParameters = function () { return []; };
     /** @nocollapse */ StylesheetMap.ngInjectableDef = core.defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Ensure a single global service provider
@@ -1101,12 +1150,12 @@ var StylesheetMap = /** @class */ (function () {
 function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
     return parentSheet || new StylesheetMap();
 }
-/**
+/** *
  * Export provider that uses a global service factory (above)
  * @deprecated
  * \@deletion-target v6.0.0-beta.16
- */
-var /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
+  @type {?} */
+var STYLESHEET_MAP_PROVIDER = {
     provide: StylesheetMap,
     deps: [
         [new core.Optional(), new core.SkipSelf(), StylesheetMap],
@@ -1116,36 +1165,43 @@ var /** @type {?} */ STYLESHEET_MAP_PROVIDER = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
+/** *
  * Token that is provided to tell whether the FlexLayoutServerModule
  * has been included in the bundle
  *
  * NOTE: This can be manually provided to disable styles when using SSR
- */
-var /** @type {?} */ SERVER_TOKEN = new core.InjectionToken('FlexLayoutServerLoaded', {
+  @type {?} */
+var SERVER_TOKEN = new core.InjectionToken('FlexLayoutServerLoaded', {
     providedIn: 'root',
     factory: function () { return false; }
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-
-var /** @type {?} */ INLINE = 'inline';
-var /** @type {?} */ LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+/** *
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+  @type {?} */
+var INLINE = 'inline';
+/** @type {?} */
+var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
  * @param {?} value
@@ -1226,7 +1282,7 @@ function buildCSS(direction, wrap, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 var KeyOptions = /** @class */ (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -1343,7 +1399,8 @@ ResponsiveActivation = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            var /** @type {?} */ key = this.activatedInputKey;
+            /** @type {?} */
+            var key = this.activatedInputKey;
             return this.hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
         },
         enumerable: true,
@@ -1363,7 +1420,8 @@ ResponsiveActivation = /** @class */ (function () {
      * @return {?}
      */
     function (key) {
-        var /** @type {?} */ value = this._options.inputKeys[key];
+        /** @type {?} */
+        var value = this._options.inputKeys[key];
         return typeof value !== 'undefined';
     };
     /**
@@ -1395,12 +1453,12 @@ ResponsiveActivation = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        var /** @type {?} */ subscriptions = [];
+        /** @type {?} */
+        var subscriptions = [];
         this._registryMap.forEach(function (bp) {
             if (_this._keyInUse(bp.key)) {
-                // Inject directive default property key name: to let onMediaChange() calls
-                // know which property is being triggered...
-                var /** @type {?} */ buildChanges = function (change) {
+                /** @type {?} */
+                var buildChanges = function (change) {
                     change = change.clone();
                     change.property = _this._options.baseKey;
                     return change;
@@ -1495,8 +1553,10 @@ ResponsiveActivation = /** @class */ (function () {
      * @return {?}
      */
     function (current) {
-        var /** @type {?} */ currentKey = this._options.baseKey + current.suffix; // e.g. suffix == 'GtSm',
-        var /** @type {?} */ newKey = this._activatedInputKey; // e.g. newKey == hideGtSm
+        /** @type {?} */
+        var currentKey = this._options.baseKey + current.suffix;
+        /** @type {?} */
+        var newKey = this._activatedInputKey; // e.g. newKey == hideGtSm
         newKey = current.matches ? currentKey : ((newKey == currentKey) ? '' : newKey);
         this._activatedInputKey = this._validateInputKey(newKey);
         return this.activatedInput;
@@ -1519,10 +1579,12 @@ ResponsiveActivation = /** @class */ (function () {
      */
     function (inputKey) {
         var _this = this;
-        var /** @type {?} */ isMissingKey = function (key) { return !_this._keyInUse(key); };
+        /** @type {?} */
+        var isMissingKey = function (key) { return !_this._keyInUse(key); };
         if (isMissingKey(inputKey)) {
             this.mediaMonitor.activeOverlaps.some(function (bp) {
-                var /** @type {?} */ key = _this._options.baseKey + bp.suffix;
+                /** @type {?} */
+                var key = _this._options.baseKey + bp.suffix;
                 if (!isMissingKey(key)) {
                     inputKey = key;
                     return true; // exit .some()
@@ -1550,7 +1612,7 @@ ResponsiveActivation = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Abstract base class for the Layout API styling directives.
@@ -1617,15 +1679,19 @@ BaseDirective = /** @class */ (function () {
          * @return {?}
          */
         function (value) {
-            var /** @type {?} */ key = 'baseKey', /** @type {?} */ previousVal;
+            var _a;
+            /** @type {?} */
+            var key = 'baseKey';
+            /** @type {?} */
+            var previousVal;
             if (this._mqActivation) {
                 key = this._mqActivation.activatedInputKey;
                 previousVal = this._inputMap[key];
                 this._inputMap[key] = value;
             }
-            var /** @type {?} */ change = new core.SimpleChange(previousVal, value, false);
+            /** @type {?} */
+            var change = new core.SimpleChange(previousVal, value, false);
             this.ngOnChanges(/** @type {?} */ (_a = {}, _a[key] = change, _a));
-            var _a;
         },
         enumerable: true,
         configurable: true
@@ -1647,8 +1713,10 @@ BaseDirective = /** @class */ (function () {
      * @return {?}
      */
     function (baseKey) {
-        var /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
-        var /** @type {?} */ baseValue = this._inputMap[baseKey];
+        /** @type {?} */
+        var totalKeys = Object.keys(this._inputMap).length;
+        /** @type {?} */
+        var baseValue = this._inputMap[baseKey];
         return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     };
     // *********************************************
@@ -1752,8 +1820,10 @@ BaseDirective = /** @class */ (function () {
      * @return {?}
      */
     function (key, fallbackVal) {
-        var /** @type {?} */ val = this._queryInput(key);
-        var /** @type {?} */ hasDefaultVal = (val !== undefined && val !== null);
+        /** @type {?} */
+        var val = this._queryInput(key);
+        /** @type {?} */
+        var hasDefaultVal = (val !== undefined && val !== null);
         return (hasDefaultVal && val !== '') ? val : fallbackVal;
     };
     /**
@@ -1777,7 +1847,8 @@ BaseDirective = /** @class */ (function () {
      */
     function (source) {
         if (source === void 0) { source = this.nativeElement; }
-        var /** @type {?} */ query = 'display';
+        /** @type {?} */
+        var query = 'display';
         return this._styler.lookupStyle(source, query);
     };
     /** Quick accessor to raw attribute value on the target DOM element */
@@ -1823,18 +1894,22 @@ BaseDirective = /** @class */ (function () {
      */
     function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
-        var /** @type {?} */ value = 'row';
-        var /** @type {?} */ hasInlineValue = '';
+        var _a;
+        /** @type {?} */
+        var value = 'row';
+        /** @type {?} */
+        var hasInlineValue = '';
         if (target) {
             _a = this._styler.getFlowDirection(target), value = _a[0], hasInlineValue = _a[1];
             if (!hasInlineValue && addIfMissing) {
-                var /** @type {?} */ style = buildLayoutCSS(value);
-                var /** @type {?} */ elements = [target];
+                /** @type {?} */
+                var style = buildLayoutCSS(value);
+                /** @type {?} */
+                var elements = [target];
                 this._styler.applyStyleToElements(style, elements);
             }
         }
         return value.trim() || 'row';
-        var _a;
     };
     /** Applies styles given via string pair or object map to the directive element */
     /**
@@ -1891,7 +1966,7 @@ BaseDirective = /** @class */ (function () {
      */
     function (key, source) {
         if (typeof source === 'object') {
-            for (var /** @type {?} */ prop in source) {
+            for (var prop in source) {
                 this._inputMap[prop] = source[prop];
             }
         }
@@ -1927,7 +2002,8 @@ BaseDirective = /** @class */ (function () {
     function (key, defaultValue, onMediaQueryChange) {
         // tslint:disable-line:max-line-length
         if (!this._mqActivation) {
-            var /** @type {?} */ keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+            /** @type {?} */
+            var keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
             this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange(change); });
         }
         return this._mqActivation;
@@ -1939,10 +2015,12 @@ BaseDirective = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            var /** @type {?} */ obj = this.nativeElement.children;
-            var /** @type {?} */ buffer = [];
+            /** @type {?} */
+            var obj = this.nativeElement.children;
+            /** @type {?} */
+            var buffer = [];
             // iterate backwards ensuring that length is an UInt32
-            for (var /** @type {?} */ i = obj.length; i--;) {
+            for (var i = obj.length; i--;) {
                 buffer[i] = obj[i];
             }
             return buffer;
@@ -1979,7 +2057,7 @@ BaseDirective = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Adapter to the BaseDirective abstract class so it can be used via composition.
@@ -2015,8 +2093,10 @@ BaseDirectiveAdapter = /** @class */ (function (_super) {
          * @return {?}
          */
         function () {
-            var /** @type {?} */ mqa = this._mqActivation;
-            var /** @type {?} */ key = mqa ? mqa.activatedInputKey : this._baseKey;
+            /** @type {?} */
+            var mqa = this._mqActivation;
+            /** @type {?} */
+            var key = mqa ? mqa.activatedInputKey : this._baseKey;
             // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
             return (key === 'class') ? 'klazz' : key;
         },
@@ -2199,9 +2279,10 @@ BaseDirectiveAdapter = /** @class */ (function (_super) {
      */
     function (key, source) {
         if (key === void 0) { key = ''; }
-        var /** @type {?} */ classes = [];
+        /** @type {?} */
+        var classes = [];
         if (source) {
-            for (var /** @type {?} */ prop in source) {
+            for (var prop in source) {
                 if (!!source[prop]) {
                     classes.push(prop);
                 }
@@ -2233,17 +2314,17 @@ BaseDirectiveAdapter = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * @deprecated
- * \@deletion-target v6.0.0-beta.17-19474ff
+ * \@deletion-target v6.0.0-beta.17-aa8fb8c
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
 var   /**
  * @deprecated
- * \@deletion-target v6.0.0-beta.17-19474ff
+ * \@deletion-target v6.0.0-beta.17-aa8fb8c
  * Abstract base class for the Layout API styling directives.
  * @abstract
  */
@@ -2307,15 +2388,19 @@ BaseFxDirective = /** @class */ (function () {
          * @return {?}
          */
         function (value) {
-            var /** @type {?} */ key = 'baseKey', /** @type {?} */ previousVal;
+            var _a;
+            /** @type {?} */
+            var key = 'baseKey';
+            /** @type {?} */
+            var previousVal;
             if (this._mqActivation) {
                 key = this._mqActivation.activatedInputKey;
                 previousVal = this._inputMap[key];
                 this._inputMap[key] = value;
             }
-            var /** @type {?} */ change = new core.SimpleChange(previousVal, value, false);
+            /** @type {?} */
+            var change = new core.SimpleChange(previousVal, value, false);
             this.ngOnChanges(/** @type {?} */ (_a = {}, _a[key] = change, _a));
-            var _a;
         },
         enumerable: true,
         configurable: true
@@ -2429,8 +2514,10 @@ BaseFxDirective = /** @class */ (function () {
      * @return {?}
      */
     function (key, fallbackVal) {
-        var /** @type {?} */ val = this._queryInput(key);
-        var /** @type {?} */ hasDefaultVal = (val !== undefined && val !== null);
+        /** @type {?} */
+        var val = this._queryInput(key);
+        /** @type {?} */
+        var hasDefaultVal = (val !== undefined && val !== null);
         return (hasDefaultVal && val !== '') ? val : fallbackVal;
     };
     /**
@@ -2454,7 +2541,8 @@ BaseFxDirective = /** @class */ (function () {
      */
     function (source) {
         if (source === void 0) { source = this.nativeElement; }
-        var /** @type {?} */ query = 'display';
+        /** @type {?} */
+        var query = 'display';
         return this._styler.lookupStyle(source, query);
     };
     /**
@@ -2502,18 +2590,22 @@ BaseFxDirective = /** @class */ (function () {
      */
     function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
-        var /** @type {?} */ value = 'row';
-        var /** @type {?} */ hasInlineValue = '';
+        var _a;
+        /** @type {?} */
+        var value = 'row';
+        /** @type {?} */
+        var hasInlineValue = '';
         if (target) {
             _a = this._styler.getFlowDirection(target), value = _a[0], hasInlineValue = _a[1];
             if (!hasInlineValue && addIfMissing) {
-                var /** @type {?} */ style = buildLayoutCSS(value);
-                var /** @type {?} */ elements = [target];
+                /** @type {?} */
+                var style = buildLayoutCSS(value);
+                /** @type {?} */
+                var elements = [target];
                 this._styler.applyStyleToElements(style, elements);
             }
         }
         return value.trim() || 'row';
-        var _a;
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -2574,7 +2666,7 @@ BaseFxDirective = /** @class */ (function () {
      */
     function (key, source) {
         if (typeof source === 'object') {
-            for (var /** @type {?} */ prop in source) {
+            for (var prop in source) {
                 this._inputMap[prop] = source[prop];
             }
         }
@@ -2610,7 +2702,8 @@ BaseFxDirective = /** @class */ (function () {
     function (key, defaultValue, onMediaQueryChange) {
         // tslint:disable-line:max-line-length
         if (!this._mqActivation) {
-            var /** @type {?} */ keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+            /** @type {?} */
+            var keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
             this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange(change); });
         }
         return this._mqActivation;
@@ -2624,10 +2717,12 @@ BaseFxDirective = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            var /** @type {?} */ obj = this.nativeElement.children;
-            var /** @type {?} */ buffer = [];
+            /** @type {?} */
+            var obj = this.nativeElement.children;
+            /** @type {?} */
+            var buffer = [];
             // iterate backwards ensuring that length is an UInt32
-            for (var /** @type {?} */ i = obj.length; i--;) {
+            for (var i = obj.length; i--;) {
                 buffer[i] = obj[i];
             }
             return buffer;
@@ -2652,8 +2747,10 @@ BaseFxDirective = /** @class */ (function () {
      * @return {?}
      */
     function (baseKey) {
-        var /** @type {?} */ totalKeys = Object.keys(this._inputMap).length;
-        var /** @type {?} */ baseValue = this._inputMap[baseKey];
+        /** @type {?} */
+        var totalKeys = Object.keys(this._inputMap).length;
+        /** @type {?} */
+        var baseValue = this._inputMap[baseKey];
         return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     };
     /**
@@ -2687,17 +2784,17 @@ BaseFxDirective = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
@@ -2732,7 +2829,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._registry.forEach(function (mql, _) {
+        this._registry.forEach(function (mql) {
             mql.destroy();
         });
         this._registry.clear();
@@ -2774,7 +2871,8 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (queryOrAlias) {
-        var /** @type {?} */ bp = this._breakpoints.findByAlias(queryOrAlias);
+        /** @type {?} */
+        var bp = this._breakpoints.findByAlias(queryOrAlias);
         if (bp) {
             queryOrAlias = bp.mediaQuery;
         }
@@ -2796,8 +2894,10 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function (mediaQuery, useOverlaps) {
         if (useOverlaps) {
-            var /** @type {?} */ bp = this._breakpoints.findByQuery(mediaQuery);
-            var /** @type {?} */ alias = bp ? bp.alias : 'unknown';
+            /** @type {?} */
+            var bp = this._breakpoints.findByQuery(mediaQuery);
+            /** @type {?} */
+            var alias = bp ? bp.alias : 'unknown';
             // Simulate activation of overlapping lt-<XXX> ranges
             switch (alias) {
                 case 'lg':
@@ -2844,8 +2944,10 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function (aliases) {
         var _this = this;
-        var /** @type {?} */ activate = function (alias) {
-            var /** @type {?} */ bp = _this._breakpoints.findByAlias(alias);
+        /** @type {?} */
+        var activate = function (alias) {
+            /** @type {?} */
+            var bp = _this._breakpoints.findByAlias(alias);
             _this._activateByQuery(bp ? bp.mediaQuery : alias);
         };
         aliases.split(',').forEach(function (alias) { return activate(alias.trim()); });
@@ -2861,8 +2963,10 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (mediaQuery) {
-        var /** @type {?} */ mql = /** @type {?} */ (this._registry.get(mediaQuery));
-        var /** @type {?} */ alreadyAdded = this._actives.reduce(function (found, it) {
+        /** @type {?} */
+        var mql = /** @type {?} */ (this._registry.get(mediaQuery));
+        /** @type {?} */
+        var alreadyAdded = this._actives.reduce(function (found, it) {
             return found || (mql && (it.media === mql.media));
         }, false);
         if (mql && !alreadyAdded) {
@@ -2938,10 +3042,10 @@ var MockMatchMedia = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     MockMatchMedia.ctorParameters = function () { return [
-        { type: core.NgZone, },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
-        { type: BreakPointRegistry, },
+        { type: core.NgZone },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] },
+        { type: BreakPointRegistry }
     ]; };
     return MockMatchMedia;
 }(MatchMedia));
@@ -3071,10 +3175,10 @@ MockMediaQueryList = /** @class */ (function () {
     };
     return MockMediaQueryList;
 }());
-/**
+/** *
  * Pre-configured provider for MockMatchMedia
- */
-var /** @type {?} */ MockMatchMediaProvider = {
+  @type {?} */
+var MockMatchMediaProvider = {
     // tslint:disable-line:variable-name
     provide: MatchMedia,
     useClass: MockMatchMedia
@@ -3082,7 +3186,7 @@ var /** @type {?} */ MockMatchMediaProvider = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Special server-only class to simulate a MediaQueryList and
@@ -3240,7 +3344,8 @@ var ServerMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (bp) {
-        var /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        /** @type {?} */
+        var lookupBreakpoint = this._registry.get(bp.mediaQuery);
         if (lookupBreakpoint) {
             lookupBreakpoint.activate();
         }
@@ -3257,7 +3362,8 @@ var ServerMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (bp) {
-        var /** @type {?} */ lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        /** @type {?} */
+        var lookupBreakpoint = this._registry.get(bp.mediaQuery);
         if (lookupBreakpoint) {
             lookupBreakpoint.deactivate();
         }
@@ -3286,21 +3392,21 @@ var ServerMatchMedia = /** @class */ (function (_super) {
     ];
     /** @nocollapse */
     ServerMatchMedia.ctorParameters = function () { return [
-        { type: core.NgZone, },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] },] },
+        { type: core.NgZone },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
     return ServerMatchMedia;
 }(MatchMedia));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
@@ -3341,7 +3447,8 @@ var MediaMonitor = /** @class */ (function () {
          */
         function () {
             var _this = this;
-            var /** @type {?} */ items = this._breakpoints.overlappings.reverse();
+            /** @type {?} */
+            var items = this._breakpoints.overlappings.reverse();
             return items.filter(function (bp) {
                 return _this._matchMedia.isActive(bp.mediaQuery);
             });
@@ -3355,7 +3462,10 @@ var MediaMonitor = /** @class */ (function () {
          */
         function () {
             var _this = this;
-            var /** @type {?} */ found = null, /** @type {?} */ items = this.breakpoints.reverse();
+            /** @type {?} */
+            var found = null;
+            /** @type {?} */
+            var items = this.breakpoints.reverse();
             items.forEach(function (bp) {
                 if (bp.alias !== '') {
                     if (!found && _this._matchMedia.isActive(bp.mediaQuery)) {
@@ -3363,7 +3473,8 @@ var MediaMonitor = /** @class */ (function () {
                     }
                 }
             });
-            var /** @type {?} */ first = this.breakpoints[0];
+            /** @type {?} */
+            var first = this.breakpoints[0];
             return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
         },
         enumerable: true,
@@ -3383,7 +3494,8 @@ var MediaMonitor = /** @class */ (function () {
      * @return {?}
      */
     function (alias) {
-        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        /** @type {?} */
+        var bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
         return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
     };
     /**
@@ -3406,11 +3518,13 @@ var MediaMonitor = /** @class */ (function () {
      * @return {?}
      */
     function (alias) {
-        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias || '') ||
+        /** @type {?} */
+        var bp = this._breakpoints.findByAlias(alias || '') ||
             this._breakpoints.findByQuery(alias || '');
-        var /** @type {?} */ hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
-        // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
-        var /** @type {?} */ media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
+        /** @type {?} */
+        var hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
+        /** @type {?} */
+        var media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
         return media$.pipe(operators.map(function (change) { return mergeAlias(change, bp); }), operators.filter(hasAlias));
     };
     /**
@@ -3424,7 +3538,8 @@ var MediaMonitor = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        var /** @type {?} */ queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        /** @type {?} */
+        var queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
         this._matchMedia.registerQuery(queries);
     };
     MediaMonitor.decorators = [
@@ -3432,8 +3547,8 @@ var MediaMonitor = /** @class */ (function () {
     ];
     /** @nocollapse */
     MediaMonitor.ctorParameters = function () { return [
-        { type: BreakPointRegistry, },
-        { type: MatchMedia, },
+        { type: BreakPointRegistry },
+        { type: MatchMedia }
     ]; };
     /** @nocollapse */ MediaMonitor.ngInjectableDef = core.defineInjectable({ factory: function MediaMonitor_Factory() { return new MediaMonitor(core.inject(BreakPointRegistry), core.inject(MatchMedia)); }, token: MediaMonitor, providedIn: "root" });
     return MediaMonitor;
@@ -3441,7 +3556,7 @@ var MediaMonitor = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Ensure a single global service provider
@@ -3455,12 +3570,12 @@ var MediaMonitor = /** @class */ (function () {
 function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
     return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
 }
-/**
+/** *
  * Export provider that uses a global service factory (above)
  * @deprecated
  * \@deletion-target v6.0.0-beta.16
- */
-var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
+  @type {?} */
+var MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
     deps: [
         [new core.Optional(), new core.SkipSelf(), MediaMonitor],
@@ -3472,12 +3587,12 @@ var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
  * Ensure a single global ObservableMedia service provider
@@ -3491,12 +3606,12 @@ var /** @type {?} */ MEDIA_MONITOR_PROVIDER = {
 function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
     return parentService || new MediaService(breakpoints, matchMedia);
 }
-/**
+/** *
  *  Provider to return global service for observable service for all MediaQuery activations
- *  \@deprecated
- *  \@deletion-target v6.0.0-beta.16
- */
-var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
+ * @deprecated
+ * \@deletion-target v6.0.0-beta.16
+  @type {?} */
+var OBSERVABLE_MEDIA_PROVIDER = {
     // tslint:disable-line:variable-name
     provide: ObservableMedia,
     deps: [
@@ -3509,12 +3624,12 @@ var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
@@ -3532,8 +3647,9 @@ var /** @type {?} */ OBSERVABLE_MEDIA_PROVIDER = {
  * @return {?}
  */
 function applyCssPrefixes(target) {
-    for (var /** @type {?} */ key in target) {
-        var /** @type {?} */ value = target[key] || '';
+    for (var key in target) {
+        /** @type {?} */
+        var value = target[key] || '';
         switch (key) {
             case 'display':
                 if (value === 'flex') {
@@ -3579,7 +3695,7 @@ function applyCssPrefixes(target) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 var StyleUtils = /** @class */ (function () {
     function StyleUtils(_serverStylesheet, _serverModuleLoaded, _platformId, layoutConfig) {
@@ -3606,7 +3722,8 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (element, style, value) {
-        var /** @type {?} */ styles = {};
+        /** @type {?} */
+        var styles = {};
         if (typeof style === 'string') {
             styles[style] = value;
             style = styles;
@@ -3632,7 +3749,8 @@ var StyleUtils = /** @class */ (function () {
     function (style, elements) {
         var _this = this;
         if (elements === void 0) { elements = []; }
-        var /** @type {?} */ styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
+        /** @type {?} */
+        var styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
         elements.forEach(function (el) {
             _this._applyMultiValueStyleToElement(styles, el);
         });
@@ -3657,12 +3775,15 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (target) {
-        var /** @type {?} */ query = 'flex-direction';
-        var /** @type {?} */ value = this.lookupStyle(target, query);
+        /** @type {?} */
+        var query = 'flex-direction';
+        /** @type {?} */
+        var value = this.lookupStyle(target, query);
         if (value === FALLBACK_STYLE) {
             value = '';
         }
-        var /** @type {?} */ hasInlineValue = this.lookupInlineStyle(target, query) ||
+        /** @type {?} */
+        var hasInlineValue = this.lookupInlineStyle(target, query) ||
             (common.isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
         return [value || 'row', hasInlineValue];
     };
@@ -3725,9 +3846,11 @@ var StyleUtils = /** @class */ (function () {
      */
     function (element, styleName, inlineOnly) {
         if (inlineOnly === void 0) { inlineOnly = false; }
-        var /** @type {?} */ value = '';
+        /** @type {?} */
+        var value = '';
         if (element) {
-            var /** @type {?} */ immediateValue = value = this.lookupInlineStyle(element, styleName);
+            /** @type {?} */
+            var immediateValue = value = this.lookupInlineStyle(element, styleName);
             if (!immediateValue) {
                 if (common.isPlatformBrowser(this._platformId)) {
                     if (!inlineOnly) {
@@ -3764,7 +3887,8 @@ var StyleUtils = /** @class */ (function () {
     function (styles, element) {
         var _this = this;
         Object.keys(styles).sort().forEach(function (key) {
-            var /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+            /** @type {?} */
+            var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
             values.sort();
             for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
                 var value = values_1[_i];
@@ -3792,7 +3916,8 @@ var StyleUtils = /** @class */ (function () {
      */
     function (element, styleName, styleValue) {
         styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-        var /** @type {?} */ styleMap = this._readStyleAttribute(element);
+        /** @type {?} */
+        var styleMap = this._readStyleAttribute(element);
         styleMap[styleName] = styleValue || '';
         this._writeStyleAttribute(element, styleMap);
     };
@@ -3807,7 +3932,8 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (element, styleName) {
-        var /** @type {?} */ styleMap = this._readStyleAttribute(element);
+        /** @type {?} */
+        var styleMap = this._readStyleAttribute(element);
         return styleMap[styleName] || '';
     };
     /**
@@ -3819,18 +3945,24 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (element) {
-        var /** @type {?} */ styleMap = {};
-        var /** @type {?} */ styleAttribute = element.getAttribute('style');
+        /** @type {?} */
+        var styleMap = {};
+        /** @type {?} */
+        var styleAttribute = element.getAttribute('style');
         if (styleAttribute) {
-            var /** @type {?} */ styleList = styleAttribute.split(/;+/g);
-            for (var /** @type {?} */ i = 0; i < styleList.length; i++) {
-                var /** @type {?} */ style = styleList[i].trim();
+            /** @type {?} */
+            var styleList = styleAttribute.split(/;+/g);
+            for (var i = 0; i < styleList.length; i++) {
+                /** @type {?} */
+                var style = styleList[i].trim();
                 if (style.length > 0) {
-                    var /** @type {?} */ colonIndex = style.indexOf(':');
+                    /** @type {?} */
+                    var colonIndex = style.indexOf(':');
                     if (colonIndex === -1) {
                         throw new Error("Invalid CSS style: " + style);
                     }
-                    var /** @type {?} */ name_1 = style.substr(0, colonIndex).trim();
+                    /** @type {?} */
+                    var name_1 = style.substr(0, colonIndex).trim();
                     styleMap[name_1] = style.substr(colonIndex + 1).trim();
                 }
             }
@@ -3848,9 +3980,11 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (element, styleMap) {
-        var /** @type {?} */ styleAttrValue = '';
-        for (var /** @type {?} */ key in styleMap) {
-            var /** @type {?} */ newValue = styleMap[key];
+        /** @type {?} */
+        var styleAttrValue = '';
+        for (var key in styleMap) {
+            /** @type {?} */
+            var newValue = styleMap[key];
             if (newValue) {
                 styleAttrValue += key + ':' + styleMap[key] + ';';
             }
@@ -3862,19 +3996,20 @@ var StyleUtils = /** @class */ (function () {
     ];
     /** @nocollapse */
     StyleUtils.ctorParameters = function () { return [
-        { type: StylesheetMap, decorators: [{ type: core.Optional },] },
-        { type: undefined, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] },] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] },] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] },] },
+        { type: StylesheetMap, decorators: [{ type: core.Optional }] },
+        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
     /** @nocollapse */ StyleUtils.ngInjectableDef = core.defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.inject(StylesheetMap, 8), core.inject(SERVER_TOKEN, 8), core.inject(core.PLATFORM_ID), core.inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
-var /** @type {?} */ FALLBACK_STYLE = 'block';
+/** @type {?} */
+var FALLBACK_STYLE = 'block';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
 /**
@@ -3889,11 +4024,14 @@ var /** @type {?} */ FALLBACK_STYLE = 'block';
 function validateBasis(basis, grow, shrink) {
     if (grow === void 0) { grow = '1'; }
     if (shrink === void 0) { shrink = '1'; }
-    var /** @type {?} */ parts = [grow, shrink, basis];
-    var /** @type {?} */ j = basis.indexOf('calc');
+    /** @type {?} */
+    var parts = [grow, shrink, basis];
+    /** @type {?} */
+    var j = basis.indexOf('calc');
     if (j > 0) {
         parts[2] = _validateCalcValue(basis.substring(j).trim());
-        var /** @type {?} */ matches = basis.substr(0, j).trim().split(' ');
+        /** @type {?} */
+        var matches = basis.substr(0, j).trim().split(' ');
         if (matches.length == 2) {
             parts[0] = matches[0];
             parts[1] = matches[1];
@@ -3903,7 +4041,8 @@ function validateBasis(basis, grow, shrink) {
         parts[2] = _validateCalcValue(basis.trim());
     }
     else {
-        var /** @type {?} */ matches = basis.split(' ');
+        /** @type {?} */
+        var matches = basis.split(' ');
         parts = (matches.length === 3) ? matches : [
             grow, shrink, basis
         ];

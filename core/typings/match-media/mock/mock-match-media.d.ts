@@ -22,6 +22,7 @@ export declare class MockMatchMedia extends MatchMedia {
      * activatedInput(s).
      */
     useOverlaps: boolean;
+    protected _registry: Map<string, MockMediaQueryList>;
     constructor(_zone: NgZone, _platformId: Object, _document: any, _breakpoints: BreakPointRegistry);
     /** Easy method to clear all listeners for all mediaQueries */
     clearAll(): void;
@@ -33,19 +34,19 @@ export declare class MockMatchMedia extends MatchMedia {
      * Manually activate any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      */
-    private _activateWithOverlaps(mediaQuery, useOverlaps);
+    private _activateWithOverlaps;
     /**
      *
      */
-    private _activateByAlias(aliases);
+    private _activateByAlias;
     /**
      *
      */
-    private _activateByQuery(mediaQuery);
+    private _activateByQuery;
     /** Deactivate all current Mock MQLs */
-    private _deactivateAll();
+    private _deactivateAll;
     /** Insure the mediaQuery is registered with MatchMedia */
-    private _registerMediaQuery(mediaQuery);
+    private _registerMediaQuery;
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation

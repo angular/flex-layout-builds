@@ -12,7 +12,7 @@ import { MediaMonitor } from '../media-monitor/media-monitor';
 import { MediaQuerySubscriber } from '../media-change';
 /**
  * @deprecated
- * @deletion-target v6.0.0-beta.17-19474ff
+ * @deletion-target v6.0.0-beta.17-aa8fb8c
  * Abstract base class for the Layout API styling directives.
  */
 export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
@@ -25,12 +25,12 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
      * if called before ngOnInit() this will return `undefined`
      */
     /**
-     * Change the currently activated input value and force-update
-     * the injected CSS (by-passing change detection).
-     *
-     * NOTE: Only the currently activated input value will be modified;
-     *       other input values will NOT be affected.
-     */
+    * Change the currently activated input value and force-update
+    * the injected CSS (by-passing change detection).
+    *
+    * NOTE: Only the currently activated input value will be modified;
+    *       other input values will NOT be affected.
+    */
     activatedValue: string | number;
     /**
      * Constructor
