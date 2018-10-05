@@ -23,7 +23,7 @@ export { ɵb, ɵc, ɵd, ɵe, ɵf, ɵg, ɵh, ɵi, ɵa, ɵj, ɵk, GridModule } fro
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new Version('6.0.0-beta.18-5ddccb5');
+var VERSION = new Version('6.0.0-beta.18-76c110e');
 
 /**
  * @fileoverview added by tsickle
@@ -60,27 +60,18 @@ var FlexLayoutModule = /** @class */ (function () {
      * @return {?}
      */
     function (configOptions, breakpoints) {
+        if (breakpoints === void 0) { breakpoints = []; }
         return {
             ngModule: FlexLayoutModule,
-            providers: Array.isArray(breakpoints) ?
-                configOptions.serverLoaded ?
-                    [
-                        { provide: LAYOUT_CONFIG, useValue: configOptions },
-                        { provide: BREAKPOINT, useValue: breakpoints, multi: true },
-                        { provide: SERVER_TOKEN, useValue: true },
-                    ] : [
+            providers: configOptions.serverLoaded ?
+                [
                     { provide: LAYOUT_CONFIG, useValue: configOptions },
                     { provide: BREAKPOINT, useValue: breakpoints, multi: true },
-                ]
-                :
-                    configOptions.serverLoaded ?
-                        [
-                            { provide: LAYOUT_CONFIG, useValue: configOptions },
-                            { provide: SERVER_TOKEN, useValue: true },
-                        ] :
-                        [
-                            { provide: LAYOUT_CONFIG, useValue: configOptions },
-                        ]
+                    { provide: SERVER_TOKEN, useValue: true },
+                ] : [
+                { provide: LAYOUT_CONFIG, useValue: configOptions },
+                { provide: BREAKPOINT, useValue: breakpoints, multi: true },
+            ]
         };
     };
     FlexLayoutModule.decorators = [
