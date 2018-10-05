@@ -1141,33 +1141,6 @@ var StylesheetMap = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * Ensure a single global service provider
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- * @param {?} parentSheet
- * @return {?}
- */
-function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
-    return parentSheet || new StylesheetMap();
-}
-/** *
- * Export provider that uses a global service factory (above)
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
-  @type {?} */
-var STYLESHEET_MAP_PROVIDER = {
-    provide: StylesheetMap,
-    deps: [
-        [new core.Optional(), new core.SkipSelf(), StylesheetMap],
-    ],
-    useFactory: STYLESHEET_MAP_PROVIDER_FACTORY
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 
 /**
  * @fileoverview added by tsickle
@@ -3091,69 +3064,6 @@ var MediaMonitor = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * Ensure a single global service provider
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- * @param {?} parentMonitor
- * @param {?} breakpoints
- * @param {?} matchMedia
- * @return {?}
- */
-function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
-    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
-}
-/** *
- * Export provider that uses a global service factory (above)
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
-  @type {?} */
-var MEDIA_MONITOR_PROVIDER = {
-    provide: MediaMonitor,
-    deps: [
-        [new core.Optional(), new core.SkipSelf(), MediaMonitor],
-        BreakPointRegistry,
-        MatchMedia,
-    ],
-    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Ensure a single global ObservableMedia service provider
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- * @param {?} parentService
- * @param {?} matchMedia
- * @param {?} breakpoints
- * @return {?}
- */
-function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
-    return parentService || new MediaService(breakpoints, matchMedia);
-}
-/** *
- *  Provider to return global service for observable service for all MediaQuery activations
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
-  @type {?} */
-var OBSERVABLE_MEDIA_PROVIDER = {
-    // tslint:disable-line:variable-name
-    provide: ObservableMedia,
-    deps: [
-        [new core.Optional(), new core.SkipSelf(), ObservableMedia],
-        MatchMedia,
-        BreakPointRegistry
-    ],
-    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
-};
 
 /**
  * @fileoverview added by tsickle
@@ -3607,8 +3517,6 @@ exports.CLASS_NAME = CLASS_NAME;
 exports.CoreModule = CoreModule;
 exports.MediaChange = MediaChange;
 exports.StylesheetMap = StylesheetMap;
-exports.STYLESHEET_MAP_PROVIDER_FACTORY = STYLESHEET_MAP_PROVIDER_FACTORY;
-exports.STYLESHEET_MAP_PROVIDER = STYLESHEET_MAP_PROVIDER;
 exports.DEFAULT_CONFIG = DEFAULT_CONFIG;
 exports.LAYOUT_CONFIG = LAYOUT_CONFIG;
 exports.SERVER_TOKEN = SERVER_TOKEN;
@@ -3628,13 +3536,9 @@ exports.MockMatchMediaProvider = MockMatchMediaProvider;
 exports.ServerMediaQueryList = ServerMediaQueryList;
 exports.ServerMatchMedia = ServerMatchMedia;
 exports.MediaMonitor = MediaMonitor;
-exports.MEDIA_MONITOR_PROVIDER_FACTORY = MEDIA_MONITOR_PROVIDER_FACTORY;
-exports.MEDIA_MONITOR_PROVIDER = MEDIA_MONITOR_PROVIDER;
 exports.ObservableMedia = ObservableMedia;
 exports.MediaService = MediaService;
 exports.ObservableMediaProvider = ObservableMediaProvider;
-exports.OBSERVABLE_MEDIA_PROVIDER_FACTORY = OBSERVABLE_MEDIA_PROVIDER_FACTORY;
-exports.OBSERVABLE_MEDIA_PROVIDER = OBSERVABLE_MEDIA_PROVIDER;
 exports.KeyOptions = KeyOptions;
 exports.ResponsiveActivation = ResponsiveActivation;
 exports.StyleUtils = StyleUtils;

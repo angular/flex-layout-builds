@@ -18,7 +18,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('6.0.0-beta.18-5234d69');
+var VERSION = new core.Version('6.0.0-beta.18-748fc71');
 
 /**
  * @fileoverview added by tsickle
@@ -89,8 +89,6 @@ exports.CLASS_NAME = core$1.CLASS_NAME;
 exports.CoreModule = core$1.CoreModule;
 exports.MediaChange = core$1.MediaChange;
 exports.StylesheetMap = core$1.StylesheetMap;
-exports.STYLESHEET_MAP_PROVIDER_FACTORY = core$1.STYLESHEET_MAP_PROVIDER_FACTORY;
-exports.STYLESHEET_MAP_PROVIDER = core$1.STYLESHEET_MAP_PROVIDER;
 exports.DEFAULT_CONFIG = core$1.DEFAULT_CONFIG;
 exports.LAYOUT_CONFIG = core$1.LAYOUT_CONFIG;
 exports.SERVER_TOKEN = core$1.SERVER_TOKEN;
@@ -110,13 +108,9 @@ exports.MockMatchMediaProvider = core$1.MockMatchMediaProvider;
 exports.ServerMediaQueryList = core$1.ServerMediaQueryList;
 exports.ServerMatchMedia = core$1.ServerMatchMedia;
 exports.MediaMonitor = core$1.MediaMonitor;
-exports.MEDIA_MONITOR_PROVIDER_FACTORY = core$1.MEDIA_MONITOR_PROVIDER_FACTORY;
-exports.MEDIA_MONITOR_PROVIDER = core$1.MEDIA_MONITOR_PROVIDER;
 exports.ObservableMedia = core$1.ObservableMedia;
 exports.MediaService = core$1.MediaService;
 exports.ObservableMediaProvider = core$1.ObservableMediaProvider;
-exports.OBSERVABLE_MEDIA_PROVIDER_FACTORY = core$1.OBSERVABLE_MEDIA_PROVIDER_FACTORY;
-exports.OBSERVABLE_MEDIA_PROVIDER = core$1.OBSERVABLE_MEDIA_PROVIDER;
 exports.KeyOptions = core$1.KeyOptions;
 exports.ResponsiveActivation = core$1.ResponsiveActivation;
 exports.StyleUtils = core$1.StyleUtils;

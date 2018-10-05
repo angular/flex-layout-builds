@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, InjectionToken, inject, Injectable, Inject, NgModule, NgZone, Optional, SkipSelf, SimpleChange, defineInjectable } from '@angular/core';
+import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, InjectionToken, inject, Injectable, Inject, NgModule, NgZone, SimpleChange, Optional, defineInjectable } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -1107,33 +1107,6 @@ var StylesheetMap = /** @class */ (function () {
     /** @nocollapse */ StylesheetMap.ngInjectableDef = defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Ensure a single global service provider
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- * @param {?} parentSheet
- * @return {?}
- */
-function STYLESHEET_MAP_PROVIDER_FACTORY(parentSheet) {
-    return parentSheet || new StylesheetMap();
-}
-/** *
- * Export provider that uses a global service factory (above)
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
-  @type {?} */
-var STYLESHEET_MAP_PROVIDER = {
-    provide: StylesheetMap,
-    deps: [
-        [new Optional(), new SkipSelf(), StylesheetMap],
-    ],
-    useFactory: STYLESHEET_MAP_PROVIDER_FACTORY
-};
 
 /**
  * @fileoverview added by tsickle
@@ -3062,69 +3035,6 @@ var MediaMonitor = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * Ensure a single global service provider
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- * @param {?} parentMonitor
- * @param {?} breakpoints
- * @param {?} matchMedia
- * @return {?}
- */
-function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
-    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
-}
-/** *
- * Export provider that uses a global service factory (above)
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
-  @type {?} */
-var MEDIA_MONITOR_PROVIDER = {
-    provide: MediaMonitor,
-    deps: [
-        [new Optional(), new SkipSelf(), MediaMonitor],
-        BreakPointRegistry,
-        MatchMedia,
-    ],
-    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Ensure a single global ObservableMedia service provider
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
- * @param {?} parentService
- * @param {?} matchMedia
- * @param {?} breakpoints
- * @return {?}
- */
-function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
-    return parentService || new MediaService(breakpoints, matchMedia);
-}
-/** *
- *  Provider to return global service for observable service for all MediaQuery activations
- * @deprecated
- * \@deletion-target v6.0.0-beta.16
-  @type {?} */
-var OBSERVABLE_MEDIA_PROVIDER = {
-    // tslint:disable-line:variable-name
-    provide: ObservableMedia,
-    deps: [
-        [new Optional(), new SkipSelf(), ObservableMedia],
-        MatchMedia,
-        BreakPointRegistry
-    ],
-    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
-};
 
 /**
  * @fileoverview added by tsickle
@@ -3582,5 +3492,5 @@ function _validateCalcValue(calc) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, STYLESHEET_MAP_PROVIDER_FACTORY, STYLESHEET_MAP_PROVIDER, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective, BaseDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, ObservableMedia, MediaService, ObservableMediaProvider, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective, BaseDirectiveAdapter, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, ObservableMedia, MediaService, ObservableMediaProvider, KeyOptions, ResponsiveActivation, StyleUtils, validateBasis };
 //# sourceMappingURL=core.es5.js.map

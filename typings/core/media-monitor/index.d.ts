@@ -6,4 +6,3 @@
  * found in the LICENSE file at https://angular.io/license
  */
 export * from './media-monitor';
-export * from './media-monitor-provider';
