@@ -253,14 +253,15 @@ var GridAlignDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     GridAlignDirective.prototype._buildCSS = /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     function (align) {
+        if (align === void 0) { align = ''; }
         /** @type {?} */
         var css = {};
         var _a = align.split(' '), rowAxis = _a[0], columnAxis = _a[1];
@@ -583,14 +584,15 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     GridAlignColumnsDirective.prototype._buildCSS = /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     function (align) {
+        if (align === void 0) { align = ''; }
         /** @type {?} */
         var css = {};
         var _a = align.split(' '), mainAxis = _a[0], crossAxis = _a[1];
@@ -891,14 +893,15 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     GridAlignRowsDirective.prototype._buildCSS = /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     function (align) {
+        if (align === void 0) { align = ''; }
         /** @type {?} */
         var css = {};
         var _a = align.split(' '), mainAxis = _a[0], crossAxis = _a[1];
@@ -1169,14 +1172,15 @@ var GridAreaDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridAreaDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         return { 'grid-area': value };
     };
     GridAreaDirective.decorators = [
@@ -1426,14 +1430,15 @@ var GridAreasDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridAreasDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         /** @type {?} */
         var areas = value.split(DELIMETER).map(function (v) { return "\"" + v.trim() + "\""; });
         return {
@@ -1687,14 +1692,15 @@ var GridAutoDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridAutoDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         var _a = value.split(' '), direction = _a[0], dense = _a[1];
         if (direction !== 'column' && direction !== 'row' && direction !== 'dense') {
             direction = 'row';
@@ -1942,14 +1948,15 @@ var GridColumnDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridColumnDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         return { 'grid-column': value };
     };
     GridColumnDirective.decorators = [
@@ -2200,14 +2207,15 @@ var GridColumnsDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridColumnsDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         /** @type {?} */
         var auto = false;
         if (value.endsWith(AUTO_SPECIFIER)) {
@@ -2472,14 +2480,15 @@ var GridGapDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridGapDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         return {
             'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
             'grid-gap': value
@@ -2722,14 +2731,15 @@ var GridRowDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridRowDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         return { 'grid-row': value };
     };
     GridRowDirective.decorators = [
@@ -2980,14 +2990,15 @@ var GridRowsDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     GridRowsDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
+        if (value === void 0) { value = ''; }
         /** @type {?} */
         var auto = false;
         if (value.endsWith(AUTO_SPECIFIER$1)) {

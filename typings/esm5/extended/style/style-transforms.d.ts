@@ -20,21 +20,17 @@ export declare class NgStyleKeyValue {
     value: string;
     constructor(key: string, value: string, noQuotes?: boolean);
 }
-/** Transform Operators for @angular/flex-layout NgStyle Directive */
-export declare const ngStyleUtils: {
-    getType: typeof getType;
-    buildRawList: typeof buildRawList;
-    buildMapFromList: typeof buildMapFromList;
-    buildMapFromSet: typeof buildMapFromSet;
-};
-declare function getType(target: any): string;
+export declare function getType(target: any): string;
 /**
  * Split string of key:value pairs into Array of k-v pairs
  * e.g.  'key:value; key:value; key:value;' -> ['key:value',...]
  */
-declare function buildRawList(source: any, delimiter?: string): NgStyleRawList;
+export declare function buildRawList(source: any, delimiter?: string): NgStyleRawList;
 /** Convert array of key:value strings to a iterable map object */
-declare function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): NgStyleMap;
+export declare function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): NgStyleMap;
 /** Convert Set<string> or raw Object to an iterable NgStyleMap */
-declare function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap;
-export {};
+export declare function buildMapFromSet(source: NgStyleType, sanitize?: NgStyleSanitizer): NgStyleMap;
+/** Convert 'key:value' -> [key, value] */
+export declare function stringToKeyValue(it: string): NgStyleKeyValue;
+/** Convert [ [key,value] ] -> { key : value } */
+export declare function keyValuesToMap(map: NgStyleMap, entry: NgStyleKeyValue): NgStyleMap;

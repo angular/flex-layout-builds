@@ -1509,16 +1509,18 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     FlexOrderDirective.prototype._buildCSS = /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
     function (value) {
-        value = parseInt(value, 10);
-        return { order: isNaN(value) ? 0 : value };
+        if (value === void 0) { value = ''; }
+        /** @type {?} */
+        var val = parseInt(value, 10);
+        return { order: isNaN(val) ? 0 : val };
     };
     FlexOrderDirective.decorators = [
         { type: Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" },] },
@@ -1833,20 +1835,21 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} offset
+     * @param {?=} offset
      * @return {?}
      */
     FlexOffsetDirective.prototype._buildCSS = /**
-     * @param {?} offset
+     * @param {?=} offset
      * @return {?}
      */
     function (offset) {
+        if (offset === void 0) { offset = ''; }
         var _a;
         /** @type {?} */
         var isPercent = String(offset).indexOf('%') > -1;
         /** @type {?} */
         var isPx = String(offset).indexOf('px') > -1;
-        if (!isPx && !isPercent && !isNaN(offset)) {
+        if (!isPx && !isPercent && !isNaN(+offset)) {
             offset = offset + '%';
         }
         /** @type {?} */
@@ -2091,14 +2094,15 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     FlexAlignDirective.prototype._buildCSS = /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     function (align) {
+        if (align === void 0) { align = ''; }
         /** @type {?} */
         var css = {};
         // Cross-axis
@@ -2435,14 +2439,15 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         this._allowStretching(value, this._layout || 'row');
     };
     /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     LayoutAlignDirective.prototype._buildCSS = /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
     function (align) {
+        if (align === void 0) { align = ''; }
         /** @type {?} */
         var css = {};
         var _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1]; // tslint:disable-line:variable-name
@@ -2505,18 +2510,20 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     /**
      * Update container element to 'stretch' as needed...
      * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-     * @param {?} align
-     * @param {?} layout
+     * @param {?=} align
+     * @param {?=} layout
      * @return {?}
      */
     LayoutAlignDirective.prototype._allowStretching = /**
      * Update container element to 'stretch' as needed...
      * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-     * @param {?} align
-     * @param {?} layout
+     * @param {?=} align
+     * @param {?=} layout
      * @return {?}
      */
     function (align, layout) {
+        if (align === void 0) { align = ''; }
+        if (layout === void 0) { layout = ''; }
         var _a = align.split(' '), cross_axis = _a[1]; // tslint:disable-line:variable-name
         if (cross_axis == 'stretch') {
             // Use `null` values to remove style

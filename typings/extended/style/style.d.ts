@@ -9,7 +9,7 @@ import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer2, 
 import { NgStyle } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BaseDirective, BaseDirectiveAdapter, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
-import { NgStyleType } from './style-transforms';
+import { NgStyleType, NgStyleMap } from './style-transforms';
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -20,7 +20,7 @@ export declare class StyleDirective extends BaseDirective implements DoCheck, On
     protected _ngEl: ElementRef;
     protected _renderer: Renderer2;
     protected _differs: KeyValueDiffers;
-    private _ngStyleInstance;
+    private readonly _ngStyleInstance;
     protected _styler: StyleUtils;
     /**
      * Intercept ngStyle assignments so we cache the default styles
@@ -52,11 +52,6 @@ export declare class StyleDirective extends BaseDirective implements DoCheck, On
     ngDoCheck(): void;
     ngOnDestroy(): void;
     /**
-     * Configure adapters (that delegate to an internal ngClass instance) if responsive
-     * keys have been defined.
-     */
-    protected _configureAdapters(): void;
-    /**
      * Build an mqActivation object that bridges
      * mql change events to onMediaQueryChange handlers
      */
@@ -69,7 +64,7 @@ export declare class StyleDirective extends BaseDirective implements DoCheck, On
      *       Comma-delimiters are not supported due to complexities of
      *       possible style values such as `rgba(x,x,x,x)` and others
      */
-    protected _buildStyleMap(styles: NgStyleType): string | import("./style-transforms").NgStyleMap;
+    protected _buildStyleMap(styles: NgStyleType): string | NgStyleMap;
     /** Initial lookup of raw 'class' value (if any) */
     protected _fallbackToStyle(): void;
     /**

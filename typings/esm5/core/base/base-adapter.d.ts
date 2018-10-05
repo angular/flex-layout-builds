@@ -26,7 +26,9 @@ export declare class BaseDirectiveAdapter extends BaseDirective {
      */
     readonly activeKey: string;
     /** Hash map of all @Input keys/values defined/used */
-    readonly inputMap: {};
+    readonly inputMap: {
+        [key: string]: any;
+    };
     /**
      * @see BaseDirective._mqActivation
      */
@@ -44,7 +46,7 @@ export declare class BaseDirectiveAdapter extends BaseDirective {
     /**
      * @see BaseDirective._queryInput
      */
-    queryInput(key: any): any;
+    queryInput(key: string | null): any;
     /**
      *  Save the property value.
      */

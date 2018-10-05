@@ -76,7 +76,7 @@ export declare class ResponsiveActivation {
     /**
      * Fast validator for presence of attribute on the host element
      */
-    hasKeyValue(key: any): boolean;
+    hasKeyValue(key: string): boolean;
     /**
      * Remove interceptors, restore original functions, and forward the onDestroy() call
      */

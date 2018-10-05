@@ -247,7 +247,12 @@ class ClassDirective extends BaseDirective {
         this._renderer = _renderer;
         this._ngClassInstance = _ngClassInstance;
         this._styler = _styler;
-        this._configureAdapters();
+        this._base = new BaseDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
+        if (!this._ngClassInstance) {
+            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
+            // the same host element; since the responsive variations may be defined...
+            this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer);
+        }
     }
     /**
      * Intercept ngClass assignments so we cache the default classes
@@ -367,20 +372,6 @@ class ClassDirective extends BaseDirective {
      */
     ngOnDestroy() {
         this._base.ngOnDestroy();
-        delete this._ngClassInstance;
-    }
-    /**
-     * Configure adapters (that delegate to an internal ngClass instance) if responsive
-     * keys have been defined.
-     * @return {?}
-     */
-    _configureAdapters() {
-        this._base = new BaseDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._styler);
-        if (!this._ngClassInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
-            // the same host element; since the responsive variations may be defined...
-            this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer);
-        }
     }
     /**
      * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers
@@ -474,6 +465,10 @@ class ShowHideDirective extends BaseDirective {
         this.styleUtils = styleUtils;
         this.platformId = platformId;
         this.serverModuleLoaded = serverModuleLoaded;
+        /**
+         * Original dom Elements CSS display style
+         */
+        this._display = '';
         if (layout) {
             /**
                    * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -719,11 +714,11 @@ class ShowHideDirective extends BaseDirective {
     }
     /**
      * Validate the to be not FALSY
-     * @param {?} show
+     * @param {?=} show
      * @return {?}
      */
-    _validateTruthy(show) {
-        return (FALSY.indexOf(show) == -1);
+    _validateTruthy(show = '') {
+        return (FALSY.indexOf(show) === -1);
     }
 }
 ShowHideDirective.decorators = [
@@ -829,15 +824,6 @@ class NgStyleKeyValue {
         this.value = this.value.replace(/;/, '');
     }
 }
-/** *
- * Transform Operators for \@angular/flex-layout NgStyle Directive
-  @type {?} */
-const ngStyleUtils = {
-    getType,
-    buildRawList,
-    buildMapFromList,
-    buildMapFromSet
-};
 /**
  * @param {?} target
  * @return {?}
@@ -873,7 +859,7 @@ function buildRawList(source, delimiter = ';') {
  */
 function buildMapFromList(styles, sanitize) {
     /** @type {?} */
-    let sanitizeValue = (it) => {
+    const sanitizeValue = (it) => {
         if (sanitize) {
             it.value = sanitize(it.value);
         }
@@ -883,7 +869,7 @@ function buildMapFromList(styles, sanitize) {
         .map(stringToKeyValue)
         .filter(entry => !!entry)
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, {});
+        .reduce(keyValuesToMap, /** @type {?} */ ({}));
 }
 /**
  * Convert Set<string> or raw Object to an iterable NgStyleMap
@@ -893,14 +879,13 @@ function buildMapFromList(styles, sanitize) {
  */
 function buildMapFromSet(source, sanitize) {
     /** @type {?} */
-    let list = new Array();
-    if (getType(source) == 'set') {
-        source.forEach(entry => list.push(entry));
+    let list = [];
+    if (getType(source) === 'set') {
+        (/** @type {?} */ (source)).forEach(entry => list.push(entry));
     }
-    else { // simple hashmap
-        // simple hashmap
-        Object.keys(source).forEach(key => {
-            list.push(`${key}:${source[key]}`);
+    else {
+        Object.keys(source).forEach((key) => {
+            list.push(`${key}:${((/** @type {?} */ (source)))[key]}`);
         });
     }
     return buildMapFromList(list, sanitize);
@@ -956,7 +941,14 @@ class StyleDirective extends BaseDirective {
         this._differs = _differs;
         this._ngStyleInstance = _ngStyleInstance;
         this._styler = _styler;
-        this._configureAdapters();
+        this._base = new BaseDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
+        if (!this._ngStyleInstance) {
+            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // defined on the same host element; since the responsive variations may be defined...
+            this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
+        }
+        this._buildCacheInterceptor();
+        this._fallbackToStyle();
     }
     /**
      * Intercept ngStyle assignments so we cache the default styles
@@ -1075,22 +1067,6 @@ class StyleDirective extends BaseDirective {
      */
     ngOnDestroy() {
         this._base.ngOnDestroy();
-        delete this._ngStyleInstance;
-    }
-    /**
-     * Configure adapters (that delegate to an internal ngClass instance) if responsive
-     * keys have been defined.
-     * @return {?}
-     */
-    _configureAdapters() {
-        this._base = new BaseDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._styler);
-        if (!this._ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
-            // defined on the same host element; since the responsive variations may be defined...
-            this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
-        }
-        this._buildCacheInterceptor();
-        this._fallbackToStyle();
     }
     /**
      * Build an mqActivation object that bridges
@@ -1137,11 +1113,11 @@ class StyleDirective extends BaseDirective {
             return this._sanitizer.sanitize(SecurityContext.STYLE, val) || '';
         };
         if (styles) {
-            switch (ngStyleUtils.getType(styles)) {
-                case 'string': return ngStyleUtils.buildMapFromList(ngStyleUtils.buildRawList(styles), sanitizer);
-                case 'array': return ngStyleUtils.buildMapFromList(/** @type {?} */ (styles), sanitizer);
-                case 'set': return ngStyleUtils.buildMapFromSet(styles, sanitizer);
-                default: return ngStyleUtils.buildMapFromSet(styles, sanitizer);
+            switch (getType(styles)) {
+                case 'string': return buildMapFromList$1(buildRawList(styles), sanitizer);
+                case 'array': return buildMapFromList$1(/** @type {?} */ (styles), sanitizer);
+                case 'set': return buildMapFromSet(styles, sanitizer);
+                default: return buildMapFromSet(styles, sanitizer);
             }
         }
         return styles;
@@ -1191,6 +1167,26 @@ StyleDirective.propDecorators = {
     ngStyleGtMd: [{ type: Input, args: ['ngStyle.gt-md',] }],
     ngStyleGtLg: [{ type: Input, args: ['ngStyle.gt-lg',] }]
 };
+/**
+ * Build a styles map from a list of styles, while sanitizing bad values first
+ * @param {?} styles
+ * @param {?=} sanitize
+ * @return {?}
+ */
+function buildMapFromList$1(styles, sanitize) {
+    /** @type {?} */
+    const sanitizeValue = (it) => {
+        if (sanitize) {
+            it.value = sanitize(it.value);
+        }
+        return it;
+    };
+    return styles
+        .map(stringToKeyValue)
+        .filter(entry => !!entry)
+        .map(sanitizeValue)
+        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+}
 
 /**
  * @fileoverview added by tsickle

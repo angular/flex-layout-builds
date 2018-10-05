@@ -23,7 +23,7 @@ export declare class ClassDirective extends BaseDirective implements DoCheck, On
     protected _keyValueDiffers: KeyValueDiffers;
     protected _ngEl: ElementRef;
     protected _renderer: Renderer2;
-    private _ngClassInstance;
+    private readonly _ngClassInstance;
     protected _styler: StyleUtils;
     /**
      * Intercept ngClass assignments so we cache the default classes
@@ -60,11 +60,6 @@ export declare class ClassDirective extends BaseDirective implements DoCheck, On
      */
     ngDoCheck(): void;
     ngOnDestroy(): void;
-    /**
-     * Configure adapters (that delegate to an internal ngClass instance) if responsive
-     * keys have been defined.
-     */
-    protected _configureAdapters(): void;
     /**
      * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers
      * NOTE: We delegate subsequent activity to the NgClass logic

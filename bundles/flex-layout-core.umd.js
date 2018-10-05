@@ -512,6 +512,7 @@ MediaChange = /** @class */ (function () {
         this.mediaQuery = mediaQuery;
         this.mqAlias = mqAlias;
         this.suffix = suffix;
+        this.property = '';
     }
     /**
      * @return {?}
@@ -676,8 +677,8 @@ var MatchMedia = /** @class */ (function () {
      * For Webkit engines that only trigger the MediaQueryList Listener
      * when there is at least one CSS selector for the respective media query.
      *
-     * @param query string The mediaQuery used to create a faux CSS selector
-     *
+     * @param mediaQueries
+     * @param _document
      */
     /**
      * For Webkit engines that only trigger the MediaQueryList Listener
@@ -705,7 +706,7 @@ var MatchMedia = /** @class */ (function () {
                 /** @type {?} */
                 var styleEl_1 = _document.createElement('style');
                 styleEl_1.setAttribute('type', 'text/css');
-                if (!styleEl_1['styleSheet']) {
+                if (!(/** @type {?} */ (styleEl_1)).styleSheet) {
                     /** @type {?} */
                     var cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
                     styleEl_1.appendChild(_document.createTextNode(cssText));
@@ -1325,6 +1326,7 @@ ResponsiveActivation = /** @class */ (function () {
         this._mediaMonitor = _mediaMonitor;
         this._onMediaChanges = _onMediaChanges;
         this._subscribers = [];
+        this._activatedInputKey = '';
         this._registryMap = this._buildRegistryMap();
         this._subscribers = this._configureChangeObservers();
     }
@@ -2040,7 +2042,7 @@ BaseDirective = /** @class */ (function () {
      * @return {?}
      */
     function (key) {
-        return this._mqActivation.hasKeyValue(key);
+        return /** @type {?} */ ((this._mqActivation)).hasKeyValue(key);
     };
     Object.defineProperty(BaseDirective.prototype, "hasInitialized", {
         get: /**
@@ -2124,7 +2126,7 @@ BaseDirectiveAdapter = /** @class */ (function (_super) {
          * @return {?}
          */
         function () {
-            return this._mqActivation;
+            return /** @type {?} */ ((this._mqActivation));
         },
         enumerable: true,
         configurable: true
@@ -2316,476 +2318,6 @@ BaseDirectiveAdapter = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * @deprecated
- * \@deletion-target v6.0.0-beta.17
- * Abstract base class for the Layout API styling directives.
- * @abstract
- */
-var   /**
- * @deprecated
- * \@deletion-target v6.0.0-beta.17
- * Abstract base class for the Layout API styling directives.
- * @abstract
- */
-BaseFxDirective = /** @class */ (function () {
-    /**
-     * Constructor
-     */
-    function BaseFxDirective(_mediaMonitor, _elementRef, _styler) {
-        this._mediaMonitor = _mediaMonitor;
-        this._elementRef = _elementRef;
-        this._styler = _styler;
-        /**
-         *  Dictionary of input keys with associated values
-         */
-        this._inputMap = {};
-        /**
-         * Has the `ngOnInit()` method fired
-         *
-         * Used to allow *ngFor tasks to finish and support queries like
-         * getComputedStyle() during ngOnInit().
-         */
-        this._hasInitialized = false;
-    }
-    Object.defineProperty(BaseFxDirective.prototype, "hasMediaQueryListener", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return !!this._mqActivation;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseFxDirective.prototype, "activatedValue", {
-        /**
-         * Imperatively determine the current activated [input] value;
-         * if called before ngOnInit() this will return `undefined`
-         */
-        get: /**
-         * Imperatively determine the current activated [input] value;
-         * if called before ngOnInit() this will return `undefined`
-         * @return {?}
-         */
-        function () {
-            return this._mqActivation ? this._mqActivation.activatedInput : undefined;
-        },
-        /**
-         * Change the currently activated input value and force-update
-         * the injected CSS (by-passing change detection).
-         *
-         * NOTE: Only the currently activated input value will be modified;
-         *       other input values will NOT be affected.
-         */
-        set: /**
-         * Change the currently activated input value and force-update
-         * the injected CSS (by-passing change detection).
-         *
-         * NOTE: Only the currently activated input value will be modified;
-         *       other input values will NOT be affected.
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            var _a;
-            /** @type {?} */
-            var key = 'baseKey';
-            /** @type {?} */
-            var previousVal;
-            if (this._mqActivation) {
-                key = this._mqActivation.activatedInputKey;
-                previousVal = this._inputMap[key];
-                this._inputMap[key] = value;
-            }
-            /** @type {?} */
-            var change = new core.SimpleChange(previousVal, value, false);
-            this.ngOnChanges(/** @type {?} */ (_a = {}, _a[key] = change, _a));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseFxDirective.prototype, "parentElement", {
-        // *********************************************
-        // Accessor Methods
-        // *********************************************
-        /**
-         * Access to host element's parent DOM node
-         */
-        get: /**
-         * Access to host element's parent DOM node
-         * @return {?}
-         */
-        function () {
-            return this._elementRef.nativeElement.parentNode;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseFxDirective.prototype, "nativeElement", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._elementRef.nativeElement;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Access the current value (if any) of the @Input property.
-     */
-    /**
-     * Access the current value (if any) of the \@Input property.
-     * @param {?} key
-     * @return {?}
-     */
-    BaseFxDirective.prototype._queryInput = /**
-     * Access the current value (if any) of the \@Input property.
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
-        return this._inputMap[key];
-    };
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * Use post-component-initialization event to perform extra
-     * querying such as computed Display style
-     */
-    /**
-     * Use post-component-initialization event to perform extra
-     * querying such as computed Display style
-     * @return {?}
-     */
-    BaseFxDirective.prototype.ngOnInit = /**
-     * Use post-component-initialization event to perform extra
-     * querying such as computed Display style
-     * @return {?}
-     */
-    function () {
-        this._display = this._getDisplayStyle();
-        this._hasInitialized = true;
-    };
-    /**
-     * @param {?} change
-     * @return {?}
-     */
-    BaseFxDirective.prototype.ngOnChanges = /**
-     * @param {?} change
-     * @return {?}
-     */
-    function (change) {
-        throw new Error("BaseFxDirective::ngOnChanges should be overridden in subclass: " + change);
-    };
-    /**
-     * @return {?}
-     */
-    BaseFxDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        if (this._mqActivation) {
-            this._mqActivation.destroy();
-        }
-        delete this._mediaMonitor;
-    };
-    // *********************************************
-    // Protected Methods
-    // *********************************************
-    /**
-     * Was the directive's default selector used ?
-     * If not, use the fallback value!
-     */
-    /**
-     * Was the directive's default selector used ?
-     * If not, use the fallback value!
-     * @param {?} key
-     * @param {?} fallbackVal
-     * @return {?}
-     */
-    BaseFxDirective.prototype._getDefaultVal = /**
-     * Was the directive's default selector used ?
-     * If not, use the fallback value!
-     * @param {?} key
-     * @param {?} fallbackVal
-     * @return {?}
-     */
-    function (key, fallbackVal) {
-        /** @type {?} */
-        var val = this._queryInput(key);
-        /** @type {?} */
-        var hasDefaultVal = (val !== undefined && val !== null);
-        return (hasDefaultVal && val !== '') ? val : fallbackVal;
-    };
-    /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     */
-    /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     * @param {?=} source
-     * @return {?}
-     */
-    BaseFxDirective.prototype._getDisplayStyle = /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     * @param {?=} source
-     * @return {?}
-     */
-    function (source) {
-        if (source === void 0) { source = this.nativeElement; }
-        /** @type {?} */
-        var query = 'display';
-        return this._styler.lookupStyle(source, query);
-    };
-    /**
-     * Quick accessor to raw attribute value on the target DOM element
-     */
-    /**
-     * Quick accessor to raw attribute value on the target DOM element
-     * @param {?} attribute
-     * @param {?=} source
-     * @return {?}
-     */
-    BaseFxDirective.prototype._getAttributeValue = /**
-     * Quick accessor to raw attribute value on the target DOM element
-     * @param {?} attribute
-     * @param {?=} source
-     * @return {?}
-     */
-    function (attribute, source) {
-        if (source === void 0) { source = this.nativeElement; }
-        return this._styler.lookupAttributeValue(source, attribute);
-    };
-    /**
-     * Determine the DOM element's Flexbox flow (flex-direction).
-     *
-     * Check inline style first then check computed (stylesheet) style.
-     * And optionally add the flow value to element's inline style.
-     */
-    /**
-     * Determine the DOM element's Flexbox flow (flex-direction).
-     *
-     * Check inline style first then check computed (stylesheet) style.
-     * And optionally add the flow value to element's inline style.
-     * @param {?} target
-     * @param {?=} addIfMissing
-     * @return {?}
-     */
-    BaseFxDirective.prototype._getFlowDirection = /**
-     * Determine the DOM element's Flexbox flow (flex-direction).
-     *
-     * Check inline style first then check computed (stylesheet) style.
-     * And optionally add the flow value to element's inline style.
-     * @param {?} target
-     * @param {?=} addIfMissing
-     * @return {?}
-     */
-    function (target, addIfMissing) {
-        if (addIfMissing === void 0) { addIfMissing = false; }
-        var _a;
-        /** @type {?} */
-        var value = 'row';
-        /** @type {?} */
-        var hasInlineValue = '';
-        if (target) {
-            _a = this._styler.getFlowDirection(target), value = _a[0], hasInlineValue = _a[1];
-            if (!hasInlineValue && addIfMissing) {
-                /** @type {?} */
-                var style = buildLayoutCSS(value);
-                /** @type {?} */
-                var elements = [target];
-                this._styler.applyStyleToElements(style, elements);
-            }
-        }
-        return value.trim() || 'row';
-    };
-    /**
-     * Applies styles given via string pair or object map to the directive element.
-     */
-    /**
-     * Applies styles given via string pair or object map to the directive element.
-     * @param {?} style
-     * @param {?=} value
-     * @param {?=} element
-     * @return {?}
-     */
-    BaseFxDirective.prototype._applyStyleToElement = /**
-     * Applies styles given via string pair or object map to the directive element.
-     * @param {?} style
-     * @param {?=} value
-     * @param {?=} element
-     * @return {?}
-     */
-    function (style, value, element) {
-        if (element === void 0) { element = this.nativeElement; }
-        this._styler.applyStyleToElement(element, style, value);
-    };
-    /**
-     * Applies styles given via string pair or object map to the directive's element.
-     */
-    /**
-     * Applies styles given via string pair or object map to the directive's element.
-     * @param {?} style
-     * @param {?} elements
-     * @return {?}
-     */
-    BaseFxDirective.prototype._applyStyleToElements = /**
-     * Applies styles given via string pair or object map to the directive's element.
-     * @param {?} style
-     * @param {?} elements
-     * @return {?}
-     */
-    function (style, elements) {
-        this._styler.applyStyleToElements(style, elements);
-    };
-    /**
-     *  Save the property value; which may be a complex object.
-     *  Complex objects support property chains
-     */
-    /**
-     *  Save the property value; which may be a complex object.
-     *  Complex objects support property chains
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    BaseFxDirective.prototype._cacheInput = /**
-     *  Save the property value; which may be a complex object.
-     *  Complex objects support property chains
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    function (key, source) {
-        if (typeof source === 'object') {
-            for (var prop in source) {
-                this._inputMap[prop] = source[prop];
-            }
-        }
-        else {
-            if (!!key) {
-                this._inputMap[key] = source;
-            }
-        }
-    };
-    /**
-     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
-     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
-     *  (or closest match).
-     */
-    /**
-     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
-     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
-     *  (or closest match).
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    BaseFxDirective.prototype._listenForMediaQueryChanges = /**
-     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
-     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
-     *  (or closest match).
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    function (key, defaultValue, onMediaQueryChange) {
-        // tslint:disable-line:max-line-length
-        if (!this._mqActivation) {
-            /** @type {?} */
-            var keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-            this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange(change); });
-        }
-        return this._mqActivation;
-    };
-    Object.defineProperty(BaseFxDirective.prototype, "childrenNodes", {
-        /**
-         * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
-         */
-        get: /**
-         * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
-         * @return {?}
-         */
-        function () {
-            /** @type {?} */
-            var obj = this.nativeElement.children;
-            /** @type {?} */
-            var buffer = [];
-            // iterate backwards ensuring that length is an UInt32
-            for (var i = obj.length; i--;) {
-                buffer[i] = obj[i];
-            }
-            return buffer;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     */
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @param {?} baseKey
-     * @return {?}
-     */
-    BaseFxDirective.prototype.hasResponsiveAPI = /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @param {?} baseKey
-     * @return {?}
-     */
-    function (baseKey) {
-        /** @type {?} */
-        var totalKeys = Object.keys(this._inputMap).length;
-        /** @type {?} */
-        var baseValue = this._inputMap[baseKey];
-        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
-    };
-    /**
-     * Fast validator for presence of attribute on the host element
-     */
-    /**
-     * Fast validator for presence of attribute on the host element
-     * @param {?} key
-     * @return {?}
-     */
-    BaseFxDirective.prototype.hasKeyValue = /**
-     * Fast validator for presence of attribute on the host element
-     * @param {?} key
-     * @return {?}
-     */
-    function (key) {
-        return this._mqActivation.hasKeyValue(key);
-    };
-    Object.defineProperty(BaseFxDirective.prototype, "hasInitialized", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._hasInitialized;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return BaseFxDirective;
-}());
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 
 /**
  * @fileoverview added by tsickle
@@ -2815,6 +2347,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
          * activatedInput(s).
          */
         _this.useOverlaps = false;
+        _this._registry = new Map();
         _this._actives = [];
         _this._actives = [];
         return _this;
@@ -3631,7 +3164,6 @@ var OBSERVABLE_MEDIA_PROVIDER = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-
 /**
  * Applies CSS prefixes to appropriate style keys.
  *
@@ -3686,7 +3218,7 @@ function applyCssPrefixes(target) {
                 target['flex-direction'] = value;
                 break;
             case 'order':
-                target['order'] = target['-webkit-' + key] = isNaN(value) ? '0' : value;
+                target['order'] = target['-webkit-' + key] = isNaN(+value) ? '0' : value;
                 break;
         }
     }
@@ -3722,6 +3254,7 @@ var StyleUtils = /** @class */ (function () {
      * @return {?}
      */
     function (element, style, value) {
+        if (value === void 0) { value = null; }
         /** @type {?} */
         var styles = {};
         if (typeof style === 'string') {
@@ -3822,7 +3355,7 @@ var StyleUtils = /** @class */ (function () {
      */
     function (element, styleName) {
         return common.isPlatformBrowser(this._platformId) ?
-            element.style[styleName] : this._getServerStyle(element, styleName);
+            element.style.getPropertyValue(styleName) : this._getServerStyle(element, styleName);
     };
     /**
      * Determine the inline or inherited CSS style
@@ -3888,10 +3421,13 @@ var StyleUtils = /** @class */ (function () {
         var _this = this;
         Object.keys(styles).sort().forEach(function (key) {
             /** @type {?} */
-            var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+            var el = styles[key];
+            /** @type {?} */
+            var values = Array.isArray(el) ? el : [el];
             values.sort();
             for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
                 var value = values_1[_i];
+                value = value ? value + '' : '';
                 if (common.isPlatformBrowser(_this._platformId) || !_this._serverModuleLoaded) {
                     common.isPlatformBrowser(_this._platformId) ?
                         element.style.setProperty(key, value) : _this._setServerStyle(element, key, value);
@@ -3998,7 +3534,7 @@ var StyleUtils = /** @class */ (function () {
     StyleUtils.ctorParameters = function () { return [
         { type: StylesheetMap, decorators: [{ type: core.Optional }] },
         { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
     /** @nocollapse */ StyleUtils.ngInjectableDef = core.defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.inject(StylesheetMap, 8), core.inject(SERVER_TOKEN, 8), core.inject(core.PLATFORM_ID), core.inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
@@ -4079,7 +3615,6 @@ exports.SERVER_TOKEN = SERVER_TOKEN;
 exports.BREAKPOINT = BREAKPOINT;
 exports.BaseDirective = BaseDirective;
 exports.BaseDirectiveAdapter = BaseDirectiveAdapter;
-exports.BaseFxDirective = BaseFxDirective;
 exports.RESPONSIVE_ALIASES = RESPONSIVE_ALIASES;
 exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = ScreenTypes;

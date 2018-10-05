@@ -1163,12 +1163,13 @@ class FlexOrderDirective extends BaseDirective {
         this._applyStyleToElement(this._buildCSS(value));
     }
     /**
-     * @param {?} value
+     * @param {?=} value
      * @return {?}
      */
-    _buildCSS(value) {
-        value = parseInt(value, 10);
-        return { order: isNaN(value) ? 0 : value };
+    _buildCSS(value = '') {
+        /** @type {?} */
+        const val = parseInt(value, 10);
+        return { order: isNaN(val) ? 0 : val };
     }
 }
 FlexOrderDirective.decorators = [
@@ -1385,15 +1386,15 @@ class FlexOffsetDirective extends BaseDirective {
         this._applyStyleToElement(this._buildCSS(value));
     }
     /**
-     * @param {?} offset
+     * @param {?=} offset
      * @return {?}
      */
-    _buildCSS(offset) {
+    _buildCSS(offset = '') {
         /** @type {?} */
         let isPercent = String(offset).indexOf('%') > -1;
         /** @type {?} */
         let isPx = String(offset).indexOf('px') > -1;
-        if (!isPx && !isPercent && !isNaN(offset)) {
+        if (!isPx && !isPercent && !isNaN(+offset)) {
             offset = offset + '%';
         }
         /** @type {?} */
@@ -1574,10 +1575,10 @@ class FlexAlignDirective extends BaseDirective {
         this._applyStyleToElement(this._buildCSS(value));
     }
     /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
-    _buildCSS(align) {
+    _buildCSS(align = '') {
         /** @type {?} */
         let css = {};
         // Cross-axis
@@ -1841,10 +1842,10 @@ class LayoutAlignDirective extends BaseDirective {
         this._allowStretching(value, this._layout || 'row');
     }
     /**
-     * @param {?} align
+     * @param {?=} align
      * @return {?}
      */
-    _buildCSS(align) {
+    _buildCSS(align = '') {
         /** @type {?} */
         let css = {};
         let [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
@@ -1903,11 +1904,11 @@ class LayoutAlignDirective extends BaseDirective {
     /**
      * Update container element to 'stretch' as needed...
      * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-     * @param {?} align
-     * @param {?} layout
+     * @param {?=} align
+     * @param {?=} layout
      * @return {?}
      */
-    _allowStretching(align, layout) {
+    _allowStretching(align = '', layout = '') {
         let [, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
         if (cross_axis == 'stretch') {
             // Use `null` values to remove style

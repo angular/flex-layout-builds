@@ -144,18 +144,18 @@ function formatSegment(css, asPrefix = true) {
  * Get className associated with CSS styling
  * If not found, generate global className and set
  * association.
- * @param {?} stylesheet
+ * @param {?} element
  * @param {?} classMap
  * @return {?}
  */
-function getClassName(stylesheet, classMap) {
+function getClassName(element, classMap) {
     /** @type {?} */
-    let className = classMap.get(stylesheet);
+    let className = classMap.get(element);
     if (!className) {
         className = `${CLASS_NAME}${nextId++}`;
-        classMap.set(stylesheet, className);
+        classMap.set(element, className);
     }
-    stylesheet.classList.add(className);
+    element.classList.add(className);
     return className;
 }
 

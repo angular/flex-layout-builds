@@ -18,7 +18,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('6.0.0-beta.18-76c110e');
+var VERSION = new core.Version('6.0.0-beta.18-5234d69');
 
 /**
  * @fileoverview added by tsickle
@@ -97,7 +97,6 @@ exports.SERVER_TOKEN = core$1.SERVER_TOKEN;
 exports.BREAKPOINT = core$1.BREAKPOINT;
 exports.BaseDirective = core$1.BaseDirective;
 exports.BaseDirectiveAdapter = core$1.BaseDirectiveAdapter;
-exports.BaseFxDirective = core$1.BaseFxDirective;
 exports.RESPONSIVE_ALIASES = core$1.RESPONSIVE_ALIASES;
 exports.DEFAULT_BREAKPOINTS = core$1.DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = core$1.ScreenTypes;

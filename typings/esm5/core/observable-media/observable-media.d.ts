@@ -65,7 +65,7 @@ export declare class MediaService implements ObservableMedia {
     /**
      * Test if specified query/alias is active.
      */
-    isActive(alias: any): boolean;
+    isActive(alias: string): boolean;
     /**
      * Proxy to the Observable subscribe method
      */

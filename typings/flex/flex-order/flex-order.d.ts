@@ -13,20 +13,20 @@ import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/co
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
 export declare class FlexOrderDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
-    order: any;
-    orderXs: any;
-    orderSm: any;
-    orderMd: any;
-    orderLg: any;
-    orderXl: any;
-    orderGtXs: any;
-    orderGtSm: any;
-    orderGtMd: any;
-    orderGtLg: any;
-    orderLtSm: any;
-    orderLtMd: any;
-    orderLtLg: any;
-    orderLtXl: any;
+    order: string;
+    orderXs: string;
+    orderSm: string;
+    orderMd: string;
+    orderLg: string;
+    orderXl: string;
+    orderGtXs: string;
+    orderGtSm: string;
+    orderGtMd: string;
+    orderGtLg: string;
+    orderLtSm: string;
+    orderLtMd: string;
+    orderLtLg: string;
+    orderLtXl: string;
     constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
@@ -38,7 +38,7 @@ export declare class FlexOrderDirective extends BaseDirective implements OnInit,
      */
     ngOnInit(): void;
     protected _updateWithValue(value?: string): void;
-    protected _buildCSS(value: any): {
-        order: any;
+    protected _buildCSS(value?: string): {
+        order: number;
     };
 }

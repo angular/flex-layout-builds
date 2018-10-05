@@ -45,7 +45,7 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     protected readonly parentElement: any;
     protected readonly nativeElement: HTMLElement;
     /** Access the current value (if any) of the @Input property */
-    protected _queryInput(key: any): any;
+    protected _queryInput(key: string): any;
     /**
      * Was the directive's default selector used ?
      * If not, use the fallback value!
@@ -84,12 +84,14 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
     protected readonly childrenNodes: any[];
     /** Fast validator for presence of attribute on the host element */
-    protected hasKeyValue(key: any): boolean;
+    protected hasKeyValue(key: string): boolean;
     protected readonly hasInitialized: boolean;
     /** MediaQuery Activation Tracker */
-    protected _mqActivation: ResponsiveActivation;
+    protected _mqActivation?: ResponsiveActivation;
     /** Dictionary of input keys with associated values */
-    protected _inputMap: {};
+    protected _inputMap: {
+        [key: string]: any;
+    };
     /**
      * Has the `ngOnInit()` method fired
      *
