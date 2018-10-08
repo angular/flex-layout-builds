@@ -610,7 +610,7 @@ var MatchMedia = /** @class */ (function () {
                     _this._registry.set(query, mql);
                 }
                 if (mql.matches) {
-                    onMQLEvent(mql); // Announce activate range for initial subscribers
+                    onMQLEvent(/** @type {?} */ ((mql)));
                 }
             });
         }
@@ -635,14 +635,14 @@ var MatchMedia = /** @class */ (function () {
         /** @type {?} */
         var canListen = isPlatformBrowser(this._platformId) &&
             !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-        return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
+        return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
             matches: query === 'all' || query === '',
             media: query,
             addListener: function () {
             },
             removeListener: function () {
             }
-        });
+        }));
     };
     /**
      * For Webkit engines that only trigger the MediaQueryList Listener
@@ -681,8 +681,8 @@ var MatchMedia = /** @class */ (function () {
                     /** @type {?} */
                     var cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
                     styleEl_1.appendChild(_document.createTextNode(cssText));
-                }
-                _document.head.appendChild(styleEl_1);
+                } /** @type {?} */
+                ((_document.head)).appendChild(styleEl_1);
                 // Store in private global registry
                 list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
             }
@@ -2541,6 +2541,7 @@ MockMediaQueryList = /** @class */ (function () {
         this._mediaQuery = _mediaQuery;
         this._isActive = false;
         this._listeners = [];
+        this.onchange = null;
     }
     Object.defineProperty(MockMediaQueryList.prototype, "matches", {
         get: /**
@@ -2594,7 +2595,9 @@ MockMediaQueryList = /** @class */ (function () {
         if (!this._isActive) {
             this._isActive = true;
             this._listeners.forEach(function (callback) {
-                callback(_this);
+                /** @type {?} */
+                var cb = /** @type {?} */ ((callback));
+                cb.call(null, _this);
             });
         }
         return this;
@@ -2613,7 +2616,9 @@ MockMediaQueryList = /** @class */ (function () {
         if (this._isActive) {
             this._isActive = false;
             this._listeners.forEach(function (callback) {
-                callback(_this);
+                /** @type {?} */
+                var cb = /** @type {?} */ ((callback));
+                cb.call(null, _this);
             });
         }
         return this;
@@ -2634,7 +2639,9 @@ MockMediaQueryList = /** @class */ (function () {
             this._listeners.push(listener);
         }
         if (this._isActive) {
-            listener(this);
+            /** @type {?} */
+            var cb = /** @type {?} */ ((listener));
+            cb.call(null, this);
         }
     };
     /** Don't need to remove listeners in the testing environment */
@@ -2649,6 +2656,45 @@ MockMediaQueryList = /** @class */ (function () {
      * @return {?}
      */
     function (_) {
+    };
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.addEventListener = /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    function (_, __, ___) {
+    };
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.removeEventListener = /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    function (_, __, ___) {
+    };
+    /**
+     * @param {?} _
+     * @return {?}
+     */
+    MockMediaQueryList.prototype.dispatchEvent = /**
+     * @param {?} _
+     * @return {?}
+     */
+    function (_) {
+        return false;
     };
     return MockMediaQueryList;
 }());
@@ -2680,6 +2726,7 @@ ServerMediaQueryList = /** @class */ (function () {
         this._mediaQuery = _mediaQuery;
         this._isActive = false;
         this._listeners = [];
+        this.onchange = null;
     }
     Object.defineProperty(ServerMediaQueryList.prototype, "matches", {
         get: /**
@@ -2733,7 +2780,9 @@ ServerMediaQueryList = /** @class */ (function () {
         if (!this._isActive) {
             this._isActive = true;
             this._listeners.forEach(function (callback) {
-                callback(_this);
+                /** @type {?} */
+                var cb = /** @type {?} */ ((callback));
+                cb.call(null, _this);
             });
         }
         return this;
@@ -2752,7 +2801,9 @@ ServerMediaQueryList = /** @class */ (function () {
         if (this._isActive) {
             this._isActive = false;
             this._listeners.forEach(function (callback) {
-                callback(_this);
+                /** @type {?} */
+                var cb = /** @type {?} */ ((callback));
+                cb.call(null, _this);
             });
         }
         return this;
@@ -2773,7 +2824,9 @@ ServerMediaQueryList = /** @class */ (function () {
             this._listeners.push(listener);
         }
         if (this._isActive) {
-            listener(this);
+            /** @type {?} */
+            var cb = /** @type {?} */ ((listener));
+            cb.call(null, this);
         }
     };
     /** Don't need to remove listeners in the server environment */
@@ -2788,6 +2841,45 @@ ServerMediaQueryList = /** @class */ (function () {
      * @return {?}
      */
     function (_) {
+    };
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.addEventListener = /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    function (_, __, ___) {
+    };
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.removeEventListener = /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    function (_, __, ___) {
+    };
+    /**
+     * @param {?} _
+     * @return {?}
+     */
+    ServerMediaQueryList.prototype.dispatchEvent = /**
+     * @param {?} _
+     * @return {?}
+     */
+    function (_) {
+        return false;
     };
     return ServerMediaQueryList;
 }());

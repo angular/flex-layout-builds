@@ -378,7 +378,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
         _this._zone = _zone;
         _this._directionality = _directionality;
-        _this._layout = 'row';
+        _this._layout = 'row'; // default flex-direction
         if (container) { // Subscribe to layout direction changes
             // Subscribe to layout direction changes
             _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
@@ -1062,7 +1062,6 @@ var FlexDirective = /** @class */ (function (_super) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
             this._layoutWatcher = this._container.layout$.subscribe(function (layout) {
-                // `direction` === null if parent container does not have a `fxLayout`
                 // `direction` === null if parent container does not have a `fxLayout`
                 _this._onLayoutChange(layout);
             });
@@ -1783,7 +1782,6 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
             // Subscribe to layout immediate parent direction changes (if any)
             this._layoutWatcher = this._container.layout$.subscribe(function (layout) {
                 // `direction` === null if parent container does not have a `fxLayout`
-                // `direction` === null if parent container does not have a `fxLayout`
                 _this._onLayoutChange(layout);
             });
         }
@@ -2205,7 +2203,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     /* tslint:enable */
     function LayoutAlignDirective(monitor, elRef, container, styleUtils) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
-        _this._layout = 'row';
+        _this._layout = 'row'; // default flex-direction
         if (container) { // Subscribe to layout direction changes
             // Subscribe to layout direction changes
             _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));

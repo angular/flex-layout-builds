@@ -514,7 +514,7 @@ class MatchMedia {
                     this._registry.set(query, mql);
                 }
                 if (mql.matches) {
-                    onMQLEvent(mql); // Announce activate range for initial subscribers
+                    onMQLEvent(/** @type {?} */ ((mql)));
                 }
             });
         }
@@ -529,14 +529,14 @@ class MatchMedia {
         /** @type {?} */
         let canListen = isPlatformBrowser(this._platformId) &&
             !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-        return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ ({
+        return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
             matches: query === 'all' || query === '',
             media: query,
             addListener: () => {
             },
             removeListener: () => {
             }
-        });
+        }));
     }
     /**
      * For Webkit engines that only trigger the MediaQueryList Listener
@@ -566,8 +566,8 @@ class MatchMedia {
 @media ${query} {.fx-query-test{ }}
 `;
                     styleEl.appendChild(_document.createTextNode(cssText));
-                }
-                _document.head.appendChild(styleEl);
+                } /** @type {?} */
+                ((_document.head)).appendChild(styleEl);
                 // Store in private global registry
                 list.forEach(mq => ALL_STYLES[mq] = styleEl);
             }
@@ -1884,6 +1884,7 @@ class MockMediaQueryList {
         this._mediaQuery = _mediaQuery;
         this._isActive = false;
         this._listeners = [];
+        this.onchange = null;
     }
     /**
      * @return {?}
@@ -1914,7 +1915,9 @@ class MockMediaQueryList {
         if (!this._isActive) {
             this._isActive = true;
             this._listeners.forEach((callback) => {
-                callback(this);
+                /** @type {?} */
+                const cb = /** @type {?} */ ((callback));
+                cb.call(null, this);
             });
         }
         return this;
@@ -1927,7 +1930,9 @@ class MockMediaQueryList {
         if (this._isActive) {
             this._isActive = false;
             this._listeners.forEach((callback) => {
-                callback(this);
+                /** @type {?} */
+                const cb = /** @type {?} */ ((callback));
+                cb.call(null, this);
             });
         }
         return this;
@@ -1942,7 +1947,9 @@ class MockMediaQueryList {
             this._listeners.push(listener);
         }
         if (this._isActive) {
-            listener(this);
+            /** @type {?} */
+            const cb = /** @type {?} */ ((listener));
+            cb.call(null, this);
         }
     }
     /**
@@ -1951,6 +1958,29 @@ class MockMediaQueryList {
      * @return {?}
      */
     removeListener(_) {
+    }
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    addEventListener(_, __, ___) {
+    }
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    removeEventListener(_, __, ___) {
+    }
+    /**
+     * @param {?} _
+     * @return {?}
+     */
+    dispatchEvent(_) {
+        return false;
     }
 }
 /** *
@@ -1979,6 +2009,7 @@ class ServerMediaQueryList {
         this._mediaQuery = _mediaQuery;
         this._isActive = false;
         this._listeners = [];
+        this.onchange = null;
     }
     /**
      * @return {?}
@@ -2009,7 +2040,9 @@ class ServerMediaQueryList {
         if (!this._isActive) {
             this._isActive = true;
             this._listeners.forEach((callback) => {
-                callback(this);
+                /** @type {?} */
+                const cb = /** @type {?} */ ((callback));
+                cb.call(null, this);
             });
         }
         return this;
@@ -2022,7 +2055,9 @@ class ServerMediaQueryList {
         if (this._isActive) {
             this._isActive = false;
             this._listeners.forEach((callback) => {
-                callback(this);
+                /** @type {?} */
+                const cb = /** @type {?} */ ((callback));
+                cb.call(null, this);
             });
         }
         return this;
@@ -2037,7 +2072,9 @@ class ServerMediaQueryList {
             this._listeners.push(listener);
         }
         if (this._isActive) {
-            listener(this);
+            /** @type {?} */
+            const cb = /** @type {?} */ ((listener));
+            cb.call(null, this);
         }
     }
     /**
@@ -2046,6 +2083,29 @@ class ServerMediaQueryList {
      * @return {?}
      */
     removeListener(_) {
+    }
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    addEventListener(_, __, ___) {
+    }
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    removeEventListener(_, __, ___) {
+    }
+    /**
+     * @param {?} _
+     * @return {?}
+     */
+    dispatchEvent(_) {
+        return false;
     }
 }
 /**

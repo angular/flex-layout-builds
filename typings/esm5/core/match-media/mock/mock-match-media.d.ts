@@ -79,7 +79,11 @@ export declare class MockMediaQueryList implements MediaQueryList {
     /** Add a listener to our internal list to activate later */
     addListener(listener: MediaQueryListListener): void;
     /** Don't need to remove listeners in the testing environment */
-    removeListener(_: MediaQueryListListener): void;
+    removeListener(_: EventListenerOrEventListenerObject | null): void;
+    addEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | AddEventListenerOptions): void;
+    removeEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | EventListenerOptions): void;
+    dispatchEvent(_: Event): boolean;
+    onchange: MediaQueryListListener;
 }
 /**
  * Pre-configured provider for MockMatchMedia
@@ -88,3 +92,5 @@ export declare const MockMatchMediaProvider: {
     provide: typeof MatchMedia;
     useClass: typeof MockMatchMedia;
 };
+declare type MediaQueryListListener = ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null;
+export {};

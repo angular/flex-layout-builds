@@ -384,8 +384,6 @@ var ClassDirective = /** @class */ (function (_super) {
         if (!_this._ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
-            // the same host element; since the responsive variations may be defined...
             _this._ngClassInstance = new common.NgClass(_this._iterableDiffers, _this._keyValueDiffers, _this._ngEl, _this._renderer);
         }
         return _this;
@@ -714,10 +712,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
                    * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
                    * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
                    */
-            /**
-             * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-             * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-             */
             _this._layoutWatcher = layout.layout$.subscribe(function () { return _this._updateWithValue(); });
         }
         return _this;
@@ -1331,8 +1325,6 @@ var StyleDirective = /** @class */ (function (_super) {
         _this._styler = _styler;
         _this._base = new core$1.BaseDirectiveAdapter('ngStyle', _this.monitor, _this._ngEl, _this._styler);
         if (!_this._ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
-            // defined on the same host element; since the responsive variations may be defined...
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
             _this._ngStyleInstance = new common.NgStyle(_this._differs, _this._ngEl, _this._renderer);

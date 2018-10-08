@@ -310,7 +310,7 @@ class LayoutGapDirective extends BaseDirective {
         super(monitor, elRef, styleUtils);
         this._zone = _zone;
         this._directionality = _directionality;
-        this._layout = 'row';
+        this._layout = 'row'; // default flex-direction
         if (container) { // Subscribe to layout direction changes
             // Subscribe to layout direction changes
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
@@ -1694,7 +1694,7 @@ class LayoutAlignDirective extends BaseDirective {
      */
     constructor(monitor, elRef, container, styleUtils) {
         super(monitor, elRef, styleUtils);
-        this._layout = 'row';
+        this._layout = 'row'; // default flex-direction
         if (container) { // Subscribe to layout direction changes
             // Subscribe to layout direction changes
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));

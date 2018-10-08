@@ -59,8 +59,8 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpo
         /** @type {?} */
         var styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
         styleTag.classList.add(CLASS_NAME + "ssr");
-        styleTag.textContent = styleText;
-        _document.head.appendChild(styleTag);
+        styleTag.textContent = styleText; /** @type {?} */
+        ((_document.head)).appendChild(styleTag);
     };
 }
 /** *
