@@ -2498,7 +2498,9 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         return extendObject(css, {
             'display': 'flex',
             'flex-direction': this._layout || 'row',
-            'box-sizing': 'border-box'
+            'box-sizing': 'border-box',
+            'max-width': null,
+            'max-height': null,
         });
     };
     /**
