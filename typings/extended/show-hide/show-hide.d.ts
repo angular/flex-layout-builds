@@ -5,10 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges, AfterViewInit } from '@angular/core';
-import { BaseDirective, LayoutConfigOptions, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
-import { FlexDirective, LayoutDirective } from '@angular/flex-layout/flex';
+import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
+import { LayoutDirective } from '@angular/flex-layout/flex';
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
@@ -20,13 +20,12 @@ export declare function negativeOf(hide: any): boolean;
  * 'show' Layout API directive
  *
  */
-export declare class ShowHideDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+export declare class ShowHideDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
     protected layout: LayoutDirective;
     protected elRef: ElementRef;
     protected styleUtils: StyleUtils;
     protected platformId: Object;
     protected serverModuleLoaded: boolean;
-    protected layoutConfig: LayoutConfigOptions;
     /**
      * Subscription to the parent flex container's layout changes.
      * Stored so we can unsubscribe when this directive is destroyed.
@@ -62,8 +61,7 @@ export declare class ShowHideDirective extends BaseDirective implements OnInit, 
     hideGtSm: string;
     hideGtMd: string;
     hideGtLg: string;
-    protected _flexChild: FlexDirective | null;
-    constructor(monitor: MediaMonitor, layout: LayoutDirective, elRef: ElementRef, styleUtils: StyleUtils, platformId: Object, serverModuleLoaded: boolean, layoutConfig: LayoutConfigOptions);
+    constructor(monitor: MediaMonitor, layout: LayoutDirective, elRef: ElementRef, styleUtils: StyleUtils, platformId: Object, serverModuleLoaded: boolean);
     /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
@@ -81,7 +79,6 @@ export declare class ShowHideDirective extends BaseDirective implements OnInit, 
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit(): void;
-    ngAfterViewInit(): void;
     ngOnDestroy(): void;
     /** Validate the visibility value and then update the host's inline display style */
     protected _updateWithValue(value?: string | number | boolean): void;
