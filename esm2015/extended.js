@@ -5,10 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, SecurityContext, NgModule } from '@angular/core';
+import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, ViewChild, SecurityContext, NgModule } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
-import { BaseDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseDirectiveAdapter, CoreModule } from '@angular/flex-layout/core';
-import { LayoutDirective } from '@angular/flex-layout/flex';
+import { BaseDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseDirectiveAdapter, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
+import { FlexDirective, LayoutDirective } from '@angular/flex-layout/flex';
 import { DomSanitizer } from '@angular/platform-browser';
 
 /**
@@ -457,25 +457,22 @@ class ShowHideDirective extends BaseDirective {
      * @param {?} styleUtils
      * @param {?} platformId
      * @param {?} serverModuleLoaded
+     * @param {?} layoutConfig
      */
-    constructor(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded) {
+    constructor(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded, layoutConfig) {
         super(monitor, elRef, styleUtils);
         this.layout = layout;
         this.elRef = elRef;
         this.styleUtils = styleUtils;
         this.platformId = platformId;
         this.serverModuleLoaded = serverModuleLoaded;
+        this.layoutConfig = layoutConfig;
         /**
          * Original dom Elements CSS display style
          */
         this._display = '';
-        if (layout) {
-            /**
-                   * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-                   * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-                   */
-            this._layoutWatcher = layout.layout$.subscribe(() => this._updateWithValue());
-        }
+        /* tslint:enable */
+        this._flexChild = null;
     }
     /**
      * @param {?} val
@@ -648,7 +645,8 @@ class ShowHideDirective extends BaseDirective {
      * @return {?}
      */
     _getDisplayStyle() {
-        return this.layout ? 'flex' : super._getDisplayStyle();
+        return (this.layout || (this._flexChild && this.layoutConfig.addFlexToParent)) ?
+            'flex' : super._getDisplayStyle();
     }
     /**
      * On changes to any \@Input properties...
@@ -669,7 +667,19 @@ class ShowHideDirective extends BaseDirective {
      */
     ngOnInit() {
         super.ngOnInit();
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
         this._display = this._getDisplayStyle();
+        if (this.layout) {
+            /**
+                   * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+                   * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+                   */
+            this._layoutWatcher = this.layout.layout$.subscribe(() => this._updateWithValue());
+        }
         /** @type {?} */
         let value = this._getDefaultVal('show', true);
         // Build _mqActivation controller
@@ -742,7 +752,8 @@ ShowHideDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] }
+    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
 ];
 ShowHideDirective.propDecorators = {
     show: [{ type: Input, args: ['fxShow',] }],
@@ -772,7 +783,8 @@ ShowHideDirective.propDecorators = {
     hideGtXs: [{ type: Input, args: ['fxHide.gt-xs',] }],
     hideGtSm: [{ type: Input, args: ['fxHide.gt-sm',] }],
     hideGtMd: [{ type: Input, args: ['fxHide.gt-md',] }],
-    hideGtLg: [{ type: Input, args: ['fxHide.gt-lg',] }]
+    hideGtLg: [{ type: Input, args: ['fxHide.gt-lg',] }],
+    _flexChild: [{ type: ViewChild, args: [FlexDirective,] }]
 };
 
 /**

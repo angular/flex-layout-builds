@@ -3285,9 +3285,6 @@ var StyleUtils = /** @class */ (function () {
         var query = 'flex-direction';
         /** @type {?} */
         var value = this.lookupStyle(target, query);
-        if (value === FALLBACK_STYLE) {
-            value = '';
-        }
         /** @type {?} */
         var hasInlineValue = this.lookupInlineStyle(target, query) ||
             (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
@@ -3372,7 +3369,7 @@ var StyleUtils = /** @class */ (function () {
         }
         // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
         //       in which case getComputedStyle() should determine a valid value.
-        return value ? value.trim() : FALLBACK_STYLE;
+        return value.trim();
     };
     /**
      * Applies the styles to the element. The styles object map may contain an array of values
@@ -3513,8 +3510,6 @@ var StyleUtils = /** @class */ (function () {
     /** @nocollapse */ StyleUtils.ngInjectableDef = defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(inject(StylesheetMap, 8), inject(SERVER_TOKEN, 8), inject(PLATFORM_ID), inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
-/** @type {?} */
-var FALLBACK_STYLE = 'block';
 
 /**
  * @fileoverview added by tsickle

@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { __extends } from 'tslib';
-import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, SecurityContext, NgModule } from '@angular/core';
+import { Directive, ElementRef, Input, Inject, Optional, PLATFORM_ID, IterableDiffers, KeyValueDiffers, Renderer2, Self, ViewChild, SecurityContext, NgModule } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
-import { BaseDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseDirectiveAdapter, CoreModule } from '@angular/flex-layout/core';
-import { LayoutDirective } from '@angular/flex-layout/flex';
+import { BaseDirective, MediaMonitor, SERVER_TOKEN, StyleUtils, BaseDirectiveAdapter, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
+import { FlexDirective, LayoutDirective } from '@angular/flex-layout/flex';
 import { DomSanitizer } from '@angular/platform-browser';
 
 /**
@@ -667,25 +667,20 @@ function negativeOf(hide) {
  */
 var ShowHideDirective = /** @class */ (function (_super) {
     __extends(ShowHideDirective, _super);
-    /* tslint:enable */
-    function ShowHideDirective(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded) {
+    function ShowHideDirective(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded, layoutConfig) {
         var _this = _super.call(this, monitor, elRef, styleUtils) || this;
         _this.layout = layout;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
+        _this.layoutConfig = layoutConfig;
         /**
          * Original dom Elements CSS display style
          */
         _this._display = '';
-        if (layout) {
-            /**
-                   * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-                   * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-                   */
-            _this._layoutWatcher = layout.layout$.subscribe(function () { return _this._updateWithValue(); });
-        }
+        /* tslint:enable */
+        _this._flexChild = null;
         return _this;
     }
     Object.defineProperty(ShowHideDirective.prototype, "show", {
@@ -962,7 +957,8 @@ var ShowHideDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        return this.layout ? 'flex' : _super.prototype._getDisplayStyle.call(this);
+        return (this.layout || (this._flexChild && this.layoutConfig.addFlexToParent)) ?
+            'flex' : _super.prototype._getDisplayStyle.call(this);
     };
     /**
      * On changes to any @Input properties...
@@ -1003,9 +999,24 @@ var ShowHideDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        var _this = this;
         _super.prototype.ngOnInit.call(this);
+    };
+    /**
+     * @return {?}
+     */
+    ShowHideDirective.prototype.ngAfterViewInit = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
         this._display = this._getDisplayStyle();
+        if (this.layout) {
+            /**
+                   * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+                   * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+                   */
+            this._layoutWatcher = this.layout.layout$.subscribe(function () { return _this._updateWithValue(); });
+        }
         /** @type {?} */
         var value = this._getDefaultVal('show', true);
         // Build _mqActivation controller
@@ -1093,7 +1104,8 @@ var ShowHideDirective = /** @class */ (function (_super) {
         { type: ElementRef },
         { type: StyleUtils },
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] }
+        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
     ShowHideDirective.propDecorators = {
         show: [{ type: Input, args: ['fxShow',] }],
@@ -1123,7 +1135,8 @@ var ShowHideDirective = /** @class */ (function (_super) {
         hideGtXs: [{ type: Input, args: ['fxHide.gt-xs',] }],
         hideGtSm: [{ type: Input, args: ['fxHide.gt-sm',] }],
         hideGtMd: [{ type: Input, args: ['fxHide.gt-md',] }],
-        hideGtLg: [{ type: Input, args: ['fxHide.gt-lg',] }]
+        hideGtLg: [{ type: Input, args: ['fxHide.gt-lg',] }],
+        _flexChild: [{ type: ViewChild, args: [FlexDirective,] }]
     };
     return ShowHideDirective;
 }(BaseDirective));
