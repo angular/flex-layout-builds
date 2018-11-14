@@ -10,11 +10,13 @@ import { StyleDefinition, StyleUtils } from '../style-utils/style-utils';
 import { ResponsiveActivation } from '../responsive-activation/responsive-activation';
 import { MediaMonitor } from '../media-monitor/media-monitor';
 import { MediaQuerySubscriber } from '../media-change';
+import { StyleBuilder } from '../style-builder/style-builder';
 /** Abstract base class for the Layout API styling directives. */
 export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
     protected _styler: StyleUtils;
+    protected _styleBuilder?: StyleBuilder | undefined;
     readonly hasMediaQueryListener: boolean;
     /**
      * Imperatively determine the current activated [input] value;
@@ -28,7 +30,7 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     *       other input values will NOT be affected.
     */
     activatedValue: string | number;
-    protected constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils);
+    protected constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _styler: StyleUtils, _styleBuilder?: StyleBuilder | undefined);
     /**
      * Does this directive have 1 or more responsive keys defined
      * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
@@ -44,6 +46,7 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     /** Access to host element's parent DOM node */
     protected readonly parentElement: any;
     protected readonly nativeElement: HTMLElement;
+    protected addStyles(input: string, parent?: Object): void;
     /** Access the current value (if any) of the @Input property */
     protected _queryInput(key: string): any;
     /**
@@ -82,7 +85,7 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
      */
     protected _listenForMediaQueryChanges(key: string, defaultValue: any, onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation;
     /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
-    protected readonly childrenNodes: any[];
+    protected readonly childrenNodes: HTMLElement[];
     /** Fast validator for presence of attribute on the host element */
     protected hasKeyValue(key: string): boolean;
     protected readonly hasInitialized: boolean;

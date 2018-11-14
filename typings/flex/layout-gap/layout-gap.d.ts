@@ -7,9 +7,20 @@
  */
 import { ElementRef, OnChanges, SimpleChanges, AfterContentInit, OnDestroy, NgZone } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
+interface LayoutGapParent {
+    layout: string;
+    directionality: string;
+    items: HTMLElement[];
+}
+export declare class LayoutGapStyleBuilder implements StyleBuilder {
+    private styler;
+    constructor(styler: StyleUtils);
+    buildStyles(gapValue: string, parent: LayoutGapParent): StyleDefinition;
+    private _buildCSS;
+}
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
@@ -20,7 +31,7 @@ export declare class LayoutGapDirective extends BaseDirective implements AfterCo
     protected _layout: string;
     protected _layoutWatcher?: Subscription;
     protected _observer?: MutationObserver;
-    private _directionWatcher;
+    private readonly _directionWatcher;
     gap: string;
     gapXs: string;
     gapSm: string;
@@ -35,7 +46,7 @@ export declare class LayoutGapDirective extends BaseDirective implements AfterCo
     gapLtMd: string;
     gapLtLg: string;
     gapLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, container: LayoutDirective, _zone: NgZone, _directionality: Directionality, styleUtils: StyleUtils);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, container: LayoutDirective, _zone: NgZone, _directionality: Directionality, styleUtils: StyleUtils, styleBuilder: LayoutGapStyleBuilder);
     ngOnChanges(changes: SimpleChanges): void;
     /**
      * After the initial onChanges, build an mqActivation object that bridges
@@ -56,19 +67,5 @@ export declare class LayoutGapDirective extends BaseDirective implements AfterCo
      *
      */
     protected _updateWithValue(value?: string): void;
-    /**
-     *
-     */
-    private _buildGridPadding;
-    /**
-     * Prepare margin CSS, remove any previous explicitly
-     * assigned margin assignments
-     * Note: this will not work with calc values (negative calc values are invalid)
-     */
-    private _buildGridMargin;
-    /**
-     * Prepare margin CSS, remove any previous explicitly
-     * assigned margin assignments
-     */
-    private _buildCSS;
 }
+export {};

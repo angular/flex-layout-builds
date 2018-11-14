@@ -6,7 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+export declare class FlexAlignStyleBuilder implements StyleBuilder {
+    buildStyles(input: string): StyleDefinition;
+}
 /**
  * 'flex-align' flexbox styling directive
  * Allows element-specific overrides for cross-axis alignments in a layout container
@@ -27,7 +30,7 @@ export declare class FlexAlignDirective extends BaseDirective implements OnInit,
     alignGtSm: string;
     alignGtMd: string;
     alignGtLg: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: FlexAlignStyleBuilder);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -38,7 +41,4 @@ export declare class FlexAlignDirective extends BaseDirective implements OnInit,
      */
     ngOnInit(): void;
     protected _updateWithValue(value?: string | number): void;
-    protected _buildCSS(align?: string | number): {
-        [key: string]: string | number;
-    };
 }

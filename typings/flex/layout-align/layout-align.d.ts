@@ -6,9 +6,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
+interface LayoutAlignParent {
+    layout: string;
+}
+export declare class LayoutAlignStyleBuilder implements StyleBuilder {
+    buildStyles(align: string, parent: LayoutAlignParent): StyleDefinition;
+}
 /**
  * 'layout-align' flexbox styling directive
  *  Defines positioning of child elements along main and cross axis in a layout container
@@ -35,7 +41,7 @@ export declare class LayoutAlignDirective extends BaseDirective implements OnIni
     alignLtMd: string;
     alignLtLg: string;
     alignLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, container: LayoutDirective, styleUtils: StyleUtils);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, container: LayoutDirective, styleUtils: StyleUtils, styleBuilder: LayoutAlignStyleBuilder);
     ngOnChanges(changes: SimpleChanges): void;
     /**
      * After the initial onChanges, build an mqActivation object that bridges
@@ -51,10 +57,5 @@ export declare class LayoutAlignDirective extends BaseDirective implements OnIni
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
     protected _onLayoutChange(layout: Layout): void;
-    protected _buildCSS(align?: string): any;
-    /**
-     * Update container element to 'stretch' as needed...
-     * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-     */
-    protected _allowStretching(align?: string, layout?: string): void;
 }
+export {};

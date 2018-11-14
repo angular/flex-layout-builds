@@ -18,7 +18,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.19-5e3ec0e');
+var VERSION = new core.Version('7.0.0-beta.19-9148e87');
 
 /**
  * @fileoverview added by tsickle
@@ -114,6 +114,7 @@ exports.ObservableMediaProvider = core$1.ObservableMediaProvider;
 exports.KeyOptions = core$1.KeyOptions;
 exports.ResponsiveActivation = core$1.ResponsiveActivation;
 exports.StyleUtils = core$1.StyleUtils;
+exports.StyleBuilder = core$1.StyleBuilder;
 exports.validateBasis = core$1.validateBasis;
 exports.ExtendedModule = extended.ExtendedModule;
 exports.ClassDirective = extended.ClassDirective;
@@ -122,13 +123,21 @@ exports.negativeOf = extended.negativeOf;
 exports.ShowHideDirective = extended.ShowHideDirective;
 exports.StyleDirective = extended.StyleDirective;
 exports.FlexModule = flex.FlexModule;
+exports.FlexStyleBuilder = flex.FlexStyleBuilder;
 exports.FlexDirective = flex.FlexDirective;
+exports.FlexAlignStyleBuilder = flex.FlexAlignStyleBuilder;
 exports.FlexAlignDirective = flex.FlexAlignDirective;
+exports.FlexFillStyleBuilder = flex.FlexFillStyleBuilder;
 exports.FlexFillDirective = flex.FlexFillDirective;
+exports.FlexOffsetStyleBuilder = flex.FlexOffsetStyleBuilder;
 exports.FlexOffsetDirective = flex.FlexOffsetDirective;
+exports.FlexOrderStyleBuilder = flex.FlexOrderStyleBuilder;
 exports.FlexOrderDirective = flex.FlexOrderDirective;
+exports.LayoutStyleBuilder = flex.LayoutStyleBuilder;
 exports.LayoutDirective = flex.LayoutDirective;
+exports.LayoutAlignStyleBuilder = flex.LayoutAlignStyleBuilder;
 exports.LayoutAlignDirective = flex.LayoutAlignDirective;
+exports.LayoutGapStyleBuilder = flex.LayoutGapStyleBuilder;
 exports.LayoutGapDirective = flex.LayoutGapDirective;
 exports.ɵb = grid.ɵb;
 exports.ɵc = grid.ɵc;

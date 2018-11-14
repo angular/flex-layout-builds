@@ -6,7 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+export declare class FlexOrderStyleBuilder implements StyleBuilder {
+    buildStyles(value: string): StyleDefinition;
+}
 /**
  * 'flex-order' flexbox styling directive
  * Configures the positional ordering of the element in a sorted layout container
@@ -27,7 +30,7 @@ export declare class FlexOrderDirective extends BaseDirective implements OnInit,
     orderLtMd: string;
     orderLtLg: string;
     orderLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: FlexOrderStyleBuilder);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -38,7 +41,4 @@ export declare class FlexOrderDirective extends BaseDirective implements OnInit,
      */
     ngOnInit(): void;
     protected _updateWithValue(value?: string): void;
-    protected _buildCSS(value?: string): {
-        order: number;
-    };
 }

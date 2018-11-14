@@ -6,11 +6,19 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseDirective, LayoutConfigOptions, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, LayoutConfigOptions, MediaMonitor, StyleUtils, StyleBuilder, StyleDefinition } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
 /** Built-in aliases for different flex-basis values. */
 export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';
+interface FlexBuilderParent {
+    direction: string;
+    hasWrap: boolean;
+    useColumnBasisZero: boolean | undefined;
+}
+export declare class FlexStyleBuilder implements StyleBuilder {
+    buildStyles(input: string, parent: FlexBuilderParent): StyleDefinition;
+}
 /**
  * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
  * Corresponds to the css `flex` shorthand property.
@@ -21,6 +29,7 @@ export declare class FlexDirective extends BaseDirective implements OnInit, OnCh
     protected _container: LayoutDirective;
     protected styleUtils: StyleUtils;
     protected layoutConfig: LayoutConfigOptions;
+    protected styleBuilder: FlexStyleBuilder;
     /** The flex-direction of this element's flex container. Defaults to 'row'. */
     protected _layout?: Layout;
     /**
@@ -44,7 +53,7 @@ export declare class FlexDirective extends BaseDirective implements OnInit, OnCh
     flexLtMd: string;
     flexLtLg: string;
     flexLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, _container: LayoutDirective, styleUtils: StyleUtils, layoutConfig: LayoutConfigOptions);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, _container: LayoutDirective, styleUtils: StyleUtils, layoutConfig: LayoutConfigOptions, styleBuilder: FlexStyleBuilder);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -61,9 +70,5 @@ export declare class FlexDirective extends BaseDirective implements OnInit, OnCh
      */
     protected _onLayoutChange(layout?: Layout): void;
     protected _updateStyle(value?: string | number): void;
-    /**
-     * Validate the value to be one of the acceptable value options
-     * Use default fallback of 'row'
-     */
-    protected _validateValue(grow: number | string, shrink: number | string, basis: string | number | FlexBasisAlias): any;
 }
+export {};

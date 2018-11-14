@@ -7,9 +7,16 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { BaseDirective, MediaMonitor, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
+interface FlexOffsetParent {
+    layout: string;
+    isRtl: boolean;
+}
+export declare class FlexOffsetStyleBuilder implements StyleBuilder {
+    buildStyles(offset: string, parent: FlexOffsetParent): StyleDefinition;
+}
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
@@ -32,7 +39,7 @@ export declare class FlexOffsetDirective extends BaseDirective implements OnInit
     offsetGtSm: string;
     offsetGtMd: string;
     offsetGtLg: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, _container: LayoutDirective, _directionality: Directionality, styleUtils: StyleUtils);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, _container: LayoutDirective, _directionality: Directionality, styleUtils: StyleUtils, styleBuilder: FlexOffsetStyleBuilder);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -72,5 +79,5 @@ export declare class FlexOffsetDirective extends BaseDirective implements OnInit
      *       otherwise `margin-top` is used for the offset.
      */
     protected _updateWithValue(value?: string | number): void;
-    protected _buildCSS(offset?: string | number): StyleDefinition;
 }
+export {};

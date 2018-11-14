@@ -6,12 +6,18 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Observable, ReplaySubject } from 'rxjs';
 export declare type Layout = {
     direction: string;
     wrap: boolean;
 };
+interface LayoutParent {
+    announcer: ReplaySubject<Layout>;
+}
+export declare class LayoutStyleBuilder implements StyleBuilder {
+    buildStyles(input: string, parent: LayoutParent): StyleDefinition;
+}
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -44,7 +50,7 @@ export declare class LayoutDirective extends BaseDirective implements OnInit, On
     layoutLtMd: string;
     layoutLtLg: string;
     layoutLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: LayoutStyleBuilder);
     /**
      * On changes to any @Input properties...
      * Default to use the non-responsive Input value ('fxLayout')
@@ -59,3 +65,4 @@ export declare class LayoutDirective extends BaseDirective implements OnInit, On
     /** Validate the direction value and then update the host's inline flexbox styles */
     protected _updateWithDirection(value?: string): void;
 }
+export {};
