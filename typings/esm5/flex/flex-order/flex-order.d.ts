@@ -7,8 +7,10 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
-export declare class FlexOrderStyleBuilder implements StyleBuilder {
-    buildStyles(value: string): StyleDefinition;
+export declare class FlexOrderStyleBuilder extends StyleBuilder {
+    buildStyles(value: string): {
+        order: number;
+    };
 }
 /**
  * 'flex-order' flexbox styling directive
@@ -41,4 +43,5 @@ export declare class FlexOrderDirective extends BaseDirective implements OnInit,
      */
     ngOnInit(): void;
     protected _updateWithValue(value?: string): void;
+    protected _styleCache: Map<string, StyleDefinition>;
 }

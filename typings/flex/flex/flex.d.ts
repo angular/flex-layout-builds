@@ -14,9 +14,10 @@ export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nog
 interface FlexBuilderParent {
     direction: string;
     hasWrap: boolean;
-    useColumnBasisZero: boolean | undefined;
 }
-export declare class FlexStyleBuilder implements StyleBuilder {
+export declare class FlexStyleBuilder extends StyleBuilder {
+    protected layoutConfig: LayoutConfigOptions;
+    constructor(layoutConfig: LayoutConfigOptions);
     buildStyles(input: string, parent: FlexBuilderParent): StyleDefinition;
 }
 /**

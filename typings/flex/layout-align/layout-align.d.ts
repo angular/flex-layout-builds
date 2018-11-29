@@ -9,10 +9,10 @@ import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angula
 import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
-interface LayoutAlignParent {
+export interface LayoutAlignParent {
     layout: string;
 }
-export declare class LayoutAlignStyleBuilder implements StyleBuilder {
+export declare class LayoutAlignStyleBuilder extends StyleBuilder {
     buildStyles(align: string, parent: LayoutAlignParent): StyleDefinition;
 }
 /**
@@ -58,4 +58,3 @@ export declare class LayoutAlignDirective extends BaseDirective implements OnIni
      */
     protected _onLayoutChange(layout: Layout): void;
 }
-export {};

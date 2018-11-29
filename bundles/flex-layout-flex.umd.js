@@ -157,34 +157,50 @@ function buildCSS(direction, wrap, inline) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var LayoutStyleBuilder = /** @class */ (function () {
+var LayoutStyleBuilder = /** @class */ (function (_super) {
+    __extends(LayoutStyleBuilder, _super);
     function LayoutStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * @param {?} input
-     * @param {?} parent
+     * @param {?} _parent
      * @return {?}
      */
     LayoutStyleBuilder.prototype.buildStyles = /**
      * @param {?} input
+     * @param {?} _parent
+     * @return {?}
+     */
+    function (input, _parent) {
+        /** @type {?} */
+        var styles = buildLayoutCSS(input);
+        return styles;
+    };
+    /**
+     * @param {?} _input
+     * @param {?} styles
      * @param {?} parent
      * @return {?}
      */
-    function (input, parent) {
-        /** @type {?} */
-        var css = buildLayoutCSS(input);
+    LayoutStyleBuilder.prototype.sideEffect = /**
+     * @param {?} _input
+     * @param {?} styles
+     * @param {?} parent
+     * @return {?}
+     */
+    function (_input, styles, parent) {
         parent.announcer.next({
-            direction: css['flex-direction'],
-            wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
+            direction: /** @type {?} */ (styles['flex-direction']),
+            wrap: !!styles['flex-wrap'] && styles['flex-wrap'] !== 'nowrap'
         });
-        return css;
     };
     LayoutStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
     /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -197,6 +213,7 @@ var LayoutDirective = /** @class */ (function (_super) {
     /* tslint:enable */
     function LayoutDirective(monitor, elRef, styleUtils, styleBuilder) {
         var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
+        _this._styleCache = layoutCache;
         _this._announcer = new rxjs.ReplaySubject(1);
         _this.layout$ = _this._announcer.asObservable();
         return _this;
@@ -425,6 +442,8 @@ var LayoutDirective = /** @class */ (function (_super) {
     };
     return LayoutDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var layoutCache = new Map();
 
 /**
  * @fileoverview added by tsickle
@@ -437,9 +456,12 @@ var CLEAR_MARGIN_CSS = {
     'margin-top': null,
     'margin-bottom': null
 };
-var LayoutGapStyleBuilder = /** @class */ (function () {
-    function LayoutGapStyleBuilder(styler) {
-        this.styler = styler;
+var LayoutGapStyleBuilder = /** @class */ (function (_super) {
+    __extends(LayoutGapStyleBuilder, _super);
+    function LayoutGapStyleBuilder(_styler) {
+        var _this = _super.call(this) || this;
+        _this._styler = _styler;
+        return _this;
     }
     /**
      * @param {?} gapValue
@@ -452,63 +474,45 @@ var LayoutGapStyleBuilder = /** @class */ (function () {
      * @return {?}
      */
     function (gapValue, parent) {
-        /** @type {?} */
-        var items = parent.items;
         if (gapValue.endsWith(GRID_SPECIFIER)) {
-            gapValue = gapValue.substring(0, gapValue.indexOf(GRID_SPECIFIER));
-            /** @type {?} */
-            var paddingStyles = buildGridPadding(gapValue, parent.directionality);
-            /** @type {?} */
-            var marginStyles = buildGridMargin(gapValue, parent.directionality);
-            this.styler.applyStyleToElements(paddingStyles, items);
+            gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
             // Add the margin to the host element
-            return marginStyles;
+            return buildGridMargin(gapValue, parent.directionality);
         }
         else {
-            /** @type {?} */
-            var lastItem = items.pop();
-            // For each `element` children EXCEPT the last,
-            // set the margin right/bottom styles...
-            this.styler.applyStyleToElements(this._buildCSS(gapValue, parent), items);
-            // Clear all gaps for all visible elements
-            this.styler.applyStyleToElements(CLEAR_MARGIN_CSS, [/** @type {?} */ ((lastItem))]);
             return {};
         }
     };
     /**
      * @param {?} gapValue
+     * @param {?} _styles
      * @param {?} parent
      * @return {?}
      */
-    LayoutGapStyleBuilder.prototype._buildCSS = /**
+    LayoutGapStyleBuilder.prototype.sideEffect = /**
      * @param {?} gapValue
+     * @param {?} _styles
      * @param {?} parent
      * @return {?}
      */
-    function (gapValue, parent) {
+    function (gapValue, _styles, parent) {
         /** @type {?} */
-        var key;
-        /** @type {?} */
-        var margins = __assign({}, CLEAR_MARGIN_CSS);
-        switch (parent.layout) {
-            case 'column':
-                key = 'margin-bottom';
-                break;
-            case 'column-reverse':
-                key = 'margin-top';
-                break;
-            case 'row':
-                key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-                break;
-            case 'row-reverse':
-                key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
-                break;
-            default:
-                key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-                break;
+        var items = parent.items;
+        if (gapValue.endsWith(GRID_SPECIFIER)) {
+            gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
+            /** @type {?} */
+            var paddingStyles = buildGridPadding(gapValue, parent.directionality);
+            this._styler.applyStyleToElements(paddingStyles, parent.items);
         }
-        margins[key] = gapValue;
-        return margins;
+        else {
+            /** @type {?} */
+            var lastItem = items.pop();
+            /** @type {?} */
+            var gapCss = buildGapCSS(gapValue, parent);
+            this._styler.applyStyleToElements(gapCss, items);
+            // Clear all gaps for all visible elements
+            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [/** @type {?} */ ((lastItem))]);
+        }
     };
     LayoutGapStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -519,7 +523,7 @@ var LayoutGapStyleBuilder = /** @class */ (function () {
     ]; };
     /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.inject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
@@ -529,8 +533,13 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     /* tslint:enable */
     function LayoutGapDirective(monitor, elRef, container, _zone, _directionality, styleUtils, styleBuilder) {
         var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
+        _this.monitor = monitor;
+        _this.elRef = elRef;
+        _this.container = container;
         _this._zone = _zone;
         _this._directionality = _directionality;
+        _this.styleUtils = styleUtils;
+        _this.styleBuilder = styleBuilder;
         _this._layout = 'row'; // default flex-direction
         if (container) { // Subscribe to layout direction changes
             // Subscribe to layout direction changes
@@ -816,11 +825,23 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             }
         });
         if (items.length > 0) {
-            this.addStyles(gapValue, {
-                directionality: this._directionality.value,
-                items: items,
-                layout: this._layout
-            });
+            /** @type {?} */
+            var directionality = this._directionality.value;
+            /** @type {?} */
+            var layout = this._layout;
+            if (layout === 'row' && directionality === 'rtl') {
+                this._styleCache = layoutGapCacheRowRtl;
+            }
+            else if (layout === 'row' && directionality !== 'rtl') {
+                this._styleCache = layoutGapCacheRowLtr;
+            }
+            else if (layout === 'column' && directionality === 'rtl') {
+                this._styleCache = layoutGapCacheColumnRtl;
+            }
+            else if (layout === 'column' && directionality !== 'rtl') {
+                this._styleCache = layoutGapCacheColumnLtr;
+            }
+            this.addStyles(gapValue, { directionality: directionality, items: items, layout: layout });
         }
     };
     LayoutGapDirective.decorators = [
@@ -856,6 +877,14 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     };
     return LayoutGapDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var layoutGapCacheRowRtl = new Map();
+/** @type {?} */
+var layoutGapCacheColumnRtl = new Map();
+/** @type {?} */
+var layoutGapCacheRowLtr = new Map();
+/** @type {?} */
+var layoutGapCacheColumnLtr = new Map();
 /** @type {?} */
 var GRID_SPECIFIER = ' grid';
 /**
@@ -902,6 +931,36 @@ function buildGridMargin(value, directionality) {
     }
     return { 'margin': marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft };
 }
+/**
+ * @param {?} gapValue
+ * @param {?} parent
+ * @return {?}
+ */
+function buildGapCSS(gapValue, parent) {
+    /** @type {?} */
+    var key;
+    /** @type {?} */
+    var margins = __assign({}, CLEAR_MARGIN_CSS);
+    switch (parent.layout) {
+        case 'column':
+            key = 'margin-bottom';
+            break;
+        case 'column-reverse':
+            key = 'margin-top';
+            break;
+        case 'row':
+            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
+            break;
+        case 'row-reverse':
+            key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
+            break;
+        default:
+            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
+            break;
+    }
+    margins[key] = gapValue;
+    return margins;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -940,8 +999,12 @@ function extendObject(dest) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var FlexStyleBuilder = /** @class */ (function () {
-    function FlexStyleBuilder() {
+var FlexStyleBuilder = /** @class */ (function (_super) {
+    __extends(FlexStyleBuilder, _super);
+    function FlexStyleBuilder(layoutConfig) {
+        var _this = _super.call(this) || this;
+        _this.layoutConfig = layoutConfig;
+        return _this;
     }
     /**
      * @param {?} input
@@ -954,14 +1017,9 @@ var FlexStyleBuilder = /** @class */ (function () {
      * @return {?}
      */
     function (input, parent) {
-        var _a;
+        var _a = input.split(' '), grow = _a[0], shrink = _a[1], basisParts = _a.slice(2);
         /** @type {?} */
-        var grow;
-        /** @type {?} */
-        var shrink;
-        /** @type {?} */
-        var basis;
-        _a = input.split('_'), grow = _a[0], shrink = _a[1], basis = _a[2];
+        var basis = basisParts.join(' ');
         /** @type {?} */
         var direction = (parent.direction.indexOf('column') > -1) ? 'column' : 'row';
         /** @type {?} */
@@ -997,7 +1055,7 @@ var FlexStyleBuilder = /** @class */ (function () {
         switch (basis || '') {
             case '':
                 /** @type {?} */
-                var useColumnBasisZero = parent.useColumnBasisZero !== false;
+                var useColumnBasisZero = this.layoutConfig.useColumnBasisZero !== false;
                 basis = direction === 'row' ? '0%' : (useColumnBasisZero ? '0.000000001px' : 'auto');
                 break;
             case 'initial': // default
@@ -1088,14 +1146,18 @@ var FlexStyleBuilder = /** @class */ (function () {
                     (hasCalc ? css[min] : grow + " " + shrink + " " + css[min]);
             }
         }
-        return extendObject(css, { 'box-sizing': 'border-box' });
+        return /** @type {?} */ (extendObject(css, { 'box-sizing': 'border-box' }));
     };
     FlexStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(); }, token: FlexStyleBuilder, providedIn: "root" });
+    /** @nocollapse */
+    FlexStyleBuilder.ctorParameters = function () { return [
+        { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] }] }
+    ]; };
+    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.inject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
  * Corresponds to the css `flex` shorthand property.
@@ -1366,9 +1428,19 @@ var FlexDirective = /** @class */ (function (_super) {
         var direction = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
         /** @type {?} */
         var hasWrap = this._layout && this._layout.wrap;
-        /** @type {?} */
-        var useColumnBasisZero = this.layoutConfig.useColumnBasisZero;
-        this.addStyles(parts.join('_'), { direction: direction, hasWrap: hasWrap, useColumnBasisZero: useColumnBasisZero });
+        if (direction === 'row' && hasWrap) {
+            this._styleCache = flexRowWrapCache;
+        }
+        else if (direction === 'row' && !hasWrap) {
+            this._styleCache = flexRowCache;
+        }
+        else if (direction === 'column' && hasWrap) {
+            this._styleCache = flexColumnWrapCache;
+        }
+        else if (direction === 'column' && !hasWrap) {
+            this._styleCache = flexColumnCache;
+        }
+        this.addStyles(parts.join(' '), { direction: direction, hasWrap: hasWrap });
     };
     FlexDirective.decorators = [
         { type: core.Directive, args: [{
@@ -1404,13 +1476,23 @@ var FlexDirective = /** @class */ (function (_super) {
     };
     return FlexDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var flexRowCache = new Map();
+/** @type {?} */
+var flexColumnCache = new Map();
+/** @type {?} */
+var flexRowWrapCache = new Map();
+/** @type {?} */
+var flexColumnWrapCache = new Map();
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var FlexOrderStyleBuilder = /** @class */ (function () {
+var FlexOrderStyleBuilder = /** @class */ (function (_super) {
+    __extends(FlexOrderStyleBuilder, _super);
     function FlexOrderStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * @param {?} value
@@ -1423,14 +1505,16 @@ var FlexOrderStyleBuilder = /** @class */ (function () {
     function (value) {
         /** @type {?} */
         var val = parseInt(value, 10);
-        return { order: isNaN(val) ? 0 : val };
+        /** @type {?} */
+        var styles = { order: isNaN(val) ? 0 : val };
+        return styles;
     };
     FlexOrderStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
     /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * 'flex-order' flexbox styling directive
  * Configures the positional ordering of the element in a sorted layout container
@@ -1440,7 +1524,9 @@ var FlexOrderDirective = /** @class */ (function (_super) {
     __extends(FlexOrderDirective, _super);
     /* tslint:enable */
     function FlexOrderDirective(monitor, elRef, styleUtils, styleBuilder) {
-        return _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
+        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
+        _this._styleCache = flexOrderCache;
+        return _this;
     }
     Object.defineProperty(FlexOrderDirective.prototype, "order", {
         /* tslint:disable */
@@ -1657,13 +1743,17 @@ var FlexOrderDirective = /** @class */ (function (_super) {
     };
     return FlexOrderDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var flexOrderCache = new Map();
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var FlexOffsetStyleBuilder = /** @class */ (function () {
+var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
+    __extends(FlexOffsetStyleBuilder, _super);
     function FlexOffsetStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * @param {?} offset
@@ -1686,15 +1776,17 @@ var FlexOffsetStyleBuilder = /** @class */ (function () {
         }
         /** @type {?} */
         var horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
-        return isFlowHorizontal(parent.layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) :
+        /** @type {?} */
+        var styles = isFlowHorizontal(parent.layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) :
             { 'margin-top': "" + offset };
+        return styles;
     };
     FlexOffsetStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
     /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
@@ -1976,6 +2068,18 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         var layout = this._getFlexFlowDirection(this.parentElement, true);
         /** @type {?} */
         var isRtl = this._directionality.value === 'rtl';
+        if (layout === 'row' && isRtl) {
+            this._styleCache = flexOffsetCacheRowRtl;
+        }
+        else if (layout === 'row' && !isRtl) {
+            this._styleCache = flexOffsetCacheRowLtr;
+        }
+        else if (layout === 'column' && isRtl) {
+            this._styleCache = flexOffsetCacheColumnRtl;
+        }
+        else if (layout === 'column' && !isRtl) {
+            this._styleCache = flexOffsetCacheColumnLtr;
+        }
         this.addStyles((value && (value + '') || ''), { layout: layout, isRtl: isRtl });
     };
     FlexOffsetDirective.decorators = [
@@ -2008,13 +2112,23 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
     };
     return FlexOffsetDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var flexOffsetCacheRowRtl = new Map();
+/** @type {?} */
+var flexOffsetCacheColumnRtl = new Map();
+/** @type {?} */
+var flexOffsetCacheRowLtr = new Map();
+/** @type {?} */
+var flexOffsetCacheColumnLtr = new Map();
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var FlexAlignStyleBuilder = /** @class */ (function () {
+var FlexAlignStyleBuilder = /** @class */ (function (_super) {
+    __extends(FlexAlignStyleBuilder, _super);
     function FlexAlignStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * @param {?} input
@@ -2026,27 +2140,27 @@ var FlexAlignStyleBuilder = /** @class */ (function () {
      */
     function (input) {
         /** @type {?} */
-        var css = {};
+        var styles = {};
         // Cross-axis
         switch (input) {
             case 'start':
-                css['align-self'] = 'flex-start';
+                styles['align-self'] = 'flex-start';
                 break;
             case 'end':
-                css['align-self'] = 'flex-end';
+                styles['align-self'] = 'flex-end';
                 break;
             default:
-                css['align-self'] = input;
+                styles['align-self'] = input;
                 break;
         }
-        return css;
+        return styles;
     };
     FlexAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
     /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * 'flex-align' flexbox styling directive
  * Allows element-specific overrides for cross-axis alignments in a layout container
@@ -2056,7 +2170,9 @@ var FlexAlignDirective = /** @class */ (function (_super) {
     __extends(FlexAlignDirective, _super);
     /* tslint:enable */
     function FlexAlignDirective(monitor, elRef, styleUtils, styleBuilder) {
-        return _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
+        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
+        _this._styleCache = flexAlignCache;
+        return _this;
     }
     Object.defineProperty(FlexAlignDirective.prototype, "align", {
         /* tslint:disable */
@@ -2275,6 +2391,8 @@ var FlexAlignDirective = /** @class */ (function (_super) {
     };
     return FlexAlignDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var flexAlignCache = new Map();
 
 /**
  * @fileoverview added by tsickle
@@ -2288,8 +2406,10 @@ var FLEX_FILL_CSS = {
     'min-width': '100%',
     'min-height': '100%'
 };
-var FlexFillStyleBuilder = /** @class */ (function () {
+var FlexFillStyleBuilder = /** @class */ (function (_super) {
+    __extends(FlexFillStyleBuilder, _super);
     function FlexFillStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * @param {?} _input
@@ -2307,7 +2427,7 @@ var FlexFillStyleBuilder = /** @class */ (function () {
     ];
     /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     return FlexFillStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * 'fxFill' flexbox styling directive
  *  Maximizes width and height of element in a layout container
@@ -2319,6 +2439,7 @@ var FlexFillDirective = /** @class */ (function (_super) {
     function FlexFillDirective(monitor, elRef, styleUtils, styleBuilder) {
         var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
         _this.elRef = elRef;
+        _this._styleCache = flexFillCache;
         _this.addStyles('');
         return _this;
     }
@@ -2334,13 +2455,17 @@ var FlexFillDirective = /** @class */ (function (_super) {
     ]; };
     return FlexFillDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var flexFillCache = new Map();
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var LayoutAlignStyleBuilder = /** @class */ (function () {
+var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
+    __extends(LayoutAlignStyleBuilder, _super);
     function LayoutAlignStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     /**
      * @param {?} align
@@ -2411,7 +2536,7 @@ var LayoutAlignStyleBuilder = /** @class */ (function () {
                 css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
                 break;
         }
-        return extendObject(css, {
+        return /** @type {?} */ (extendObject(css, {
             'display': 'flex',
             'flex-direction': parent.layout,
             'box-sizing': 'border-box',
@@ -2419,14 +2544,14 @@ var LayoutAlignStyleBuilder = /** @class */ (function () {
                 !isFlowHorizontal(parent.layout) ? '100%' : null : null,
             'max-height': crossAxis === 'stretch' ?
                 isFlowHorizontal(parent.layout) ? '100%' : null : null,
-        });
+        }));
     };
     LayoutAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
     /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
-}());
+}(core$1.StyleBuilder));
 /**
  * 'layout-align' flexbox styling directive
  *  Defines positioning of child elements along main and cross axis in a layout container
@@ -2647,6 +2772,8 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         }
         /** @type {?} */
         var layout = this._layout || 'row';
+        this._styleCache = layout === 'row' ?
+            layoutAlignHorizontalCache : layoutAlignVerticalCache;
         this.addStyles(value || '', { layout: layout });
     };
     /**
@@ -2704,6 +2831,10 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     };
     return LayoutAlignDirective;
 }(core$1.BaseDirective));
+/** @type {?} */
+var layoutAlignHorizontalCache = new Map();
+/** @type {?} */
+var layoutAlignVerticalCache = new Map();
 
 /**
  * @fileoverview added by tsickle

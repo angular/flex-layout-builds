@@ -46,6 +46,7 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     /** Access to host element's parent DOM node */
     protected readonly parentElement: any;
     protected readonly nativeElement: HTMLElement;
+    /** Add styles to the element using predefined style builder */
     protected addStyles(input: string, parent?: Object): void;
     /** Access the current value (if any) of the @Input property */
     protected _queryInput(key: string): any;
@@ -102,4 +103,6 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
      * getComputedStyle() during ngOnInit().
      */
     protected _hasInitialized: boolean;
+    /** Cache map for style computation */
+    protected _styleCache: Map<string, StyleDefinition>;
 }

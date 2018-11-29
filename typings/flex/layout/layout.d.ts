@@ -12,11 +12,17 @@ export declare type Layout = {
     direction: string;
     wrap: boolean;
 };
-interface LayoutParent {
+export interface LayoutParent {
     announcer: ReplaySubject<Layout>;
 }
-export declare class LayoutStyleBuilder implements StyleBuilder {
-    buildStyles(input: string, parent: LayoutParent): StyleDefinition;
+export declare class LayoutStyleBuilder extends StyleBuilder {
+    buildStyles(input: string, _parent: LayoutParent): {
+        'display': string;
+        'box-sizing': string;
+        'flex-direction': string;
+        'flex-wrap': string | null;
+    };
+    sideEffect(_input: string, styles: StyleDefinition, parent: LayoutParent): void;
 }
 /**
  * 'layout' flexbox styling directive
@@ -64,5 +70,5 @@ export declare class LayoutDirective extends BaseDirective implements OnInit, On
     ngOnInit(): void;
     /** Validate the direction value and then update the host's inline flexbox styles */
     protected _updateWithDirection(value?: string): void;
+    protected _styleCache: Map<string, StyleDefinition>;
 }
-export {};

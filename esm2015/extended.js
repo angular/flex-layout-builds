@@ -672,7 +672,13 @@ class ShowHideDirective extends BaseDirective {
      * @return {?}
      */
     ngAfterViewInit() {
-        this._display = this._getDisplayStyle();
+        if (DISPLAY_MAP.has(this.nativeElement)) {
+            this._display = /** @type {?} */ ((DISPLAY_MAP.get(this.nativeElement)));
+        }
+        else {
+            this._display = this._getDisplayStyle();
+            DISPLAY_MAP.set(this.nativeElement, this._display);
+        }
         if (this.layout) {
             /**
                    * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -786,6 +792,8 @@ ShowHideDirective.propDecorators = {
     hideGtLg: [{ type: Input, args: ['fxHide.gt-lg',] }],
     _flexChild: [{ type: ViewChild, args: [FlexDirective,] }]
 };
+/** @type {?} */
+const DISPLAY_MAP = new WeakMap();
 
 /**
  * @fileoverview added by tsickle

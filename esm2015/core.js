@@ -1267,6 +1267,10 @@ class BaseDirective {
          * getComputedStyle() during ngOnInit().
          */
         this._hasInitialized = false;
+        /**
+         * Cache map for style computation
+         */
+        this._styleCache = new Map();
     }
     /**
      * @return {?}
@@ -1356,14 +1360,26 @@ class BaseDirective {
         return this._elementRef.nativeElement;
     }
     /**
+     * Add styles to the element using predefined style builder
      * @param {?} input
      * @param {?=} parent
      * @return {?}
      */
     addStyles(input, parent) {
         /** @type {?} */
-        const styles = /** @type {?} */ ((this._styleBuilder)).buildStyles(input, parent);
-        this._applyStyleToElement(styles);
+        const builder = /** @type {?} */ ((this._styleBuilder));
+        /** @type {?} */
+        const useCache = builder.shouldCache;
+        /** @type {?} */
+        let genStyles = this._styleCache.get(input);
+        if (!genStyles || !useCache) {
+            genStyles = builder.buildStyles(input, parent);
+            if (useCache) {
+                this._styleCache.set(input, genStyles);
+            }
+        }
+        this._applyStyleToElement(genStyles);
+        builder.sideEffect(input, genStyles, parent);
     }
     /**
      * Access the current value (if any) of the \@Input property
@@ -2604,13 +2620,28 @@ StyleUtils.ctorParameters = () => [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
+ * A class that encapsulates CSS style generation for common directives
  * @abstract
  */
 class StyleBuilder {
+    constructor() {
+        /**
+         * Whether to cache the generated output styles
+         */
+        this.shouldCache = true;
+    }
+    /**
+     * Run a side effect computation given the input string and the computed styles
+     * from the build task and the host configuration object
+     * NOTE: This should be a no-op unless an algorithm is provided in a subclass
+     * @param {?} _input
+     * @param {?} _styles
+     * @param {?=} _parent
+     * @return {?}
+     */
+    sideEffect(_input, _styles, _parent) {
+    }
 }
-StyleBuilder.decorators = [
-    { type: Injectable },
-];
 
 /**
  * @fileoverview added by tsickle

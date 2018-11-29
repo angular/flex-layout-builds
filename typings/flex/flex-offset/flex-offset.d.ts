@@ -7,15 +7,20 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective, MediaMonitor, StyleBuilder, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
-interface FlexOffsetParent {
+export interface FlexOffsetParent {
     layout: string;
     isRtl: boolean;
 }
-export declare class FlexOffsetStyleBuilder implements StyleBuilder {
-    buildStyles(offset: string, parent: FlexOffsetParent): StyleDefinition;
+export declare class FlexOffsetStyleBuilder extends StyleBuilder {
+    buildStyles(offset: string, parent: FlexOffsetParent): {
+        [x: string]: string;
+        'margin-top'?: undefined;
+    } | {
+        'margin-top': string;
+    };
 }
 /**
  * 'flex-offset' flexbox styling directive
@@ -80,4 +85,3 @@ export declare class FlexOffsetDirective extends BaseDirective implements OnInit
      */
     protected _updateWithValue(value?: string | number): void;
 }
-export {};

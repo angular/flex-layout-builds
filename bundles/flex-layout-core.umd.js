@@ -1614,6 +1614,10 @@ BaseDirective = /** @class */ (function () {
          * getComputedStyle() during ngOnInit().
          */
         this._hasInitialized = false;
+        /**
+         * Cache map for style computation
+         */
+        this._styleCache = new Map();
     }
     Object.defineProperty(BaseDirective.prototype, "hasMediaQueryListener", {
         get: /**
@@ -1763,20 +1767,34 @@ BaseDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    /** Add styles to the element using predefined style builder */
     /**
+     * Add styles to the element using predefined style builder
      * @param {?} input
      * @param {?=} parent
      * @return {?}
      */
     BaseDirective.prototype.addStyles = /**
+     * Add styles to the element using predefined style builder
      * @param {?} input
      * @param {?=} parent
      * @return {?}
      */
     function (input, parent) {
         /** @type {?} */
-        var styles = /** @type {?} */ ((this._styleBuilder)).buildStyles(input, parent);
-        this._applyStyleToElement(styles);
+        var builder = /** @type {?} */ ((this._styleBuilder));
+        /** @type {?} */
+        var useCache = builder.shouldCache;
+        /** @type {?} */
+        var genStyles = this._styleCache.get(input);
+        if (!genStyles || !useCache) {
+            genStyles = builder.buildStyles(input, parent);
+            if (useCache) {
+                this._styleCache.set(input, genStyles);
+            }
+        }
+        this._applyStyleToElement(genStyles);
+        builder.sideEffect(input, genStyles, parent);
     };
     /** Access the current value (if any) of the @Input property */
     /**
@@ -3561,14 +3579,45 @@ var StyleUtils = /** @class */ (function () {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
+ * A class that encapsulates CSS style generation for common directives
  * @abstract
  */
-var StyleBuilder = /** @class */ (function () {
+var   /**
+ * A class that encapsulates CSS style generation for common directives
+ * @abstract
+ */
+StyleBuilder = /** @class */ (function () {
     function StyleBuilder() {
+        /**
+         * Whether to cache the generated output styles
+         */
+        this.shouldCache = true;
     }
-    StyleBuilder.decorators = [
-        { type: core.Injectable },
-    ];
+    /**
+     * Run a side effect computation given the input string and the computed styles
+     * from the build task and the host configuration object
+     * NOTE: This should be a no-op unless an algorithm is provided in a subclass
+     */
+    /**
+     * Run a side effect computation given the input string and the computed styles
+     * from the build task and the host configuration object
+     * NOTE: This should be a no-op unless an algorithm is provided in a subclass
+     * @param {?} _input
+     * @param {?} _styles
+     * @param {?=} _parent
+     * @return {?}
+     */
+    StyleBuilder.prototype.sideEffect = /**
+     * Run a side effect computation given the input string and the computed styles
+     * from the build task and the host configuration object
+     * NOTE: This should be a no-op unless an algorithm is provided in a subclass
+     * @param {?} _input
+     * @param {?} _styles
+     * @param {?=} _parent
+     * @return {?}
+     */
+    function (_input, _styles, _parent) {
+    };
     return StyleBuilder;
 }());
 

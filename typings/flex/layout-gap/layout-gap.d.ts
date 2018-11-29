@@ -10,24 +10,29 @@ import { Directionality } from '@angular/cdk/bidi';
 import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 import { Subscription } from 'rxjs';
 import { Layout, LayoutDirective } from '../layout/layout';
-interface LayoutGapParent {
-    layout: string;
+export interface LayoutGapParent {
     directionality: string;
     items: HTMLElement[];
+    layout: string;
 }
-export declare class LayoutGapStyleBuilder implements StyleBuilder {
-    private styler;
-    constructor(styler: StyleUtils);
+export declare class LayoutGapStyleBuilder extends StyleBuilder {
+    private _styler;
+    constructor(_styler: StyleUtils);
     buildStyles(gapValue: string, parent: LayoutGapParent): StyleDefinition;
-    private _buildCSS;
+    sideEffect(gapValue: string, _styles: StyleDefinition, parent: LayoutGapParent): void;
 }
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
 export declare class LayoutGapDirective extends BaseDirective implements AfterContentInit, OnChanges, OnDestroy {
-    private _zone;
-    private _directionality;
+    protected monitor: MediaMonitor;
+    protected elRef: ElementRef;
+    protected container: LayoutDirective;
+    protected _zone: NgZone;
+    protected _directionality: Directionality;
+    protected styleUtils: StyleUtils;
+    protected styleBuilder: LayoutGapStyleBuilder;
     protected _layout: string;
     protected _layoutWatcher?: Subscription;
     protected _observer?: MutationObserver;
@@ -68,4 +73,3 @@ export declare class LayoutGapDirective extends BaseDirective implements AfterCo
      */
     protected _updateWithValue(value?: string): void;
 }
-export {};

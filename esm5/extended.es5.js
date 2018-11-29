@@ -1009,7 +1009,13 @@ var ShowHideDirective = /** @class */ (function (_super) {
      */
     function () {
         var _this = this;
-        this._display = this._getDisplayStyle();
+        if (DISPLAY_MAP.has(this.nativeElement)) {
+            this._display = /** @type {?} */ ((DISPLAY_MAP.get(this.nativeElement)));
+        }
+        else {
+            this._display = this._getDisplayStyle();
+            DISPLAY_MAP.set(this.nativeElement, this._display);
+        }
         if (this.layout) {
             /**
                    * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -1140,6 +1146,8 @@ var ShowHideDirective = /** @class */ (function (_super) {
     };
     return ShowHideDirective;
 }(BaseDirective));
+/** @type {?} */
+var DISPLAY_MAP = new WeakMap();
 
 /**
  * @fileoverview added by tsickle

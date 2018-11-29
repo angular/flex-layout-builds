@@ -7,7 +7,7 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
-export declare class FlexAlignStyleBuilder implements StyleBuilder {
+export declare class FlexAlignStyleBuilder extends StyleBuilder {
     buildStyles(input: string): StyleDefinition;
 }
 /**
@@ -41,4 +41,5 @@ export declare class FlexAlignDirective extends BaseDirective implements OnInit,
      */
     ngOnInit(): void;
     protected _updateWithValue(value?: string | number): void;
+    protected _styleCache: Map<string, StyleDefinition>;
 }
