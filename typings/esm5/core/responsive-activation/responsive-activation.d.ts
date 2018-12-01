@@ -1,15 +1,6 @@
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-import { Subscription } from 'rxjs';
 import { MediaChange, MediaQuerySubscriber } from '../media-change';
 import { BreakPoint } from '../breakpoints/break-point';
 import { MediaMonitor } from '../media-monitor/media-monitor';
-export declare type SubscriptionList = Subscription[];
 export interface BreakPointX extends BreakPoint {
     key: string;
     baseKey: string;
@@ -40,9 +31,9 @@ export declare class ResponsiveActivation {
     private _options;
     private _mediaMonitor;
     private _onMediaChanges;
-    private _subscribers;
     private _activatedInputKey;
     private _registryMap;
+    private _subscribers;
     /**
      * Constructor
      */
@@ -54,12 +45,6 @@ export declare class ResponsiveActivation {
      * first matching media query.
      */
     readonly registryFromLargest: BreakPointX[];
-    /**
-     * Accessor to the DI'ed directive property
-     * Each directive instance has a reference to the MediaMonitor which is
-     * used HERE to subscribe to mediaQuery change notifications.
-     */
-    readonly mediaMonitor: MediaMonitor;
     /**
      * Determine which directive @Input() property is currently active (for the viewport size):
      * The key must be defined (in use) or fallback to the 'closest' overlapping property key

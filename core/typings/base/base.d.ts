@@ -17,7 +17,6 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     protected _elementRef: ElementRef;
     protected _styler: StyleUtils;
     protected _styleBuilder?: StyleBuilder | undefined;
-    readonly hasMediaQueryListener: boolean;
     /**
      * Imperatively determine the current activated [input] value;
      * if called before ngOnInit() this will return `undefined`
@@ -87,8 +86,6 @@ export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     protected _listenForMediaQueryChanges(key: string, defaultValue: any, onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation;
     /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
     protected readonly childrenNodes: HTMLElement[];
-    /** Fast validator for presence of attribute on the host element */
-    protected hasKeyValue(key: string): boolean;
     protected readonly hasInitialized: boolean;
     /** MediaQuery Activation Tracker */
     protected _mqActivation?: ResponsiveActivation;

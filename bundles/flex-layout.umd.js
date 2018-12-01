@@ -18,7 +18,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.19-ad3e9c9');
+var VERSION = new core.Version('7.0.0-beta.19-1205588');
 
 /**
  * @fileoverview added by tsickle
@@ -111,6 +111,7 @@ exports.MediaMonitor = core$1.MediaMonitor;
 exports.ObservableMedia = core$1.ObservableMedia;
 exports.MediaService = core$1.MediaService;
 exports.ObservableMediaProvider = core$1.ObservableMediaProvider;
+exports.MediaObserver = core$1.MediaObserver;
 exports.KeyOptions = core$1.KeyOptions;
 exports.ResponsiveActivation = core$1.ResponsiveActivation;
 exports.StyleUtils = core$1.StyleUtils;

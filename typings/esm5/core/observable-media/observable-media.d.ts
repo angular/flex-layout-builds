@@ -4,6 +4,8 @@ import { MediaChange } from '../media-change';
 import { MatchMedia } from '../match-media/match-media';
 /**
  * Base class for MediaService and pseudo-token for
+ * @deprecated use MediaObserver instead
+ * @deletion-target v7.0.0-beta.21
  */
 export declare abstract class ObservableMedia implements Subscribable<MediaChange> {
     abstract isActive(query: string): boolean;
@@ -53,6 +55,8 @@ export declare abstract class ObservableMedia implements Subscribable<MediaChang
  *        ).subscribe(onChange);
  *    }
  *  }
+ *  @deprecated use MediaObserver instead
+ *  @deletion-target v7.0.0-beta.21
  */
 export declare class MediaService implements ObservableMedia {
     private breakpoints;
@@ -103,6 +107,10 @@ export declare class MediaService implements ObservableMedia {
     private _toMediaQuery;
     private readonly observable$;
 }
+/**
+ * @deprecated
+ * @deletion-target v7.0.0-beta.21
+ */
 export declare const ObservableMediaProvider: {
     provide: typeof ObservableMedia;
     useClass: typeof MediaService;

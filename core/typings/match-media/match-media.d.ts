@@ -46,12 +46,4 @@ export declare class MatchMedia {
      * supports 0..n listeners for activation/deactivation
      */
     protected _buildMQL(query: string): MediaQueryList;
-    /**
-     * For Webkit engines that only trigger the MediaQueryList Listener
-     * when there is at least one CSS selector for the respective media query.
-     *
-     * @param mediaQueries
-     * @param _document
-     */
-    protected _prepareQueryCSS(mediaQueries: string[], _document: Document): void;
 }

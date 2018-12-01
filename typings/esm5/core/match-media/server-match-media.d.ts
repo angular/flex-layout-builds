@@ -1,8 +1,6 @@
 import { NgZone } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { BreakPoint } from '../breakpoints/break-point';
 import { MatchMedia } from './match-media';
-import { MediaChange } from '../media-change';
 /**
  * Special server-only class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
@@ -44,8 +42,6 @@ export declare class ServerMatchMedia extends MatchMedia {
     protected _platformId: Object;
     protected _document: any;
     protected _registry: Map<string, ServerMediaQueryList>;
-    protected _source: BehaviorSubject<MediaChange>;
-    protected _observable$: Observable<MediaChange>;
     constructor(_zone: NgZone, _platformId: Object, _document: any);
     /** Activate the specified breakpoint if we're on the server, no-op otherwise */
     activateBreakpoint(bp: BreakPoint): void;
