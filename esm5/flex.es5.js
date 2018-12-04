@@ -993,10 +993,9 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
         /** @type {?} */
         var isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
         /** @type {?} */
-        var hasUnits = String(basis).indexOf('px') > -1 || String(basis).indexOf('em') > -1 ||
-            String(basis).indexOf('vw') > -1 || String(basis).indexOf('vh') > -1;
-        /** @type {?} */
-        var isPx = String(basis).indexOf('px') > -1 || usingCalc;
+        var hasUnits = String(basis).indexOf('px') > -1 || String(basis).indexOf('rem') > -1 ||
+            String(basis).indexOf('em') > -1 || String(basis).indexOf('vw') > -1 ||
+            String(basis).indexOf('vh') > -1;
         /** @type {?} */
         var isValue = (hasCalc || hasUnits);
         grow = (grow == '0') ? 0 : grow;
@@ -1080,7 +1079,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
         }
         // Fix for issues 277, 534, and 728
         if (basis !== '0%' && basis !== '0px' && basis !== '0.000000001px' && basis !== 'auto') {
-            css[min] = isFixed || (isPx && grow) ? basis : null;
+            css[min] = isFixed || (isValue && grow) ? basis : null;
             css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
         }
         // Fix for issue 528
