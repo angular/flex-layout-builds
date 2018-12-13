@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+import { ElementRef, OnChanges } from '@angular/core';
+import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
 export declare class FlexOrderStyleBuilder extends StyleBuilder {
     buildStyles(value: string): {
         order: number;
@@ -17,31 +17,15 @@ export declare class FlexOrderStyleBuilder extends StyleBuilder {
  * Configures the positional ordering of the element in a sorted layout container
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
-export declare class FlexOrderDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
-    order: string;
-    orderXs: string;
-    orderSm: string;
-    orderMd: string;
-    orderLg: string;
-    orderXl: string;
-    orderGtXs: string;
-    orderGtSm: string;
-    orderGtMd: string;
-    orderGtLg: string;
-    orderLtSm: string;
-    orderLtMd: string;
-    orderLtLg: string;
-    orderLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: FlexOrderStyleBuilder);
-    /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    ngOnChanges(changes: SimpleChanges): void;
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    ngOnInit(): void;
-    protected _updateWithValue(value?: string): void;
-    protected _styleCache: Map<string, StyleDefinition>;
+export declare class FlexOrderDirective extends BaseDirective2 implements OnChanges {
+    protected elRef: ElementRef;
+    protected styleUtils: StyleUtils;
+    protected styleBuilder: FlexOrderStyleBuilder;
+    protected marshal: MediaMarshaller;
+    protected DIRECTIVE_KEY: string;
+    constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: FlexOrderStyleBuilder, marshal: MediaMarshaller);
+    protected styleCache: Map<string, StyleDefinition>;
+}
+export declare class DefaultFlexOrderDirective extends FlexOrderDirective {
+    protected inputs: string[];
 }

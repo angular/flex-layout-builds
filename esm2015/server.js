@@ -7,7 +7,7 @@
  */
 import { DOCUMENT } from '@angular/common';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
-import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia } from '@angular/flex-layout/core';
+import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia, prioritySort } from '@angular/flex-layout/core';
 import { NgModule } from '@angular/core';
 
 /**
@@ -19,7 +19,7 @@ import { NgModule } from '@angular/core';
  * retrieve the associated stylings from the virtual stylesheet
  * @param {?} serverSheet the virtual stylesheet that stores styles for each
  *        element
- * @param {?} matchMedia the service to activate/deactive breakpoints
+ * @param {?} matchMedia the service to activate/deactivate breakpoints
  * @param {?} breakpoints the registered breakpoints to activate/deactivate
  * @return {?}
  */
@@ -30,6 +30,7 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
     const defaultStyles = new Map(serverSheet.stylesheet);
     /** @type {?} */
     let styleText = generateCss(defaultStyles, 'all', classMap);
+    breakpoints.sort(prioritySort);
     breakpoints.reverse();
     breakpoints.forEach((bp, i) => {
         serverSheet.clearStyles();

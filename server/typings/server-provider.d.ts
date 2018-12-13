@@ -12,7 +12,7 @@ import { BreakPoint, MatchMedia, StylesheetMap, ServerMatchMedia } from '@angula
  * retrieve the associated stylings from the virtual stylesheet
  * @param serverSheet the virtual stylesheet that stores styles for each
  *        element
- * @param matchMedia the service to activate/deactive breakpoints
+ * @param matchMedia the service to activate/deactivate breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
  */
 export declare function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap, matchMedia: MatchMedia, breakpoints: BreakPoint[]): string;

@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/flex-layout/core'), require('rxjs'), require('@angular/cdk/bidi')) :
-	typeof define === 'function' && define.amd ? define('@angular/flex-layout/flex', ['exports', '@angular/core', '@angular/flex-layout/core', 'rxjs', '@angular/cdk/bidi'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].flex = {}),global.ng.core,global.ng.flexLayout.core,global.rxjs,global.ng.cdk.bidi));
-}(this, (function (exports,core,core$1,rxjs,bidi) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/flex-layout/core'), require('@angular/cdk/bidi'), require('rxjs'), require('rxjs/operators')) :
+	typeof define === 'function' && define.amd ? define('@angular/flex-layout/flex', ['exports', '@angular/core', '@angular/flex-layout/core', '@angular/cdk/bidi', 'rxjs', 'rxjs/operators'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].flex = {}),global.ng.core,global.ng.flexLayout.core,global.ng.cdk.bidi,global.rxjs,global.rxjs.operators));
+}(this, (function (exports,core,core$1,bidi,rxjs,operators) { 'use strict';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -164,36 +164,14 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     }
     /**
      * @param {?} input
-     * @param {?} _parent
      * @return {?}
      */
     LayoutStyleBuilder.prototype.buildStyles = /**
      * @param {?} input
-     * @param {?} _parent
      * @return {?}
      */
-    function (input, _parent) {
-        /** @type {?} */
-        var styles = buildLayoutCSS(input);
-        return styles;
-    };
-    /**
-     * @param {?} _input
-     * @param {?} styles
-     * @param {?} parent
-     * @return {?}
-     */
-    LayoutStyleBuilder.prototype.sideEffect = /**
-     * @param {?} _input
-     * @param {?} styles
-     * @param {?} parent
-     * @return {?}
-     */
-    function (_input, styles, parent) {
-        parent.announcer.next({
-            direction: /** @type {?} */ (styles['flex-direction']),
-            wrap: !!styles['flex-wrap'] && styles['flex-wrap'] !== 'nowrap'
-        });
+    function (input) {
+        return buildLayoutCSS(input);
     };
     LayoutStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -201,6 +179,15 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
 }(core$1.StyleBuilder));
+/** @type {?} */
+var inputs = [
+    'fxLayout', 'fxLayout.xs', 'fxLayout.sm', 'fxLayout.md',
+    'fxLayout.lg', 'fxLayout.xl', 'fxLayout.lt-sm', 'fxLayout.lt-md',
+    'fxLayout.lt-lg', 'fxLayout.lt-xl', 'fxLayout.gt-xs', 'fxLayout.gt-sm',
+    'fxLayout.gt-md', 'fxLayout.gt-lg'
+];
+/** @type {?} */
+var selector = "\n  [fxLayout], [fxLayout.xs], [fxLayout.sm], [fxLayout.md],\n  [fxLayout.lg], [fxLayout.xl], [fxLayout.lt-sm], [fxLayout.lt-md],\n  [fxLayout.lt-lg], [fxLayout.lt-xl], [fxLayout.gt-xs], [fxLayout.gt-sm],\n  [fxLayout.gt-md], [fxLayout.gt-lg]\n";
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -210,238 +197,41 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
  */
 var LayoutDirective = /** @class */ (function (_super) {
     __extends(LayoutDirective, _super);
-    /* tslint:enable */
-    function LayoutDirective(monitor, elRef, styleUtils, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
-        _this._styleCache = layoutCache;
-        _this._announcer = new rxjs.ReplaySubject(1);
-        _this.layout$ = _this._announcer.asObservable();
+    function LayoutDirective(elRef, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
+        _this.elRef = elRef;
+        _this.styleUtils = styleUtils;
+        _this.styleBuilder = styleBuilder;
+        _this.marshal = marshal;
+        _this.DIRECTIVE_KEY = 'layout';
+        _this.styleCache = layoutCache;
+        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
         return _this;
     }
-    Object.defineProperty(LayoutDirective.prototype, "layout", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layout', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutDirective.prototype, "layoutLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('layoutLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fxLayout')
-     * Then conditionally override with the mq-activated Input's current value
-     */
-    /**
-     * On changes to any \@Input properties...
-     * Default to use the non-responsive Input value ('fxLayout')
-     * Then conditionally override with the mq-activated Input's current value
-     * @param {?} changes
-     * @return {?}
-     */
-    LayoutDirective.prototype.ngOnChanges = /**
-     * On changes to any \@Input properties...
-     * Default to use the non-responsive Input value ('fxLayout')
-     * Then conditionally override with the mq-activated Input's current value
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['layout'] != null || this._mqActivation) {
-            this._updateWithDirection();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    LayoutDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('layout', 'row', function (changes) {
-            _this._updateWithDirection(changes.value);
-        });
-    };
-    // *********************************************
-    // Protected methods
-    // *********************************************
-    /** Validate the direction value and then update the host's inline flexbox styles */
-    /**
-     * Validate the direction value and then update the host's inline flexbox styles
-     * @param {?=} value
-     * @return {?}
-     */
-    LayoutDirective.prototype._updateWithDirection = /**
-     * Validate the direction value and then update the host's inline flexbox styles
-     * @param {?=} value
-     * @return {?}
-     */
-    function (value) {
-        value = value || this._queryInput('layout') || 'row';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this.addStyles(value || '', { announcer: this._announcer });
-    };
-    LayoutDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxLayout],\n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" },] },
-    ];
     /** @nocollapse */
     LayoutDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: LayoutStyleBuilder }
+        { type: LayoutStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: core$1.MediaMarshaller }
     ]; };
-    LayoutDirective.propDecorators = {
-        layout: [{ type: core.Input, args: ['fxLayout',] }],
-        layoutXs: [{ type: core.Input, args: ['fxLayout.xs',] }],
-        layoutSm: [{ type: core.Input, args: ['fxLayout.sm',] }],
-        layoutMd: [{ type: core.Input, args: ['fxLayout.md',] }],
-        layoutLg: [{ type: core.Input, args: ['fxLayout.lg',] }],
-        layoutXl: [{ type: core.Input, args: ['fxLayout.xl',] }],
-        layoutGtXs: [{ type: core.Input, args: ['fxLayout.gt-xs',] }],
-        layoutGtSm: [{ type: core.Input, args: ['fxLayout.gt-sm',] }],
-        layoutGtMd: [{ type: core.Input, args: ['fxLayout.gt-md',] }],
-        layoutGtLg: [{ type: core.Input, args: ['fxLayout.gt-lg',] }],
-        layoutLtSm: [{ type: core.Input, args: ['fxLayout.lt-sm',] }],
-        layoutLtMd: [{ type: core.Input, args: ['fxLayout.lt-md',] }],
-        layoutLtLg: [{ type: core.Input, args: ['fxLayout.lt-lg',] }],
-        layoutLtXl: [{ type: core.Input, args: ['fxLayout.lt-xl',] }]
-    };
     return LayoutDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
+var DefaultLayoutDirective = /** @class */ (function (_super) {
+    __extends(DefaultLayoutDirective, _super);
+    function DefaultLayoutDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs;
+        return _this;
+    }
+    DefaultLayoutDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] },
+    ];
+    return DefaultLayoutDirective;
+}(LayoutDirective));
 /** @type {?} */
 var layoutCache = new Map();
 
@@ -524,155 +314,59 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
     /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.inject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(core$1.StyleBuilder));
+/** @type {?} */
+var inputs$1 = [
+    'fxLayoutGap', 'fxLayoutGap.xs', 'fxLayoutGap.sm', 'fxLayoutGap.md',
+    'fxLayoutGap.lg', 'fxLayoutGap.xl', 'fxLayoutGap.lt-sm', 'fxLayoutGap.lt-md',
+    'fxLayoutGap.lt-lg', 'fxLayoutGap.lt-xl', 'fxLayoutGap.gt-xs', 'fxLayoutGap.gt-sm',
+    'fxLayoutGap.gt-md', 'fxLayoutGap.gt-lg'
+];
+/** @type {?} */
+var selector$1 = "\n  [fxLayoutGap], [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md],\n  [fxLayoutGap.lg], [fxLayoutGap.xl], [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md],\n  [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl], [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm],\n  [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n";
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
 var LayoutGapDirective = /** @class */ (function (_super) {
     __extends(LayoutGapDirective, _super);
-    /* tslint:enable */
-    function LayoutGapDirective(monitor, elRef, container, _zone, _directionality, styleUtils, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
-        _this.monitor = monitor;
+    function LayoutGapDirective(elRef, zone, directionality, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
-        _this.container = container;
-        _this._zone = _zone;
-        _this._directionality = _directionality;
+        _this.zone = zone;
+        _this.directionality = directionality;
         _this.styleUtils = styleUtils;
         _this.styleBuilder = styleBuilder;
-        _this._layout = 'row'; // default flex-direction
-        if (container) { // Subscribe to layout direction changes
-            // Subscribe to layout direction changes
-            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
-        }
-        _this._directionWatcher =
-            _this._directionality.change.subscribe(_this._updateWithValue.bind(_this));
+        _this.marshal = marshal;
+        _this.layout = 'row'; // default flex-direction
+        _this.DIRECTIVE_KEY = 'layout-gap';
+        _this.observerSubject = new rxjs.Subject();
+        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this), [_this.directionality.change,
+            _this.observerSubject.asObservable()]);
+        _this.marshal.trackValue(_this.nativeElement, 'layout')
+            .pipe(operators.takeUntil(_this.destroySubject))
+            .subscribe(_this.onLayoutChange.bind(_this));
         return _this;
     }
-    Object.defineProperty(LayoutGapDirective.prototype, "gap", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
+    Object.defineProperty(LayoutGapDirective.prototype, "childrenNodes", {
+        /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
+        get: /**
+         * Special accessor to query for all child 'element' nodes regardless of type, class, etc
          * @return {?}
          */
-        function (val) { this._cacheInput('gap', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('gapLtXl', val); },
+        function () {
+            /** @type {?} */
+            var obj = this.nativeElement.children;
+            /** @type {?} */
+            var buffer = [];
+            // iterate backwards ensuring that length is an UInt32
+            for (var i = obj.length; i--;) {
+                buffer[i] = obj[i];
+            }
+            return buffer;
+        },
         enumerable: true,
         configurable: true
     });
@@ -680,39 +374,14 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     // Lifecycle Methods
     // *********************************************
     /**
-     * @param {?} changes
-     * @return {?}
-     */
-    LayoutGapDirective.prototype.ngOnChanges = /**
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['gap'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
      * @return {?}
      */
     LayoutGapDirective.prototype.ngAfterContentInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
      * @return {?}
      */
     function () {
-        var _this = this;
-        this._watchContentChanges();
-        this._listenForMediaQueryChanges('gap', '0', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
+        this.buildChildObservable();
+        this.triggerUpdate();
     };
     /**
      * @return {?}
@@ -722,101 +391,64 @@ var LayoutGapDirective = /** @class */ (function (_super) {
      */
     function () {
         _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-        if (this._observer) {
-            this._observer.disconnect();
-        }
-        if (this._directionWatcher) {
-            this._directionWatcher.unsubscribe();
+        if (this.observer) {
+            this.observer.disconnect();
         }
     };
     // *********************************************
     // Protected methods
     // *********************************************
     /**
-     * Watch for child nodes to be added... and apply the layout gap styles to each.
-     * NOTE: this does NOT! differentiate between viewChildren and contentChildren
+     * Cache the parent container 'flex-direction' and update the 'margin' styles
      */
     /**
-     * Watch for child nodes to be added... and apply the layout gap styles to each.
-     * NOTE: this does NOT! differentiate between viewChildren and contentChildren
+     * Cache the parent container 'flex-direction' and update the 'margin' styles
+     * @param {?} matcher
      * @return {?}
      */
-    LayoutGapDirective.prototype._watchContentChanges = /**
-     * Watch for child nodes to be added... and apply the layout gap styles to each.
-     * NOTE: this does NOT! differentiate between viewChildren and contentChildren
+    LayoutGapDirective.prototype.onLayoutChange = /**
+     * Cache the parent container 'flex-direction' and update the 'margin' styles
+     * @param {?} matcher
      * @return {?}
      */
-    function () {
+    function (matcher) {
         var _this = this;
-        this._zone.runOutsideAngular(function () {
-            if (typeof MutationObserver !== 'undefined') {
-                _this._observer = new MutationObserver(function (mutations) {
-                    /** @type {?} */
-                    var validatedChanges = function (it) {
-                        return (it.addedNodes && it.addedNodes.length > 0) ||
-                            (it.removedNodes && it.removedNodes.length > 0);
-                    };
-                    // update gap styles only for child 'added' or 'removed' events
-                    if (mutations.some(validatedChanges)) {
-                        _this._updateWithValue();
-                    }
-                });
-                _this._observer.observe(_this.nativeElement, { childList: true });
-            }
-        });
-    };
-    /**
-     * Cache the parent container 'flex-direction' and update the 'margin' styles
-     */
-    /**
-     * Cache the parent container 'flex-direction' and update the 'margin' styles
-     * @param {?} layout
-     * @return {?}
-     */
-    LayoutGapDirective.prototype._onLayoutChange = /**
-     * Cache the parent container 'flex-direction' and update the 'margin' styles
-     * @param {?} layout
-     * @return {?}
-     */
-    function (layout) {
-        var _this = this;
-        this._layout = (layout.direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
-            this._layout = 'row';
+        /** @type {?} */
+        var layout = matcher.value;
+        /** @type {?} */
+        var direction = layout.split(' ');
+        this.layout = direction[0];
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this.layout; })) {
+            this.layout = 'row';
         }
-        this._updateWithValue();
+        this.triggerUpdate();
     };
     /**
      *
      */
     /**
      *
-     * @param {?=} value
+     * @param {?} value
      * @return {?}
      */
-    LayoutGapDirective.prototype._updateWithValue = /**
+    LayoutGapDirective.prototype.updateWithValue = /**
      *
-     * @param {?=} value
+     * @param {?} value
      * @return {?}
      */
     function (value) {
         var _this = this;
-        /** @type {?} */
-        var gapValue = value || this._queryInput('gap') || '0';
-        if (this._mqActivation) {
-            gapValue = this._mqActivation.activatedInput;
+        if (!value) {
+            value = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
         }
         /** @type {?} */
         var items = this.childrenNodes
-            .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != 'none'; })
+            .filter(function (el) { return el.nodeType === 1 && _this.getDisplayStyle(el) !== 'none'; })
             .sort(function (a, b) {
             /** @type {?} */
-            var orderA = +_this._styler.lookupStyle(a, 'order');
+            var orderA = +_this.styler.lookupStyle(a, 'order');
             /** @type {?} */
-            var orderB = +_this._styler.lookupStyle(b, 'order');
+            var orderB = +_this.styler.lookupStyle(b, 'order');
             if (isNaN(orderA) || isNaN(orderB) || orderA === orderB) {
                 return 0;
             }
@@ -826,57 +458,97 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         });
         if (items.length > 0) {
             /** @type {?} */
-            var directionality = this._directionality.value;
+            var directionality = this.directionality.value;
             /** @type {?} */
-            var layout = this._layout;
+            var layout = this.layout;
             if (layout === 'row' && directionality === 'rtl') {
-                this._styleCache = layoutGapCacheRowRtl;
+                this.styleCache = layoutGapCacheRowRtl;
             }
             else if (layout === 'row' && directionality !== 'rtl') {
-                this._styleCache = layoutGapCacheRowLtr;
+                this.styleCache = layoutGapCacheRowLtr;
             }
             else if (layout === 'column' && directionality === 'rtl') {
-                this._styleCache = layoutGapCacheColumnRtl;
+                this.styleCache = layoutGapCacheColumnRtl;
             }
             else if (layout === 'column' && directionality !== 'rtl') {
-                this._styleCache = layoutGapCacheColumnLtr;
+                this.styleCache = layoutGapCacheColumnLtr;
             }
-            this.addStyles(gapValue, { directionality: directionality, items: items, layout: layout });
+            this.addStyles(value, { directionality: directionality, items: items, layout: layout });
         }
     };
-    LayoutGapDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
-                },] },
-    ];
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows us to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     */
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows us to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     * @param {?=} source
+     * @return {?}
+     */
+    LayoutGapDirective.prototype.getDisplayStyle = /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows us to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     * @param {?=} source
+     * @return {?}
+     */
+    function (source) {
+        if (source === void 0) { source = this.nativeElement; }
+        /** @type {?} */
+        var query = 'display';
+        return this.styler.lookupStyle(source, query);
+    };
+    /**
+     * @return {?}
+     */
+    LayoutGapDirective.prototype.buildChildObservable = /**
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.zone.runOutsideAngular(function () {
+            if (typeof MutationObserver !== 'undefined') {
+                _this.observer = new MutationObserver(function (mutations) {
+                    /** @type {?} */
+                    var validatedChanges = function (it) {
+                        return (it.addedNodes && it.addedNodes.length > 0) ||
+                            (it.removedNodes && it.removedNodes.length > 0);
+                    };
+                    // update gap styles only for child 'added' or 'removed' events
+                    if (mutations.some(validatedChanges)) {
+                        _this.observerSubject.next();
+                    }
+                });
+                _this.observer.observe(_this.nativeElement, { childList: true });
+            }
+        });
+    };
     /** @nocollapse */
     LayoutGapDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
-        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.Self }] },
         { type: core.NgZone },
         { type: bidi.Directionality },
         { type: core$1.StyleUtils },
-        { type: LayoutGapStyleBuilder }
+        { type: LayoutGapStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: core$1.MediaMarshaller }
     ]; };
-    LayoutGapDirective.propDecorators = {
-        gap: [{ type: core.Input, args: ['fxLayoutGap',] }],
-        gapXs: [{ type: core.Input, args: ['fxLayoutGap.xs',] }],
-        gapSm: [{ type: core.Input, args: ['fxLayoutGap.sm',] }],
-        gapMd: [{ type: core.Input, args: ['fxLayoutGap.md',] }],
-        gapLg: [{ type: core.Input, args: ['fxLayoutGap.lg',] }],
-        gapXl: [{ type: core.Input, args: ['fxLayoutGap.xl',] }],
-        gapGtXs: [{ type: core.Input, args: ['fxLayoutGap.gt-xs',] }],
-        gapGtSm: [{ type: core.Input, args: ['fxLayoutGap.gt-sm',] }],
-        gapGtMd: [{ type: core.Input, args: ['fxLayoutGap.gt-md',] }],
-        gapGtLg: [{ type: core.Input, args: ['fxLayoutGap.gt-lg',] }],
-        gapLtSm: [{ type: core.Input, args: ['fxLayoutGap.lt-sm',] }],
-        gapLtMd: [{ type: core.Input, args: ['fxLayoutGap.lt-md',] }],
-        gapLtLg: [{ type: core.Input, args: ['fxLayoutGap.lt-lg',] }],
-        gapLtXl: [{ type: core.Input, args: ['fxLayoutGap.lt-xl',] }]
-    };
     return LayoutGapDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
+var DefaultLayoutGapDirective = /** @class */ (function (_super) {
+    __extends(DefaultLayoutGapDirective, _super);
+    function DefaultLayoutGapDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$1;
+        return _this;
+    }
+    DefaultLayoutGapDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+    ];
+    return DefaultLayoutGapDirective;
+}(LayoutGapDirective));
 /** @type {?} */
 var layoutGapCacheRowRtl = new Map();
 /** @type {?} */
@@ -1157,6 +829,15 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
     /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.inject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(core$1.StyleBuilder));
+/** @type {?} */
+var inputs$2 = [
+    'fxFlex', 'fxFlex.xs', 'fxFlex.sm', 'fxFlex.md',
+    'fxFlex.lg', 'fxFlex.xl', 'fxFlex.lt-sm', 'fxFlex.lt-md',
+    'fxFlex.lt-lg', 'fxFlex.lt-xl', 'fxFlex.gt-xs', 'fxFlex.gt-sm',
+    'fxFlex.gt-md', 'fxFlex.gt-lg'
+];
+/** @type {?} */
+var selector$2 = "\n  [fxFlex], [fxFlex.xs], [fxFlex.sm], [fxFlex.md],\n  [fxFlex.lg], [fxFlex.xl], [fxFlex.lt-sm], [fxFlex.lt-md],\n  [fxFlex.lt-lg], [fxFlex.lt-xl], [fxFlex.gt-xs], [fxFlex.gt-sm],\n  [fxFlex.gt-md], [fxFlex.gt-lg]\n";
 /**
  * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
  * Corresponds to the css `flex` shorthand property.
@@ -1165,224 +846,58 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
  */
 var FlexDirective = /** @class */ (function (_super) {
     __extends(FlexDirective, _super);
-    /* tslint:enable */
-    // Note: Explicitly @SkipSelf on LayoutDirective because we are looking
-    //       for the parent flex container for this flex item.
-    function FlexDirective(monitor, elRef, _container, styleUtils, layoutConfig, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
-        _this._container = _container;
+    function FlexDirective(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
+        var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
+        _this.elRef = elRef;
         _this.styleUtils = styleUtils;
         _this.layoutConfig = layoutConfig;
         _this.styleBuilder = styleBuilder;
-        _this._cacheInput('flex', '');
-        _this._cacheInput('shrink', 1);
-        _this._cacheInput('grow', 1);
+        _this.marshal = marshal;
+        _this.DIRECTIVE_KEY = 'flex';
+        _this.direction = '';
+        _this.wrap = false;
+        _this.flexGrow = '1';
+        _this.flexShrink = '1';
+        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateStyle.bind(_this));
+        if (_this.parentElement) {
+            _this.marshal.trackValue(_this.parentElement, 'layout')
+                .pipe(operators.takeUntil(_this.destroySubject))
+                .subscribe(_this.onLayoutChange.bind(_this));
+        }
         return _this;
     }
     Object.defineProperty(FlexDirective.prototype, "shrink", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
+        get: /**
          * @return {?}
          */
-        function (val) { this._cacheInput('shrink', val); },
+        function () { return this.flexShrink; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this.flexShrink = value || '1';
+            this.triggerReflow();
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "grow", {
-        set: /**
-         * @param {?} val
+        get: /**
          * @return {?}
          */
-        function (val) { this._cacheInput('grow', val); },
+        function () { return this.flexGrow; },
+        set: /**
+         * @param {?} value
+         * @return {?}
+         */
+        function (value) {
+            this.flexGrow = value || '1';
+            this.triggerReflow();
+        },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexDirective.prototype, "flex", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flex', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('flexLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    FlexDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['flex'] != null || this._mqActivation) {
-            this._updateStyle();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    FlexDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('flex', '', function (changes) {
-            _this._updateStyle(changes.value);
-        });
-        if (this._container) {
-            // If this flex item is inside of a flex container marked with
-            // Subscribe to layout immediate parent direction changes
-            this._layoutWatcher = this._container.layout$.subscribe(function (layout) {
-                // `direction` === null if parent container does not have a `fxLayout`
-                _this._onLayoutChange(layout);
-            });
-        }
-    };
-    /**
-     * @return {?}
-     */
-    FlexDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    };
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
@@ -1390,91 +905,105 @@ var FlexDirective = /** @class */ (function (_super) {
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} layout
+     * @param {?} matcher
      * @return {?}
      */
-    FlexDirective.prototype._onLayoutChange = /**
+    FlexDirective.prototype.onLayoutChange = /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} layout
+     * @param {?} matcher
      * @return {?}
      */
-    function (layout) {
-        this._layout = layout || this._layout || { direction: 'row', wrap: false };
-        this._updateStyle();
+    function (matcher) {
+        /** @type {?} */
+        var layout = matcher.value;
+        /** @type {?} */
+        var layoutParts = layout.split(' ');
+        this.direction = layoutParts[0];
+        this.wrap = layoutParts[1] !== undefined && layoutParts[1] === 'wrap';
+        this.triggerUpdate();
     };
+    /** Input to this is exclusively the basis input value */
     /**
-     * @param {?=} value
+     * Input to this is exclusively the basis input value
+     * @param {?} value
      * @return {?}
      */
-    FlexDirective.prototype._updateStyle = /**
-     * @param {?=} value
+    FlexDirective.prototype.updateStyle = /**
+     * Input to this is exclusively the basis input value
+     * @param {?} value
      * @return {?}
      */
     function (value) {
         /** @type {?} */
-        var flexBasis = value || this._queryInput('flex') || '';
-        if (this._mqActivation) {
-            flexBasis = this._mqActivation.activatedInput;
-        }
-        /** @type {?} */
-        var basis = String(flexBasis).replace(';', '');
-        /** @type {?} */
-        var parts = core$1.validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
-        /** @type {?} */
         var addFlexToParent = this.layoutConfig.addFlexToParent !== false;
+        if (!this.direction) {
+            this.direction = this.getFlexFlowDirection(/** @type {?} */ ((this.parentElement)), addFlexToParent);
+        }
         /** @type {?} */
-        var direction = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
+        var direction = this.direction;
         /** @type {?} */
-        var hasWrap = this._layout && this._layout.wrap;
-        if (direction === 'row' && hasWrap) {
-            this._styleCache = flexRowWrapCache;
+        var isHorizontal = direction.startsWith('row');
+        /** @type {?} */
+        var hasWrap = this.wrap;
+        if (isHorizontal && hasWrap) {
+            this.styleCache = flexRowWrapCache;
         }
-        else if (direction === 'row' && !hasWrap) {
-            this._styleCache = flexRowCache;
+        else if (isHorizontal && !hasWrap) {
+            this.styleCache = flexRowCache;
         }
-        else if (direction === 'column' && hasWrap) {
-            this._styleCache = flexColumnWrapCache;
+        else if (!isHorizontal && hasWrap) {
+            this.styleCache = flexColumnWrapCache;
         }
-        else if (direction === 'column' && !hasWrap) {
-            this._styleCache = flexColumnCache;
+        else if (!isHorizontal && !hasWrap) {
+            this.styleCache = flexColumnCache;
         }
+        /** @type {?} */
+        var basis = String(value).replace(';', '');
+        /** @type {?} */
+        var parts = core$1.validateBasis(basis, this.flexGrow, this.flexShrink);
         this.addStyles(parts.join(' '), { direction: direction, hasWrap: hasWrap });
     };
-    FlexDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n    [fxFlex],\n    [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n    [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n    [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n  ",
-                },] },
-    ];
+    /** Trigger a style reflow, usually based on a shrink/grow input event */
+    /**
+     * Trigger a style reflow, usually based on a shrink/grow input event
+     * @return {?}
+     */
+    FlexDirective.prototype.triggerReflow = /**
+     * Trigger a style reflow, usually based on a shrink/grow input event
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var parts = core$1.validateBasis(this.activatedValue, this.flexGrow, this.flexShrink);
+        this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
+    };
     /** @nocollapse */
     FlexDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
-        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.SkipSelf }] },
         { type: core$1.StyleUtils },
         { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] }] },
-        { type: FlexStyleBuilder }
+        { type: FlexStyleBuilder },
+        { type: core$1.MediaMarshaller }
     ]; };
     FlexDirective.propDecorators = {
         shrink: [{ type: core.Input, args: ['fxShrink',] }],
-        grow: [{ type: core.Input, args: ['fxGrow',] }],
-        flex: [{ type: core.Input, args: ['fxFlex',] }],
-        flexXs: [{ type: core.Input, args: ['fxFlex.xs',] }],
-        flexSm: [{ type: core.Input, args: ['fxFlex.sm',] }],
-        flexMd: [{ type: core.Input, args: ['fxFlex.md',] }],
-        flexLg: [{ type: core.Input, args: ['fxFlex.lg',] }],
-        flexXl: [{ type: core.Input, args: ['fxFlex.xl',] }],
-        flexGtXs: [{ type: core.Input, args: ['fxFlex.gt-xs',] }],
-        flexGtSm: [{ type: core.Input, args: ['fxFlex.gt-sm',] }],
-        flexGtMd: [{ type: core.Input, args: ['fxFlex.gt-md',] }],
-        flexGtLg: [{ type: core.Input, args: ['fxFlex.gt-lg',] }],
-        flexLtSm: [{ type: core.Input, args: ['fxFlex.lt-sm',] }],
-        flexLtMd: [{ type: core.Input, args: ['fxFlex.lt-md',] }],
-        flexLtLg: [{ type: core.Input, args: ['fxFlex.lt-lg',] }],
-        flexLtXl: [{ type: core.Input, args: ['fxFlex.lt-xl',] }]
+        grow: [{ type: core.Input, args: ['fxGrow',] }]
     };
     return FlexDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
+var DefaultFlexDirective = /** @class */ (function (_super) {
+    __extends(DefaultFlexDirective, _super);
+    function DefaultFlexDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$2;
+        return _this;
+    }
+    DefaultFlexDirective.decorators = [
+        { type: core.Directive, args: [{ inputs: inputs$2, selector: selector$2 },] },
+    ];
+    return DefaultFlexDirective;
+}(FlexDirective));
 /** @type {?} */
 var flexRowCache = new Map();
 /** @type {?} */
@@ -1503,10 +1032,8 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
      */
     function (value) {
         /** @type {?} */
-        var val = parseInt(value, 10);
-        /** @type {?} */
-        var styles = { order: isNaN(val) ? 0 : val };
-        return styles;
+        var val = parseInt((value || '0'), 10);
+        return { order: isNaN(val) ? 0 : val };
     };
     FlexOrderStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -1514,6 +1041,15 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
 }(core$1.StyleBuilder));
+/** @type {?} */
+var inputs$3 = [
+    'fxFlexOrder', 'fxFlexOrder.xs', 'fxFlexOrder.sm', 'fxFlexOrder.md',
+    'fxFlexOrder.lg', 'fxFlexOrder.xl', 'fxFlexOrder.lt-sm', 'fxFlexOrder.lt-md',
+    'fxFlexOrder.lt-lg', 'fxFlexOrder.lt-xl', 'fxFlexOrder.gt-xs', 'fxFlexOrder.gt-sm',
+    'fxFlexOrder.gt-md', 'fxFlexOrder.gt-lg'
+];
+/** @type {?} */
+var selector$3 = "\n  [fxFlexOrder], [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md],\n  [fxFlexOrder.lg], [fxFlexOrder.xl], [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md],\n  [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl], [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm],\n  [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n";
 /**
  * 'flex-order' flexbox styling directive
  * Configures the positional ordering of the element in a sorted layout container
@@ -1521,229 +1057,43 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
  */
 var FlexOrderDirective = /** @class */ (function (_super) {
     __extends(FlexOrderDirective, _super);
-    /* tslint:enable */
-    function FlexOrderDirective(monitor, elRef, styleUtils, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
-        _this._styleCache = flexOrderCache;
+    function FlexOrderDirective(elRef, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
+        _this.elRef = elRef;
+        _this.styleUtils = styleUtils;
+        _this.styleBuilder = styleBuilder;
+        _this.marshal = marshal;
+        _this.DIRECTIVE_KEY = 'flex-order';
+        _this.styleCache = flexOrderCache;
+        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
         return _this;
     }
-    Object.defineProperty(FlexOrderDirective.prototype, "order", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('order', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('orderLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    FlexOrderDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['order'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    FlexOrderDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('order', '0', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-    };
-    // *********************************************
-    // Protected methods
-    // *********************************************
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    FlexOrderDirective.prototype._updateWithValue = /**
-     * @param {?=} value
-     * @return {?}
-     */
-    function (value) {
-        value = value || this._queryInput('order') || '0';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this.addStyles(value || '');
-    };
-    FlexOrderDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" },] },
-    ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: FlexOrderStyleBuilder }
+        { type: FlexOrderStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: core$1.MediaMarshaller }
     ]; };
-    FlexOrderDirective.propDecorators = {
-        order: [{ type: core.Input, args: ['fxFlexOrder',] }],
-        orderXs: [{ type: core.Input, args: ['fxFlexOrder.xs',] }],
-        orderSm: [{ type: core.Input, args: ['fxFlexOrder.sm',] }],
-        orderMd: [{ type: core.Input, args: ['fxFlexOrder.md',] }],
-        orderLg: [{ type: core.Input, args: ['fxFlexOrder.lg',] }],
-        orderXl: [{ type: core.Input, args: ['fxFlexOrder.xl',] }],
-        orderGtXs: [{ type: core.Input, args: ['fxFlexOrder.gt-xs',] }],
-        orderGtSm: [{ type: core.Input, args: ['fxFlexOrder.gt-sm',] }],
-        orderGtMd: [{ type: core.Input, args: ['fxFlexOrder.gt-md',] }],
-        orderGtLg: [{ type: core.Input, args: ['fxFlexOrder.gt-lg',] }],
-        orderLtSm: [{ type: core.Input, args: ['fxFlexOrder.lt-sm',] }],
-        orderLtMd: [{ type: core.Input, args: ['fxFlexOrder.lt-md',] }],
-        orderLtLg: [{ type: core.Input, args: ['fxFlexOrder.lt-lg',] }],
-        orderLtXl: [{ type: core.Input, args: ['fxFlexOrder.lt-xl',] }]
-    };
     return FlexOrderDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
 /** @type {?} */
 var flexOrderCache = new Map();
+var DefaultFlexOrderDirective = /** @class */ (function (_super) {
+    __extends(DefaultFlexOrderDirective, _super);
+    function DefaultFlexOrderDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$3;
+        return _this;
+    }
+    DefaultFlexOrderDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+    ];
+    return DefaultFlexOrderDirective;
+}(FlexOrderDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1766,6 +1116,9 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
      */
     function (offset, parent) {
         var _a;
+        if (offset === '') {
+            offset = '0';
+        }
         /** @type {?} */
         var isPercent = String(offset).indexOf('%') > -1;
         /** @type {?} */
@@ -1786,259 +1139,43 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
 }(core$1.StyleBuilder));
+/** @type {?} */
+var inputs$4 = [
+    'fxFlexOffset', 'fxFlexOffset.xs', 'fxFlexOffset.sm', 'fxFlexOffset.md',
+    'fxFlexOffset.lg', 'fxFlexOffset.xl', 'fxFlexOffset.lt-sm', 'fxFlexOffset.lt-md',
+    'fxFlexOffset.lt-lg', 'fxFlexOffset.lt-xl', 'fxFlexOffset.gt-xs', 'fxFlexOffset.gt-sm',
+    'fxFlexOffset.gt-md', 'fxFlexOffset.gt-lg'
+];
+/** @type {?} */
+var selector$4 = "\n  [fxFlexOffset], [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md],\n  [fxFlexOffset.lg], [fxFlexOffset.xl], [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md],\n  [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl], [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm],\n  [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n";
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
  */
 var FlexOffsetDirective = /** @class */ (function (_super) {
     __extends(FlexOffsetDirective, _super);
-    /* tslint:enable */
-    function FlexOffsetDirective(monitor, elRef, _container, _directionality, styleUtils, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
-        _this._container = _container;
-        _this._directionality = _directionality;
-        /**
-         * The flex-direction of this element's host container. Defaults to 'row'.
-         */
-        _this._layout = { direction: 'row', wrap: false };
-        _this._directionWatcher =
-            _this._directionality.change.subscribe(_this._updateWithValue.bind(_this));
-        _this.watchParentFlow();
+    function FlexOffsetDirective(elRef, directionality, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal, styler) {
+        var _this = _super.call(this, elRef, styleBuilder, styler, marshal) || this;
+        _this.elRef = elRef;
+        _this.directionality = directionality;
+        _this.styleBuilder = styleBuilder;
+        _this.marshal = marshal;
+        _this.styler = styler;
+        _this.DIRECTIVE_KEY = 'flex-offset';
+        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this), [_this.directionality.change]);
+        if (_this.parentElement) {
+            _this.marshal.trackValue(_this.parentElement, 'layout-gap')
+                .pipe(operators.takeUntil(_this.destroySubject))
+                .subscribe(_this.triggerUpdate.bind(_this));
+        }
         return _this;
     }
-    Object.defineProperty(FlexOffsetDirective.prototype, "offset", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offset', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('offsetGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
     // *********************************************
-    // Lifecycle Methods
+    // Protected methods
     // *********************************************
-    /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['offset'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * Cleanup
-     */
-    /**
-     * Cleanup
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype.ngOnDestroy = /**
-     * Cleanup
-     * @return {?}
-     */
-    function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-        if (this._directionWatcher) {
-            this._directionWatcher.unsubscribe();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('offset', 0, function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-    };
-    /**
-     * If parent flow-direction changes, then update the margin property
-     * used to offset
-     */
-    /**
-     * If parent flow-direction changes, then update the margin property
-     * used to offset
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype.watchParentFlow = /**
-     * If parent flow-direction changes, then update the margin property
-     * used to offset
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        if (this._container) {
-            // Subscribe to layout immediate parent direction changes (if any)
-            this._layoutWatcher = this._container.layout$.subscribe(function (layout) {
-                // `direction` === null if parent container does not have a `fxLayout`
-                _this._onLayoutChange(layout);
-            });
-        }
-    };
-    /**
-     * Caches the parent container's 'flex-direction' and updates the element's style.
-     * Used as a handler for layout change events from the parent flex container.
-     */
-    /**
-     * Caches the parent container's 'flex-direction' and updates the element's style.
-     * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} layout
-     * @return {?}
-     */
-    FlexOffsetDirective.prototype._onLayoutChange = /**
-     * Caches the parent container's 'flex-direction' and updates the element's style.
-     * Used as a handler for layout change events from the parent flex container.
-     * @param {?=} layout
-     * @return {?}
-     */
-    function (layout) {
-        this._layout = layout || this._layout || { direction: 'row', wrap: false };
-        this._updateWithValue();
-    };
     /**
      * Using the current fxFlexOffset value, update the inline CSS
      * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
@@ -2051,7 +1188,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
      * @param {?=} value
      * @return {?}
      */
-    FlexOffsetDirective.prototype._updateWithValue = /**
+    FlexOffsetDirective.prototype.updateWithValue = /**
      * Using the current fxFlexOffset value, update the inline CSS
      * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
      *       otherwise `margin-top` is used for the offset.
@@ -2059,58 +1196,47 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (value) {
-        value = value || this._queryInput('offset') || 0;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
+        if (value === void 0) { value = ''; }
         /** @type {?} */
-        var layout = this._getFlexFlowDirection(this.parentElement, true);
+        var layout = this.getFlexFlowDirection(/** @type {?} */ ((this.parentElement)), true);
         /** @type {?} */
-        var isRtl = this._directionality.value === 'rtl';
+        var isRtl = this.directionality.value === 'rtl';
         if (layout === 'row' && isRtl) {
-            this._styleCache = flexOffsetCacheRowRtl;
+            this.styleCache = flexOffsetCacheRowRtl;
         }
         else if (layout === 'row' && !isRtl) {
-            this._styleCache = flexOffsetCacheRowLtr;
+            this.styleCache = flexOffsetCacheRowLtr;
         }
         else if (layout === 'column' && isRtl) {
-            this._styleCache = flexOffsetCacheColumnRtl;
+            this.styleCache = flexOffsetCacheColumnRtl;
         }
         else if (layout === 'column' && !isRtl) {
-            this._styleCache = flexOffsetCacheColumnLtr;
+            this.styleCache = flexOffsetCacheColumnLtr;
         }
-        this.addStyles((value && (value + '') || ''), { layout: layout, isRtl: isRtl });
+        this.addStyles(value + '', { layout: layout, isRtl: isRtl });
     };
-    FlexOffsetDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" },] },
-    ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
-        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.SkipSelf }] },
         { type: bidi.Directionality },
-        { type: core$1.StyleUtils },
-        { type: FlexOffsetStyleBuilder }
+        { type: FlexOffsetStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: core$1.MediaMarshaller },
+        { type: core$1.StyleUtils }
     ]; };
-    FlexOffsetDirective.propDecorators = {
-        offset: [{ type: core.Input, args: ['fxFlexOffset',] }],
-        offsetXs: [{ type: core.Input, args: ['fxFlexOffset.xs',] }],
-        offsetSm: [{ type: core.Input, args: ['fxFlexOffset.sm',] }],
-        offsetMd: [{ type: core.Input, args: ['fxFlexOffset.md',] }],
-        offsetLg: [{ type: core.Input, args: ['fxFlexOffset.lg',] }],
-        offsetXl: [{ type: core.Input, args: ['fxFlexOffset.xl',] }],
-        offsetLtSm: [{ type: core.Input, args: ['fxFlexOffset.lt-sm',] }],
-        offsetLtMd: [{ type: core.Input, args: ['fxFlexOffset.lt-md',] }],
-        offsetLtLg: [{ type: core.Input, args: ['fxFlexOffset.lt-lg',] }],
-        offsetLtXl: [{ type: core.Input, args: ['fxFlexOffset.lt-xl',] }],
-        offsetGtXs: [{ type: core.Input, args: ['fxFlexOffset.gt-xs',] }],
-        offsetGtSm: [{ type: core.Input, args: ['fxFlexOffset.gt-sm',] }],
-        offsetGtMd: [{ type: core.Input, args: ['fxFlexOffset.gt-md',] }],
-        offsetGtLg: [{ type: core.Input, args: ['fxFlexOffset.gt-lg',] }]
-    };
     return FlexOffsetDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
+var DefaultFlexOffsetDirective = /** @class */ (function (_super) {
+    __extends(DefaultFlexOffsetDirective, _super);
+    function DefaultFlexOffsetDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$4;
+        return _this;
+    }
+    DefaultFlexOffsetDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$4, inputs: inputs$4 },] },
+    ];
+    return DefaultFlexOffsetDirective;
+}(FlexOffsetDirective));
 /** @type {?} */
 var flexOffsetCacheRowRtl = new Map();
 /** @type {?} */
@@ -2138,6 +1264,7 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
      * @return {?}
      */
     function (input) {
+        input = input || 'stretch';
         /** @type {?} */
         var styles = {};
         // Cross-axis
@@ -2160,6 +1287,15 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
 }(core$1.StyleBuilder));
+/** @type {?} */
+var inputs$5 = [
+    'fxFlexAlign', 'fxFlexAlign.xs', 'fxFlexAlign.sm', 'fxFlexAlign.md',
+    'fxFlexAlign.lg', 'fxFlexAlign.xl', 'fxFlexAlign.lt-sm', 'fxFlexAlign.lt-md',
+    'fxFlexAlign.lt-lg', 'fxFlexAlign.lt-xl', 'fxFlexAlign.gt-xs', 'fxFlexAlign.gt-sm',
+    'fxFlexAlign.gt-md', 'fxFlexAlign.gt-lg'
+];
+/** @type {?} */
+var selector$5 = "\n  [fxFlexAlign], [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md],\n  [fxFlexAlign.lg], [fxFlexAlign.xl], [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md],\n  [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl], [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm],\n  [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n";
 /**
  * 'flex-align' flexbox styling directive
  * Allows element-specific overrides for cross-axis alignments in a layout container
@@ -2167,231 +1303,43 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
  */
 var FlexAlignDirective = /** @class */ (function (_super) {
     __extends(FlexAlignDirective, _super);
-    /* tslint:enable */
-    function FlexAlignDirective(monitor, elRef, styleUtils, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
-        _this._styleCache = flexAlignCache;
+    function FlexAlignDirective(elRef, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
+        _this.elRef = elRef;
+        _this.styleUtils = styleUtils;
+        _this.styleBuilder = styleBuilder;
+        _this.marshal = marshal;
+        _this.DIRECTIVE_KEY = 'flex-align';
+        _this.styleCache = flexAlignCache;
+        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
         return _this;
     }
-    Object.defineProperty(FlexAlignDirective.prototype, "align", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('align', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    FlexAlignDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['align'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    FlexAlignDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('align', 'stretch', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-    };
-    // *********************************************
-    // Protected methods
-    // *********************************************
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    FlexAlignDirective.prototype._updateWithValue = /**
-     * @param {?=} value
-     * @return {?}
-     */
-    function (value) {
-        value = value || this._queryInput('align') || 'stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this.addStyles(value && (value + '') || '');
-    };
-    FlexAlignDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md], [fxFlexAlign.lg], [fxFlexAlign.xl],\n  [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md], [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl],\n  [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n"
-                },] },
-    ];
     /** @nocollapse */
     FlexAlignDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: FlexAlignStyleBuilder }
+        { type: FlexAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: core$1.MediaMarshaller }
     ]; };
-    FlexAlignDirective.propDecorators = {
-        align: [{ type: core.Input, args: ['fxFlexAlign',] }],
-        alignXs: [{ type: core.Input, args: ['fxFlexAlign.xs',] }],
-        alignSm: [{ type: core.Input, args: ['fxFlexAlign.sm',] }],
-        alignMd: [{ type: core.Input, args: ['fxFlexAlign.md',] }],
-        alignLg: [{ type: core.Input, args: ['fxFlexAlign.lg',] }],
-        alignXl: [{ type: core.Input, args: ['fxFlexAlign.xl',] }],
-        alignLtSm: [{ type: core.Input, args: ['fxFlexAlign.lt-sm',] }],
-        alignLtMd: [{ type: core.Input, args: ['fxFlexAlign.lt-md',] }],
-        alignLtLg: [{ type: core.Input, args: ['fxFlexAlign.lt-lg',] }],
-        alignLtXl: [{ type: core.Input, args: ['fxFlexAlign.lt-xl',] }],
-        alignGtXs: [{ type: core.Input, args: ['fxFlexAlign.gt-xs',] }],
-        alignGtSm: [{ type: core.Input, args: ['fxFlexAlign.gt-sm',] }],
-        alignGtMd: [{ type: core.Input, args: ['fxFlexAlign.gt-md',] }],
-        alignGtLg: [{ type: core.Input, args: ['fxFlexAlign.gt-lg',] }]
-    };
     return FlexAlignDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
 /** @type {?} */
 var flexAlignCache = new Map();
+var DefaultFlexAlignDirective = /** @class */ (function (_super) {
+    __extends(DefaultFlexAlignDirective, _super);
+    function DefaultFlexAlignDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$5;
+        return _this;
+    }
+    DefaultFlexAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$5, inputs: inputs$5 },] },
+    ];
+    return DefaultFlexAlignDirective;
+}(FlexAlignDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -2435,25 +1383,28 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
  */
 var FlexFillDirective = /** @class */ (function (_super) {
     __extends(FlexFillDirective, _super);
-    function FlexFillDirective(monitor, elRef, styleUtils, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
+    function FlexFillDirective(elRef, styleUtils, styleBuilder, marshal) {
+        var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
-        _this._styleCache = flexFillCache;
+        _this.styleUtils = styleUtils;
+        _this.styleBuilder = styleBuilder;
+        _this.marshal = marshal;
+        _this.styleCache = flexFillCache;
         _this.addStyles('');
         return _this;
     }
     FlexFillDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxFill],\n  [fxFlexFill]\n" },] },
+        { type: core.Directive, args: [{ selector: "[fxFill], [fxFlexFill]" },] },
     ];
     /** @nocollapse */
     FlexFillDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: FlexFillStyleBuilder }
+        { type: FlexFillStyleBuilder },
+        { type: core$1.MediaMarshaller }
     ]; };
     return FlexFillDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
 /** @type {?} */
 var flexFillCache = new Map();
 
@@ -2551,6 +1502,15 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
     /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
 }(core$1.StyleBuilder));
+/** @type {?} */
+var inputs$6 = [
+    'fxLayoutAlign', 'fxLayoutAlign.xs', 'fxLayoutAlign.sm', 'fxLayoutAlign.md',
+    'fxLayoutAlign.lg', 'fxLayoutAlign.xl', 'fxLayoutAlign.lt-sm', 'fxLayoutAlign.lt-md',
+    'fxLayoutAlign.lt-lg', 'fxLayoutAlign.lt-xl', 'fxLayoutAlign.gt-xs', 'fxLayoutAlign.gt-sm',
+    'fxLayoutAlign.gt-md', 'fxLayoutAlign.gt-lg'
+];
+/** @type {?} */
+var selector$6 = "\n  [fxLayoutAlign], [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md],\n  [fxLayoutAlign.lg], [fxLayoutAlign.xl], [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md],\n  [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl], [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm],\n  [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n";
 /**
  * 'layout-align' flexbox styling directive
  *  Defines positioning of child elements along main and cross axis in a layout container
@@ -2562,192 +1522,23 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
  */
 var LayoutAlignDirective = /** @class */ (function (_super) {
     __extends(LayoutAlignDirective, _super);
-    /* tslint:enable */
-    function LayoutAlignDirective(monitor, elRef, container, styleUtils, styleBuilder) {
-        var _this = _super.call(this, monitor, elRef, styleUtils, styleBuilder) || this;
-        _this._layout = 'row'; // default flex-direction
-        if (container) { // Subscribe to layout direction changes
-            // Subscribe to layout direction changes
-            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
-        }
+    function LayoutAlignDirective(elRef, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
+        _this.elRef = elRef;
+        _this.styleUtils = styleUtils;
+        _this.styleBuilder = styleBuilder;
+        _this.marshal = marshal;
+        _this.DIRECTIVE_KEY = 'layout-align';
+        _this.layout = 'row';
+        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.marshal.trackValue(_this.nativeElement, 'layout')
+            .pipe(operators.takeUntil(_this.destroySubject))
+            .subscribe(_this.onLayoutChange.bind(_this));
         return _this;
     }
-    Object.defineProperty(LayoutAlignDirective.prototype, "align", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('align', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('alignLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype.ngOnChanges = /**
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (changes['align'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('align', 'start stretch', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-    };
-    /**
-     * @return {?}
-     */
-    LayoutAlignDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    };
     // *********************************************
     // Protected methods
     // *********************************************
@@ -2756,84 +1547,83 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
      */
     /**
      *
-     * @param {?=} value
+     * @param {?} value
      * @return {?}
      */
-    LayoutAlignDirective.prototype._updateWithValue = /**
+    LayoutAlignDirective.prototype.updateWithValue = /**
      *
-     * @param {?=} value
+     * @param {?} value
      * @return {?}
      */
     function (value) {
-        value = value || this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
         /** @type {?} */
-        var layout = this._layout || 'row';
-        this._styleCache = layout === 'row' ?
-            layoutAlignHorizontalCache : layoutAlignVerticalCache;
-        this.addStyles(value || '', { layout: layout });
+        var layout = this.layout || 'row';
+        if (layout === 'row') {
+            this.styleCache = layoutAlignHorizontalCache;
+        }
+        else if (layout === 'row-reverse') {
+            this.styleCache = layoutAlignHorizontalRevCache;
+        }
+        else if (layout === 'column') {
+            this.styleCache = layoutAlignVerticalCache;
+        }
+        else if (layout === 'column-reverse') {
+            this.styleCache = layoutAlignVerticalRevCache;
+        }
+        this.addStyles(value, { layout: layout });
     };
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
-     * @param {?} layout
+     * @param {?} matcher
      * @return {?}
      */
-    LayoutAlignDirective.prototype._onLayoutChange = /**
+    LayoutAlignDirective.prototype.onLayoutChange = /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
-     * @param {?} layout
+     * @param {?} matcher
      * @return {?}
      */
-    function (layout) {
+    function (matcher) {
         var _this = this;
-        this._layout = (layout.direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
-            this._layout = 'row';
-        }
         /** @type {?} */
-        var value = this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
+        var layout = matcher.value;
+        this.layout = layout.split(' ')[0];
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this.layout; })) {
+            this.layout = 'row';
         }
-        this.addStyles(value, { layout: this._layout || 'row' });
+        this.triggerUpdate();
     };
-    LayoutAlignDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" },] },
-    ];
     /** @nocollapse */
     LayoutAlignDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
         { type: core.ElementRef },
-        { type: LayoutDirective, decorators: [{ type: core.Optional }, { type: core.Self }] },
         { type: core$1.StyleUtils },
-        { type: LayoutAlignStyleBuilder }
+        { type: LayoutAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: core$1.MediaMarshaller }
     ]; };
-    LayoutAlignDirective.propDecorators = {
-        align: [{ type: core.Input, args: ['fxLayoutAlign',] }],
-        alignXs: [{ type: core.Input, args: ['fxLayoutAlign.xs',] }],
-        alignSm: [{ type: core.Input, args: ['fxLayoutAlign.sm',] }],
-        alignMd: [{ type: core.Input, args: ['fxLayoutAlign.md',] }],
-        alignLg: [{ type: core.Input, args: ['fxLayoutAlign.lg',] }],
-        alignXl: [{ type: core.Input, args: ['fxLayoutAlign.xl',] }],
-        alignGtXs: [{ type: core.Input, args: ['fxLayoutAlign.gt-xs',] }],
-        alignGtSm: [{ type: core.Input, args: ['fxLayoutAlign.gt-sm',] }],
-        alignGtMd: [{ type: core.Input, args: ['fxLayoutAlign.gt-md',] }],
-        alignGtLg: [{ type: core.Input, args: ['fxLayoutAlign.gt-lg',] }],
-        alignLtSm: [{ type: core.Input, args: ['fxLayoutAlign.lt-sm',] }],
-        alignLtMd: [{ type: core.Input, args: ['fxLayoutAlign.lt-md',] }],
-        alignLtLg: [{ type: core.Input, args: ['fxLayoutAlign.lt-lg',] }],
-        alignLtXl: [{ type: core.Input, args: ['fxLayoutAlign.lt-xl',] }]
-    };
     return LayoutAlignDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
+var DefaultLayoutAlignDirective = /** @class */ (function (_super) {
+    __extends(DefaultLayoutAlignDirective, _super);
+    function DefaultLayoutAlignDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$6;
+        return _this;
+    }
+    DefaultLayoutAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$6, inputs: inputs$6 },] },
+    ];
+    return DefaultLayoutAlignDirective;
+}(LayoutAlignDirective));
 /** @type {?} */
 var layoutAlignHorizontalCache = new Map();
 /** @type {?} */
 var layoutAlignVerticalCache = new Map();
+/** @type {?} */
+var layoutAlignHorizontalRevCache = new Map();
+/** @type {?} */
+var layoutAlignVerticalRevCache = new Map();
 
 /**
  * @fileoverview added by tsickle
@@ -2841,14 +1631,14 @@ var layoutAlignVerticalCache = new Map();
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
-    LayoutDirective,
-    LayoutGapDirective,
-    LayoutAlignDirective,
-    FlexDirective,
-    FlexOrderDirective,
-    FlexOffsetDirective,
+    DefaultLayoutDirective,
+    DefaultLayoutGapDirective,
+    DefaultLayoutAlignDirective,
+    DefaultFlexOrderDirective,
+    DefaultFlexOffsetDirective,
     FlexFillDirective,
-    FlexAlignDirective,
+    DefaultFlexAlignDirective,
+    DefaultFlexDirective,
 ];
 /**
  * *****************************************************************
@@ -2871,20 +1661,27 @@ var FlexModule = /** @class */ (function () {
 exports.FlexModule = FlexModule;
 exports.FlexStyleBuilder = FlexStyleBuilder;
 exports.FlexDirective = FlexDirective;
+exports.DefaultFlexDirective = DefaultFlexDirective;
 exports.FlexAlignStyleBuilder = FlexAlignStyleBuilder;
 exports.FlexAlignDirective = FlexAlignDirective;
+exports.DefaultFlexAlignDirective = DefaultFlexAlignDirective;
 exports.FlexFillStyleBuilder = FlexFillStyleBuilder;
 exports.FlexFillDirective = FlexFillDirective;
 exports.FlexOffsetStyleBuilder = FlexOffsetStyleBuilder;
 exports.FlexOffsetDirective = FlexOffsetDirective;
+exports.DefaultFlexOffsetDirective = DefaultFlexOffsetDirective;
 exports.FlexOrderStyleBuilder = FlexOrderStyleBuilder;
 exports.FlexOrderDirective = FlexOrderDirective;
+exports.DefaultFlexOrderDirective = DefaultFlexOrderDirective;
 exports.LayoutStyleBuilder = LayoutStyleBuilder;
 exports.LayoutDirective = LayoutDirective;
+exports.DefaultLayoutDirective = DefaultLayoutDirective;
 exports.LayoutAlignStyleBuilder = LayoutAlignStyleBuilder;
 exports.LayoutAlignDirective = LayoutAlignDirective;
+exports.DefaultLayoutAlignDirective = DefaultLayoutAlignDirective;
 exports.LayoutGapStyleBuilder = LayoutGapStyleBuilder;
 exports.LayoutGapDirective = LayoutGapDirective;
+exports.DefaultLayoutGapDirective = DefaultLayoutGapDirective;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

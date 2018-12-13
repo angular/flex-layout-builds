@@ -17,3 +17,5 @@ export declare function validateSuffixes(list: BreakPoint[]): BreakPoint[];
  *  - Items are merged with the custom override if the alias exists in the default list
  */
 export declare function mergeByAlias(defaults: BreakPoint[], custom?: BreakPoint[]): BreakPoint[];
+/** HOF to sort the breakpoints by priority */
+export declare function prioritySort(a: BreakPoint, b: BreakPoint): number;
