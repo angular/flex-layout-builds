@@ -78,5 +78,6 @@ export declare class MediaMarshaller {
      * @param bpMap
      */
     private getFallback;
+    private registerBreakpoints;
 }
 export {};

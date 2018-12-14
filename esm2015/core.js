@@ -1911,31 +1911,31 @@ class MockMatchMedia extends MatchMedia {
             // Simulate activation of overlapping lt-<XXX> ranges
             switch (alias) {
                 case 'lg':
-                    this._activateByAlias('lt-xl', true);
+                    this._activateByAlias('lt-xl');
                     break;
                 case 'md':
-                    this._activateByAlias('lt-xl, lt-lg', true);
+                    this._activateByAlias('lt-xl, lt-lg');
                     break;
                 case 'sm':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md', true);
+                    this._activateByAlias('lt-xl, lt-lg, lt-md');
                     break;
                 case 'xs':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm', true);
+                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
             // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
-                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
                     break;
                 case 'lg':
-                    this._activateByAlias('gt-md, gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-md, gt-sm, gt-xs');
                     break;
                 case 'md':
-                    this._activateByAlias('gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-sm, gt-xs');
                     break;
                 case 'sm':
-                    this._activateByAlias('gt-xs', true);
+                    this._activateByAlias('gt-xs');
                     break;
             }
         }
@@ -1945,28 +1945,23 @@ class MockMatchMedia extends MatchMedia {
     /**
      *
      * @param {?} aliases
-     * @param {?=} useOverlaps
      * @return {?}
      */
-    _activateByAlias(aliases, useOverlaps = false) {
+    _activateByAlias(aliases) {
         /** @type {?} */
         const activate = (alias) => {
             /** @type {?} */
             const bp = this._breakpoints.findByAlias(alias);
-            this._activateByQuery(bp ? bp.mediaQuery : alias, useOverlaps);
+            this._activateByQuery(bp ? bp.mediaQuery : alias);
         };
         aliases.split(',').forEach(alias => activate(alias.trim()));
     }
     /**
      *
      * @param {?} mediaQuery
-     * @param {?=} useOverlaps
      * @return {?}
      */
-    _activateByQuery(mediaQuery, useOverlaps = false) {
-        if (useOverlaps) {
-            this._registerMediaQuery(mediaQuery);
-        }
+    _activateByQuery(mediaQuery) {
         /** @type {?} */
         const mql = this._registry.get(mediaQuery);
         /** @type {?} */
@@ -2980,6 +2975,7 @@ class MediaMarshaller {
         this.watcherMap = new WeakMap();
         this.builderMap = new WeakMap();
         this.subject = new Subject();
+        this.registerBreakpoints();
         this.matchMedia.observe().subscribe(this.activate.bind(this));
     }
     /**
@@ -3190,6 +3186,14 @@ class MediaMarshaller {
             }
         }
         return bpMap.get('');
+    }
+    /**
+     * @return {?}
+     */
+    registerBreakpoints() {
+        /** @type {?} */
+        const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
+        this.matchMedia.registerQuery(queries);
     }
 }
 MediaMarshaller.decorators = [
