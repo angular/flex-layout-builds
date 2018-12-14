@@ -1742,6 +1742,7 @@ class BaseDirective2 {
     ngOnDestroy() {
         this.destroySubject.next();
         this.destroySubject.complete();
+        this.marshal.releaseElement(this.nativeElement);
     }
     /**
      * Add styles to the element using predefined style builder
@@ -3147,9 +3148,16 @@ class MediaMarshaller {
         }
     }
     /**
+     * release all references to a given element
+     * @param {?} element
      * @return {?}
      */
-    destroy() {
+    releaseElement(element) {
+        /** @type {?} */
+        const watcherMap = this.watcherMap.get(element);
+        if (watcherMap) {
+            watcherMap.forEach(s => s.unsubscribe());
+        }
     }
     /**
      * Breakpoint locator by mediaQuery

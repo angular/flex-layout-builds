@@ -7,7 +7,7 @@
  */
 import { ElementRef, OnDestroy, NgZone, AfterContentInit } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, SubjectMatcher } from '@angular/flex-layout/core';
+import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
 import { Subject } from 'rxjs';
 export interface LayoutGapParent {
     directionality: string;
@@ -42,7 +42,7 @@ export declare class LayoutGapDirective extends BaseDirective2 implements AfterC
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
      */
-    protected onLayoutChange(matcher: SubjectMatcher): void;
+    protected onLayoutChange(matcher: ElementMatcher): void;
     /**
      *
      */

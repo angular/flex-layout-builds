@@ -2346,6 +2346,7 @@ BaseDirective2 = /** @class */ (function () {
     function () {
         this.destroySubject.next();
         this.destroySubject.complete();
+        this.marshal.releaseElement(this.nativeElement);
     };
     /** Add styles to the element using predefined style builder */
     /**
@@ -4271,12 +4272,25 @@ var MediaMarshaller = /** @class */ (function () {
         }
     };
     /**
+     * release all references to a given element
+     * @param element
+     */
+    /**
+     * release all references to a given element
+     * @param {?} element
      * @return {?}
      */
-    MediaMarshaller.prototype.destroy = /**
+    MediaMarshaller.prototype.releaseElement = /**
+     * release all references to a given element
+     * @param {?} element
      * @return {?}
      */
-    function () {
+    function (element) {
+        /** @type {?} */
+        var watcherMap = this.watcherMap.get(element);
+        if (watcherMap) {
+            watcherMap.forEach(function (s) { return s.unsubscribe(); });
+        }
     };
     /**
      * Breakpoint locator by mediaQuery

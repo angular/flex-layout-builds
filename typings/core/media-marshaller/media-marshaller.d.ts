@@ -3,7 +3,7 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
 declare type Builder = Function;
-export interface SubjectMatcher {
+export interface ElementMatcher {
     element: HTMLElement;
     key: string;
     value: any;
@@ -56,7 +56,7 @@ export declare class MediaMarshaller {
      * @param val the value for the breakpoint
      */
     setValue(element: HTMLElement, key: string, val: any, bp: string): void;
-    trackValue(element: HTMLElement, key: string): Observable<SubjectMatcher>;
+    trackValue(element: HTMLElement, key: string): Observable<ElementMatcher>;
     /** update all styles for all elements on the current breakpoint */
     updateStyles(): void;
     /**
@@ -66,7 +66,11 @@ export declare class MediaMarshaller {
      * @param value
      */
     updateElement(element: HTMLElement, key: string, value: any): void;
-    destroy(): void;
+    /**
+     * release all references to a given element
+     * @param element
+     */
+    releaseElement(element: HTMLElement): void;
     /** Breakpoint locator by mediaQuery */
     private findByQuery;
     /**

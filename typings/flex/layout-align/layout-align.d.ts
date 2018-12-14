@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef } from '@angular/core';
-import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, SubjectMatcher } from '@angular/flex-layout/core';
+import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
 export interface LayoutAlignParent {
     layout: string;
 }
@@ -37,7 +37,7 @@ export declare class LayoutAlignDirective extends BaseDirective2 {
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
-    protected onLayoutChange(matcher: SubjectMatcher): void;
+    protected onLayoutChange(matcher: ElementMatcher): void;
 }
 export declare class DefaultLayoutAlignDirective extends LayoutAlignDirective {
     protected inputs: string[];

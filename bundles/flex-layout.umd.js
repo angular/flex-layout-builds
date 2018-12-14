@@ -18,7 +18,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.19-6f36888');
+var VERSION = new core.Version('7.0.0-beta.19-092aa75');
 
 /**
  * @fileoverview added by tsickle

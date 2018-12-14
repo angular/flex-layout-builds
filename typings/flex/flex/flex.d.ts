@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef } from '@angular/core';
-import { BaseDirective2, LayoutConfigOptions, StyleUtils, StyleBuilder, StyleDefinition, MediaMarshaller, SubjectMatcher } from '@angular/flex-layout/core';
+import { BaseDirective2, LayoutConfigOptions, StyleUtils, StyleBuilder, StyleDefinition, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
 interface FlexBuilderParent {
     direction: string;
     hasWrap: boolean;
@@ -40,7 +40,7 @@ export declare class FlexDirective extends BaseDirective2 {
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      */
-    protected onLayoutChange(matcher: SubjectMatcher): void;
+    protected onLayoutChange(matcher: ElementMatcher): void;
     /** Input to this is exclusively the basis input value */
     protected updateStyle(value: string): void;
     /** Trigger a style reflow, usually based on a shrink/grow input event */
