@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, NgModule } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleUtils, CoreModule } from '@angular/flex-layout/core';
+import { Directive, ElementRef, Injectable, Optional, NgModule, Input, defineInjectable } from '@angular/core';
+import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleUtils, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
@@ -14,11 +14,66 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY = 'align';
-/** @type {?} */
 const ROW_DEFAULT = 'stretch';
 /** @type {?} */
 const COL_DEFAULT = 'stretch';
+class GridAlignStyleBuilder extends StyleBuilder {
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    buildStyles(input) {
+        return buildCss(input || ROW_DEFAULT);
+    }
+}
+GridAlignStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+class GridAlignDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-align';
+        this.styleCache = alignCache;
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+    }
+}
+/** @nocollapse */
+GridAlignDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridAlignStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+/** @type {?} */
+const alignCache = new Map();
+/** @type {?} */
+const inputs = [
+    'gdGridAlign',
+    'gdGridAlign.xs', 'gdGridAlign.sm', 'gdGridAlign.md', 'gdGridAlign.lg', 'gdGridAlign.xl',
+    'gdGridAlign.lt-sm', 'gdGridAlign.lt-md', 'gdGridAlign.lt-lg', 'gdGridAlign.lt-xl',
+    'gdGridAlign.gt-xs', 'gdGridAlign.gt-sm', 'gdGridAlign.gt-md', 'gdGridAlign.gt-lg'
+];
+/** @type {?} */
+const selector = `
+  [gdGridAlign],
+  [gdGridAlign.xs], [gdGridAlign.sm], [gdGridAlign.md], [gdGridAlign.lg],[gdGridAlign.xl],
+  [gdGridAlign.lt-sm], [gdGridAlign.lt-md], [gdGridAlign.lt-lg], [gdGridAlign.lt-xl],
+  [gdGridAlign.gt-xs], [gdGridAlign.gt-sm], [gdGridAlign.gt-md], [gdGridAlign.gt-lg]
+`;
 /**
  * 'align' CSS Grid styling directive for grid children
  *  Defines positioning of child elements along row and column axis in a grid container
@@ -27,2189 +82,1171 @@ const COL_DEFAULT = 'stretch';
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-justify-self
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-align-self
  */
-class GridAlignDirective extends BaseDirective {
-    /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set align(val) { this._cacheInput(`${CACHE_KEY}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY}LtXl`, val); }
-    ;
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY, ROW_DEFAULT, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     *
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY) || ROW_DEFAULT;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} align
-     * @return {?}
-     */
-    _buildCSS(align = '') {
-        /** @type {?} */
-        let css = {};
-        let [rowAxis, columnAxis] = align.split(' ');
-        // Row axis
-        switch (rowAxis) {
-            case 'end':
-                css['justify-self'] = 'end';
-                break;
-            case 'center':
-                css['justify-self'] = 'center';
-                break;
-            case 'stretch':
-                css['justify-self'] = 'stretch';
-                break;
-            case 'start':
-                css['justify-self'] = 'start';
-                break;
-            default:
-                css['justify-self'] = ROW_DEFAULT; // default row axis
-                break;
-        }
-        // Column axis
-        switch (columnAxis) {
-            case 'end':
-                css['align-self'] = 'end';
-                break;
-            case 'center':
-                css['align-self'] = 'center';
-                break;
-            case 'stretch':
-                css['align-self'] = 'stretch';
-                break;
-            case 'start':
-                css['align-self'] = 'start';
-                break;
-            default:
-                css['align-self'] = COL_DEFAULT; // default column axis
-                break;
-        }
-        return css;
+class DefaultGridAlignDirective extends GridAlignDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs;
     }
 }
-GridAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [gdGridAlign],
-  [gdGridAlign.xs], [gdGridAlign.sm], [gdGridAlign.md], [gdGridAlign.lg],[gdGridAlign.xl],
-  [gdGridAlign.lt-sm], [gdGridAlign.lt-md], [gdGridAlign.lt-lg], [gdGridAlign.lt-xl],
-  [gdGridAlign.gt-xs], [gdGridAlign.gt-sm], [gdGridAlign.gt-md], [gdGridAlign.gt-lg]
-` },] },
+DefaultGridAlignDirective.decorators = [
+    { type: Directive, args: [{ selector, inputs },] },
 ];
-/** @nocollapse */
-GridAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridAlignDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdGridAlign',] }],
-    alignXs: [{ type: Input, args: ['gdGridAlign.xs',] }],
-    alignSm: [{ type: Input, args: ['gdGridAlign.sm',] }],
-    alignMd: [{ type: Input, args: ['gdGridAlign.md',] }],
-    alignLg: [{ type: Input, args: ['gdGridAlign.lg',] }],
-    alignXl: [{ type: Input, args: ['gdGridAlign.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdGridAlign.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdGridAlign.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdGridAlign.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdGridAlign.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdGridAlign.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdGridAlign.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdGridAlign.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdGridAlign.lt-xl',] }]
-};
-
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Extends an object with the *enumerable* and *own* properties of one or more source objects,
- * similar to Object.assign.
- *
- * @param {?} dest The object which will have properties copied to it.
- * @param {...?} sources The source objects from which properties will be copied.
+ * @param {?=} align
  * @return {?}
  */
-function extendObject(dest, ...sources) {
-    if (dest == null) {
-        throw TypeError('Cannot convert undefined or null to object');
+function buildCss(align = '') {
+    /** @type {?} */
+    const css = {};
+    const [rowAxis, columnAxis] = align.split(' ');
+    // Row axis
+    switch (rowAxis) {
+        case 'end':
+            css['justify-self'] = 'end';
+            break;
+        case 'center':
+            css['justify-self'] = 'center';
+            break;
+        case 'stretch':
+            css['justify-self'] = 'stretch';
+            break;
+        case 'start':
+            css['justify-self'] = 'start';
+            break;
+        default:
+            css['justify-self'] = ROW_DEFAULT; // default row axis
+            break;
     }
-    for (let source of sources) {
-        if (source != null) {
-            for (let key in source) {
-                if (source.hasOwnProperty(key)) {
-                    dest[key] = source[key];
-                }
-            }
-        }
+    // Column axis
+    switch (columnAxis) {
+        case 'end':
+            css['align-self'] = 'end';
+            break;
+        case 'center':
+            css['align-self'] = 'center';
+            break;
+        case 'stretch':
+            css['align-self'] = 'stretch';
+            break;
+        case 'start':
+            css['align-self'] = 'start';
+            break;
+        default:
+            css['align-self'] = COL_DEFAULT; // default column axis
+            break;
     }
-    return dest;
+    return css;
 }
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/** @type {?} */
-const CACHE_KEY$1 = 'alignColumns';
 /** @type {?} */
 const DEFAULT_MAIN = 'start';
 /** @type {?} */
 const DEFAULT_CROSS = 'stretch';
-/**
- * 'column alignment' CSS Grid styling directive
- * Configures the alignment in the column direction
- * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-19
- * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-21
- */
-class GridAlignColumnsDirective extends BaseDirective {
+class GridAlignColumnsStyleBuilder extends StyleBuilder {
     /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
+     * @param {?} input
+     * @param {?} parent
      * @return {?}
      */
-    set align(val) { this._cacheInput(`${CACHE_KEY$1}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$1}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$1}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$1}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$1}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$1}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$1}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$1}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$1}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$1}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$1}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$1}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$1}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$1}LtXl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$1] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$1, `${DEFAULT_MAIN} ${DEFAULT_CROSS}`, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$1) || `${DEFAULT_MAIN} ${DEFAULT_CROSS}`;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} align
-     * @return {?}
-     */
-    _buildCSS(align = '') {
-        /** @type {?} */
-        let css = {};
-        let [mainAxis, crossAxis] = align.split(' ');
-        // Main axis
-        switch (mainAxis) {
-            case 'center':
-                css['align-content'] = 'center';
-                break;
-            case 'space-around':
-                css['align-content'] = 'space-around';
-                break;
-            case 'space-between':
-                css['align-content'] = 'space-between';
-                break;
-            case 'space-evenly':
-                css['align-content'] = 'space-evenly';
-                break;
-            case 'end':
-                css['align-content'] = 'end';
-                break;
-            case 'start':
-                css['align-content'] = 'start';
-                break;
-            case 'stretch':
-                css['align-content'] = 'stretch';
-                break;
-            default:
-                css['align-content'] = DEFAULT_MAIN; // default main axis
-                break;
-        }
-        // Cross-axis
-        switch (crossAxis) {
-            case 'start':
-                css['align-items'] = 'start';
-                break;
-            case 'center':
-                css['align-items'] = 'center';
-                break;
-            case 'end':
-                css['align-items'] = 'end';
-                break;
-            case 'stretch':
-                css['align-items'] = 'stretch';
-                break;
-            default: // 'stretch'
-                // 'stretch'
-                css['align-items'] = DEFAULT_CROSS; // default cross axis
-                break;
-        }
-        return extendObject(css, { 'display': this._queryInput('inline') ? 'inline-grid' : 'grid' });
+    buildStyles(input, parent) {
+        return buildCss$1(input || `${DEFAULT_MAIN} ${DEFAULT_CROSS}`, parent.inline);
     }
 }
-GridAlignColumnsDirective.decorators = [
-    { type: Directive, args: [{ selector: `
+GridAlignColumnsStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+class GridAlignColumnsDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-align-columns';
+        this._inline = false;
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    }
+    /**
+     * @return {?}
+     */
+    get inline() { return this._inline; }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    set inline(val) { this._inline = coerceBooleanProperty(val); }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    updateWithValue(value) {
+        this.styleCache = this.inline ? alignColumnsInlineCache : alignColumnsCache;
+        this.addStyles(value, { inline: this.inline });
+    }
+}
+/** @nocollapse */
+GridAlignColumnsDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridAlignColumnsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+GridAlignColumnsDirective.propDecorators = {
+    inline: [{ type: Input, args: ['gdInline',] }]
+};
+/** @type {?} */
+const alignColumnsCache = new Map();
+/** @type {?} */
+const alignColumnsInlineCache = new Map();
+/** @type {?} */
+const inputs$1 = [
+    'gdAlignColumns',
+    'gdAlignColumns.xs', 'gdAlignColumns.sm', 'gdAlignColumns.md',
+    'gdAlignColumns.lg', 'gdAlignColumns.xl', 'gdAlignColumns.lt-sm',
+    'gdAlignColumns.lt-md', 'gdAlignColumns.lt-lg', 'gdAlignColumns.lt-xl',
+    'gdAlignColumns.gt-xs', 'gdAlignColumns.gt-sm', 'gdAlignColumns.gt-md',
+    'gdAlignColumns.gt-lg'
+];
+/** @type {?} */
+const selector$1 = `
   [gdAlignColumns],
   [gdAlignColumns.xs], [gdAlignColumns.sm], [gdAlignColumns.md],
   [gdAlignColumns.lg], [gdAlignColumns.xl], [gdAlignColumns.lt-sm],
   [gdAlignColumns.lt-md], [gdAlignColumns.lt-lg], [gdAlignColumns.lt-xl],
   [gdAlignColumns.gt-xs], [gdAlignColumns.gt-sm], [gdAlignColumns.gt-md],
   [gdAlignColumns.gt-lg]
-` },] },
+`;
+/**
+ * 'column alignment' CSS Grid styling directive
+ * Configures the alignment in the column direction
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-19
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-21
+ */
+class DefaultGridAlignColumnsDirective extends GridAlignColumnsDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$1;
+    }
+}
+DefaultGridAlignColumnsDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
 ];
-/** @nocollapse */
-GridAlignColumnsDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridAlignColumnsDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdAlignColumns',] }],
-    alignXs: [{ type: Input, args: ['gdAlignColumns.xs',] }],
-    alignSm: [{ type: Input, args: ['gdAlignColumns.sm',] }],
-    alignMd: [{ type: Input, args: ['gdAlignColumns.md',] }],
-    alignLg: [{ type: Input, args: ['gdAlignColumns.lg',] }],
-    alignXl: [{ type: Input, args: ['gdAlignColumns.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdAlignColumns.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdAlignColumns.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdAlignColumns.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdAlignColumns.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdAlignColumns.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdAlignColumns.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdAlignColumns.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdAlignColumns.lt-xl',] }],
-    inline: [{ type: Input, args: ['gdInline',] }]
-};
+/**
+ * @param {?} align
+ * @param {?} inline
+ * @return {?}
+ */
+function buildCss$1(align, inline) {
+    /** @type {?} */
+    const css = {};
+    const [mainAxis, crossAxis] = align.split(' ');
+    // Main axis
+    switch (mainAxis) {
+        case 'center':
+            css['align-content'] = 'center';
+            break;
+        case 'space-around':
+            css['align-content'] = 'space-around';
+            break;
+        case 'space-between':
+            css['align-content'] = 'space-between';
+            break;
+        case 'space-evenly':
+            css['align-content'] = 'space-evenly';
+            break;
+        case 'end':
+            css['align-content'] = 'end';
+            break;
+        case 'start':
+            css['align-content'] = 'start';
+            break;
+        case 'stretch':
+            css['align-content'] = 'stretch';
+            break;
+        default:
+            css['align-content'] = DEFAULT_MAIN; // default main axis
+            break;
+    }
+    // Cross-axis
+    switch (crossAxis) {
+        case 'start':
+            css['align-items'] = 'start';
+            break;
+        case 'center':
+            css['align-items'] = 'center';
+            break;
+        case 'end':
+            css['align-items'] = 'end';
+            break;
+        case 'stretch':
+            css['align-items'] = 'stretch';
+            break;
+        default: // 'stretch'
+            // 'stretch'
+            css['align-items'] = DEFAULT_CROSS; // default cross axis
+            break;
+    }
+    css['display'] = inline ? 'inline-grid' : 'grid';
+    return css;
+}
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$2 = 'alignRows';
-/** @type {?} */
 const DEFAULT_MAIN$1 = 'start';
 /** @type {?} */
 const DEFAULT_CROSS$1 = 'stretch';
-/**
- * 'row alignment' CSS Grid styling directive
- * Configures the alignment in the row direction
- * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-18
- * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-20
- */
-class GridAlignRowsDirective extends BaseDirective {
+class GridAlignRowsStyleBuilder extends StyleBuilder {
     /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
+     * @param {?} input
+     * @param {?} parent
      * @return {?}
      */
-    set align(val) { this._cacheInput(`${CACHE_KEY$2}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$2}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$2}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$2}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$2}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$2}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$2}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$2}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$2}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$2}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$2}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$2}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$2}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$2}LtXl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$2] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$2, `${DEFAULT_MAIN$1} ${DEFAULT_CROSS$1}`, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$2) || `${DEFAULT_MAIN$1} ${DEFAULT_CROSS$1}`;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} align
-     * @return {?}
-     */
-    _buildCSS(align = '') {
-        /** @type {?} */
-        let css = {};
-        let [mainAxis, crossAxis] = align.split(' ');
-        // Main axis
-        switch (mainAxis) {
-            case 'center':
-            case 'space-around':
-            case 'space-between':
-            case 'space-evenly':
-            case 'end':
-            case 'start':
-            case 'stretch':
-                css['justify-content'] = mainAxis;
-                break;
-            default:
-                css['justify-content'] = DEFAULT_MAIN$1; // default main axis
-                break;
-        }
-        // Cross-axis
-        switch (crossAxis) {
-            case 'start':
-            case 'center':
-            case 'end':
-            case 'stretch':
-                css['justify-items'] = crossAxis;
-                break;
-            default: // 'stretch'
-                // 'stretch'
-                css['justify-items'] = DEFAULT_CROSS$1; // default cross axis
-                break;
-        }
-        return extendObject(css, { 'display': this._queryInput('inline') ? 'inline-grid' : 'grid' });
+    buildStyles(input, parent) {
+        return buildCss$2(input || `${DEFAULT_MAIN$1} ${DEFAULT_CROSS$1}`, parent.inline);
     }
 }
-GridAlignRowsDirective.decorators = [
-    { type: Directive, args: [{ selector: `
+GridAlignRowsStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+class GridAlignRowsDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-align-rows';
+        this._inline = false;
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    }
+    /**
+     * @return {?}
+     */
+    get inline() { return this._inline; }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    set inline(val) { this._inline = coerceBooleanProperty(val); }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    updateWithValue(value) {
+        this.styleCache = this.inline ? alignRowsInlineCache : alignRowsCache;
+        this.addStyles(value, { inline: this.inline });
+    }
+}
+/** @nocollapse */
+GridAlignRowsDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridAlignRowsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+GridAlignRowsDirective.propDecorators = {
+    inline: [{ type: Input, args: ['gdInline',] }]
+};
+/** @type {?} */
+const alignRowsCache = new Map();
+/** @type {?} */
+const alignRowsInlineCache = new Map();
+/** @type {?} */
+const inputs$2 = [
+    'gdAlignRows',
+    'gdAlignRows.xs', 'gdAlignRows.sm', 'gdAlignRows.md',
+    'gdAlignRows.lg', 'gdAlignRows.xl', 'gdAlignRows.lt-sm',
+    'gdAlignRows.lt-md', 'gdAlignRows.lt-lg', 'gdAlignRows.lt-xl',
+    'gdAlignRows.gt-xs', 'gdAlignRows.gt-sm', 'gdAlignRows.gt-md',
+    'gdAlignRows.gt-lg'
+];
+/** @type {?} */
+const selector$2 = `
   [gdAlignRows],
   [gdAlignRows.xs], [gdAlignRows.sm], [gdAlignRows.md],
   [gdAlignRows.lg], [gdAlignRows.xl], [gdAlignRows.lt-sm],
   [gdAlignRows.lt-md], [gdAlignRows.lt-lg], [gdAlignRows.lt-xl],
   [gdAlignRows.gt-xs], [gdAlignRows.gt-sm], [gdAlignRows.gt-md],
   [gdAlignRows.gt-lg]
-` },] },
+`;
+/**
+ * 'row alignment' CSS Grid styling directive
+ * Configures the alignment in the row direction
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-18
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-20
+ */
+class DefaultGridAlignRowsDirective extends GridAlignRowsDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$2;
+    }
+}
+DefaultGridAlignRowsDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$2, inputs: inputs$2 },] },
 ];
-/** @nocollapse */
-GridAlignRowsDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridAlignRowsDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdAlignRows',] }],
-    alignXs: [{ type: Input, args: ['gdAlignRows.xs',] }],
-    alignSm: [{ type: Input, args: ['gdAlignRows.sm',] }],
-    alignMd: [{ type: Input, args: ['gdAlignRows.md',] }],
-    alignLg: [{ type: Input, args: ['gdAlignRows.lg',] }],
-    alignXl: [{ type: Input, args: ['gdAlignRows.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdAlignRows.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdAlignRows.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdAlignRows.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdAlignRows.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdAlignRows.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdAlignRows.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdAlignRows.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdAlignRows.lt-xl',] }],
-    inline: [{ type: Input, args: ['gdInline',] }]
-};
+/**
+ * @param {?} align
+ * @param {?} inline
+ * @return {?}
+ */
+function buildCss$2(align, inline) {
+    /** @type {?} */
+    const css = {};
+    const [mainAxis, crossAxis] = align.split(' ');
+    // Main axis
+    switch (mainAxis) {
+        case 'center':
+        case 'space-around':
+        case 'space-between':
+        case 'space-evenly':
+        case 'end':
+        case 'start':
+        case 'stretch':
+            css['justify-content'] = mainAxis;
+            break;
+        default:
+            css['justify-content'] = DEFAULT_MAIN$1; // default main axis
+            break;
+    }
+    // Cross-axis
+    switch (crossAxis) {
+        case 'start':
+        case 'center':
+        case 'end':
+        case 'stretch':
+            css['justify-items'] = crossAxis;
+            break;
+        default: // 'stretch'
+            // 'stretch'
+            css['justify-items'] = DEFAULT_CROSS$1; // default cross axis
+            break;
+    }
+    css['display'] = inline ? 'inline-grid' : 'grid';
+    return css;
+}
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$3 = 'area';
-/** @type {?} */
 const DEFAULT_VALUE = 'auto';
+class GridAreaStyleBuilder extends StyleBuilder {
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    buildStyles(input) {
+        return { 'grid-area': input || DEFAULT_VALUE };
+    }
+}
+GridAreaStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+class GridAreaDirective extends BaseDirective2 {
+    /**
+     * @param {?} elRef
+     * @param {?} styleUtils
+     * @param {?} styleBuilder
+     * @param {?} marshal
+     */
+    constructor(elRef, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        super(elRef, styleBuilder, styleUtils, marshal);
+        this.elRef = elRef;
+        this.styleUtils = styleUtils;
+        this.styleBuilder = styleBuilder;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-area';
+        this.styleCache = gridAreaCache;
+        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+    }
+}
+/** @nocollapse */
+GridAreaDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: StyleUtils },
+    { type: GridAreaStyleBuilder, decorators: [{ type: Optional }] },
+    { type: MediaMarshaller }
+];
+/** @type {?} */
+const gridAreaCache = new Map();
+/** @type {?} */
+const inputs$3 = [
+    'gdArea',
+    'gdArea.xs', 'gdArea.sm', 'gdArea.md', 'gdArea.lg', 'gdArea.xl',
+    'gdArea.lt-sm', 'gdArea.lt-md', 'gdArea.lt-lg', 'gdArea.lt-xl',
+    'gdArea.gt-xs', 'gdArea.gt-sm', 'gdArea.gt-md', 'gdArea.gt-lg'
+];
+/** @type {?} */
+const selector$3 = `
+  [gdArea],
+  [gdArea.xs], [gdArea.sm], [gdArea.md], [gdArea.lg], [gdArea.xl],
+  [gdArea.lt-sm], [gdArea.lt-md], [gdArea.lt-lg], [gdArea.lt-xl],
+  [gdArea.gt-xs], [gdArea.gt-sm], [gdArea.gt-md], [gdArea.gt-lg]
+`;
 /**
  * 'grid-area' CSS Grid styling directive
  * Configures the name or position of an element within the grid
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-27
  */
-class GridAreaDirective extends BaseDirective {
-    /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set align(val) { this._cacheInput(`${CACHE_KEY$3}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$3}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$3}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$3}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$3}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$3}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$3}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$3}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$3}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$3}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$3}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$3}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$3}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$3}LtXl`, val); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$3] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$3, DEFAULT_VALUE, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$3) || DEFAULT_VALUE;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
-        return { 'grid-area': value };
+class DefaultGridAreaDirective extends GridAreaDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$3;
     }
 }
-GridAreaDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [gdArea],
-  [gdArea.xs], [gdArea.sm], [gdArea.md], [gdArea.lg], [gdArea.xl],
-  [gdArea.lt-sm], [gdArea.lt-md], [gdArea.lt-lg], [gdArea.lt-xl],
-  [gdArea.gt-xs], [gdArea.gt-sm], [gdArea.gt-md], [gdArea.gt-lg]
-` },] },
+DefaultGridAreaDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
 ];
-/** @nocollapse */
-GridAreaDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridAreaDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdArea',] }],
-    alignXs: [{ type: Input, args: ['gdArea.xs',] }],
-    alignSm: [{ type: Input, args: ['gdArea.sm',] }],
-    alignMd: [{ type: Input, args: ['gdArea.md',] }],
-    alignLg: [{ type: Input, args: ['gdArea.lg',] }],
-    alignXl: [{ type: Input, args: ['gdArea.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdArea.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdArea.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdArea.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdArea.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdArea.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdArea.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdArea.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdArea.lt-xl',] }]
-};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$4 = 'areas';
-/** @type {?} */
 const DEFAULT_VALUE$1 = 'none';
 /** @type {?} */
 const DELIMETER = '|';
+class GridAreasStyleBuiler extends StyleBuilder {
+    /**
+     * @param {?} input
+     * @param {?} parent
+     * @return {?}
+     */
+    buildStyles(input, parent) {
+        /** @type {?} */
+        const areas = (input || DEFAULT_VALUE$1).split(DELIMETER).map(v => `"${v.trim()}"`);
+        return {
+            'display': parent.inline ? 'inline-grid' : 'grid',
+            'grid-template-areas': areas.join(' ')
+        };
+    }
+}
+GridAreasStyleBuiler.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = defineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+class GridAreasDirective extends BaseDirective2 {
+    /**
+     * @param {?} elRef
+     * @param {?} styleUtils
+     * @param {?} styleBuilder
+     * @param {?} marshal
+     */
+    constructor(elRef, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        super(elRef, styleBuilder, styleUtils, marshal);
+        this.elRef = elRef;
+        this.styleUtils = styleUtils;
+        this.styleBuilder = styleBuilder;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-areas';
+        this._inline = false;
+        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    }
+    /**
+     * @return {?}
+     */
+    get inline() { return this._inline; }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    set inline(val) { this._inline = coerceBooleanProperty(val); }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    updateWithValue(value) {
+        this.styleCache = this.inline ? areasInlineCache : areasCache;
+        this.addStyles(value, { inline: this.inline });
+    }
+}
+/** @nocollapse */
+GridAreasDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: StyleUtils },
+    { type: GridAreasStyleBuiler, decorators: [{ type: Optional }] },
+    { type: MediaMarshaller }
+];
+GridAreasDirective.propDecorators = {
+    inline: [{ type: Input, args: ['gdInline',] }]
+};
+/** @type {?} */
+const areasCache = new Map();
+/** @type {?} */
+const areasInlineCache = new Map();
+/** @type {?} */
+const inputs$4 = [
+    'gdAreas',
+    'gdAreas.xs', 'gdAreas.sm', 'gdAreas.md', 'gdAreas.lg', 'gdAreas.xl',
+    'gdAreas.lt-sm', 'gdAreas.lt-md', 'gdAreas.lt-lg', 'gdAreas.lt-xl',
+    'gdAreas.gt-xs', 'gdAreas.gt-sm', 'gdAreas.gt-md', 'gdAreas.gt-lg'
+];
+/** @type {?} */
+const selector$4 = `
+  [gdAreas],
+  [gdAreas.xs], [gdAreas.sm], [gdAreas.md], [gdAreas.lg], [gdAreas.xl],
+  [gdAreas.lt-sm], [gdAreas.lt-md], [gdAreas.lt-lg], [gdAreas.lt-xl],
+  [gdAreas.gt-xs], [gdAreas.gt-sm], [gdAreas.gt-md], [gdAreas.gt-lg]
+`;
 /**
  * 'grid-template-areas' CSS Grid styling directive
  * Configures the names of elements within the grid
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-14
  */
-class GridAreasDirective extends BaseDirective {
-    /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set align(val) { this._cacheInput(`${CACHE_KEY$4}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$4}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$4}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$4}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$4}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$4}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$4}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$4}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$4}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$4}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$4}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$4}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$4}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$4}LtXl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$4] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$4, DEFAULT_VALUE$1, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$4) || DEFAULT_VALUE$1;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
-        /** @type {?} */
-        const areas = value.split(DELIMETER).map(v => `"${v.trim()}"`);
-        return {
-            'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
-            'grid-template-areas': areas.join(' ')
-        };
+class DefaultGridAreasDirective extends GridAreasDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$4;
     }
 }
-GridAreasDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [gdAreas],
-  [gdAreas.xs], [gdAreas.sm], [gdAreas.md], [gdAreas.lg], [gdAreas.xl],
-  [gdAreas.lt-sm], [gdAreas.lt-md], [gdAreas.lt-lg], [gdAreas.lt-xl],
-  [gdAreas.gt-xs], [gdAreas.gt-sm], [gdAreas.gt-md], [gdAreas.gt-lg]
-` },] },
+DefaultGridAreasDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$4, inputs: inputs$4 },] },
 ];
-/** @nocollapse */
-GridAreasDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridAreasDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdAreas',] }],
-    alignXs: [{ type: Input, args: ['gdAreas.xs',] }],
-    alignSm: [{ type: Input, args: ['gdAreas.sm',] }],
-    alignMd: [{ type: Input, args: ['gdAreas.md',] }],
-    alignLg: [{ type: Input, args: ['gdAreas.lg',] }],
-    alignXl: [{ type: Input, args: ['gdAreas.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdAreas.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdAreas.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdAreas.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdAreas.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdAreas.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdAreas.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdAreas.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdAreas.lt-xl',] }],
-    inline: [{ type: Input, args: ['gdInline',] }]
-};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$5 = 'autoFlow';
-/** @type {?} */
 const DEFAULT_VALUE$2 = 'initial';
-/**
- * 'grid-auto-flow' CSS Grid styling directive
- * Configures the auto placement algorithm for the grid
- * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-23
- */
-class GridAutoDirective extends BaseDirective {
+class GridAutoStyleBuilder extends StyleBuilder {
     /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
+     * @param {?} input
+     * @param {?} parent
      * @return {?}
      */
-    set align(val) { this._cacheInput(`${CACHE_KEY$5}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$5}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$5}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$5}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$5}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$5}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$5}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$5}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$5}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$5}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$5}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$5}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$5}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$5}LtXl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$5] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$5, DEFAULT_VALUE$2, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$5) || DEFAULT_VALUE$2;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
-        let [direction, dense] = value.split(' ');
+    buildStyles(input, parent) {
+        let [direction, dense] = (input || DEFAULT_VALUE$2).split(' ');
         if (direction !== 'column' && direction !== 'row' && direction !== 'dense') {
             direction = 'row';
         }
         dense = (dense === 'dense' && direction !== 'dense') ? ' dense' : '';
         return {
-            'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
+            'display': parent.inline ? 'inline-grid' : 'grid',
             'grid-auto-flow': direction + dense
         };
     }
 }
-GridAutoDirective.decorators = [
-    { type: Directive, args: [{ selector: `
+GridAutoStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+class GridAutoDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this._inline = false;
+        this.DIRECTIVE_KEY = 'grid-auto';
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    }
+    /**
+     * @return {?}
+     */
+    get inline() { return this._inline; }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    set inline(val) { this._inline = coerceBooleanProperty(val); }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    updateWithValue(value) {
+        this.styleCache = this.inline ? autoInlineCache : autoCache;
+        this.addStyles(value, { inline: this.inline });
+    }
+}
+/** @nocollapse */
+GridAutoDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridAutoStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+GridAutoDirective.propDecorators = {
+    inline: [{ type: Input, args: ['gdInline',] }]
+};
+/** @type {?} */
+const autoCache = new Map();
+/** @type {?} */
+const autoInlineCache = new Map();
+/** @type {?} */
+const inputs$5 = [
+    'gdAuto',
+    'gdAuto.xs', 'gdAuto.sm', 'gdAuto.md', 'gdAuto.lg', 'gdAuto.xl',
+    'gdAuto.lt-sm', 'gdAuto.lt-md', 'gdAuto.lt-lg', 'gdAuto.lt-xl',
+    'gdAuto.gt-xs', 'gdAuto.gt-sm', 'gdAuto.gt-md', 'gdAuto.gt-lg'
+];
+/** @type {?} */
+const selector$5 = `
   [gdAuto],
   [gdAuto.xs], [gdAuto.sm], [gdAuto.md], [gdAuto.lg], [gdAuto.xl],
   [gdAuto.lt-sm], [gdAuto.lt-md], [gdAuto.lt-lg], [gdAuto.lt-xl],
   [gdAuto.gt-xs], [gdAuto.gt-sm], [gdAuto.gt-md], [gdAuto.gt-lg]
-` },] },
+`;
+/**
+ * 'grid-auto-flow' CSS Grid styling directive
+ * Configures the auto placement algorithm for the grid
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-23
+ */
+class DefaultGridAutoDirective extends GridAutoDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$5;
+    }
+}
+DefaultGridAutoDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$5, inputs: inputs$5 },] },
 ];
-/** @nocollapse */
-GridAutoDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridAutoDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdAuto',] }],
-    alignXs: [{ type: Input, args: ['gdAuto.xs',] }],
-    alignSm: [{ type: Input, args: ['gdAuto.sm',] }],
-    alignMd: [{ type: Input, args: ['gdAuto.md',] }],
-    alignLg: [{ type: Input, args: ['gdAuto.lg',] }],
-    alignXl: [{ type: Input, args: ['gdAuto.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdAuto.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdAuto.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdAuto.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdAuto.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdAuto.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdAuto.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdAuto.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdAuto.lt-xl',] }],
-    inline: [{ type: Input, args: ['gdInline',] }]
-};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$6 = 'column';
-/** @type {?} */
 const DEFAULT_VALUE$3 = 'auto';
+class GridColumnStyleBuilder extends StyleBuilder {
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    buildStyles(input) {
+        return { 'grid-column': input || DEFAULT_VALUE$3 };
+    }
+}
+GridColumnStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+class GridColumnDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-column';
+        this.styleCache = columnCache;
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+    }
+}
+/** @nocollapse */
+GridColumnDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridColumnStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+/** @type {?} */
+const columnCache = new Map();
+/** @type {?} */
+const inputs$6 = [
+    'gdColumn',
+    'gdColumn.xs', 'gdColumn.sm', 'gdColumn.md', 'gdColumn.lg', 'gdColumn.xl',
+    'gdColumn.lt-sm', 'gdColumn.lt-md', 'gdColumn.lt-lg', 'gdColumn.lt-xl',
+    'gdColumn.gt-xs', 'gdColumn.gt-sm', 'gdColumn.gt-md', 'gdColumn.gt-lg'
+];
+/** @type {?} */
+const selector$6 = `
+  [gdColumn],
+  [gdColumn.xs], [gdColumn.sm], [gdColumn.md], [gdColumn.lg], [gdColumn.xl],
+  [gdColumn.lt-sm], [gdColumn.lt-md], [gdColumn.lt-lg], [gdColumn.lt-xl],
+  [gdColumn.gt-xs], [gdColumn.gt-sm], [gdColumn.gt-md], [gdColumn.gt-lg]
+`;
 /**
  * 'grid-column' CSS Grid styling directive
  * Configures the name or position of an element within the grid
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-26
  */
-class GridColumnDirective extends BaseDirective {
-    /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set align(val) { this._cacheInput(`${CACHE_KEY$6}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$6}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$6}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$6}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$6}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$6}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$6}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$6}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$6}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$6}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$6}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$6}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$6}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$6}LtXl`, val); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$6] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$6, DEFAULT_VALUE$3, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$6) || DEFAULT_VALUE$3;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
-        return { 'grid-column': value };
+class DefaultGridColumnDirective extends GridColumnDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$6;
     }
 }
-GridColumnDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [gdColumn],
-  [gdColumn.xs], [gdColumn.sm], [gdColumn.md], [gdColumn.lg], [gdColumn.xl],
-  [gdColumn.lt-sm], [gdColumn.lt-md], [gdColumn.lt-lg], [gdColumn.lt-xl],
-  [gdColumn.gt-xs], [gdColumn.gt-sm], [gdColumn.gt-md], [gdColumn.gt-lg]
-` },] },
+DefaultGridColumnDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$6, inputs: inputs$6 },] },
 ];
-/** @nocollapse */
-GridColumnDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridColumnDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdColumn',] }],
-    alignXs: [{ type: Input, args: ['gdColumn.xs',] }],
-    alignSm: [{ type: Input, args: ['gdColumn.sm',] }],
-    alignMd: [{ type: Input, args: ['gdColumn.md',] }],
-    alignLg: [{ type: Input, args: ['gdColumn.lg',] }],
-    alignXl: [{ type: Input, args: ['gdColumn.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdColumn.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdColumn.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdColumn.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdColumn.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdColumn.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdColumn.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdColumn.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdColumn.lt-xl',] }]
-};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$7 = 'columns';
-/** @type {?} */
 const DEFAULT_VALUE$4 = 'none';
 /** @type {?} */
 const AUTO_SPECIFIER = '!';
+class GridColumnsStyleBuilder extends StyleBuilder {
+    /**
+     * @param {?} input
+     * @param {?} parent
+     * @return {?}
+     */
+    buildStyles(input, parent) {
+        input = input || DEFAULT_VALUE$4;
+        /** @type {?} */
+        let auto = false;
+        if (input.endsWith(AUTO_SPECIFIER)) {
+            input = input.substring(0, input.indexOf(AUTO_SPECIFIER));
+            auto = true;
+        }
+        /** @type {?} */
+        const css = {
+            'display': parent.inline ? 'inline-grid' : 'grid',
+            'grid-auto-columns': '',
+            'grid-template-columns': '',
+        };
+        /** @type {?} */
+        const key = (auto ? 'grid-auto-columns' : 'grid-template-columns');
+        css[key] = input;
+        return css;
+    }
+}
+GridColumnsStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+class GridColumnsDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-columns';
+        this._inline = false;
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    }
+    /**
+     * @return {?}
+     */
+    get inline() { return this._inline; }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    set inline(val) { this._inline = coerceBooleanProperty(val); }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    updateWithValue(value) {
+        this.styleCache = this.inline ? columnsInlineCache : columnsCache;
+        this.addStyles(value, { inline: this.inline });
+    }
+}
+/** @nocollapse */
+GridColumnsDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridColumnsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+GridColumnsDirective.propDecorators = {
+    inline: [{ type: Input, args: ['gdInline',] }]
+};
+/** @type {?} */
+const columnsCache = new Map();
+/** @type {?} */
+const columnsInlineCache = new Map();
+/** @type {?} */
+const inputs$7 = [
+    'gdColumns',
+    'gdColumns.xs', 'gdColumns.sm', 'gdColumns.md', 'gdColumns.lg', 'gdColumns.xl',
+    'gdColumns.lt-sm', 'gdColumns.lt-md', 'gdColumns.lt-lg', 'gdColumns.lt-xl',
+    'gdColumns.gt-xs', 'gdColumns.gt-sm', 'gdColumns.gt-md', 'gdColumns.gt-lg'
+];
+/** @type {?} */
+const selector$7 = `
+  [gdColumns],
+  [gdColumns.xs], [gdColumns.sm], [gdColumns.md], [gdColumns.lg], [gdColumns.xl],
+  [gdColumns.lt-sm], [gdColumns.lt-md], [gdColumns.lt-lg], [gdColumns.lt-xl],
+  [gdColumns.gt-xs], [gdColumns.gt-sm], [gdColumns.gt-md], [gdColumns.gt-lg]
+`;
 /**
  * 'grid-template-columns' CSS Grid styling directive
  * Configures the sizing for the columns in the grid
  * Syntax: <column value> [auto]
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-13
  */
-class GridColumnsDirective extends BaseDirective {
-    /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set align(val) { this._cacheInput(`${CACHE_KEY$7}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$7}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$7}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$7}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$7}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$7}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$7}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$7}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$7}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$7}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$7}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$7}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$7}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$7}LtXl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$7] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$7, DEFAULT_VALUE$4, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$7) || DEFAULT_VALUE$4;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
-        /** @type {?} */
-        let auto = false;
-        if (value.endsWith(AUTO_SPECIFIER)) {
-            value = value.substring(0, value.indexOf(AUTO_SPECIFIER));
-            auto = true;
-        }
-        /** @type {?} */
-        let css = {
-            'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
-            'grid-auto-columns': '',
-            'grid-template-columns': '',
-        };
-        /** @type {?} */
-        const key = (auto ? 'grid-auto-columns' : 'grid-template-columns');
-        css[key] = value;
-        return css;
+class DefaultGridColumnsDirective extends GridColumnsDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$7;
     }
 }
-GridColumnsDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [gdColumns],
-  [gdColumns.xs], [gdColumns.sm], [gdColumns.md], [gdColumns.lg], [gdColumns.xl],
-  [gdColumns.lt-sm], [gdColumns.lt-md], [gdColumns.lt-lg], [gdColumns.lt-xl],
-  [gdColumns.gt-xs], [gdColumns.gt-sm], [gdColumns.gt-md], [gdColumns.gt-lg]
-` },] },
+DefaultGridColumnsDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$7, inputs: inputs$7 },] },
 ];
-/** @nocollapse */
-GridColumnsDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridColumnsDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdColumns',] }],
-    alignXs: [{ type: Input, args: ['gdColumns.xs',] }],
-    alignSm: [{ type: Input, args: ['gdColumns.sm',] }],
-    alignMd: [{ type: Input, args: ['gdColumns.md',] }],
-    alignLg: [{ type: Input, args: ['gdColumns.lg',] }],
-    alignXl: [{ type: Input, args: ['gdColumns.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdColumns.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdColumns.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdColumns.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdColumns.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdColumns.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdColumns.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdColumns.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdColumns.lt-xl',] }],
-    inline: [{ type: Input, args: ['gdInline',] }]
-};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$8 = 'gap';
-/** @type {?} */
 const DEFAULT_VALUE$5 = '0';
+class GridGapStyleBuilder extends StyleBuilder {
+    /**
+     * @param {?} input
+     * @param {?} parent
+     * @return {?}
+     */
+    buildStyles(input, parent) {
+        return {
+            'display': parent.inline ? 'inline-grid' : 'grid',
+            'grid-gap': input || DEFAULT_VALUE$5
+        };
+    }
+}
+GridGapStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+class GridGapDirective extends BaseDirective2 {
+    /**
+     * @param {?} elRef
+     * @param {?} styleUtils
+     * @param {?} styleBuilder
+     * @param {?} marshal
+     */
+    constructor(elRef, styleUtils, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, marshal) {
+        super(elRef, styleBuilder, styleUtils, marshal);
+        this.elRef = elRef;
+        this.styleUtils = styleUtils;
+        this.styleBuilder = styleBuilder;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-gap';
+        this._inline = false;
+        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    }
+    /**
+     * @return {?}
+     */
+    get inline() { return this._inline; }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    set inline(val) { this._inline = coerceBooleanProperty(val); }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    updateWithValue(value) {
+        this.styleCache = this.inline ? gapInlineCache : gapCache;
+        this.addStyles(value, { inline: this.inline });
+    }
+}
+/** @nocollapse */
+GridGapDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: StyleUtils },
+    { type: GridGapStyleBuilder, decorators: [{ type: Optional }] },
+    { type: MediaMarshaller }
+];
+GridGapDirective.propDecorators = {
+    inline: [{ type: Input, args: ['gdInline',] }]
+};
+/** @type {?} */
+const gapCache = new Map();
+/** @type {?} */
+const gapInlineCache = new Map();
+/** @type {?} */
+const inputs$8 = [
+    'gdGap',
+    'gdGap.xs', 'gdGap.sm', 'gdGap.md', 'gdGap.lg', 'gdGap.xl',
+    'gdGap.lt-sm', 'gdGap.lt-md', 'gdGap.lt-lg', 'gdGap.lt-xl',
+    'gdGap.gt-xs', 'gdGap.gt-sm', 'gdGap.gt-md', 'gdGap.gt-lg'
+];
+/** @type {?} */
+const selector$8 = `
+  [gdGap],
+  [gdGap.xs], [gdGap.sm], [gdGap.md], [gdGap.lg], [gdGap.xl],
+  [gdGap.lt-sm], [gdGap.lt-md], [gdGap.lt-lg], [gdGap.lt-xl],
+  [gdGap.gt-xs], [gdGap.gt-sm], [gdGap.gt-md], [gdGap.gt-lg]
+`;
 /**
  * 'grid-gap' CSS Grid styling directive
  * Configures the gap between items in the grid
  * Syntax: <row gap> [<column-gap>]
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-17
  */
-class GridGapDirective extends BaseDirective {
-    /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set align(val) { this._cacheInput(`${CACHE_KEY$8}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$8}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$8}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$8}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$8}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$8}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$8}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$8}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$8}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$8}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$8}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$8}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$8}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$8}LtXl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$8] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$8, DEFAULT_VALUE$5, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$8) || DEFAULT_VALUE$5;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
-        return {
-            'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
-            'grid-gap': value
-        };
+class DefaultGridGapDirective extends GridGapDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$8;
     }
 }
-GridGapDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [gdGap],
-  [gdGap.xs], [gdGap.sm], [gdGap.md], [gdGap.lg], [gdGap.xl],
-  [gdGap.lt-sm], [gdGap.lt-md], [gdGap.lt-lg], [gdGap.lt-xl],
-  [gdGap.gt-xs], [gdGap.gt-sm], [gdGap.gt-md], [gdGap.gt-lg]
-` },] },
+DefaultGridGapDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$8, inputs: inputs$8 },] },
 ];
-/** @nocollapse */
-GridGapDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridGapDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdGap',] }],
-    alignXs: [{ type: Input, args: ['gdGap.xs',] }],
-    alignSm: [{ type: Input, args: ['gdGap.sm',] }],
-    alignMd: [{ type: Input, args: ['gdGap.md',] }],
-    alignLg: [{ type: Input, args: ['gdGap.lg',] }],
-    alignXl: [{ type: Input, args: ['gdGap.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdGap.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdGap.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdGap.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdGap.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdGap.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdGap.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdGap.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdGap.lt-xl',] }],
-    inline: [{ type: Input, args: ['gdInline',] }]
-};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$9 = 'row';
-/** @type {?} */
 const DEFAULT_VALUE$6 = 'auto';
+class GridRowStyleBuilder extends StyleBuilder {
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    buildStyles(input) {
+        return { 'grid-row': input || DEFAULT_VALUE$6 };
+    }
+}
+GridRowStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+class GridRowDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-row';
+        this.styleCache = rowCache;
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+    }
+}
+/** @nocollapse */
+GridRowDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridRowStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+/** @type {?} */
+const rowCache = new Map();
+/** @type {?} */
+const inputs$9 = [
+    'gdRow',
+    'gdRow.xs', 'gdRow.sm', 'gdRow.md', 'gdRow.lg', 'gdRow.xl',
+    'gdRow.lt-sm', 'gdRow.lt-md', 'gdRow.lt-lg', 'gdRow.lt-xl',
+    'gdRow.gt-xs', 'gdRow.gt-sm', 'gdRow.gt-md', 'gdRow.gt-lg'
+];
+/** @type {?} */
+const selector$9 = `
+  [gdRow],
+  [gdRow.xs], [gdRow.sm], [gdRow.md], [gdRow.lg], [gdRow.xl],
+  [gdRow.lt-sm], [gdRow.lt-md], [gdRow.lt-lg], [gdRow.lt-xl],
+  [gdRow.gt-xs], [gdRow.gt-sm], [gdRow.gt-md], [gdRow.gt-lg]
+`;
 /**
  * 'grid-row' CSS Grid styling directive
  * Configures the name or position of an element within the grid
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-26
  */
-class GridRowDirective extends BaseDirective {
-    /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set align(val) { this._cacheInput(`${CACHE_KEY$9}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$9}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$9}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$9}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$9}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$9}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$9}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$9}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$9}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$9}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$9}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$9}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$9}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$9}LtXl`, val); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$9] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$9, DEFAULT_VALUE$6, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$9) || DEFAULT_VALUE$6;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
-        return { 'grid-row': value };
+class DefaultGridRowDirective extends GridRowDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$9;
     }
 }
-GridRowDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [gdRow],
-  [gdRow.xs], [gdRow.sm], [gdRow.md], [gdRow.lg], [gdRow.xl],
-  [gdRow.lt-sm], [gdRow.lt-md], [gdRow.lt-lg], [gdRow.lt-xl],
-  [gdRow.gt-xs], [gdRow.gt-sm], [gdRow.gt-md], [gdRow.gt-lg]
-` },] },
+DefaultGridRowDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$9, inputs: inputs$9 },] },
 ];
-/** @nocollapse */
-GridRowDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridRowDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdRow',] }],
-    alignXs: [{ type: Input, args: ['gdRow.xs',] }],
-    alignSm: [{ type: Input, args: ['gdRow.sm',] }],
-    alignMd: [{ type: Input, args: ['gdRow.md',] }],
-    alignLg: [{ type: Input, args: ['gdRow.lg',] }],
-    alignXl: [{ type: Input, args: ['gdRow.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdRow.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdRow.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdRow.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdRow.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdRow.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdRow.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdRow.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdRow.lt-xl',] }]
-};
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /** @type {?} */
-const CACHE_KEY$10 = 'rows';
-/** @type {?} */
 const DEFAULT_VALUE$7 = 'none';
 /** @type {?} */
 const AUTO_SPECIFIER$1 = '!';
-/**
- * 'grid-template-rows' CSS Grid styling directive
- * Configures the sizing for the rows in the grid
- * Syntax: <row value> [auto]
- * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-13
- */
-class GridRowsDirective extends BaseDirective {
+class GridRowsStyleBuilder extends StyleBuilder {
     /**
-     * @param {?} monitor
-     * @param {?} elRef
-     * @param {?} styleUtils
-     */
-    constructor(monitor, elRef, styleUtils) {
-        super(monitor, elRef, styleUtils);
-    }
-    /**
-     * @param {?} val
+     * @param {?} input
+     * @param {?} parent
      * @return {?}
      */
-    set align(val) { this._cacheInput(`${CACHE_KEY$10}`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXs(val) { this._cacheInput(`${CACHE_KEY$10}Xs`, val); }
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignSm(val) { this._cacheInput(`${CACHE_KEY$10}Sm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignMd(val) { this._cacheInput(`${CACHE_KEY$10}Md`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLg(val) { this._cacheInput(`${CACHE_KEY$10}Lg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignXl(val) { this._cacheInput(`${CACHE_KEY$10}Xl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtXs(val) { this._cacheInput(`${CACHE_KEY$10}GtXs`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtSm(val) { this._cacheInput(`${CACHE_KEY$10}GtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtMd(val) { this._cacheInput(`${CACHE_KEY$10}GtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignGtLg(val) { this._cacheInput(`${CACHE_KEY$10}GtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtSm(val) { this._cacheInput(`${CACHE_KEY$10}LtSm`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtMd(val) { this._cacheInput(`${CACHE_KEY$10}LtMd`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtLg(val) { this._cacheInput(`${CACHE_KEY$10}LtLg`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set alignLtXl(val) { this._cacheInput(`${CACHE_KEY$10}LtXl`, val); }
-    ;
-    /**
-     * @param {?} val
-     * @return {?}
-     */
-    set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); }
-    ;
-    /**
-     * For \@Input changes on the current mq activation property, see onMediaQueryChanges()
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        if (changes[CACHE_KEY$10] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges(CACHE_KEY$10, DEFAULT_VALUE$7, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _updateWithValue(value) {
-        value = value || this._queryInput(CACHE_KEY$10) || DEFAULT_VALUE$7;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-    }
-    /**
-     * @param {?=} value
-     * @return {?}
-     */
-    _buildCSS(value = '') {
+    buildStyles(input, parent) {
+        input = input || DEFAULT_VALUE$7;
         /** @type {?} */
         let auto = false;
-        if (value.endsWith(AUTO_SPECIFIER$1)) {
-            value = value.substring(0, value.indexOf(AUTO_SPECIFIER$1));
+        if (input.endsWith(AUTO_SPECIFIER$1)) {
+            input = input.substring(0, input.indexOf(AUTO_SPECIFIER$1));
             auto = true;
         }
         /** @type {?} */
-        let css = {
-            'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
+        const css = {
+            'display': parent.inline ? 'inline-grid' : 'grid',
             'grid-auto-rows': '',
             'grid-template-rows': '',
         };
         /** @type {?} */
         const key = (auto ? 'grid-auto-rows' : 'grid-template-rows');
-        css[key] = value;
+        css[key] = input;
         return css;
     }
 }
-GridRowsDirective.decorators = [
-    { type: Directive, args: [{ selector: `
+GridRowsStyleBuilder.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+class GridRowsDirective extends BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, 
+    // NOTE: not actually optional, but we need to force DI without a
+    // constructor call
+    styleBuilder, styler, marshal) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = 'grid-rows';
+        this._inline = false;
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    }
+    /**
+     * @return {?}
+     */
+    get inline() { return this._inline; }
+    /**
+     * @param {?} val
+     * @return {?}
+     */
+    set inline(val) { this._inline = coerceBooleanProperty(val); }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    updateWithValue(value) {
+        this.styleCache = this.inline ? rowsInlineCache : rowsCache;
+        this.addStyles(value, { inline: this.inline });
+    }
+}
+/** @nocollapse */
+GridRowsDirective.ctorParameters = () => [
+    { type: ElementRef },
+    { type: GridRowsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: StyleUtils },
+    { type: MediaMarshaller }
+];
+GridRowsDirective.propDecorators = {
+    inline: [{ type: Input, args: ['gdInline',] }]
+};
+/** @type {?} */
+const rowsCache = new Map();
+/** @type {?} */
+const rowsInlineCache = new Map();
+/** @type {?} */
+const inputs$10 = [
+    'gdRows',
+    'gdRows.xs', 'gdRows.sm', 'gdRows.md', 'gdRows.lg', 'gdRows.xl',
+    'gdRows.lt-sm', 'gdRows.lt-md', 'gdRows.lt-lg', 'gdRows.lt-xl',
+    'gdRows.gt-xs', 'gdRows.gt-sm', 'gdRows.gt-md', 'gdRows.gt-lg'
+];
+/** @type {?} */
+const selector$10 = `
   [gdRows],
   [gdRows.xs], [gdRows.sm], [gdRows.md], [gdRows.lg], [gdRows.xl],
   [gdRows.lt-sm], [gdRows.lt-md], [gdRows.lt-lg], [gdRows.lt-xl],
   [gdRows.gt-xs], [gdRows.gt-sm], [gdRows.gt-md], [gdRows.gt-lg]
-` },] },
+`;
+/**
+ * 'grid-template-rows' CSS Grid styling directive
+ * Configures the sizing for the rows in the grid
+ * Syntax: <column value> [auto]
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-13
+ */
+class DefaultGridRowsDirective extends GridRowsDirective {
+    constructor() {
+        super(...arguments);
+        this.inputs = inputs$10;
+    }
+}
+DefaultGridRowsDirective.decorators = [
+    { type: Directive, args: [{ selector: selector$10, inputs: inputs$10 },] },
 ];
-/** @nocollapse */
-GridRowsDirective.ctorParameters = () => [
-    { type: MediaMonitor },
-    { type: ElementRef },
-    { type: StyleUtils }
-];
-GridRowsDirective.propDecorators = {
-    align: [{ type: Input, args: ['gdRows',] }],
-    alignXs: [{ type: Input, args: ['gdRows.xs',] }],
-    alignSm: [{ type: Input, args: ['gdRows.sm',] }],
-    alignMd: [{ type: Input, args: ['gdRows.md',] }],
-    alignLg: [{ type: Input, args: ['gdRows.lg',] }],
-    alignXl: [{ type: Input, args: ['gdRows.xl',] }],
-    alignGtXs: [{ type: Input, args: ['gdRows.gt-xs',] }],
-    alignGtSm: [{ type: Input, args: ['gdRows.gt-sm',] }],
-    alignGtMd: [{ type: Input, args: ['gdRows.gt-md',] }],
-    alignGtLg: [{ type: Input, args: ['gdRows.gt-lg',] }],
-    alignLtSm: [{ type: Input, args: ['gdRows.lt-sm',] }],
-    alignLtMd: [{ type: Input, args: ['gdRows.lt-md',] }],
-    alignLtLg: [{ type: Input, args: ['gdRows.lt-lg',] }],
-    alignLtXl: [{ type: Input, args: ['gdRows.lt-xl',] }],
-    inline: [{ type: Input, args: ['gdInline',] }]
-};
 
 /**
  * @fileoverview added by tsickle
@@ -2217,17 +1254,17 @@ GridRowsDirective.propDecorators = {
  */
 /** @type {?} */
 const ALL_DIRECTIVES = [
-    GridAlignDirective,
-    GridAlignColumnsDirective,
-    GridAlignRowsDirective,
-    GridAreaDirective,
-    GridAreasDirective,
-    GridAutoDirective,
-    GridColumnDirective,
-    GridColumnsDirective,
-    GridGapDirective,
-    GridRowDirective,
-    GridRowsDirective,
+    DefaultGridAlignDirective,
+    DefaultGridAlignColumnsDirective,
+    DefaultGridAlignRowsDirective,
+    DefaultGridAreaDirective,
+    DefaultGridAreasDirective,
+    DefaultGridAutoDirective,
+    DefaultGridColumnDirective,
+    DefaultGridColumnsDirective,
+    DefaultGridGapDirective,
+    DefaultGridRowDirective,
+    DefaultGridRowsDirective,
 ];
 /**
  * *****************************************************************
@@ -2254,5 +1291,5 @@ GridModule.decorators = [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { GridModule, GridAlignColumnsDirective as ɵb, GridAlignRowsDirective as ɵc, GridAreaDirective as ɵd, GridAreasDirective as ɵe, GridAutoDirective as ɵf, GridColumnDirective as ɵg, GridColumnsDirective as ɵh, GridGapDirective as ɵi, GridAlignDirective as ɵa, GridRowDirective as ɵj, GridRowsDirective as ɵk };
+export { GridModule, DefaultGridAlignColumnsDirective as ɵf, GridAlignColumnsDirective as ɵe, GridAlignColumnsStyleBuilder as ɵd, DefaultGridAlignRowsDirective as ɵi, GridAlignRowsDirective as ɵh, GridAlignRowsStyleBuilder as ɵg, DefaultGridAreaDirective as ɵl, GridAreaDirective as ɵk, GridAreaStyleBuilder as ɵj, DefaultGridAreasDirective as ɵo, GridAreasDirective as ɵn, GridAreasStyleBuiler as ɵm, DefaultGridAutoDirective as ɵr, GridAutoDirective as ɵq, GridAutoStyleBuilder as ɵp, DefaultGridColumnDirective as ɵu, GridColumnDirective as ɵt, GridColumnStyleBuilder as ɵs, DefaultGridColumnsDirective as ɵx, GridColumnsDirective as ɵw, GridColumnsStyleBuilder as ɵv, DefaultGridGapDirective as ɵba, GridGapDirective as ɵz, GridGapStyleBuilder as ɵy, DefaultGridAlignDirective as ɵc, GridAlignDirective as ɵb, GridAlignStyleBuilder as ɵa, DefaultGridRowDirective as ɵbd, GridRowDirective as ɵbc, GridRowStyleBuilder as ɵbb, DefaultGridRowsDirective as ɵbg, GridRowsDirective as ɵbf, GridRowsStyleBuilder as ɵbe };
 //# sourceMappingURL=grid.js.map

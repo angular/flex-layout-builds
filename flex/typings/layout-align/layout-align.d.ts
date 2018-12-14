@@ -5,10 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
-import { Subscription } from 'rxjs';
-import { Layout, LayoutDirective } from '../layout/layout';
+import { ElementRef } from '@angular/core';
+import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
 export interface LayoutAlignParent {
     layout: string;
 }
@@ -24,37 +22,23 @@ export declare class LayoutAlignStyleBuilder extends StyleBuilder {
  *  @see https://css-tricks.com/almanac/properties/a/align-items/
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
-export declare class LayoutAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
-    protected _layout: string;
-    protected _layoutWatcher?: Subscription;
-    align: string;
-    alignXs: string;
-    alignSm: string;
-    alignMd: string;
-    alignLg: string;
-    alignXl: string;
-    alignGtXs: string;
-    alignGtSm: string;
-    alignGtMd: string;
-    alignGtLg: string;
-    alignLtSm: string;
-    alignLtMd: string;
-    alignLtLg: string;
-    alignLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, container: LayoutDirective, styleUtils: StyleUtils, styleBuilder: LayoutAlignStyleBuilder);
-    ngOnChanges(changes: SimpleChanges): void;
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    ngOnInit(): void;
-    ngOnDestroy(): void;
+export declare class LayoutAlignDirective extends BaseDirective2 {
+    protected elRef: ElementRef;
+    protected styleUtils: StyleUtils;
+    protected styleBuilder: LayoutAlignStyleBuilder;
+    protected marshal: MediaMarshaller;
+    protected DIRECTIVE_KEY: string;
+    protected layout: string;
+    constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: LayoutAlignStyleBuilder, marshal: MediaMarshaller);
     /**
      *
      */
-    protected _updateWithValue(value?: string): void;
+    protected updateWithValue(value: string): void;
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
-    protected _onLayoutChange(layout: Layout): void;
+    protected onLayoutChange(matcher: ElementMatcher): void;
+}
+export declare class DefaultLayoutAlignDirective extends LayoutAlignDirective {
+    protected inputs: string[];
 }

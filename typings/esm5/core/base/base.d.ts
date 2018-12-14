@@ -11,7 +11,11 @@ import { ResponsiveActivation } from '../responsive-activation/responsive-activa
 import { MediaMonitor } from '../media-monitor/media-monitor';
 import { MediaQuerySubscriber } from '../media-change';
 import { StyleBuilder } from '../style-builder/style-builder';
-/** Abstract base class for the Layout API styling directives. */
+/**
+ * Abstract base class for the Layout API styling directives.
+ * @deprecated
+ * @deletion-target v7.0.0-beta.21
+ */
 export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;

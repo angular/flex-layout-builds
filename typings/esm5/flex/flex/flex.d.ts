@@ -5,12 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BaseDirective, LayoutConfigOptions, MediaMonitor, StyleUtils, StyleBuilder, StyleDefinition } from '@angular/flex-layout/core';
-import { Subscription } from 'rxjs';
-import { Layout, LayoutDirective } from '../layout/layout';
-/** Built-in aliases for different flex-basis values. */
-export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';
+import { ElementRef } from '@angular/core';
+import { BaseDirective2, LayoutConfigOptions, StyleUtils, StyleBuilder, StyleDefinition, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
 interface FlexBuilderParent {
     direction: string;
     hasWrap: boolean;
@@ -26,50 +22,31 @@ export declare class FlexStyleBuilder extends StyleBuilder {
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-export declare class FlexDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
-    protected _container: LayoutDirective;
+export declare class FlexDirective extends BaseDirective2 {
+    protected elRef: ElementRef;
     protected styleUtils: StyleUtils;
     protected layoutConfig: LayoutConfigOptions;
     protected styleBuilder: FlexStyleBuilder;
-    /** The flex-direction of this element's flex container. Defaults to 'row'. */
-    protected _layout?: Layout;
-    /**
-     * Subscription to the parent flex container's layout changes.
-     * Stored so we can unsubscribe when this directive is destroyed.
-     */
-    protected _layoutWatcher?: Subscription;
+    protected marshal: MediaMarshaller;
+    protected DIRECTIVE_KEY: string;
+    protected direction: string;
+    protected wrap: boolean;
     shrink: string;
     grow: string;
-    flex: string;
-    flexXs: string;
-    flexSm: string;
-    flexMd: string;
-    flexLg: string;
-    flexXl: string;
-    flexGtXs: string;
-    flexGtSm: string;
-    flexGtMd: string;
-    flexGtLg: string;
-    flexLtSm: string;
-    flexLtMd: string;
-    flexLtLg: string;
-    flexLtXl: string;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, _container: LayoutDirective, styleUtils: StyleUtils, layoutConfig: LayoutConfigOptions, styleBuilder: FlexStyleBuilder);
-    /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-     */
-    ngOnChanges(changes: SimpleChanges): void;
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    ngOnInit(): void;
-    ngOnDestroy(): void;
+    protected flexGrow: string;
+    protected flexShrink: string;
+    constructor(elRef: ElementRef, styleUtils: StyleUtils, layoutConfig: LayoutConfigOptions, styleBuilder: FlexStyleBuilder, marshal: MediaMarshaller);
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      */
-    protected _onLayoutChange(layout?: Layout): void;
-    protected _updateStyle(value?: string | number): void;
+    protected onLayoutChange(matcher: ElementMatcher): void;
+    /** Input to this is exclusively the basis input value */
+    protected updateStyle(value: string): void;
+    /** Trigger a style reflow, usually based on a shrink/grow input event */
+    protected triggerReflow(): void;
+}
+export declare class DefaultFlexDirective extends FlexDirective {
+    protected inputs: string[];
 }
 export {};

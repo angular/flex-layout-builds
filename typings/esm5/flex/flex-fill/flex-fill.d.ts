@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef } from '@angular/core';
-import { BaseDirective, MediaMonitor, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
 export declare class FlexFillStyleBuilder extends StyleBuilder {
     buildStyles(_input: string): {
         'margin': number;
@@ -22,8 +22,11 @@ export declare class FlexFillStyleBuilder extends StyleBuilder {
  *
  *  NOTE: fxFill is NOT responsive API!!
  */
-export declare class FlexFillDirective extends BaseDirective {
-    elRef: ElementRef;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: FlexFillStyleBuilder);
-    protected _styleCache: Map<string, StyleDefinition>;
+export declare class FlexFillDirective extends BaseDirective2 {
+    protected elRef: ElementRef;
+    protected styleUtils: StyleUtils;
+    protected styleBuilder: FlexFillStyleBuilder;
+    protected marshal: MediaMarshaller;
+    constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: FlexFillStyleBuilder, marshal: MediaMarshaller);
+    protected styleCache: Map<string, StyleDefinition>;
 }

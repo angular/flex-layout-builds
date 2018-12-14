@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/flex-layout/core'), require('@angular/flex-layout/flex'), require('@angular/platform-browser')) :
-	typeof define === 'function' && define.amd ? define('@angular/flex-layout/extended', ['exports', '@angular/core', '@angular/common', '@angular/flex-layout/core', '@angular/flex-layout/flex', '@angular/platform-browser'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].extended = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.flexLayout.flex,global.ng.platformBrowser));
-}(this, (function (exports,core,common,core$1,flex,platformBrowser) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/flex-layout/core'), require('@angular/cdk/coercion'), require('rxjs/operators'), require('@angular/platform-browser')) :
+	typeof define === 'function' && define.amd ? define('@angular/flex-layout/extended', ['exports', '@angular/core', '@angular/common', '@angular/flex-layout/core', '@angular/cdk/coercion', 'rxjs/operators', '@angular/platform-browser'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].extended = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.cdk.coercion,global.rxjs.operators,global.ng.platformBrowser));
+}(this, (function (exports,core,common,core$1,coercion,operators,platformBrowser) { 'use strict';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -40,10 +40,135 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+var ImgSrcStyleBuilder = /** @class */ (function (_super) {
+    __extends(ImgSrcStyleBuilder, _super);
+    function ImgSrcStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * @param {?} url
+     * @return {?}
+     */
+    ImgSrcStyleBuilder.prototype.buildStyles = /**
+     * @param {?} url
+     * @return {?}
+     */
+    function (url) {
+        return { 'content': url ? "url(" + url + ")" : '' };
+    };
+    ImgSrcStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    return ImgSrcStyleBuilder;
+}(core$1.StyleBuilder));
+var ImgSrcDirective = /** @class */ (function (_super) {
+    __extends(ImgSrcDirective, _super);
+    function ImgSrcDirective(elementRef, styleBuilder, styler, marshal, platformId, serverModuleLoaded) {
+        var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
+        _this.elementRef = elementRef;
+        _this.styleBuilder = styleBuilder;
+        _this.styler = styler;
+        _this.marshal = marshal;
+        _this.platformId = platformId;
+        _this.serverModuleLoaded = serverModuleLoaded;
+        _this.DIRECTIVE_KEY = 'img-src';
+        _this.defaultSrc = '';
+        _this.styleCache = imgSrcCache;
+        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateSrcFor.bind(_this));
+        _this.setValue('', _this.nativeElement.getAttribute('src') || '');
+        if (common.isPlatformServer(_this.platformId) && _this.serverModuleLoaded) {
+            _this.nativeElement.setAttribute('src', '');
+        }
+        return _this;
+    }
+    Object.defineProperty(ImgSrcDirective.prototype, "src", {
+        set: /**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) {
+            this.defaultSrc = val;
+            this.setValue('', this.defaultSrc);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Use the [responsively] activated input value to update
+     * the host img src attribute or assign a default `img.src=''`
+     * if the src has not been defined.
+     *
+     * Do nothing to standard `<img src="">` usages, only when responsive
+     * keys are present do we actually call `setAttribute()`
+     */
+    /**
+     * Use the [responsively] activated input value to update
+     * the host img src attribute or assign a default `img.src=''`
+     * if the src has not been defined.
+     *
+     * Do nothing to standard `<img src="">` usages, only when responsive
+     * keys are present do we actually call `setAttribute()`
+     * @return {?}
+     */
+    ImgSrcDirective.prototype.updateSrcFor = /**
+     * Use the [responsively] activated input value to update
+     * the host img src attribute or assign a default `img.src=''`
+     * if the src has not been defined.
+     *
+     * Do nothing to standard `<img src="">` usages, only when responsive
+     * keys are present do we actually call `setAttribute()`
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var url = this.activatedValue || this.defaultSrc;
+        if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+            this.addStyles(url);
+        }
+        else {
+            this.nativeElement.setAttribute('src', String(url));
+        }
+    };
+    /** @nocollapse */
+    ImgSrcDirective.ctorParameters = function () { return [
+        { type: core.ElementRef },
+        { type: ImgSrcStyleBuilder },
+        { type: core$1.StyleUtils },
+        { type: core$1.MediaMarshaller },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+        { type: Boolean, decorators: [{ type: core.Inject, args: [core$1.SERVER_TOKEN,] }] }
+    ]; };
+    ImgSrcDirective.propDecorators = {
+        src: [{ type: core.Input, args: ['src',] }]
+    };
+    return ImgSrcDirective;
+}(core$1.BaseDirective2));
+/** @type {?} */
+var imgSrcCache = new Map();
+/** @type {?} */
+var inputs = [
+    'src.xs', 'src.sm', 'src.md', 'src.lg', 'src.xl',
+    'src.lt-sm', 'src.lt-md', 'src.lt-lg', 'src.lt-xl',
+    'src.gt-xs', 'src.gt-sm', 'src.gt-md', 'src.gt-lg'
+];
+/** @type {?} */
+var selector = "\n  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],\n  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],\n  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]\n";
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
  * and will update the img.src property upon each responsive activation.
@@ -53,364 +178,44 @@ function __extends(d, b) {
  *
  * @see https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-src/
  */
-var ImgSrcDirective = /** @class */ (function (_super) {
-    __extends(ImgSrcDirective, _super);
-    /* tslint:enable */
-    function ImgSrcDirective(_elRef, _monitor, _styler, _platformId, _serverModuleLoaded) {
-        var _this = _super.call(this, _monitor, _elRef, _styler) || this;
-        _this._elRef = _elRef;
-        _this._monitor = _monitor;
-        _this._styler = _styler;
-        _this._platformId = _platformId;
-        _this._serverModuleLoaded = _serverModuleLoaded;
-        _this._cacheInput('src', _elRef.nativeElement.getAttribute('src') || '');
-        if (common.isPlatformServer(_this._platformId) && _this._serverModuleLoaded) {
-            _this.nativeElement.setAttribute('src', '');
-        }
+var DefaultImgSrcDirective = /** @class */ (function (_super) {
+    __extends(DefaultImgSrcDirective, _super);
+    function DefaultImgSrcDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs;
         return _this;
     }
-    Object.defineProperty(ImgSrcDirective.prototype, "srcBase", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this.cacheDefaultSrc(val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('srcGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Listen for responsive changes to update the img.src attribute
-     */
-    /**
-     * Listen for responsive changes to update the img.src attribute
-     * @return {?}
-     */
-    ImgSrcDirective.prototype.ngOnInit = /**
-     * Listen for responsive changes to update the img.src attribute
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        if (this.hasResponsiveKeys) {
-            // Listen for responsive changes
-            this._listenForMediaQueryChanges('src', this.defaultSrc, function () {
-                _this._updateSrcFor();
-            });
-        }
-        this._updateSrcFor();
-    };
-    /**
-     * Update the 'src' property of the host <img> element
-     */
-    /**
-     * Update the 'src' property of the host <img> element
-     * @return {?}
-     */
-    ImgSrcDirective.prototype.ngOnChanges = /**
-     * Update the 'src' property of the host <img> element
-     * @return {?}
-     */
-    function () {
-        if (this.hasInitialized) {
-            this._updateSrcFor();
-        }
-    };
-    /**
-     * Use the [responsively] activated input value to update
-     * the host img src attribute or assign a default `img.src=''`
-     * if the src has not been defined.
-     *
-     * Do nothing to standard `<img src="">` usages, only when responsive
-     * keys are present do we actually call `setAttribute()`
-     */
-    /**
-     * Use the [responsively] activated input value to update
-     * the host img src attribute or assign a default `img.src=''`
-     * if the src has not been defined.
-     *
-     * Do nothing to standard `<img src="">` usages, only when responsive
-     * keys are present do we actually call `setAttribute()`
-     * @return {?}
-     */
-    ImgSrcDirective.prototype._updateSrcFor = /**
-     * Use the [responsively] activated input value to update
-     * the host img src attribute or assign a default `img.src=''`
-     * if the src has not been defined.
-     *
-     * Do nothing to standard `<img src="">` usages, only when responsive
-     * keys are present do we actually call `setAttribute()`
-     * @return {?}
-     */
-    function () {
-        if (this.hasResponsiveKeys) {
-            /** @type {?} */
-            var url = this.activatedValue || this.defaultSrc;
-            if (common.isPlatformServer(this._platformId) && this._serverModuleLoaded) {
-                this._styler.applyStyleToElement(this.nativeElement, { 'content': url ? "url(" + url + ")" : '' });
-            }
-            else {
-                this.nativeElement.setAttribute('src', String(url));
-            }
-        }
-    };
-    /**
-     * Cache initial value of 'src', this will be used as fallback when breakpoint
-     * activations change.
-     * NOTE: The default 'src' property is not bound using @Input(), so perform
-     * a post-ngOnInit() lookup of the default src value (if any).
-     */
-    /**
-     * Cache initial value of 'src', this will be used as fallback when breakpoint
-     * activations change.
-     * NOTE: The default 'src' property is not bound using \@Input(), so perform
-     * a post-ngOnInit() lookup of the default src value (if any).
-     * @param {?=} value
-     * @return {?}
-     */
-    ImgSrcDirective.prototype.cacheDefaultSrc = /**
-     * Cache initial value of 'src', this will be used as fallback when breakpoint
-     * activations change.
-     * NOTE: The default 'src' property is not bound using \@Input(), so perform
-     * a post-ngOnInit() lookup of the default src value (if any).
-     * @param {?=} value
-     * @return {?}
-     */
-    function (value) {
-        this._cacheInput('src', value || '');
-    };
-    Object.defineProperty(ImgSrcDirective.prototype, "defaultSrc", {
-        /**
-         * Empty values are maintained, undefined values are exposed as ''
-         */
-        get: /**
-         * Empty values are maintained, undefined values are exposed as ''
-         * @return {?}
-         */
-        function () {
-            return this._queryInput('src') || '';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "hasResponsiveKeys", {
-        /**
-         * Does the <img> have 1 or more src.<xxx> responsive inputs
-         * defined... these will be mapped to activated breakpoints.
-         */
-        get: /**
-         * Does the <img> have 1 or more src.<xxx> responsive inputs
-         * defined... these will be mapped to activated breakpoints.
-         * @return {?}
-         */
-        function () {
-            return Object.keys(this._inputMap).length > 1;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ImgSrcDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],\n  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],\n  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]\n"
-                },] },
+    DefaultImgSrcDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] },
     ];
-    /** @nocollapse */
-    ImgSrcDirective.ctorParameters = function () { return [
-        { type: core.ElementRef },
-        { type: core$1.MediaMonitor },
-        { type: core$1.StyleUtils },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] }] }
-    ]; };
-    ImgSrcDirective.propDecorators = {
-        srcBase: [{ type: core.Input, args: ['src',] }],
-        srcXs: [{ type: core.Input, args: ['src.xs',] }],
-        srcSm: [{ type: core.Input, args: ['src.sm',] }],
-        srcMd: [{ type: core.Input, args: ['src.md',] }],
-        srcLg: [{ type: core.Input, args: ['src.lg',] }],
-        srcXl: [{ type: core.Input, args: ['src.xl',] }],
-        srcLtSm: [{ type: core.Input, args: ['src.lt-sm',] }],
-        srcLtMd: [{ type: core.Input, args: ['src.lt-md',] }],
-        srcLtLg: [{ type: core.Input, args: ['src.lt-lg',] }],
-        srcLtXl: [{ type: core.Input, args: ['src.lt-xl',] }],
-        srcGtXs: [{ type: core.Input, args: ['src.gt-xs',] }],
-        srcGtSm: [{ type: core.Input, args: ['src.gt-sm',] }],
-        srcGtMd: [{ type: core.Input, args: ['src.gt-md',] }],
-        srcGtLg: [{ type: core.Input, args: ['src.gt-lg',] }]
-    };
-    return ImgSrcDirective;
-}(core$1.BaseDirective));
+    return DefaultImgSrcDirective;
+}(ImgSrcDirective));
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * Directive to add responsive support for ngClass.
- * This maintains the core functionality of 'ngClass' and adds responsive API
- * Note: this class is a no-op when rendered on the server
- */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
-    /* tslint:enable */
-    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer, _ngClassInstance, _styler) {
-        var _this = _super.call(this, monitor, _ngEl, _styler) || this;
-        _this.monitor = monitor;
-        _this._iterableDiffers = _iterableDiffers;
-        _this._keyValueDiffers = _keyValueDiffers;
-        _this._ngEl = _ngEl;
-        _this._renderer = _renderer;
-        _this._ngClassInstance = _ngClassInstance;
-        _this._styler = _styler;
-        _this._base = new core$1.BaseDirectiveAdapter('ngClass', _this.monitor, _this._ngEl, _this._styler);
-        if (!_this._ngClassInstance) {
+    function ClassDirective(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer, ngClassInstance) {
+        var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
+        _this.elementRef = elementRef;
+        _this.styler = styler;
+        _this.marshal = marshal;
+        _this.iterableDiffers = iterableDiffers;
+        _this.keyValueDiffers = keyValueDiffers;
+        _this.renderer = renderer;
+        _this.ngClassInstance = ngClassInstance;
+        _this.DIRECTIVE_KEY = 'ngClass';
+        if (!_this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            _this._ngClassInstance = new common.NgClass(_this._iterableDiffers, _this._keyValueDiffers, _this._ngEl, _this._renderer);
+            _this.ngClassInstance = new common.NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
+        _this.marshal.init(_this.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
         return _this;
     }
-    Object.defineProperty(ClassDirective.prototype, "ngClassBase", {
-        /**
-         * Intercept ngClass assignments so we cache the default classes
-         * which are merged with activated styles or used as fallbacks.
-         * Note: Base ngClass values are applied during ngDoCheck()
-         */
-        set: /**
-         * Intercept ngClass assignments so we cache the default classes
-         * which are merged with activated styles or used as fallbacks.
-         * Note: Base ngClass values are applied during ngDoCheck()
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) {
-            /** @type {?} */
-            var key = 'ngClass';
-            this._base.cacheInput(key, val, true);
-            this._ngClassInstance.ngClass = this._base.queryInput(key);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "klazz", {
+    Object.defineProperty(ClassDirective.prototype, "klass", {
         /**
          * Capture class assignments so we cache the default classes
          * which are merged with activated styles and used as fallbacks.
@@ -422,162 +227,27 @@ var ClassDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) {
-            /** @type {?} */
-            var key = 'class';
-            this._base.cacheInput(key, val);
-            this._ngClassInstance.klass = val;
+            this.ngClassInstance.klass = val;
+            this.setValue(val, '');
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClassDirective.prototype, "ngClassXs", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassXl', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassLtSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassLtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassLtLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassLtXl', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassGtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassGtSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassGtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngClassGtLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    ClassDirective.prototype.updateWithValue = /**
+     * @param {?} value
+     * @return {?}
+     */
+    function (value) {
+        this.ngClassInstance.ngClass = value;
+        this.ngClassInstance.ngDoCheck();
+    };
     // ******************************************************************
     // Lifecycle Hooks
     // ******************************************************************
-    /**
-     * For @Input changes on the current mq activation property
-     */
-    /**
-     * For \@Input changes on the current mq activation property
-     * @param {?} changes
-     * @return {?}
-     */
-    ClassDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        if (this._base.activeKey in changes) {
-            this._ngClassInstance.ngClass = this._base.mqActivation.activatedInput || '';
-        }
-    };
-    /**
-     * @return {?}
-     */
-    ClassDirective.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        this._configureMQListener();
-    };
     /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      */
@@ -590,98 +260,60 @@ var ClassDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._ngClassInstance.ngDoCheck();
+        this.ngClassInstance.ngDoCheck();
     };
-    /**
-     * @return {?}
-     */
-    ClassDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this._base.ngOnDestroy();
-    };
-    // ******************************************************************
-    // Internal Methods
-    // ******************************************************************
-    /**
-     * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers
-     * NOTE: We delegate subsequent activity to the NgClass logic
-     *       Identify the activated input value and update the ngClass iterables...
-     *       Use ngDoCheck() to actually apply the values to the element
-     */
-    /**
-     * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers
-     * NOTE: We delegate subsequent activity to the NgClass logic
-     *       Identify the activated input value and update the ngClass iterables...
-     *       Use ngDoCheck() to actually apply the values to the element
-     * @param {?=} baseKey
-     * @return {?}
-     */
-    ClassDirective.prototype._configureMQListener = /**
-     * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers
-     * NOTE: We delegate subsequent activity to the NgClass logic
-     *       Identify the activated input value and update the ngClass iterables...
-     *       Use ngDoCheck() to actually apply the values to the element
-     * @param {?=} baseKey
-     * @return {?}
-     */
-    function (baseKey) {
-        var _this = this;
-        if (baseKey === void 0) { baseKey = 'ngClass'; }
-        /** @type {?} */
-        var fallbackValue = this._base.queryInput(baseKey);
-        this._base.listenForMediaQueryChanges(baseKey, fallbackValue, function (changes) {
-            _this._ngClassInstance.ngClass = changes.value || '';
-            _this._ngClassInstance.ngDoCheck();
-        });
-    };
-    ClassDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
-                },] },
-    ];
     /** @nocollapse */
     ClassDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
+        { type: core.ElementRef },
+        { type: core$1.StyleUtils },
+        { type: core$1.MediaMarshaller },
         { type: core.IterableDiffers },
         { type: core.KeyValueDiffers },
-        { type: core.ElementRef },
         { type: core.Renderer2 },
-        { type: common.NgClass, decorators: [{ type: core.Optional }, { type: core.Self }] },
-        { type: core$1.StyleUtils }
+        { type: common.NgClass, decorators: [{ type: core.Optional }, { type: core.Self }] }
     ]; };
     ClassDirective.propDecorators = {
-        ngClassBase: [{ type: core.Input, args: ['ngClass',] }],
-        klazz: [{ type: core.Input, args: ['class',] }],
-        ngClassXs: [{ type: core.Input, args: ['ngClass.xs',] }],
-        ngClassSm: [{ type: core.Input, args: ['ngClass.sm',] }],
-        ngClassMd: [{ type: core.Input, args: ['ngClass.md',] }],
-        ngClassLg: [{ type: core.Input, args: ['ngClass.lg',] }],
-        ngClassXl: [{ type: core.Input, args: ['ngClass.xl',] }],
-        ngClassLtSm: [{ type: core.Input, args: ['ngClass.lt-sm',] }],
-        ngClassLtMd: [{ type: core.Input, args: ['ngClass.lt-md',] }],
-        ngClassLtLg: [{ type: core.Input, args: ['ngClass.lt-lg',] }],
-        ngClassLtXl: [{ type: core.Input, args: ['ngClass.lt-xl',] }],
-        ngClassGtXs: [{ type: core.Input, args: ['ngClass.gt-xs',] }],
-        ngClassGtSm: [{ type: core.Input, args: ['ngClass.gt-sm',] }],
-        ngClassGtMd: [{ type: core.Input, args: ['ngClass.gt-md',] }],
-        ngClassGtLg: [{ type: core.Input, args: ['ngClass.gt-lg',] }]
+        klass: [{ type: core.Input, args: ['class',] }]
     };
     return ClassDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
+/** @type {?} */
+var inputs$1 = [
+    'ngClass', 'ngClass.xs', 'ngClass.sm', 'ngClass.md', 'ngClass.lg', 'ngClass.xl',
+    'ngClass.lt-sm', 'ngClass.lt-md', 'ngClass.lt-lg', 'ngClass.lt-xl',
+    'ngClass.gt-xs', 'ngClass.gt-sm', 'ngClass.gt-md', 'ngClass.gt-lg'
+];
+/** @type {?} */
+var selector$1 = "\n  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n";
+/**
+ * Directive to add responsive support for ngClass.
+ * This maintains the core functionality of 'ngClass' and adds responsive API
+ * Note: this class is a no-op when rendered on the server
+ */
+var DefaultClassDirective = /** @class */ (function (_super) {
+    __extends(DefaultClassDirective, _super);
+    function DefaultClassDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$1;
+        return _this;
+    }
+    DefaultClassDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+    ];
+    return DefaultClassDirective;
+}(ClassDirective));
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/** @type {?} */
-var FALSY = ['false', false, 0];
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
+ * @deprecated
+ * \@deletion-target v7.0.0-beta.21
  * @param {?} hide
  * @return {?}
  */
@@ -689,304 +321,88 @@ function negativeOf(hide) {
     return (hide === '') ? false :
         ((hide === 'false') || (hide === 0)) ? true : !hide;
 }
-/**
- * 'show' Layout API directive
- *
- */
+var ShowHideStyleBuilder = /** @class */ (function (_super) {
+    __extends(ShowHideStyleBuilder, _super);
+    function ShowHideStyleBuilder() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * @param {?} show
+     * @param {?} parent
+     * @return {?}
+     */
+    ShowHideStyleBuilder.prototype.buildStyles = /**
+     * @param {?} show
+     * @param {?} parent
+     * @return {?}
+     */
+    function (show, parent) {
+        /** @type {?} */
+        var shouldShow = show === 'true';
+        return { 'display': shouldShow ? parent.display : 'none' };
+    };
+    ShowHideStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    return ShowHideStyleBuilder;
+}(core$1.StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
     __extends(ShowHideDirective, _super);
-    function ShowHideDirective(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded, layoutConfig) {
-        var _this = _super.call(this, monitor, elRef, styleUtils) || this;
-        _this.layout = layout;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
+    function ShowHideDirective(elementRef, styleBuilder, styler, marshal, layoutConfig, platformId, serverModuleLoaded) {
+        var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
+        _this.elementRef = elementRef;
+        _this.styleBuilder = styleBuilder;
+        _this.styler = styler;
+        _this.marshal = marshal;
+        _this.layoutConfig = layoutConfig;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
-        _this.layoutConfig = layoutConfig;
+        _this.DIRECTIVE_KEY = 'show-hide';
         /**
          * Original dom Elements CSS display style
          */
-        _this._display = '';
-        /* tslint:enable */
-        _this._flexChild = null;
+        _this.display = '';
+        _this.hasLayout = false;
+        _this.hasFlexChild = false;
         return _this;
     }
-    Object.defineProperty(ShowHideDirective.prototype, "show", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('show', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hide", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('show', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showXs', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showSm', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showMd', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLg', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showXl', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtSm', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtMd', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtLg', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showLtXl', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtXs', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtSm', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtMd', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._cacheInput('showGtLg', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
     // *********************************************
     // Lifecycle Methods
     // *********************************************
     /**
-     * Override accessor to the current HTMLElement's `display` style
-     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
-     * unless it was already explicitly specified inline or in a CSS stylesheet.
-     */
-    /**
-     * Override accessor to the current HTMLElement's `display` style
-     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
-     * unless it was already explicitly specified inline or in a CSS stylesheet.
      * @return {?}
      */
-    ShowHideDirective.prototype._getDisplayStyle = /**
-     * Override accessor to the current HTMLElement's `display` style
-     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
-     * unless it was already explicitly specified inline or in a CSS stylesheet.
+    ShowHideDirective.prototype.ngAfterViewInit = /**
      * @return {?}
      */
     function () {
-        return (this.layout || (this._flexChild && this.layoutConfig.addFlexToParent)) ?
-            'flex' : _super.prototype._getDisplayStyle.call(this);
+        this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
+        this.marshal.trackValue(this.nativeElement, 'layout')
+            .pipe(operators.takeUntil(this.destroySubject))
+            .subscribe(this.updateWithValue.bind(this));
+        /** @type {?} */
+        var children = Array.from(this.nativeElement.children);
+        for (var i = 0; i < children.length; i++) {
+            if (this.marshal.hasValue(/** @type {?} */ (children[i]), 'flex')) {
+                this.hasFlexChild = true;
+                break;
+            }
+        }
+        if (DISPLAY_MAP.has(this.nativeElement)) {
+            this.display = /** @type {?} */ ((DISPLAY_MAP.get(this.nativeElement)));
+        }
+        else {
+            this.display = this.getDisplayStyle();
+            DISPLAY_MAP.set(this.nativeElement, this.display);
+        }
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        /** @type {?} */
+        var defaultValue = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
+        if (defaultValue === undefined || defaultValue === '') {
+            this.setValue(true, '');
+        }
+        this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
     };
     /**
      * On changes to any @Input properties...
@@ -1008,207 +424,113 @@ var ShowHideDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function (changes) {
-        if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    ShowHideDirective.prototype.ngOnInit = /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @return {?}
-     */
-    function () {
-        _super.prototype.ngOnInit.call(this);
-    };
-    /**
-     * @return {?}
-     */
-    ShowHideDirective.prototype.ngAfterViewInit = /**
-     * @return {?}
-     */
-    function () {
         var _this = this;
-        if (DISPLAY_MAP.has(this.nativeElement)) {
-            this._display = /** @type {?} */ ((DISPLAY_MAP.get(this.nativeElement)));
-        }
-        else {
-            this._display = this._getDisplayStyle();
-            DISPLAY_MAP.set(this.nativeElement, this._display);
-        }
-        if (this.layout) {
-            /**
-                   * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-                   * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-                   */
-            this._layoutWatcher = this.layout.layout$.subscribe(function () { return _this._updateWithValue(); });
-        }
-        /** @type {?} */
-        var value = this._getDefaultVal('show', true);
-        // Build _mqActivation controller
-        this._listenForMediaQueryChanges('show', value, function (changes) {
-            _this._updateWithValue(changes.value);
+        Object.keys(changes).forEach(function (key) {
+            if (_this.inputs.indexOf(key) !== -1) {
+                /** @type {?} */
+                var inputKey = key.split('.');
+                /** @type {?} */
+                var bp = inputKey[1] || '';
+                /** @type {?} */
+                var inputValue = changes[key].currentValue;
+                /** @type {?} */
+                var shouldShow = inputValue !== '' ?
+                    inputValue !== 0 ? coercion.coerceBooleanProperty(inputValue) : false
+                    : true;
+                if (inputKey[0] === 'fxHide') {
+                    shouldShow = !shouldShow;
+                }
+                _this.setValue(shouldShow, bp);
+            }
         });
-        this._updateWithValue();
-    };
-    /**
-     * @return {?}
-     */
-    ShowHideDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
     };
     // *********************************************
     // Protected methods
     // *********************************************
+    /**
+     * Override accessor to the current HTMLElement's `display` style
+     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+     * unless it was already explicitly specified inline or in a CSS stylesheet.
+     */
+    /**
+     * Override accessor to the current HTMLElement's `display` style
+     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+     * unless it was already explicitly specified inline or in a CSS stylesheet.
+     * @return {?}
+     */
+    ShowHideDirective.prototype.getDisplayStyle = /**
+     * Override accessor to the current HTMLElement's `display` style
+     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+     * unless it was already explicitly specified inline or in a CSS stylesheet.
+     * @return {?}
+     */
+    function () {
+        return (this.hasLayout || (this.hasFlexChild && this.layoutConfig.addFlexToParent)) ?
+            'flex' : this.styler.lookupStyle(this.nativeElement, 'display', true);
+    };
     /** Validate the visibility value and then update the host's inline display style */
     /**
      * Validate the visibility value and then update the host's inline display style
      * @param {?=} value
      * @return {?}
      */
-    ShowHideDirective.prototype._updateWithValue = /**
+    ShowHideDirective.prototype.updateWithValue = /**
      * Validate the visibility value and then update the host's inline display style
      * @param {?=} value
      * @return {?}
      */
     function (value) {
-        value = value || this._getDefaultVal('show', true);
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
+        if (value === void 0) { value = true; }
+        if (value === '') {
+            return;
         }
-        /** @type {?} */
-        var shouldShow = this._validateTruthy(value);
-        this._applyStyleToElement(this._buildCSS(shouldShow));
+        this.addStyles(value ? 'true' : 'false', { display: this.display });
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
     };
-    /** Build the CSS that should be assigned to the element instance */
-    /**
-     * Build the CSS that should be assigned to the element instance
-     * @param {?} show
-     * @return {?}
-     */
-    ShowHideDirective.prototype._buildCSS = /**
-     * Build the CSS that should be assigned to the element instance
-     * @param {?} show
-     * @return {?}
-     */
-    function (show) {
-        return { 'display': show ? this._display : 'none' };
-    };
-    /**  Validate the to be not FALSY */
-    /**
-     * Validate the to be not FALSY
-     * @param {?=} show
-     * @return {?}
-     */
-    ShowHideDirective.prototype._validateTruthy = /**
-     * Validate the to be not FALSY
-     * @param {?=} show
-     * @return {?}
-     */
-    function (show) {
-        if (show === void 0) { show = ''; }
-        return (FALSY.indexOf(show) === -1);
-    };
-    ShowHideDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
-                },] },
-    ];
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
-        { type: flex.LayoutDirective, decorators: [{ type: core.Optional }, { type: core.Self }] },
         { type: core.ElementRef },
+        { type: ShowHideStyleBuilder },
         { type: core$1.StyleUtils },
+        { type: core$1.MediaMarshaller },
+        { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] }] },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] }] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] }] }
+        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] }] }
     ]; };
-    ShowHideDirective.propDecorators = {
-        show: [{ type: core.Input, args: ['fxShow',] }],
-        showXs: [{ type: core.Input, args: ['fxShow.xs',] }],
-        showSm: [{ type: core.Input, args: ['fxShow.sm',] }],
-        showMd: [{ type: core.Input, args: ['fxShow.md',] }],
-        showLg: [{ type: core.Input, args: ['fxShow.lg',] }],
-        showXl: [{ type: core.Input, args: ['fxShow.xl',] }],
-        showLtSm: [{ type: core.Input, args: ['fxShow.lt-sm',] }],
-        showLtMd: [{ type: core.Input, args: ['fxShow.lt-md',] }],
-        showLtLg: [{ type: core.Input, args: ['fxShow.lt-lg',] }],
-        showLtXl: [{ type: core.Input, args: ['fxShow.lt-xl',] }],
-        showGtXs: [{ type: core.Input, args: ['fxShow.gt-xs',] }],
-        showGtSm: [{ type: core.Input, args: ['fxShow.gt-sm',] }],
-        showGtMd: [{ type: core.Input, args: ['fxShow.gt-md',] }],
-        showGtLg: [{ type: core.Input, args: ['fxShow.gt-lg',] }],
-        hide: [{ type: core.Input, args: ['fxHide',] }],
-        hideXs: [{ type: core.Input, args: ['fxHide.xs',] }],
-        hideSm: [{ type: core.Input, args: ['fxHide.sm',] }],
-        hideMd: [{ type: core.Input, args: ['fxHide.md',] }],
-        hideLg: [{ type: core.Input, args: ['fxHide.lg',] }],
-        hideXl: [{ type: core.Input, args: ['fxHide.xl',] }],
-        hideLtSm: [{ type: core.Input, args: ['fxHide.lt-sm',] }],
-        hideLtMd: [{ type: core.Input, args: ['fxHide.lt-md',] }],
-        hideLtLg: [{ type: core.Input, args: ['fxHide.lt-lg',] }],
-        hideLtXl: [{ type: core.Input, args: ['fxHide.lt-xl',] }],
-        hideGtXs: [{ type: core.Input, args: ['fxHide.gt-xs',] }],
-        hideGtSm: [{ type: core.Input, args: ['fxHide.gt-sm',] }],
-        hideGtMd: [{ type: core.Input, args: ['fxHide.gt-md',] }],
-        hideGtLg: [{ type: core.Input, args: ['fxHide.gt-lg',] }],
-        _flexChild: [{ type: core.ViewChild, args: [flex.FlexDirective,] }]
-    };
     return ShowHideDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
 /** @type {?} */
 var DISPLAY_MAP = new WeakMap();
-
+/** @type {?} */
+var inputs$2 = [
+    'fxShow',
+    'fxShow.xs', 'fxShow.sm', 'fxShow.md', 'fxShow.lg', 'fxShow.xl',
+    'fxShow.lt-sm', 'fxShow.lt-md', 'fxShow.lt-lg', 'fxShow.lt-xl',
+    'fxShow.gt-xs', 'fxShow.gt-sm', 'fxShow.gt-md', 'fxShow.gt-lg',
+    'fxHide',
+    'fxHide.xs', 'fxHide.sm', 'fxHide.md', 'fxHide.lg', 'fxHide.xl',
+    'fxHide.lt-sm', 'fxHide.lt-md', 'fxHide.lt-lg', 'fxHide.lt-xl',
+    'fxHide.gt-xs', 'fxHide.gt-sm', 'fxHide.gt-md', 'fxHide.gt-lg'
+];
+/** @type {?} */
+var selector$2 = "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n";
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * 'show' Layout API directive
  */
-/**
- * Extends an object with the *enumerable* and *own* properties of one or more source objects,
- * similar to Object.assign.
- *
- * @param {?} dest The object which will have properties copied to it.
- * @param {...?} sources The source objects from which properties will be copied.
- * @return {?}
- */
-function extendObject(dest) {
-    var sources = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        sources[_i - 1] = arguments[_i];
+var DefaultShowHideDirective = /** @class */ (function (_super) {
+    __extends(DefaultShowHideDirective, _super);
+    function DefaultShowHideDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$2;
+        return _this;
     }
-    if (dest == null) {
-        throw TypeError('Cannot convert undefined or null to object');
-    }
-    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
-        var source = sources_1[_a];
-        if (source != null) {
-            for (var key in source) {
-                if (source.hasOwnProperty(key)) {
-                    dest[key] = source[key];
-                }
-            }
-        }
-    }
-    return dest;
-}
+    DefaultShowHideDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$2, inputs: inputs$2 },] },
+    ];
+    return DefaultShowHideDirective;
+}(ShowHideDirective));
 
 /**
  * @fileoverview added by tsickle
@@ -1324,278 +646,44 @@ function keyValuesToMap(map, entry) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * Directive to add responsive support for ngStyle.
- *
- */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    /* tslint:enable */
-    /**
-     *  Constructor for the ngStyle subclass; which adds selectors and
-     *  a MediaQuery Activation Adapter
-     */
-    function StyleDirective(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance, _styler) {
-        var _this = _super.call(this, monitor, _ngEl, _styler) || this;
-        _this.monitor = monitor;
-        _this._sanitizer = _sanitizer;
-        _this._ngEl = _ngEl;
-        _this._renderer = _renderer;
-        _this._differs = _differs;
-        _this._ngStyleInstance = _ngStyleInstance;
-        _this._styler = _styler;
-        _this._base = new core$1.BaseDirectiveAdapter('ngStyle', _this.monitor, _this._ngEl, _this._styler);
-        if (!_this._ngStyleInstance) {
+    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance) {
+        var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
+        _this.elementRef = elementRef;
+        _this.styler = styler;
+        _this.marshal = marshal;
+        _this.keyValueDiffers = keyValueDiffers;
+        _this.renderer = renderer;
+        _this.sanitizer = sanitizer;
+        _this.ngStyleInstance = ngStyleInstance;
+        _this.DIRECTIVE_KEY = 'ngStyle';
+        if (!_this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            _this._ngStyleInstance = new common.NgStyle(_this._differs, _this._ngEl, _this._renderer);
+            _this.ngStyleInstance = new common.NgStyle(_this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
-        _this._buildCacheInterceptor();
-        _this._fallbackToStyle();
+        _this.marshal.init(_this.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.setValue(_this.nativeElement.getAttribute('style') || '', '');
         return _this;
     }
-    Object.defineProperty(StyleDirective.prototype, "ngStyleBase", {
-        /**
-         * Intercept ngStyle assignments so we cache the default styles
-         * which are merged with activated styles or used as fallbacks.
-         */
-        set: /**
-         * Intercept ngStyle assignments so we cache the default styles
-         * which are merged with activated styles or used as fallbacks.
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) {
-            /** @type {?} */
-            var key = 'ngStyle';
-            this._base.cacheInput(key, val, true); // convert val to hashmap
-            this._ngStyleInstance.ngStyle = this._base.queryInput(key);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleXs", {
-        /* tslint:disable */
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleXl', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleLtXl", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleLtXl', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtXs", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtSm", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtMd", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtLg", {
-        set: /**
-         * @param {?} val
-         * @return {?}
-         */
-        function (val) { this._base.cacheInput('ngStyleGtLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    // ******************************************************************
-    // Lifecycle Hooks
-    // ******************************************************************
-    /** For @Input changes on the current mq activation property */
     /**
-     * For \@Input changes on the current mq activation property
-     * @param {?} changes
+     * @param {?} value
      * @return {?}
      */
-    StyleDirective.prototype.ngOnChanges = /**
-     * For \@Input changes on the current mq activation property
-     * @param {?} changes
+    StyleDirective.prototype.updateWithValue = /**
+     * @param {?} value
      * @return {?}
      */
-    function (changes) {
-        if (this._base.activeKey in changes) {
-            this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
-        }
-    };
-    /**
-     * @return {?}
-     */
-    StyleDirective.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
-        this._configureMQListener();
-    };
-    /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
-    /**
-     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-     * @return {?}
-     */
-    StyleDirective.prototype.ngDoCheck = /**
-     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-     * @return {?}
-     */
-    function () {
-        this._ngStyleInstance.ngDoCheck();
-    };
-    /**
-     * @return {?}
-     */
-    StyleDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
-        this._base.ngOnDestroy();
-    };
-    // ******************************************************************
-    // Internal Methods
-    // ******************************************************************
-    /**
-     * Build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    /**
-     * Build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @param {?=} baseKey
-     * @return {?}
-     */
-    StyleDirective.prototype._configureMQListener = /**
-     * Build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     * @param {?=} baseKey
-     * @return {?}
-     */
-    function (baseKey) {
-        var _this = this;
-        if (baseKey === void 0) { baseKey = 'ngStyle'; }
+    function (value) {
         /** @type {?} */
-        var fallbackValue = this._base.queryInput(baseKey);
-        this._base.listenForMediaQueryChanges(baseKey, fallbackValue, function (changes) {
-            _this._ngStyleInstance.ngStyle = changes.value || '';
-            _this._ngStyleInstance.ngDoCheck();
-        });
-    };
-    // ************************************************************************
-    // Private Internal Methods
-    // ************************************************************************
-    /** Build intercept to convert raw strings to ngStyleMap */
-    /**
-     * Build intercept to convert raw strings to ngStyleMap
-     * @return {?}
-     */
-    StyleDirective.prototype._buildCacheInterceptor = /**
-     * Build intercept to convert raw strings to ngStyleMap
-     * @return {?}
-     */
-    function () {
-        var _this = this;
+        var styles = this.buildStyleMap(value);
         /** @type {?} */
-        var cacheInput = this._base.cacheInput.bind(this._base);
-        this._base.cacheInput = function (key, source, cacheRaw, merge) {
-            if (cacheRaw === void 0) { cacheRaw = false; }
-            if (merge === void 0) { merge = true; }
-            /** @type {?} */
-            var styles = _this._buildStyleMap(source);
-            if (merge) {
-                styles = extendObject({}, _this._base.inputMap['ngStyle'], styles);
-            }
-            cacheInput(key, styles, cacheRaw);
-        };
+        var defaultStyles = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
+        /** @type {?} */
+        var fallback = this.buildStyleMap(defaultStyles);
+        this.ngStyleInstance.ngStyle = __assign({}, fallback, styles);
+        this.ngStyleInstance.ngDoCheck();
     };
     /**
      * Convert raw strings to ngStyleMap; which is required by ngStyle
@@ -1611,7 +699,7 @@ var StyleDirective = /** @class */ (function (_super) {
      * @param {?} styles
      * @return {?}
      */
-    StyleDirective.prototype._buildStyleMap = /**
+    StyleDirective.prototype.buildStyleMap = /**
      * Convert raw strings to ngStyleMap; which is required by ngStyle
      * NOTE: Raw string key-value pairs MUST be delimited by `;`
      *       Comma-delimiters are not supported due to complexities of
@@ -1623,8 +711,7 @@ var StyleDirective = /** @class */ (function (_super) {
         var _this = this;
         /** @type {?} */
         var sanitizer = function (val) {
-            // Always safe-guard (aka sanitize) style property values
-            return _this._sanitizer.sanitize(core.SecurityContext.STYLE, val) || '';
+            return _this.sanitizer.sanitize(core.SecurityContext.STYLE, val) || '';
         };
         if (styles) {
             switch (getType(styles)) {
@@ -1634,55 +721,60 @@ var StyleDirective = /** @class */ (function (_super) {
                 default: return buildMapFromSet(styles, sanitizer);
             }
         }
-        return styles;
+        return {};
     };
-    /** Initial lookup of raw 'class' value (if any) */
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
+    /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
     /**
-     * Initial lookup of raw 'class' value (if any)
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
      */
-    StyleDirective.prototype._fallbackToStyle = /**
-     * Initial lookup of raw 'class' value (if any)
+    StyleDirective.prototype.ngDoCheck = /**
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
      */
     function () {
-        if (!this._base.queryInput('ngStyle')) {
-            this.ngStyleBase = this._getAttributeValue('style') || '';
-        }
+        this.ngStyleInstance.ngDoCheck();
     };
-    StyleDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: "\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
-                },] },
-    ];
     /** @nocollapse */
     StyleDirective.ctorParameters = function () { return [
-        { type: core$1.MediaMonitor },
-        { type: platformBrowser.DomSanitizer },
         { type: core.ElementRef },
-        { type: core.Renderer2 },
+        { type: core$1.StyleUtils },
+        { type: core$1.MediaMarshaller },
         { type: core.KeyValueDiffers },
-        { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] },
-        { type: core$1.StyleUtils }
+        { type: core.Renderer2 },
+        { type: platformBrowser.DomSanitizer },
+        { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] }
     ]; };
-    StyleDirective.propDecorators = {
-        ngStyleBase: [{ type: core.Input, args: ['ngStyle',] }],
-        ngStyleXs: [{ type: core.Input, args: ['ngStyle.xs',] }],
-        ngStyleSm: [{ type: core.Input, args: ['ngStyle.sm',] }],
-        ngStyleMd: [{ type: core.Input, args: ['ngStyle.md',] }],
-        ngStyleLg: [{ type: core.Input, args: ['ngStyle.lg',] }],
-        ngStyleXl: [{ type: core.Input, args: ['ngStyle.xl',] }],
-        ngStyleLtSm: [{ type: core.Input, args: ['ngStyle.lt-sm',] }],
-        ngStyleLtMd: [{ type: core.Input, args: ['ngStyle.lt-md',] }],
-        ngStyleLtLg: [{ type: core.Input, args: ['ngStyle.lt-lg',] }],
-        ngStyleLtXl: [{ type: core.Input, args: ['ngStyle.lt-xl',] }],
-        ngStyleGtXs: [{ type: core.Input, args: ['ngStyle.gt-xs',] }],
-        ngStyleGtSm: [{ type: core.Input, args: ['ngStyle.gt-sm',] }],
-        ngStyleGtMd: [{ type: core.Input, args: ['ngStyle.gt-md',] }],
-        ngStyleGtLg: [{ type: core.Input, args: ['ngStyle.gt-lg',] }]
-    };
     return StyleDirective;
-}(core$1.BaseDirective));
+}(core$1.BaseDirective2));
+/** @type {?} */
+var inputs$3 = [
+    'ngStyle',
+    'ngStyle.xs', 'ngStyle.sm', 'ngStyle.md', 'ngStyle.lg', 'ngStyle.xl',
+    'ngStyle.lt-sm', 'ngStyle.lt-md', 'ngStyle.lt-lg', 'ngStyle.lt-xl',
+    'ngStyle.gt-xs', 'ngStyle.gt-sm', 'ngStyle.gt-md', 'ngStyle.gt-lg'
+];
+/** @type {?} */
+var selector$3 = "\n  [ngStyle],\n  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n";
+/**
+ * Directive to add responsive support for ngStyle.
+ *
+ */
+var DefaultStyleDirective = /** @class */ (function (_super) {
+    __extends(DefaultStyleDirective, _super);
+    function DefaultStyleDirective() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.inputs = inputs$3;
+        return _this;
+    }
+    DefaultStyleDirective.decorators = [
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+    ];
+    return DefaultStyleDirective;
+}(StyleDirective));
 /**
  * Build a styles map from a list of styles, while sanitizing bad values first
  * @param {?} styles
@@ -1710,10 +802,10 @@ function buildMapFromList$1(styles, sanitize) {
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
-    ShowHideDirective,
-    ClassDirective,
-    StyleDirective,
-    ImgSrcDirective
+    DefaultShowHideDirective,
+    DefaultClassDirective,
+    DefaultStyleDirective,
+    DefaultImgSrcDirective
 ];
 /**
  * *****************************************************************
@@ -1735,10 +827,16 @@ var ExtendedModule = /** @class */ (function () {
 
 exports.ExtendedModule = ExtendedModule;
 exports.ClassDirective = ClassDirective;
+exports.DefaultClassDirective = DefaultClassDirective;
+exports.ImgSrcStyleBuilder = ImgSrcStyleBuilder;
 exports.ImgSrcDirective = ImgSrcDirective;
+exports.DefaultImgSrcDirective = DefaultImgSrcDirective;
 exports.negativeOf = negativeOf;
+exports.ShowHideStyleBuilder = ShowHideStyleBuilder;
 exports.ShowHideDirective = ShowHideDirective;
+exports.DefaultShowHideDirective = DefaultShowHideDirective;
 exports.StyleDirective = StyleDirective;
+exports.DefaultStyleDirective = DefaultStyleDirective;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

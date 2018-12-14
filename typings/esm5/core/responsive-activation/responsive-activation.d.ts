@@ -1,10 +1,18 @@
 import { MediaChange, MediaQuerySubscriber } from '../media-change';
 import { BreakPoint } from '../breakpoints/break-point';
 import { MediaMonitor } from '../media-monitor/media-monitor';
+/**
+ * @deprecated
+ * @deletion-target v7.0.0-beta.21
+ */
 export interface BreakPointX extends BreakPoint {
     key: string;
     baseKey: string;
 }
+/**
+ * @deprecated
+ * @deletion-target v7.0.0-beta.21
+ */
 export declare class KeyOptions {
     baseKey: string;
     defaultValue: string | number | boolean;
@@ -26,6 +34,8 @@ export declare class KeyOptions {
  *   MediaQueryServices.
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
+ * @deprecated
+ * @deletion-target v7.0.0-beta.21
  */
 export declare class ResponsiveActivation {
     private _options;
