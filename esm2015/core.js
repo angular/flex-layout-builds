@@ -3157,6 +3157,13 @@ class MediaMarshaller {
         const watcherMap = this.watcherMap.get(element);
         if (watcherMap) {
             watcherMap.forEach(s => s.unsubscribe());
+            this.watcherMap.delete(element);
+        }
+        /** @type {?} */
+        const elementMap = this.elementMap.get(element);
+        if (elementMap) {
+            elementMap.forEach((_, s) => elementMap.delete(s));
+            this.elementMap.delete(element);
         }
     }
     /**

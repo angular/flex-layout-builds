@@ -4319,6 +4319,13 @@ var MediaMarshaller = /** @class */ (function () {
         var watcherMap = this.watcherMap.get(element);
         if (watcherMap) {
             watcherMap.forEach(function (s) { return s.unsubscribe(); });
+            this.watcherMap.delete(element);
+        }
+        /** @type {?} */
+        var elementMap = this.elementMap.get(element);
+        if (elementMap) {
+            elementMap.forEach(function (_, s) { return elementMap.delete(s); });
+            this.elementMap.delete(element);
         }
     };
     /**
