@@ -2578,31 +2578,31 @@ var MockMatchMedia = /** @class */ (function (_super) {
             // Simulate activation of overlapping lt-<XXX> ranges
             switch (alias) {
                 case 'lg':
-                    this._activateByAlias('lt-xl', true);
+                    this._activateByAlias('lt-xl');
                     break;
                 case 'md':
-                    this._activateByAlias('lt-xl, lt-lg', true);
+                    this._activateByAlias('lt-xl, lt-lg');
                     break;
                 case 'sm':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md', true);
+                    this._activateByAlias('lt-xl, lt-lg, lt-md');
                     break;
                 case 'xs':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm', true);
+                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
             // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
-                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
                     break;
                 case 'lg':
-                    this._activateByAlias('gt-md, gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-md, gt-sm, gt-xs');
                     break;
                 case 'md':
-                    this._activateByAlias('gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-sm, gt-xs');
                     break;
                 case 'sm':
-                    this._activateByAlias('gt-xs', true);
+                    this._activateByAlias('gt-xs');
                     break;
             }
         }
@@ -2612,43 +2612,34 @@ var MockMatchMedia = /** @class */ (function (_super) {
     /**
      *
      * @param {?} aliases
-     * @param {?=} useOverlaps
      * @return {?}
      */
     MockMatchMedia.prototype._activateByAlias = /**
      *
      * @param {?} aliases
-     * @param {?=} useOverlaps
      * @return {?}
      */
-    function (aliases, useOverlaps) {
+    function (aliases) {
         var _this = this;
-        if (useOverlaps === void 0) { useOverlaps = false; }
         /** @type {?} */
         var activate = function (alias) {
             /** @type {?} */
             var bp = _this._breakpoints.findByAlias(alias);
-            _this._activateByQuery(bp ? bp.mediaQuery : alias, useOverlaps);
+            _this._activateByQuery(bp ? bp.mediaQuery : alias);
         };
         aliases.split(',').forEach(function (alias) { return activate(alias.trim()); });
     };
     /**
      *
      * @param {?} mediaQuery
-     * @param {?=} useOverlaps
      * @return {?}
      */
     MockMatchMedia.prototype._activateByQuery = /**
      *
      * @param {?} mediaQuery
-     * @param {?=} useOverlaps
      * @return {?}
      */
-    function (mediaQuery, useOverlaps) {
-        if (useOverlaps === void 0) { useOverlaps = false; }
-        if (useOverlaps) {
-            this._registerMediaQuery(mediaQuery);
-        }
+    function (mediaQuery) {
         /** @type {?} */
         var mql = this._registry.get(mediaQuery);
         /** @type {?} */
@@ -4011,6 +4002,7 @@ var MediaMarshaller = /** @class */ (function () {
         this.watcherMap = new WeakMap();
         this.builderMap = new WeakMap();
         this.subject = new Subject();
+        this.registerBreakpoints();
         this.matchMedia.observe().subscribe(this.activate.bind(this));
     }
     Object.defineProperty(MediaMarshaller.prototype, "activatedBreakpoint", {
@@ -4333,6 +4325,17 @@ var MediaMarshaller = /** @class */ (function () {
             }
         }
         return bpMap.get('');
+    };
+    /**
+     * @return {?}
+     */
+    MediaMarshaller.prototype.registerBreakpoints = /**
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this.matchMedia.registerQuery(queries);
     };
     MediaMarshaller.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
