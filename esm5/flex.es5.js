@@ -169,7 +169,7 @@ var LayoutDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout';
         _this.styleCache = layoutCache;
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
+        _this.init();
         return _this;
     }
     /** @nocollapse */
@@ -304,8 +304,8 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         _this.layout = 'row'; // default flex-direction
         _this.DIRECTIVE_KEY = 'layout-gap';
         _this.observerSubject = new Subject();
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this), [_this.directionality.change,
-            _this.observerSubject.asObservable()]);
+        _this.observables = [_this.directionality.change, _this.observerSubject.asObservable()];
+        _this.init();
         _this.marshal.trackValue(_this.nativeElement, 'layout')
             .pipe(takeUntil(_this.destroySubject))
             .subscribe(_this.onLayoutChange.bind(_this));
@@ -819,7 +819,7 @@ var FlexDirective = /** @class */ (function (_super) {
         _this.wrap = false;
         _this.flexGrow = '1';
         _this.flexShrink = '1';
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateStyle.bind(_this));
+        _this.init();
         if (_this.parentElement) {
             _this.marshal.trackValue(_this.parentElement, 'layout')
                 .pipe(takeUntil(_this.destroySubject))
@@ -890,7 +890,7 @@ var FlexDirective = /** @class */ (function (_super) {
      * @param {?} value
      * @return {?}
      */
-    FlexDirective.prototype.updateStyle = /**
+    FlexDirective.prototype.updateWithValue = /**
      * Input to this is exclusively the basis input value
      * @param {?} value
      * @return {?}
@@ -992,9 +992,7 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
      * @return {?}
      */
     function (value) {
-        /** @type {?} */
-        var val = parseInt((value || '0'), 10);
-        return { order: isNaN(val) ? 0 : val };
+        return { order: (value && parseInt(value, 10)) || '' };
     };
     FlexOrderStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
@@ -1029,7 +1027,7 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-order';
         _this.styleCache = flexOrderCache;
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
+        _this.init();
         return _this;
     }
     /** @nocollapse */
@@ -1126,7 +1124,8 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.styler = styler;
         _this.DIRECTIVE_KEY = 'flex-offset';
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this), [_this.directionality.change]);
+        _this.observables = [_this.directionality.change];
+        _this.init();
         if (_this.parentElement) {
             _this.marshal.trackValue(_this.parentElement, 'layout-gap')
                 .pipe(takeUntil(_this.destroySubject))
@@ -1275,7 +1274,7 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-align';
         _this.styleCache = flexAlignCache;
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
+        _this.init();
         return _this;
     }
     /** @nocollapse */
@@ -1494,7 +1493,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout-align';
         _this.layout = 'row';
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         _this.marshal.trackValue(_this.nativeElement, 'layout')
             .pipe(takeUntil(_this.destroySubject))
             .subscribe(_this.onLayoutChange.bind(_this));

@@ -49,7 +49,7 @@ class ImgSrcDirective extends BaseDirective2 {
         this.DIRECTIVE_KEY = 'img-src';
         this.defaultSrc = '';
         this.styleCache = imgSrcCache;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateSrcFor.bind(this));
+        this.init();
         this.setValue('', this.nativeElement.getAttribute('src') || '');
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.setAttribute('src', '');
@@ -72,7 +72,7 @@ class ImgSrcDirective extends BaseDirective2 {
      * keys are present do we actually call `setAttribute()`
      * @return {?}
      */
-    updateSrcFor() {
+    updateWithValue() {
         /** @type {?} */
         let url = this.activatedValue || this.defaultSrc;
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
@@ -157,7 +157,7 @@ class ClassDirective extends BaseDirective2 {
             // the same host element; since the responsive variations may be defined...
             this.ngClassInstance = new NgClass(this.iterableDiffers, this.keyValueDiffers, this.elementRef, this.renderer);
         }
-        this.marshal.init(this.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * Capture class assignments so we cache the default classes
@@ -235,7 +235,7 @@ DefaultClassDirective.decorators = [
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  * @param {?} hide
  * @return {?}
  */
@@ -309,7 +309,7 @@ class ShowHideDirective extends BaseDirective2 {
             this.display = this.getDisplayStyle();
             DISPLAY_MAP.set(this.nativeElement, this.display);
         }
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
         /** @type {?} */
         const defaultValue = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
         if (defaultValue === undefined || defaultValue === '') {
@@ -556,7 +556,7 @@ class StyleDirective extends BaseDirective2 {
             // defined on the same host element; since the responsive variations may be defined...
             this.ngStyleInstance = new NgStyle(this.keyValueDiffers, this.elementRef, this.renderer);
         }
-        this.marshal.init(this.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
         this.setValue(this.nativeElement.getAttribute('style') || '', '');
     }
     /**

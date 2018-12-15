@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { StyleDefinition, StyleUtils } from '../style-utils/style-utils';
 import { StyleBuilder } from '../style-builder/style-builder';
 import { MediaMarshaller } from '../media-marshaller/media-marshaller';
@@ -18,6 +18,9 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     protected DIRECTIVE_KEY: string;
     protected inputs: string[];
     protected destroySubject: Subject<void>;
+    protected observables: Observable<any>[];
+    /** The least recently used styles for the builder */
+    protected lru: StyleDefinition;
     /** Access to host element's parent DOM node */
     protected readonly parentElement: HTMLElement | null;
     /** Access to the HTMLElement for the directive */
@@ -30,8 +33,11 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     /** For @Input changes */
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
+    protected init(): void;
     /** Add styles to the element using predefined style builder */
     protected addStyles(input: string, parent?: Object): void;
+    /** Remove generated styles from an element using predefined style builder */
+    protected clearStyles(): void;
     protected triggerUpdate(): void;
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -43,4 +49,5 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     /** Applies styles given via string pair or object map to the directive element */
     protected applyStyleToElement(style: StyleDefinition, value?: string | number, element?: HTMLElement): void;
     protected setValue(val: any, bp: string): void;
+    protected updateWithValue(input: string): void;
 }

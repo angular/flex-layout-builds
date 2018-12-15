@@ -31,7 +31,7 @@ export declare class ImgSrcDirective extends BaseDirective2 {
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
      */
-    protected updateSrcFor(): void;
+    protected updateWithValue(): void;
     protected styleCache: Map<string, StyleDefinition>;
 }
 /**

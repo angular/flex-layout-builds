@@ -167,7 +167,7 @@ class LayoutDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'layout';
         this.styleCache = layoutCache;
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+        this.init();
     }
 }
 /** @nocollapse */
@@ -298,8 +298,8 @@ class LayoutGapDirective extends BaseDirective2 {
         this.layout = 'row'; // default flex-direction
         this.DIRECTIVE_KEY = 'layout-gap';
         this.observerSubject = new Subject();
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this), [this.directionality.change,
-            this.observerSubject.asObservable()]);
+        this.observables = [this.directionality.change, this.observerSubject.asObservable()];
+        this.init();
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(takeUntil(this.destroySubject))
             .subscribe(this.onLayoutChange.bind(this));
@@ -757,7 +757,7 @@ class FlexDirective extends BaseDirective2 {
         this.wrap = false;
         this.flexGrow = '1';
         this.flexShrink = '1';
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateStyle.bind(this));
+        this.init();
         if (this.parentElement) {
             this.marshal.trackValue(this.parentElement, 'layout')
                 .pipe(takeUntil(this.destroySubject))
@@ -808,7 +808,7 @@ class FlexDirective extends BaseDirective2 {
      * @param {?} value
      * @return {?}
      */
-    updateStyle(value) {
+    updateWithValue(value) {
         /** @type {?} */
         const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
         if (!this.direction) {
@@ -888,9 +888,7 @@ class FlexOrderStyleBuilder extends StyleBuilder {
      * @return {?}
      */
     buildStyles(value) {
-        /** @type {?} */
-        const val = parseInt((value || '0'), 10);
-        return { order: isNaN(val) ? 0 : val };
+        return { order: (value && parseInt(value, 10)) || '' };
     }
 }
 FlexOrderStyleBuilder.decorators = [
@@ -934,7 +932,7 @@ class FlexOrderDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex-order';
         this.styleCache = flexOrderCache;
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+        this.init();
     }
 }
 /** @nocollapse */
@@ -1026,7 +1024,8 @@ class FlexOffsetDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.styler = styler;
         this.DIRECTIVE_KEY = 'flex-offset';
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this), [this.directionality.change]);
+        this.observables = [this.directionality.change];
+        this.init();
         if (this.parentElement) {
             this.marshal.trackValue(this.parentElement, 'layout-gap')
                 .pipe(takeUntil(this.destroySubject))
@@ -1155,7 +1154,7 @@ class FlexAlignDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex-align';
         this.styleCache = flexAlignCache;
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+        this.init();
     }
 }
 /** @nocollapse */
@@ -1363,7 +1362,7 @@ class LayoutAlignDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'layout-align';
         this.layout = 'row';
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(takeUntil(this.destroySubject))
             .subscribe(this.onLayoutChange.bind(this));

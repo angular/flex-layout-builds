@@ -645,7 +645,7 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  * @abstract
  */
 class ObservableMedia {
@@ -692,7 +692,7 @@ class ObservableMedia {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  */
 class MediaService {
     /**
@@ -811,7 +811,7 @@ MediaService.ctorParameters = () => [
 /** @nocollapse */ MediaService.ngInjectableDef = defineInjectable({ factory: function MediaService_Factory() { return new MediaService(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaService, providedIn: "root" });
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
   @type {?} */
 const ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1021,7 +1021,7 @@ function buildCSS(direction, wrap = null, inline = false) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  */
 class KeyOptions {
     /**
@@ -1047,7 +1047,7 @@ class KeyOptions {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  */
 class ResponsiveActivation {
     /**
@@ -1232,7 +1232,7 @@ class ResponsiveActivation {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  * @abstract
  */
 class BaseDirective {
@@ -1519,7 +1519,7 @@ class BaseDirective {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  */
 class BaseDirectiveAdapter extends BaseDirective {
     /**
@@ -1687,6 +1687,11 @@ class BaseDirective2 {
         this.DIRECTIVE_KEY = '';
         this.inputs = [];
         this.destroySubject = new Subject();
+        this.observables = [];
+        /**
+         * The least recently used styles for the builder
+         */
+        this.lru = {};
         /**
          * Cache map for style computation
          */
@@ -1745,6 +1750,12 @@ class BaseDirective2 {
         this.marshal.releaseElement(this.nativeElement);
     }
     /**
+     * @return {?}
+     */
+    init() {
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this), this.clearStyles.bind(this), this.observables);
+    }
+    /**
      * Add styles to the element using predefined style builder
      * @param {?} input
      * @param {?=} parent
@@ -1763,8 +1774,20 @@ class BaseDirective2 {
                 this.styleCache.set(input, genStyles);
             }
         }
+        this.lru = Object.assign({}, genStyles);
         this.applyStyleToElement(genStyles);
         builder.sideEffect(input, genStyles, parent);
+    }
+    /**
+     * Remove generated styles from an element using predefined style builder
+     * @return {?}
+     */
+    clearStyles() {
+        Object.keys(this.lru).forEach(k => {
+            this.lru[k] = '';
+        });
+        this.applyStyleToElement(this.lru);
+        this.lru = {};
     }
     /**
      * @return {?}
@@ -1814,6 +1837,13 @@ class BaseDirective2 {
      */
     setValue(val, bp) {
         this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, val, bp);
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    updateWithValue(input) {
+        this.addStyles(input);
     }
 }
 
@@ -2344,7 +2374,7 @@ ServerMatchMedia.ctorParameters = () => [
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * \@deletion-target v7.0.0-beta.21-5e15fa8
  */
 class MediaMonitor {
     /**
@@ -2972,8 +3002,10 @@ class MediaMarshaller {
         this.breakpoints = breakpoints;
         this.activatedBreakpoints = [];
         this.elementMap = new Map();
+        this.elementKeyMap = new WeakMap();
         this.watcherMap = new WeakMap();
         this.builderMap = new WeakMap();
+        this.clearBuilderMap = new WeakMap();
         this.subject = new Subject();
         this.registerBreakpoints();
         this.matchMedia.observe().subscribe(this.activate.bind(this));
@@ -3007,19 +3039,20 @@ class MediaMarshaller {
      * @param {?} element
      * @param {?} key
      * @param {?=} builder optional so that custom bp directives don't have to re-provide this
+     * @param {?=} clearBuilder optional so that custom bp directives don't have to re-provide this
      * @param {?=} observables
      * @return {?}
      */
-    init(element, key, builder, observables = []) {
-        if (builder) {
-            /** @type {?} */
-            let builders = this.builderMap.get(element);
-            if (!builders) {
-                builders = new Map();
-                this.builderMap.set(element, builders);
-            }
-            builders.set(key, builder);
+    init(element, key, builder, clearBuilder, observables = []) {
+        /** @type {?} */
+        let keyMap = this.elementKeyMap.get(element);
+        if (!keyMap) {
+            keyMap = new Set();
+            this.elementKeyMap.set(element, keyMap);
         }
+        keyMap.add(key);
+        initBuilderMap(this.builderMap, element, key, builder);
+        initBuilderMap(this.clearBuilderMap, element, key, clearBuilder);
         if (observables) {
             /** @type {?} */
             let watchers = this.watcherMap.get(element);
@@ -3052,7 +3085,7 @@ class MediaMarshaller {
         const bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap);
+            const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
                 /** @type {?} */
                 const value = values.get(key);
@@ -3072,7 +3105,7 @@ class MediaMarshaller {
         const bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            const values = this.getFallback(bpMap);
+            const values = this.getFallback(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -3119,10 +3152,45 @@ class MediaMarshaller {
         this.elementMap.forEach((bpMap, el) => {
             /** @type {?} */
             const valueMap = this.getFallback(bpMap);
+            /** @type {?} */
+            const keyMap = new Set(/** @type {?} */ ((this.elementKeyMap.get(el))));
             if (valueMap) {
-                valueMap.forEach((v, k) => this.updateElement(el, k, v));
+                valueMap.forEach((v, k) => {
+                    this.updateElement(el, k, v);
+                    keyMap.delete(k);
+                });
             }
+            keyMap.forEach(k => {
+                /** @type {?} */
+                const fallbackMap = this.getFallback(bpMap, k);
+                if (fallbackMap) {
+                    /** @type {?} */
+                    const value = fallbackMap.get(k);
+                    this.updateElement(el, k, value);
+                }
+                else {
+                    this.clearElement(el, k);
+                }
+            });
         });
+    }
+    /**
+     * clear the styles for a given element
+     * @param {?} element
+     * @param {?} key
+     * @return {?}
+     */
+    clearElement(element, key) {
+        /** @type {?} */
+        const builders = this.clearBuilderMap.get(element);
+        if (builders) {
+            /** @type {?} */
+            const builder = builders.get(key);
+            if (builder) {
+                builder();
+                this.subject.next({ element, key, value: '' });
+            }
+        }
     }
     /**
      * update a given element with the activated values for a given key
@@ -3173,16 +3241,19 @@ class MediaMarshaller {
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
+     * @param {?=} key
      * @return {?}
      */
-    getFallback(bpMap) {
+    getFallback(bpMap, key) {
         for (let i = 0; i < this.activatedBreakpoints.length; i++) {
             /** @type {?} */
             const activatedBp = this.activatedBreakpoints[i];
             /** @type {?} */
             const valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                return valueMap;
+                if (key === undefined || valueMap.has(key)) {
+                    return valueMap;
+                }
             }
         }
         return bpMap.get('');
@@ -3205,6 +3276,24 @@ MediaMarshaller.ctorParameters = () => [
     { type: BreakPointRegistry }
 ];
 /** @nocollapse */ MediaMarshaller.ngInjectableDef = defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(inject(MatchMedia), inject(BreakPointRegistry)); }, token: MediaMarshaller, providedIn: "root" });
+/**
+ * @param {?} map
+ * @param {?} element
+ * @param {?} key
+ * @param {?=} input
+ * @return {?}
+ */
+function initBuilderMap(map$$1, element, key, input) {
+    if (input !== undefined) {
+        /** @type {?} */
+        let oldMap = map$$1.get(element);
+        if (!oldMap) {
+            oldMap = new Map();
+            map$$1.set(element, oldMap);
+        }
+        oldMap.set(key, input);
+    }
+}
 
 /**
  * @fileoverview added by tsickle

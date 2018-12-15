@@ -17,8 +17,10 @@ export declare class MediaMarshaller {
     protected breakpoints: BreakPointRegistry;
     private activatedBreakpoints;
     private elementMap;
+    private elementKeyMap;
     private watcherMap;
     private builderMap;
+    private clearBuilderMap;
     private subject;
     readonly activatedBreakpoint: string;
     constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry);
@@ -32,9 +34,10 @@ export declare class MediaMarshaller {
      * @param element
      * @param key
      * @param builder optional so that custom bp directives don't have to re-provide this
+     * @param clearBuilder optional so that custom bp directives don't have to re-provide this
      * @param observables
      */
-    init(element: HTMLElement, key: string, builder?: Builder, observables?: Observable<any>[]): void;
+    init(element: HTMLElement, key: string, builder?: Builder, clearBuilder?: Builder, observables?: Observable<any>[]): void;
     /**
      * get the value for an element and key and optionally a given breakpoint
      * @param element
@@ -60,6 +63,12 @@ export declare class MediaMarshaller {
     /** update all styles for all elements on the current breakpoint */
     updateStyles(): void;
     /**
+     * clear the styles for a given element
+     * @param element
+     * @param key
+     */
+    clearElement(element: HTMLElement, key: string): void;
+    /**
      * update a given element with the activated values for a given key
      * @param element
      * @param key
@@ -76,6 +85,7 @@ export declare class MediaMarshaller {
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param bpMap
+     * @param key
      */
     private getFallback;
     private registerBreakpoints;
