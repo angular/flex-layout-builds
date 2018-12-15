@@ -528,8 +528,13 @@ var   /**
  * Class instances emitted [to observers] for each mql notification
  */
 MediaChange = /** @class */ (function () {
-    function MediaChange(matches, mediaQuery, mqAlias, suffix // e.g.   GtSM, Md, GtLg
-    ) {
+    /**
+     * @param matches whether the mediaQuery is currently activated
+     * @param mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
+     * @param mqAlias e.g. gt-sm, md, gt-lg
+     * @param suffix e.g. GtSM, Md, GtLg
+     */
+    function MediaChange(matches, mediaQuery, mqAlias, suffix) {
         if (matches === void 0) { matches = false; }
         if (mediaQuery === void 0) { mediaQuery = 'all'; }
         if (mqAlias === void 0) { mqAlias = ''; }
@@ -540,10 +545,13 @@ MediaChange = /** @class */ (function () {
         this.suffix = suffix;
         this.property = '';
     }
+    /** Create an exact copy of the MediaChange */
     /**
+     * Create an exact copy of the MediaChange
      * @return {?}
      */
     MediaChange.prototype.clone = /**
+     * Create an exact copy of the MediaChange
      * @return {?}
      */
     function () {
@@ -775,13 +783,13 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  * @abstract
  */
 var   /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  * @abstract
  */
 ObservableMedia = /** @class */ (function () {
@@ -831,7 +839,7 @@ ObservableMedia = /** @class */ (function () {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 var MediaService = /** @class */ (function () {
     function MediaService(breakpoints, mediaWatcher) {
@@ -1006,7 +1014,7 @@ var MediaService = /** @class */ (function () {
 }());
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
   @type {?} */
 var ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1248,11 +1256,11 @@ function buildCSS(direction, wrap, inline) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 var   /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 KeyOptions = /** @class */ (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -1274,7 +1282,7 @@ KeyOptions = /** @class */ (function () {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 var   /**
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
@@ -1288,7 +1296,7 @@ var   /**
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 ResponsiveActivation = /** @class */ (function () {
     /**
@@ -1567,13 +1575,13 @@ ResponsiveActivation = /** @class */ (function () {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  * @abstract
  */
 var   /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  * @abstract
  */
 BaseDirective = /** @class */ (function () {
@@ -2023,13 +2031,13 @@ BaseDirective = /** @class */ (function () {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 var   /**
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 BaseDirectiveAdapter = /** @class */ (function (_super) {
     __extends(BaseDirectiveAdapter, _super);
@@ -3216,7 +3224,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-34bd072
  */
 var MediaMonitor = /** @class */ (function () {
     function MediaMonitor(_breakpoints, _matchMedia) {
