@@ -76,8 +76,9 @@ export declare class MediaMarshaller {
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param bpMap
+     * @param key
      */
-    private getFallback;
+    private getFallbackForKey;
     private registerBreakpoints;
 }
 export {};

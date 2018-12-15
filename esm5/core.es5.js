@@ -4122,7 +4122,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap);
+            var values = bp !== undefined ? bpMap.get(bp) : this.getFallbackForKey(bpMap, key);
             if (values) {
                 /** @type {?} */
                 var value = values.get(key);
@@ -4153,7 +4153,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = this.getFallback(bpMap);
+            var values = this.getFallbackForKey(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -4225,7 +4225,7 @@ var MediaMarshaller = /** @class */ (function () {
         var _this = this;
         this.elementMap.forEach(function (bpMap, el) {
             /** @type {?} */
-            var valueMap = _this.getFallback(bpMap);
+            var valueMap = _this.getFallbackForKey(bpMap);
             if (valueMap) {
                 valueMap.forEach(function (v, k) { return _this.updateElement(el, k, v); });
             }
@@ -4307,21 +4307,25 @@ var MediaMarshaller = /** @class */ (function () {
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
+     * @param {?=} key
      * @return {?}
      */
-    MediaMarshaller.prototype.getFallback = /**
+    MediaMarshaller.prototype.getFallbackForKey = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
+     * @param {?=} key
      * @return {?}
      */
-    function (bpMap) {
+    function (bpMap, key) {
         for (var i = 0; i < this.activatedBreakpoints.length; i++) {
             /** @type {?} */
             var activatedBp = this.activatedBreakpoints[i];
             /** @type {?} */
             var valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                return valueMap;
+                if (key === undefined || valueMap.has(key)) {
+                    return valueMap;
+                }
             }
         }
         return bpMap.get('');
