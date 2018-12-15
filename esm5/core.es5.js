@@ -746,13 +746,13 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  * @abstract
  */
 var  /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  * @abstract
  */
 ObservableMedia = /** @class */ (function () {
@@ -802,7 +802,7 @@ ObservableMedia = /** @class */ (function () {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 var MediaService = /** @class */ (function () {
     function MediaService(breakpoints, mediaWatcher) {
@@ -977,7 +977,7 @@ var MediaService = /** @class */ (function () {
 }());
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
   @type {?} */
 var ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1219,11 +1219,11 @@ function buildCSS(direction, wrap, inline) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 var  /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 KeyOptions = /** @class */ (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -1245,7 +1245,7 @@ KeyOptions = /** @class */ (function () {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 var  /**
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
@@ -1259,7 +1259,7 @@ var  /**
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 ResponsiveActivation = /** @class */ (function () {
     /**
@@ -1538,13 +1538,13 @@ ResponsiveActivation = /** @class */ (function () {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  * @abstract
  */
 var  /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  * @abstract
  */
 BaseDirective = /** @class */ (function () {
@@ -1994,13 +1994,13 @@ BaseDirective = /** @class */ (function () {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 var  /**
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 BaseDirectiveAdapter = /** @class */ (function (_super) {
     __extends(BaseDirectiveAdapter, _super);
@@ -3187,7 +3187,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-b8c040b
+ * \@deletion-target v7.0.0-beta.21-676ddf7
  */
 var MediaMonitor = /** @class */ (function () {
     function MediaMonitor(_breakpoints, _matchMedia) {
@@ -4122,7 +4122,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap);
+            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
                 /** @type {?} */
                 var value = values.get(key);
@@ -4153,7 +4153,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = this.getFallback(bpMap);
+            var values = this.getFallback(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -4307,21 +4307,25 @@ var MediaMarshaller = /** @class */ (function () {
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
+     * @param {?=} key
      * @return {?}
      */
     MediaMarshaller.prototype.getFallback = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
+     * @param {?=} key
      * @return {?}
      */
-    function (bpMap) {
+    function (bpMap, key) {
         for (var i = 0; i < this.activatedBreakpoints.length; i++) {
             /** @type {?} */
             var activatedBp = this.activatedBreakpoints[i];
             /** @type {?} */
             var valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                return valueMap;
+                if (key === undefined || valueMap.has(key)) {
+                    return valueMap;
+                }
             }
         }
         return bpMap.get('');
