@@ -235,7 +235,7 @@ DefaultClassDirective.decorators = [
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  * @param {?} hide
  * @return {?}
  */
@@ -332,7 +332,7 @@ class ShowHideDirective extends BaseDirective2 {
                 /** @type {?} */
                 const inputKey = key.split('.');
                 /** @type {?} */
-                const bp = inputKey[1] || '';
+                const bp = inputKey.slice(1).join('.');
                 /** @type {?} */
                 const inputValue = changes[key].currentValue;
                 /** @type {?} */

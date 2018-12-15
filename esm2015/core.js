@@ -645,7 +645,7 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  * @abstract
  */
 class ObservableMedia {
@@ -692,7 +692,7 @@ class ObservableMedia {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  */
 class MediaService {
     /**
@@ -811,7 +811,7 @@ MediaService.ctorParameters = () => [
 /** @nocollapse */ MediaService.ngInjectableDef = defineInjectable({ factory: function MediaService_Factory() { return new MediaService(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaService, providedIn: "root" });
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
   @type {?} */
 const ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1021,7 +1021,7 @@ function buildCSS(direction, wrap = null, inline = false) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  */
 class KeyOptions {
     /**
@@ -1047,7 +1047,7 @@ class KeyOptions {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  */
 class ResponsiveActivation {
     /**
@@ -1232,7 +1232,7 @@ class ResponsiveActivation {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  * @abstract
  */
 class BaseDirective {
@@ -1519,7 +1519,7 @@ class BaseDirective {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  */
 class BaseDirectiveAdapter extends BaseDirective {
     /**
@@ -1729,7 +1729,7 @@ class BaseDirective2 {
         Object.keys(changes).forEach(key => {
             if (this.inputs.indexOf(key) !== -1) {
                 /** @type {?} */
-                const bp = key.split('.')[1] || '';
+                const bp = key.split('.').slice(1).join('.');
                 /** @type {?} */
                 const val = changes[key].currentValue;
                 this.setValue(val, bp);
@@ -2344,7 +2344,7 @@ ServerMatchMedia.ctorParameters = () => [
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-6fdd328
+ * \@deletion-target v7.0.0-beta.21-ad2d4fe
  */
 class MediaMonitor {
     /**
