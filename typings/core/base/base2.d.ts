@@ -19,8 +19,8 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     protected inputs: string[];
     protected destroySubject: Subject<void>;
     protected observables: Observable<any>[];
-    /** The least recently used styles for the builder */
-    protected lru: StyleDefinition;
+    /** The most recently used styles for the builder */
+    protected mru: StyleDefinition;
     /** Access to host element's parent DOM node */
     protected readonly parentElement: HTMLElement | null;
     /** Access to the HTMLElement for the directive */

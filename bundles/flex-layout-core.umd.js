@@ -786,13 +786,13 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  * @abstract
  */
 var   /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  * @abstract
  */
 ObservableMedia = /** @class */ (function () {
@@ -842,7 +842,7 @@ ObservableMedia = /** @class */ (function () {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 var MediaService = /** @class */ (function () {
     function MediaService(breakpoints, mediaWatcher) {
@@ -1017,7 +1017,7 @@ var MediaService = /** @class */ (function () {
 }());
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
   @type {?} */
 var ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1259,11 +1259,11 @@ function buildCSS(direction, wrap, inline) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 var   /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 KeyOptions = /** @class */ (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -1285,7 +1285,7 @@ KeyOptions = /** @class */ (function () {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 var   /**
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
@@ -1299,7 +1299,7 @@ var   /**
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 ResponsiveActivation = /** @class */ (function () {
     /**
@@ -1578,13 +1578,13 @@ ResponsiveActivation = /** @class */ (function () {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  * @abstract
  */
 var   /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  * @abstract
  */
 BaseDirective = /** @class */ (function () {
@@ -2034,13 +2034,13 @@ BaseDirective = /** @class */ (function () {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 var   /**
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 BaseDirectiveAdapter = /** @class */ (function (_super) {
     __extends(BaseDirectiveAdapter, _super);
@@ -2308,9 +2308,9 @@ BaseDirective2 = /** @class */ (function () {
         this.destroySubject = new rxjs.Subject();
         this.observables = [];
         /**
-         * The least recently used styles for the builder
+         * The most recently used styles for the builder
          */
-        this.lru = {};
+        this.mru = {};
         /**
          * Cache map for style computation
          */
@@ -2428,7 +2428,7 @@ BaseDirective2 = /** @class */ (function () {
                 this.styleCache.set(input, genStyles);
             }
         }
-        this.lru = __assign({}, genStyles);
+        this.mru = __assign({}, genStyles);
         this.applyStyleToElement(genStyles);
         builder.sideEffect(input, genStyles, parent);
     };
@@ -2443,11 +2443,11 @@ BaseDirective2 = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        Object.keys(this.lru).forEach(function (k) {
-            _this.lru[k] = '';
+        Object.keys(this.mru).forEach(function (k) {
+            _this.mru[k] = '';
         });
-        this.applyStyleToElement(this.lru);
-        this.lru = {};
+        this.applyStyleToElement(this.mru);
+        this.mru = {};
     };
     /**
      * @return {?}
@@ -3270,7 +3270,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-5e15fa8
+ * \@deletion-target v7.0.0-beta.21-147d224
  */
 var MediaMonitor = /** @class */ (function () {
     function MediaMonitor(_breakpoints, _matchMedia) {

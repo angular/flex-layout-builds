@@ -3,7 +3,7 @@ import { BreakPoint } from '../breakpoints/break-point';
 import { MediaMonitor } from '../media-monitor/media-monitor';
 /**
  * @deprecated
- * @deletion-target v7.0.0-beta.21-5e15fa8
+ * @deletion-target v7.0.0-beta.21-147d224
  */
 export interface BreakPointX extends BreakPoint {
     key: string;
@@ -11,7 +11,7 @@ export interface BreakPointX extends BreakPoint {
 }
 /**
  * @deprecated
- * @deletion-target v7.0.0-beta.21-5e15fa8
+ * @deletion-target v7.0.0-beta.21-147d224
  */
 export declare class KeyOptions {
     baseKey: string;
@@ -35,7 +35,7 @@ export declare class KeyOptions {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * @deletion-target v7.0.0-beta.21-5e15fa8
+ * @deletion-target v7.0.0-beta.21-147d224
  */
 export declare class ResponsiveActivation {
     private _options;
