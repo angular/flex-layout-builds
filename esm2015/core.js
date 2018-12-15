@@ -3052,7 +3052,7 @@ class MediaMarshaller {
         const bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            const values = bp !== undefined ? bpMap.get(bp) : this.getFallbackForKey(bpMap, key);
+            const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
                 /** @type {?} */
                 const value = values.get(key);
@@ -3072,7 +3072,7 @@ class MediaMarshaller {
         const bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            const values = this.getFallbackForKey(bpMap, key);
+            const values = this.getFallback(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -3118,7 +3118,7 @@ class MediaMarshaller {
     updateStyles() {
         this.elementMap.forEach((bpMap, el) => {
             /** @type {?} */
-            const valueMap = this.getFallbackForKey(bpMap);
+            const valueMap = this.getFallback(bpMap);
             if (valueMap) {
                 valueMap.forEach((v, k) => this.updateElement(el, k, v));
             }
@@ -3176,7 +3176,7 @@ class MediaMarshaller {
      * @param {?=} key
      * @return {?}
      */
-    getFallbackForKey(bpMap, key) {
+    getFallback(bpMap, key) {
         for (let i = 0; i < this.activatedBreakpoints.length; i++) {
             /** @type {?} */
             const activatedBp = this.activatedBreakpoints[i];

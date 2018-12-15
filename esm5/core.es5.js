@@ -4122,7 +4122,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = bp !== undefined ? bpMap.get(bp) : this.getFallbackForKey(bpMap, key);
+            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
                 /** @type {?} */
                 var value = values.get(key);
@@ -4153,7 +4153,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = this.getFallbackForKey(bpMap, key);
+            var values = this.getFallback(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -4225,7 +4225,7 @@ var MediaMarshaller = /** @class */ (function () {
         var _this = this;
         this.elementMap.forEach(function (bpMap, el) {
             /** @type {?} */
-            var valueMap = _this.getFallbackForKey(bpMap);
+            var valueMap = _this.getFallback(bpMap);
             if (valueMap) {
                 valueMap.forEach(function (v, k) { return _this.updateElement(el, k, v); });
             }
@@ -4310,7 +4310,7 @@ var MediaMarshaller = /** @class */ (function () {
      * @param {?=} key
      * @return {?}
      */
-    MediaMarshaller.prototype.getFallbackForKey = /**
+    MediaMarshaller.prototype.getFallback = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
      * @param {?=} key
