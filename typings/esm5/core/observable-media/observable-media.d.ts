@@ -5,7 +5,7 @@ import { MatchMedia } from '../match-media/match-media';
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * @deletion-target v7.0.0-beta.21-b8c040b
+ * @deletion-target v7.0.0-beta.21
  */
 export declare abstract class ObservableMedia implements Subscribable<MediaChange> {
     abstract isActive(query: string): boolean;
@@ -56,7 +56,7 @@ export declare abstract class ObservableMedia implements Subscribable<MediaChang
  *    }
  *  }
  *  @deprecated use MediaObserver instead
- *  @deletion-target v7.0.0-beta.21-b8c040b
+ *  @deletion-target v7.0.0-beta.21
  */
 export declare class MediaService implements ObservableMedia {
     private breakpoints;
@@ -109,7 +109,7 @@ export declare class MediaService implements ObservableMedia {
 }
 /**
  * @deprecated
- * @deletion-target v7.0.0-beta.21-b8c040b
+ * @deletion-target v7.0.0-beta.21
  */
 export declare const ObservableMediaProvider: {
     provide: typeof ObservableMedia;
