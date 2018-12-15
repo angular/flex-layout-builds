@@ -438,13 +438,12 @@ BreakPointRegistry.ctorParameters = () => [
  */
 class MediaChange {
     /**
-     * @param {?=} matches
-     * @param {?=} mediaQuery
-     * @param {?=} mqAlias
-     * @param {?=} suffix
+     * @param {?=} matches whether the mediaQuery is currently activated
+     * @param {?=} mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
+     * @param {?=} mqAlias e.g. gt-sm, md, gt-lg
+     * @param {?=} suffix e.g. GtSM, Md, GtLg
      */
-    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '' // e.g.   GtSM, Md, GtLg
-    ) {
+    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '') {
         this.matches = matches;
         this.mediaQuery = mediaQuery;
         this.mqAlias = mqAlias;
@@ -452,6 +451,7 @@ class MediaChange {
         this.property = '';
     }
     /**
+     * Create an exact copy of the MediaChange
      * @return {?}
      */
     clone() {
@@ -645,7 +645,7 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
  * @abstract
  */
 class ObservableMedia {
@@ -692,7 +692,7 @@ class ObservableMedia {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
  */
 class MediaService {
     /**
@@ -811,7 +811,7 @@ MediaService.ctorParameters = () => [
 /** @nocollapse */ MediaService.ngInjectableDef = defineInjectable({ factory: function MediaService_Factory() { return new MediaService(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaService, providedIn: "root" });
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
   @type {?} */
 const ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1021,7 +1021,7 @@ function buildCSS(direction, wrap = null, inline = false) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
  */
 class KeyOptions {
     /**
@@ -1047,7 +1047,7 @@ class KeyOptions {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
  */
 class ResponsiveActivation {
     /**
@@ -1232,7 +1232,7 @@ class ResponsiveActivation {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
  * @abstract
  */
 class BaseDirective {
@@ -1519,7 +1519,7 @@ class BaseDirective {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
  */
 class BaseDirectiveAdapter extends BaseDirective {
     /**
@@ -2344,7 +2344,7 @@ ServerMatchMedia.ctorParameters = () => [
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-676ddf7
+ * \@deletion-target v7.0.0-beta.21-6fdd328
  */
 class MediaMonitor {
     /**
