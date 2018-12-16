@@ -301,7 +301,9 @@ class ShowHideDirective extends BaseDirective2 {
         if (defaultValue === undefined || defaultValue === '') {
             this.setValue(true, '');
         }
-        this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
+        else {
+            this.triggerUpdate();
+        }
     }
     /**
      * On changes to any \@Input properties...
@@ -316,7 +318,7 @@ class ShowHideDirective extends BaseDirective2 {
                 /** @type {?} */
                 const inputKey = key.split('.');
                 /** @type {?} */
-                const bp = inputKey[1] || '';
+                const bp = inputKey.slice(1).join('.');
                 /** @type {?} */
                 const inputValue = changes[key].currentValue;
                 /** @type {?} */

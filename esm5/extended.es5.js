@@ -350,7 +350,9 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (defaultValue === undefined || defaultValue === '') {
             this.setValue(true, '');
         }
-        this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
+        else {
+            this.triggerUpdate();
+        }
     };
     /**
      * On changes to any @Input properties...
@@ -378,7 +380,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
                 /** @type {?} */
                 var inputKey = key.split('.');
                 /** @type {?} */
-                var bp = inputKey[1] || '';
+                var bp = inputKey.slice(1).join('.');
                 /** @type {?} */
                 var inputValue = changes[key].currentValue;
                 /** @type {?} */

@@ -109,8 +109,13 @@ var   /**
  * Class instances emitted [to observers] for each mql notification
  */
 MediaChange = /** @class */ (function () {
-    function MediaChange(matches, mediaQuery, mqAlias, suffix // e.g.   GtSM, Md, GtLg
-    ) {
+    /**
+     * @param matches whether the mediaQuery is currently activated
+     * @param mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
+     * @param mqAlias e.g. gt-sm, md, gt-lg
+     * @param suffix e.g. GtSM, Md, GtLg
+     */
+    function MediaChange(matches, mediaQuery, mqAlias, suffix) {
         if (matches === void 0) { matches = false; }
         if (mediaQuery === void 0) { mediaQuery = 'all'; }
         if (mqAlias === void 0) { mqAlias = ''; }
@@ -121,10 +126,13 @@ MediaChange = /** @class */ (function () {
         this.suffix = suffix;
         this.property = '';
     }
+    /** Create an exact copy of the MediaChange */
     /**
+     * Create an exact copy of the MediaChange
      * @return {?}
      */
     MediaChange.prototype.clone = /**
+     * Create an exact copy of the MediaChange
      * @return {?}
      */
     function () {
@@ -453,7 +461,7 @@ BaseDirective2 = /** @class */ (function () {
         Object.keys(changes).forEach(function (key) {
             if (_this.inputs.indexOf(key) !== -1) {
                 /** @type {?} */
-                var bp = key.split('.')[1] || '';
+                var bp = key.split('.').slice(1).join('.');
                 /** @type {?} */
                 var val = changes[key].currentValue;
                 _this.setValue(val, bp);
@@ -1309,31 +1317,31 @@ var MockMatchMedia = /** @class */ (function (_super) {
             // Simulate activation of overlapping lt-<XXX> ranges
             switch (alias) {
                 case 'lg':
-                    this._activateByAlias('lt-xl', true);
+                    this._activateByAlias('lt-xl');
                     break;
                 case 'md':
-                    this._activateByAlias('lt-xl, lt-lg', true);
+                    this._activateByAlias('lt-xl, lt-lg');
                     break;
                 case 'sm':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md', true);
+                    this._activateByAlias('lt-xl, lt-lg, lt-md');
                     break;
                 case 'xs':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm', true);
+                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
             // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
-                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
                     break;
                 case 'lg':
-                    this._activateByAlias('gt-md, gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-md, gt-sm, gt-xs');
                     break;
                 case 'md':
-                    this._activateByAlias('gt-sm, gt-xs', true);
+                    this._activateByAlias('gt-sm, gt-xs');
                     break;
                 case 'sm':
-                    this._activateByAlias('gt-xs', true);
+                    this._activateByAlias('gt-xs');
                     break;
             }
         }
@@ -1343,43 +1351,34 @@ var MockMatchMedia = /** @class */ (function (_super) {
     /**
      *
      * @param {?} aliases
-     * @param {?=} useOverlaps
      * @return {?}
      */
     MockMatchMedia.prototype._activateByAlias = /**
      *
      * @param {?} aliases
-     * @param {?=} useOverlaps
      * @return {?}
      */
-    function (aliases, useOverlaps) {
+    function (aliases) {
         var _this = this;
-        if (useOverlaps === void 0) { useOverlaps = false; }
         /** @type {?} */
         var activate = function (alias) {
             /** @type {?} */
             var bp = _this._breakpoints.findByAlias(alias);
-            _this._activateByQuery(bp ? bp.mediaQuery : alias, useOverlaps);
+            _this._activateByQuery(bp ? bp.mediaQuery : alias);
         };
         aliases.split(',').forEach(function (alias) { return activate(alias.trim()); });
     };
     /**
      *
      * @param {?} mediaQuery
-     * @param {?=} useOverlaps
      * @return {?}
      */
     MockMatchMedia.prototype._activateByQuery = /**
      *
      * @param {?} mediaQuery
-     * @param {?=} useOverlaps
      * @return {?}
      */
-    function (mediaQuery, useOverlaps) {
-        if (useOverlaps === void 0) { useOverlaps = false; }
-        if (useOverlaps) {
-            this._registerMediaQuery(mediaQuery);
-        }
+    function (mediaQuery) {
         /** @type {?} */
         var mql = this._registry.get(mediaQuery);
         /** @type {?} */
@@ -2610,6 +2609,7 @@ var MediaMarshaller = /** @class */ (function () {
         this.builderMap = new WeakMap();
         this.subject = new rxjs.Subject();
         this.matchMedia.observe().subscribe(this.activate.bind(this));
+        this.registerBreakpoints();
     }
     Object.defineProperty(MediaMarshaller.prototype, "activatedBreakpoint", {
         get: /**
@@ -2728,7 +2728,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap);
+            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
                 /** @type {?} */
                 var value = values.get(key);
@@ -2759,7 +2759,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = this.getFallback(bpMap);
+            var values = this.getFallback(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -2913,24 +2913,39 @@ var MediaMarshaller = /** @class */ (function () {
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
+     * @param {?=} key
      * @return {?}
      */
     MediaMarshaller.prototype.getFallback = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
+     * @param {?=} key
      * @return {?}
      */
-    function (bpMap) {
+    function (bpMap, key) {
         for (var i = 0; i < this.activatedBreakpoints.length; i++) {
             /** @type {?} */
             var activatedBp = this.activatedBreakpoints[i];
             /** @type {?} */
             var valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                return valueMap;
+                if (key === undefined || valueMap.has(key)) {
+                    return valueMap;
+                }
             }
         }
         return bpMap.get('');
+    };
+    /**
+     * @return {?}
+     */
+    MediaMarshaller.prototype.registerBreakpoints = /**
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this.matchMedia.registerQuery(queries);
     };
     MediaMarshaller.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
