@@ -31,7 +31,6 @@ export declare class FlexOffsetDirective extends BaseDirective2 implements OnCha
     protected marshal: MediaMarshaller;
     protected styler: StyleUtils;
     protected DIRECTIVE_KEY: string;
-    protected observables: import("@angular/core/src/event_emitter").EventEmitter<import("@angular/cdk/bidi/typings/directionality").Direction>[];
     constructor(elRef: ElementRef, directionality: Directionality, styleBuilder: FlexOffsetStyleBuilder, marshal: MediaMarshaller, styler: StyleUtils);
     /**
      * Using the current fxFlexOffset value, update the inline CSS

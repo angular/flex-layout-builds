@@ -754,13 +754,13 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  * @abstract
  */
 var  /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  * @abstract
  */
 ObservableMedia = /** @class */ (function () {
@@ -810,7 +810,7 @@ ObservableMedia = /** @class */ (function () {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 var MediaService = /** @class */ (function () {
     function MediaService(breakpoints, mediaWatcher) {
@@ -985,7 +985,7 @@ var MediaService = /** @class */ (function () {
 }());
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
   @type {?} */
 var ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1227,11 +1227,11 @@ function buildCSS(direction, wrap, inline) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 var  /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 KeyOptions = /** @class */ (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -1253,7 +1253,7 @@ KeyOptions = /** @class */ (function () {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 var  /**
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
@@ -1267,7 +1267,7 @@ var  /**
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 ResponsiveActivation = /** @class */ (function () {
     /**
@@ -1546,13 +1546,13 @@ ResponsiveActivation = /** @class */ (function () {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  * @abstract
  */
 var  /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  * @abstract
  */
 BaseDirective = /** @class */ (function () {
@@ -2002,13 +2002,13 @@ BaseDirective = /** @class */ (function () {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 var  /**
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 BaseDirectiveAdapter = /** @class */ (function (_super) {
     __extends(BaseDirectiveAdapter, _super);
@@ -2273,12 +2273,11 @@ BaseDirective2 = /** @class */ (function () {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = '';
         this.inputs = [];
-        this.destroySubject = new Subject();
-        this.observables = [];
         /**
          * The most recently used styles for the builder
          */
         this.mru = {};
+        this.destroySubject = new Subject();
         /**
          * Cache map for style computation
          */
@@ -2361,14 +2360,20 @@ BaseDirective2 = /** @class */ (function () {
         this.destroySubject.complete();
         this.marshal.releaseElement(this.nativeElement);
     };
+    /** Register with central marshaller service */
     /**
+     * Register with central marshaller service
+     * @param {?=} extraTriggers
      * @return {?}
      */
     BaseDirective2.prototype.init = /**
+     * Register with central marshaller service
+     * @param {?=} extraTriggers
      * @return {?}
      */
-    function () {
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this), this.clearStyles.bind(this), this.observables);
+    function (extraTriggers) {
+        if (extraTriggers === void 0) { extraTriggers = []; }
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this), this.clearStyles.bind(this), extraTriggers);
     };
     /** Add styles to the element using predefined style builder */
     /**
@@ -2417,10 +2422,13 @@ BaseDirective2 = /** @class */ (function () {
         this.applyStyleToElement(this.mru);
         this.mru = {};
     };
+    /** Force trigger style updates on DOM element */
     /**
+     * Force trigger style updates on DOM element
      * @return {?}
      */
     BaseDirective2.prototype.triggerUpdate = /**
+     * Force trigger style updates on DOM element
      * @return {?}
      */
     function () {
@@ -3238,7 +3246,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-d9ed571
+ * \@deletion-target v7.0.0-beta.21-5197c2a
  */
 var MediaMonitor = /** @class */ (function () {
     function MediaMonitor(_breakpoints, _matchMedia) {
@@ -4055,7 +4063,9 @@ var MediaMarshaller = /** @class */ (function () {
         this.builderMap = new WeakMap();
         this.clearBuilderMap = new WeakMap();
         this.subject = new Subject();
-        this.matchMedia.observe().subscribe(this.activate.bind(this));
+        this.matchMedia
+            .observe()
+            .subscribe(this.activate.bind(this));
         this.registerBreakpoints();
     }
     Object.defineProperty(MediaMarshaller.prototype, "activatedBreakpoint", {
@@ -4099,59 +4109,34 @@ var MediaMarshaller = /** @class */ (function () {
      * initialize the marshaller with necessary elements for delegation on an element
      * @param element
      * @param key
-     * @param builder optional so that custom bp directives don't have to re-provide this
-     * @param clearBuilder optional so that custom bp directives don't have to re-provide this
-     * @param observables
+     * @param updateFn optional callback so that custom bp directives don't have to re-provide this
+     * @param clearFn optional callback so that custom bp directives don't have to re-provide this
+     * @param extraTriggers other triggers to force style updates (e.g. layout, directionality, etc)
      */
     /**
      * initialize the marshaller with necessary elements for delegation on an element
      * @param {?} element
      * @param {?} key
-     * @param {?=} builder optional so that custom bp directives don't have to re-provide this
-     * @param {?=} clearBuilder optional so that custom bp directives don't have to re-provide this
-     * @param {?=} observables
+     * @param {?=} updateFn optional callback so that custom bp directives don't have to re-provide this
+     * @param {?=} clearFn optional callback so that custom bp directives don't have to re-provide this
+     * @param {?=} extraTriggers other triggers to force style updates (e.g. layout, directionality, etc)
      * @return {?}
      */
     MediaMarshaller.prototype.init = /**
      * initialize the marshaller with necessary elements for delegation on an element
      * @param {?} element
      * @param {?} key
-     * @param {?=} builder optional so that custom bp directives don't have to re-provide this
-     * @param {?=} clearBuilder optional so that custom bp directives don't have to re-provide this
-     * @param {?=} observables
+     * @param {?=} updateFn optional callback so that custom bp directives don't have to re-provide this
+     * @param {?=} clearFn optional callback so that custom bp directives don't have to re-provide this
+     * @param {?=} extraTriggers other triggers to force style updates (e.g. layout, directionality, etc)
      * @return {?}
      */
-    function (element, key, builder, clearBuilder, observables) {
-        var _this = this;
-        if (observables === void 0) { observables = []; }
-        /** @type {?} */
-        var keyMap = this.elementKeyMap.get(element);
-        if (!keyMap) {
-            keyMap = new Set();
-            this.elementKeyMap.set(element, keyMap);
-        }
-        keyMap.add(key);
-        initBuilderMap(this.builderMap, element, key, builder);
-        initBuilderMap(this.clearBuilderMap, element, key, clearBuilder);
-        if (observables) {
-            /** @type {?} */
-            var watchers = this.watcherMap.get(element);
-            if (!watchers) {
-                watchers = new Map();
-                this.watcherMap.set(element, watchers);
-            }
-            /** @type {?} */
-            var subscription = watchers.get(key);
-            if (!subscription) {
-                /** @type {?} */
-                var newSubscription = merge.apply(void 0, observables).subscribe(function () {
-                    /** @type {?} */
-                    var currentValue = _this.getValue(element, key);
-                    _this.updateElement(element, key, currentValue);
-                });
-                watchers.set(key, newSubscription);
-            }
-        }
+    function (element, key, updateFn, clearFn, extraTriggers) {
+        if (extraTriggers === void 0) { extraTriggers = []; }
+        this.buildElementKeyMap(element, key);
+        initBuilderMap(this.builderMap, element, key, updateFn);
+        initBuilderMap(this.clearBuilderMap, element, key, clearFn);
+        this.watchExtraTriggers(element, key, extraTriggers);
     };
     /**
      * get the value for an element and key and optionally a given breakpoint
@@ -4254,12 +4239,15 @@ var MediaMarshaller = /** @class */ (function () {
         }
         this.updateElement(element, key, this.getValue(element, key));
     };
+    /** Track element value changes for a specific key */
     /**
+     * Track element value changes for a specific key
      * @param {?} element
      * @param {?} key
      * @return {?}
      */
     MediaMarshaller.prototype.trackValue = /**
+     * Track element value changes for a specific key
      * @param {?} element
      * @param {?} key
      * @return {?}
@@ -4391,6 +4379,69 @@ var MediaMarshaller = /** @class */ (function () {
         if (elementMap) {
             elementMap.forEach(function (_, s) { return elementMap.delete(s); });
             this.elementMap.delete(element);
+        }
+    };
+    /**
+     * Cross-reference for HTMLElement with directive key
+     * @param {?} element
+     * @param {?} key
+     * @return {?}
+     */
+    MediaMarshaller.prototype.buildElementKeyMap = /**
+     * Cross-reference for HTMLElement with directive key
+     * @param {?} element
+     * @param {?} key
+     * @return {?}
+     */
+    function (element, key) {
+        /** @type {?} */
+        var keyMap = this.elementKeyMap.get(element);
+        if (!keyMap) {
+            keyMap = new Set();
+            this.elementKeyMap.set(element, keyMap);
+        }
+        keyMap.add(key);
+    };
+    /**
+     * Other triggers that should force style updates:
+     * - directionality
+     * - layout changes
+     * - mutationobserver updates
+     * @param {?} element
+     * @param {?} key
+     * @param {?} triggers
+     * @return {?}
+     */
+    MediaMarshaller.prototype.watchExtraTriggers = /**
+     * Other triggers that should force style updates:
+     * - directionality
+     * - layout changes
+     * - mutationobserver updates
+     * @param {?} element
+     * @param {?} key
+     * @param {?} triggers
+     * @return {?}
+     */
+    function (element, key, triggers) {
+        var _this = this;
+        if (triggers && triggers.length) {
+            /** @type {?} */
+            var watchers = this.watcherMap.get(element);
+            if (!watchers) {
+                watchers = new Map();
+                this.watcherMap.set(element, watchers);
+            }
+            /** @type {?} */
+            var subscription = watchers.get(key);
+            if (!subscription) {
+                /** @type {?} */
+                var newSubscription = merge.apply(void 0, triggers).subscribe(function () {
+                    /** @type {?} */
+                    var currentValue = _this.getValue(element, key);
+                    _this.updateElement(element, key, currentValue);
+                });
+                watchers.set(key, newSubscription);
+            }
         }
     };
     /**

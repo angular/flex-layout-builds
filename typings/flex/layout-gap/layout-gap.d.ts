@@ -34,7 +34,6 @@ export declare class LayoutGapDirective extends BaseDirective2 implements AfterC
     protected layout: string;
     protected DIRECTIVE_KEY: string;
     protected observerSubject: Subject<void>;
-    protected observables: (import("@angular/core/src/event_emitter").EventEmitter<import("@angular/cdk/bidi/typings/directionality").Direction> | import("rxjs/internal/Observable").Observable<void>)[];
     /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
     protected readonly childrenNodes: HTMLElement[];
     constructor(elRef: ElementRef, zone: NgZone, directionality: Directionality, styleUtils: StyleUtils, styleBuilder: LayoutGapStyleBuilder, marshal: MediaMarshaller);

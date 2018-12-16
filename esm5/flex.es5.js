@@ -304,9 +304,11 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         _this.layout = 'row'; // default flex-direction
         _this.DIRECTIVE_KEY = 'layout-gap';
         _this.observerSubject = new Subject();
-        _this.observables = [_this.directionality.change, _this.observerSubject.asObservable()];
-        _this.init();
-        _this.marshal.trackValue(_this.nativeElement, 'layout')
+        /** @type {?} */
+        var extraTriggers = [_this.directionality.change, _this.observerSubject.asObservable()];
+        _this.init(extraTriggers);
+        _this.marshal
+            .trackValue(_this.nativeElement, 'layout')
             .pipe(takeUntil(_this.destroySubject))
             .subscribe(_this.onLayoutChange.bind(_this));
         return _this;
@@ -1124,10 +1126,11 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.styler = styler;
         _this.DIRECTIVE_KEY = 'flex-offset';
-        _this.observables = [_this.directionality.change];
-        _this.init();
+        _this.init([_this.directionality.change]);
+        // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
         if (_this.parentElement) {
-            _this.marshal.trackValue(_this.parentElement, 'layout-gap')
+            _this.marshal
+                .trackValue(_this.parentElement, 'layout-gap')
                 .pipe(takeUntil(_this.destroySubject))
                 .subscribe(_this.triggerUpdate.bind(_this));
         }

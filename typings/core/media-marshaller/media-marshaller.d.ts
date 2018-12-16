@@ -2,7 +2,8 @@ import { Observable } from 'rxjs';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
-declare type Builder = Function;
+declare type ClearCallback = () => void;
+declare type UpdateCallback = (val: any) => void;
 export interface ElementMatcher {
     element: HTMLElement;
     key: string;
@@ -33,11 +34,11 @@ export declare class MediaMarshaller {
      * initialize the marshaller with necessary elements for delegation on an element
      * @param element
      * @param key
-     * @param builder optional so that custom bp directives don't have to re-provide this
-     * @param clearBuilder optional so that custom bp directives don't have to re-provide this
-     * @param observables
+     * @param updateFn optional callback so that custom bp directives don't have to re-provide this
+     * @param clearFn optional callback so that custom bp directives don't have to re-provide this
+     * @param extraTriggers other triggers to force style updates (e.g. layout, directionality, etc)
      */
-    init(element: HTMLElement, key: string, builder?: Builder, clearBuilder?: Builder, observables?: Observable<any>[]): void;
+    init(element: HTMLElement, key: string, updateFn?: UpdateCallback, clearFn?: ClearCallback, extraTriggers?: Observable<any>[]): void;
     /**
      * get the value for an element and key and optionally a given breakpoint
      * @param element
@@ -59,6 +60,7 @@ export declare class MediaMarshaller {
      * @param val the value for the breakpoint
      */
     setValue(element: HTMLElement, key: string, val: any, bp: string): void;
+    /** Track element value changes for a specific key */
     trackValue(element: HTMLElement, key: string): Observable<ElementMatcher>;
     /** update all styles for all elements on the current breakpoint */
     updateStyles(): void;
@@ -80,6 +82,15 @@ export declare class MediaMarshaller {
      * @param element
      */
     releaseElement(element: HTMLElement): void;
+    /** Cross-reference for HTMLElement with directive key */
+    private buildElementKeyMap;
+    /**
+     * Other triggers that should force style updates:
+     * - directionality
+     * - layout changes
+     * - mutationobserver updates
+     */
+    private watchExtraTriggers;
     /** Breakpoint locator by mediaQuery */
     private findByQuery;
     /**

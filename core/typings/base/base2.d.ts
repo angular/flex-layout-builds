@@ -17,10 +17,9 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     protected marshal: MediaMarshaller;
     protected DIRECTIVE_KEY: string;
     protected inputs: string[];
-    protected destroySubject: Subject<void>;
-    protected observables: Observable<any>[];
     /** The most recently used styles for the builder */
     protected mru: StyleDefinition;
+    protected destroySubject: Subject<void>;
     /** Access to host element's parent DOM node */
     protected readonly parentElement: HTMLElement | null;
     /** Access to the HTMLElement for the directive */
@@ -33,11 +32,13 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     /** For @Input changes */
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
-    protected init(): void;
+    /** Register with central marshaller service */
+    protected init(extraTriggers?: Observable<any>[]): void;
     /** Add styles to the element using predefined style builder */
     protected addStyles(input: string, parent?: Object): void;
     /** Remove generated styles from an element using predefined style builder */
     protected clearStyles(): void;
+    /** Force trigger style updates on DOM element */
     protected triggerUpdate(): void;
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
