@@ -48,7 +48,7 @@ class GridAlignDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-align';
         this.styleCache = alignCache;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+        this.init();
     }
 }
 /** @nocollapse */
@@ -178,7 +178,7 @@ class GridAlignColumnsDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-align-columns';
         this._inline = false;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * @return {?}
@@ -344,7 +344,7 @@ class GridAlignRowsDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-align-rows';
         this._inline = false;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * @return {?}
@@ -489,7 +489,7 @@ class GridAreaDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-area';
         this.styleCache = gridAreaCache;
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+        this.init();
     }
 }
 /** @nocollapse */
@@ -575,7 +575,7 @@ class GridAreasDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-areas';
         this._inline = false;
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * @return {?}
@@ -684,7 +684,7 @@ class GridAutoDirective extends BaseDirective2 {
         this.marshal = marshal;
         this._inline = false;
         this.DIRECTIVE_KEY = 'grid-auto';
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * @return {?}
@@ -784,7 +784,7 @@ class GridColumnDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-column';
         this.styleCache = columnCache;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+        this.init();
     }
 }
 /** @nocollapse */
@@ -881,7 +881,7 @@ class GridColumnsDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-columns';
         this._inline = false;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * @return {?}
@@ -986,7 +986,7 @@ class GridGapDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-gap';
         this._inline = false;
-        this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * @return {?}
@@ -1087,7 +1087,7 @@ class GridRowDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-row';
         this.styleCache = rowCache;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.addStyles.bind(this));
+        this.init();
     }
 }
 /** @nocollapse */
@@ -1184,7 +1184,7 @@ class GridRowsDirective extends BaseDirective2 {
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-rows';
         this._inline = false;
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
     }
     /**
      * @return {?}

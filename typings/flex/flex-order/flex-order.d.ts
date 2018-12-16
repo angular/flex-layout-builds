@@ -9,7 +9,7 @@ import { ElementRef, OnChanges } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
 export declare class FlexOrderStyleBuilder extends StyleBuilder {
     buildStyles(value: string): {
-        order: number;
+        order: string | number;
     };
 }
 /**

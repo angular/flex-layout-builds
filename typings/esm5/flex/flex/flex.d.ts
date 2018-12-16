@@ -42,7 +42,7 @@ export declare class FlexDirective extends BaseDirective2 {
      */
     protected onLayoutChange(matcher: ElementMatcher): void;
     /** Input to this is exclusively the basis input value */
-    protected updateStyle(value: string): void;
+    protected updateWithValue(value: string): void;
     /** Trigger a style reflow, usually based on a shrink/grow input event */
     protected triggerReflow(): void;
 }
