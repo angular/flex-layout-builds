@@ -16,7 +16,7 @@ import { MediaChange } from '../media-change';
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * @deletion-target v7.0.0-beta.21-6fdd328
+ * @deletion-target v7.0.0-beta.21-c7a60b6
  */
 export declare class MediaMonitor {
     private _breakpoints;
