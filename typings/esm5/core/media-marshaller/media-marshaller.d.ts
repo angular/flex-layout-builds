@@ -2,12 +2,13 @@ import { Observable } from 'rxjs';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
-declare type Builder = Function;
 export interface ElementMatcher {
     element: HTMLElement;
     key: string;
     value: any;
 }
+export declare type ClearCallback = () => void;
+export declare type UpdateCallback = (val: string | number) => void;
 /**
  * MediaMarshaller - register responsive values from directives and
  *                   trigger them based on media query events
@@ -17,8 +18,10 @@ export declare class MediaMarshaller {
     protected breakpoints: BreakPointRegistry;
     private activatedBreakpoints;
     private elementMap;
+    private elementKeyMap;
     private watcherMap;
     private builderMap;
+    private clearBuilderMap;
     private subject;
     readonly activatedBreakpoint: string;
     constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry);
@@ -31,10 +34,11 @@ export declare class MediaMarshaller {
      * initialize the marshaller with necessary elements for delegation on an element
      * @param element
      * @param key
-     * @param builder optional so that custom bp directives don't have to re-provide this
-     * @param observables
+     * @param updateFn optional callback so custom bp directives don't have to re-provide this
+     * @param clearFn optional callback so custom bp directives don't have to re-provide this
+     * @param extraTriggers Other triggers to force style updates: directionality,  mutationObserver, etc.
      */
-    init(element: HTMLElement, key: string, builder?: Builder, observables?: Observable<any>[]): void;
+    init(element: HTMLElement, key: string, updateFn?: UpdateCallback, clearFn?: ClearCallback, extraTriggers?: Observable<any>[]): void;
     /**
      * get the value for an element and key and optionally a given breakpoint
      * @param element
@@ -56,9 +60,20 @@ export declare class MediaMarshaller {
      * @param val the value for the breakpoint
      */
     setValue(element: HTMLElement, key: string, val: any, bp: string): void;
+    /**
+     * Track elRef value changes for specific key
+     */
     trackValue(element: HTMLElement, key: string): Observable<ElementMatcher>;
-    /** update all styles for all elements on the current breakpoint */
+    /**
+     * Update all styles for all elements on the current breakpoint
+     */
     updateStyles(): void;
+    /**
+     * clear the styles for a given element
+     * @param element
+     * @param key
+     */
+    clearElement(element: HTMLElement, key: string): void;
     /**
      * update a given element with the activated values for a given key
      * @param element
@@ -71,6 +86,16 @@ export declare class MediaMarshaller {
      * @param element
      */
     releaseElement(element: HTMLElement): void;
+    /**
+     * Cross-reference for HTMLElement with directive key
+     */
+    private buildElementKeyMap;
+    /**
+     * Other triggers that should force style updates:
+     *  directionality,
+     *  mutationObserver, etc.
+     */
+    private watchExtraTriggers;
     /** Breakpoint locator by mediaQuery */
     private findByQuery;
     /**
@@ -81,4 +106,3 @@ export declare class MediaMarshaller {
     private getFallback;
     private registerBreakpoints;
 }
-export {};

@@ -83,7 +83,7 @@ var GridAlignDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align';
         _this.styleCache = alignCache;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
+        _this.init();
         return _this;
     }
     /** @nocollapse */
@@ -219,7 +219,7 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-columns';
         _this._inline = false;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(GridAlignColumnsDirective.prototype, "inline", {
@@ -399,7 +399,7 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-rows';
         _this._inline = false;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(GridAlignRowsDirective.prototype, "inline", {
@@ -557,7 +557,7 @@ var GridAreaDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-area';
         _this.styleCache = gridAreaCache;
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
+        _this.init();
         return _this;
     }
     /** @nocollapse */
@@ -648,7 +648,7 @@ var GridAreasDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-areas';
         _this._inline = false;
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(GridAreasDirective.prototype, "inline", {
@@ -773,7 +773,7 @@ var GridAutoDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this._inline = false;
         _this.DIRECTIVE_KEY = 'grid-auto';
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(GridAutoDirective.prototype, "inline", {
@@ -888,7 +888,7 @@ var GridColumnDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-column';
         _this.styleCache = columnCache;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
+        _this.init();
         return _this;
     }
     /** @nocollapse */
@@ -990,7 +990,7 @@ var GridColumnsDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-columns';
         _this._inline = false;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(GridColumnsDirective.prototype, "inline", {
@@ -1111,7 +1111,7 @@ var GridGapDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-gap';
         _this._inline = false;
-        _this.marshal.init(_this.elRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(GridGapDirective.prototype, "inline", {
@@ -1227,7 +1227,7 @@ var GridRowDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-row';
         _this.styleCache = rowCache;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.addStyles.bind(_this));
+        _this.init();
         return _this;
     }
     /** @nocollapse */
@@ -1329,7 +1329,7 @@ var GridRowsDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-rows';
         _this._inline = false;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(GridRowsDirective.prototype, "inline", {

@@ -90,7 +90,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         _this.DIRECTIVE_KEY = 'img-src';
         _this.defaultSrc = '';
         _this.styleCache = imgSrcCache;
-        _this.marshal.init(_this.elementRef.nativeElement, _this.DIRECTIVE_KEY, _this.updateSrcFor.bind(_this));
+        _this.init();
         _this.setValue('', _this.nativeElement.getAttribute('src') || '');
         if (common.isPlatformServer(_this.platformId) && _this.serverModuleLoaded) {
             _this.nativeElement.setAttribute('src', '');
@@ -126,7 +126,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
      * keys are present do we actually call `setAttribute()`
      * @return {?}
      */
-    ImgSrcDirective.prototype.updateSrcFor = /**
+    ImgSrcDirective.prototype.updateWithValue = /**
      * Use the [responsively] activated input value to update
      * the host img src attribute or assign a default `img.src=''`
      * if the src has not been defined.
@@ -212,7 +212,7 @@ var ClassDirective = /** @class */ (function (_super) {
             // the same host element; since the responsive variations may be defined...
             _this.ngClassInstance = new common.NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
-        _this.marshal.init(_this.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         return _this;
     }
     Object.defineProperty(ClassDirective.prototype, "klass", {
@@ -313,7 +313,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-146cb16
+ * \@deletion-target v7.0.0-beta.21-025b110
  * @param {?} hide
  * @return {?}
  */
@@ -379,7 +379,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
     function () {
         this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
         this.marshal.trackValue(this.nativeElement, 'layout')
-            .pipe(operators.takeUntil(this.destroySubject))
+            .pipe(operators.takeUntil(this.destroyed$))
             .subscribe(this.updateWithValue.bind(this));
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
@@ -396,7 +396,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
             this.display = this.getDisplayStyle();
             DISPLAY_MAP.set(this.nativeElement, this.display);
         }
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+        this.init();
         /** @type {?} */
         var defaultValue = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
         if (defaultValue === undefined || defaultValue === '') {
@@ -665,7 +665,7 @@ var StyleDirective = /** @class */ (function (_super) {
             // defined on the same host element; since the responsive variations may be defined...
             _this.ngStyleInstance = new common.NgStyle(_this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
-        _this.marshal.init(_this.nativeElement, _this.DIRECTIVE_KEY, _this.updateWithValue.bind(_this));
+        _this.init();
         _this.setValue(_this.nativeElement.getAttribute('style') || '', '');
         return _this;
     }
