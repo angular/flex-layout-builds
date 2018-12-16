@@ -313,7 +313,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-232fc6e
+ * \@deletion-target v7.0.0-beta.21-84e811b
  * @param {?} hide
  * @return {?}
  */
@@ -432,7 +432,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
                 /** @type {?} */
                 var inputKey = key.split('.');
                 /** @type {?} */
-                var bp = inputKey[1] || '';
+                var bp = inputKey.slice(1).join('.');
                 /** @type {?} */
                 var inputValue = changes[key].currentValue;
                 /** @type {?} */
