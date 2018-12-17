@@ -13,7 +13,7 @@ import { BaseDirective2, LayoutConfigOptions, MediaMarshaller, StyleUtils, Style
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * @deletion-target v7.0.0-beta.21-21b6d29
+ * @deletion-target v7.0.0-beta.21-cd19ccd
  */
 export declare function negativeOf(hide: any): boolean;
 export interface ShowHideParent {
