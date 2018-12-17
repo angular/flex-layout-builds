@@ -47,12 +47,8 @@ export declare class LayoutGapDirective extends BaseDirective2 implements AfterC
      *
      */
     protected updateWithValue(value: string): void;
-    /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     */
-    protected getDisplayStyle(source?: HTMLElement): string;
+    /** Determine if an element will show or hide based on current activation */
+    protected willDisplay(source: HTMLElement): boolean;
     protected buildChildObservable(): void;
     protected observer?: MutationObserver;
 }
