@@ -1090,8 +1090,7 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
         /** @type {?} */
         var horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
         /** @type {?} */
-        var styles = isFlowHorizontal(parent.layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) :
-            { 'margin-top': "" + offset };
+        var styles = isFlowHorizontal(parent.layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) : { 'margin-top': "" + offset };
         return styles;
     };
     FlexOffsetStyleBuilder.decorators = [

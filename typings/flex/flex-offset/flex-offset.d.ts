@@ -7,18 +7,13 @@
  */
 import { ElementRef, OnChanges } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleUtils } from '@angular/flex-layout/core';
+import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 export interface FlexOffsetParent {
     layout: string;
     isRtl: boolean;
 }
 export declare class FlexOffsetStyleBuilder extends StyleBuilder {
-    buildStyles(offset: string, parent: FlexOffsetParent): {
-        [x: string]: string;
-        'margin-top'?: undefined;
-    } | {
-        'margin-top': string;
-    };
+    buildStyles(offset: string, parent: FlexOffsetParent): StyleDefinition;
 }
 /**
  * 'flex-offset' flexbox styling directive

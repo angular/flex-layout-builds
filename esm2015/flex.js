@@ -980,8 +980,8 @@ class FlexOffsetStyleBuilder extends StyleBuilder {
         /** @type {?} */
         const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
         /** @type {?} */
-        const styles = isFlowHorizontal(parent.layout) ? { [horizontalLayoutKey]: `${offset}` } :
-            { 'margin-top': `${offset}` };
+        const styles = isFlowHorizontal(parent.layout) ?
+            { [horizontalLayoutKey]: `${offset}` } : { 'margin-top': `${offset}` };
         return styles;
     }
 }
