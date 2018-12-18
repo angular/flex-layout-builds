@@ -794,13 +794,13 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  * @abstract
  */
 var   /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  * @abstract
  */
 ObservableMedia = /** @class */ (function () {
@@ -850,7 +850,7 @@ ObservableMedia = /** @class */ (function () {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 var MediaService = /** @class */ (function () {
     function MediaService(breakpoints, mediaWatcher) {
@@ -1025,7 +1025,7 @@ var MediaService = /** @class */ (function () {
 }());
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
   @type {?} */
 var ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1267,11 +1267,11 @@ function buildCSS(direction, wrap, inline) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 var   /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 KeyOptions = /** @class */ (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -1293,7 +1293,7 @@ KeyOptions = /** @class */ (function () {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 var   /**
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
@@ -1307,7 +1307,7 @@ var   /**
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 ResponsiveActivation = /** @class */ (function () {
     /**
@@ -1586,13 +1586,13 @@ ResponsiveActivation = /** @class */ (function () {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  * @abstract
  */
 var   /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  * @abstract
  */
 BaseDirective = /** @class */ (function () {
@@ -2042,13 +2042,13 @@ BaseDirective = /** @class */ (function () {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 var   /**
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 BaseDirectiveAdapter = /** @class */ (function (_super) {
     __extends(BaseDirectiveAdapter, _super);
@@ -3286,7 +3286,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 var MediaMonitor = /** @class */ (function () {
     function MediaMonitor(_breakpoints, _matchMedia) {
@@ -4135,15 +4135,17 @@ var MediaMarshaller = /** @class */ (function () {
     function (mc) {
         /** @type {?} */
         var bp = this.findByQuery(mc.mediaQuery);
-        if (mc.matches && bp && this.activatedBreakpoints.indexOf(bp) === -1) {
-            this.activatedBreakpoints.push(bp);
-            this.activatedBreakpoints.sort(prioritySort);
-            this.updateStyles();
-        }
-        else if (!mc.matches && bp && this.activatedBreakpoints.indexOf(bp) !== -1) {
-            // Remove the breakpoint when it's deactivated
-            this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
-            this.updateStyles();
+        if (bp) {
+            if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
+                this.activatedBreakpoints.push(bp);
+                this.activatedBreakpoints.sort(prioritySort);
+                this.updateStyles();
+            }
+            else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
+                // Remove the breakpoint when it's deactivated
+                this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+                this.updateStyles();
+            }
         }
     };
     /**

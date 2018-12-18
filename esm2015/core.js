@@ -645,7 +645,7 @@ function mergeAlias(dest, source) {
 /**
  * Base class for MediaService and pseudo-token for
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  * @abstract
  */
 class ObservableMedia {
@@ -692,7 +692,7 @@ class ObservableMedia {
  *    }
  *  }
  * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 class MediaService {
     /**
@@ -811,7 +811,7 @@ MediaService.ctorParameters = () => [
 /** @nocollapse */ MediaService.ngInjectableDef = defineInjectable({ factory: function MediaService_Factory() { return new MediaService(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaService, providedIn: "root" });
 /** *
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
   @type {?} */
 const ObservableMediaProvider = {
     // tslint:disable-line:variable-name
@@ -1021,7 +1021,7 @@ function buildCSS(direction, wrap = null, inline = false) {
  */
 /**
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 class KeyOptions {
     /**
@@ -1047,7 +1047,7 @@ class KeyOptions {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 class ResponsiveActivation {
     /**
@@ -1232,7 +1232,7 @@ class ResponsiveActivation {
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  * @abstract
  */
 class BaseDirective {
@@ -1519,7 +1519,7 @@ class BaseDirective {
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 class BaseDirectiveAdapter extends BaseDirective {
     /**
@@ -2376,7 +2376,7 @@ ServerMatchMedia.ctorParameters = () => [
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  */
 class MediaMonitor {
     /**
@@ -3028,15 +3028,17 @@ class MediaMarshaller {
     activate(mc) {
         /** @type {?} */
         const bp = this.findByQuery(mc.mediaQuery);
-        if (mc.matches && bp && this.activatedBreakpoints.indexOf(bp) === -1) {
-            this.activatedBreakpoints.push(bp);
-            this.activatedBreakpoints.sort(prioritySort);
-            this.updateStyles();
-        }
-        else if (!mc.matches && bp && this.activatedBreakpoints.indexOf(bp) !== -1) {
-            // Remove the breakpoint when it's deactivated
-            this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
-            this.updateStyles();
+        if (bp) {
+            if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
+                this.activatedBreakpoints.push(bp);
+                this.activatedBreakpoints.sort(prioritySort);
+                this.updateStyles();
+            }
+            else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
+                // Remove the breakpoint when it's deactivated
+                this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+                this.updateStyles();
+            }
         }
     }
     /**

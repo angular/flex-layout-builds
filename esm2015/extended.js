@@ -235,7 +235,7 @@ DefaultClassDirective.decorators = [
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-e5798e8
+ * \@deletion-target v7.0.0-beta.21-ddb46f3
  * @param {?} hide
  * @return {?}
  */
