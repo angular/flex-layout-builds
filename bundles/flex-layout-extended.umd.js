@@ -313,7 +313,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-47fa8a7
+ * \@deletion-target v7.0.0-beta.21-6bd3b94
  * @param {?} hide
  * @return {?}
  */
