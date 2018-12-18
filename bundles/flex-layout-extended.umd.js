@@ -313,7 +313,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-23592ee
+ * \@deletion-target v7.0.0-beta.21-1548727
  * @param {?} hide
  * @return {?}
  */
@@ -628,8 +628,8 @@ function buildMapFromSet(source, sanitize) {
  * @return {?}
  */
 function stringToKeyValue(it) {
-    var _a = it.split(':'), key = _a[0], val = _a[1];
-    return new NgStyleKeyValue(key, val);
+    var _a = it.split(':'), key = _a[0], vals = _a.slice(1);
+    return new NgStyleKeyValue(key, vals.join(':'));
 }
 /**
  * Convert [ [key,value] ] -> { key : value }

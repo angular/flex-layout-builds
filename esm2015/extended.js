@@ -235,7 +235,7 @@ DefaultClassDirective.decorators = [
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
  * @deprecated
- * \@deletion-target v7.0.0-beta.21-23592ee
+ * \@deletion-target v7.0.0-beta.21-1548727
  * @param {?} hide
  * @return {?}
  */
@@ -511,8 +511,8 @@ function buildMapFromSet(source, sanitize) {
  * @return {?}
  */
 function stringToKeyValue(it) {
-    let [key, val] = it.split(':');
-    return new NgStyleKeyValue(key, val);
+    const [key, ...vals] = it.split(':');
+    return new NgStyleKeyValue(key, vals.join(':'));
 }
 /**
  * Convert [ [key,value] ] -> { key : value }
