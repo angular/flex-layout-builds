@@ -511,8 +511,8 @@ function buildMapFromSet(source, sanitize) {
  * @return {?}
  */
 function stringToKeyValue(it) {
-    let [key, val] = it.split(':');
-    return new NgStyleKeyValue(key, val);
+    const [key, ...vals] = it.split(':');
+    return new NgStyleKeyValue(key, vals.join(':'));
 }
 /**
  * Convert [ [key,value] ] -> { key : value }
@@ -551,13 +551,16 @@ class StyleDirective extends BaseDirective2 {
         this.sanitizer = sanitizer;
         this.ngStyleInstance = ngStyleInstance;
         this.DIRECTIVE_KEY = 'ngStyle';
+        this.fallbackStyles = {};
         if (!this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
             this.ngStyleInstance = new NgStyle(this.keyValueDiffers, this.elementRef, this.renderer);
         }
         this.init();
-        this.setValue(this.nativeElement.getAttribute('style') || '', '');
+        /** @type {?} */
+        const styles = this.nativeElement.getAttribute('style') || '';
+        this.fallbackStyles = this.buildStyleMap(styles);
     }
     /**
      * @param {?} value
@@ -566,11 +569,7 @@ class StyleDirective extends BaseDirective2 {
     updateWithValue(value) {
         /** @type {?} */
         const styles = this.buildStyleMap(value);
-        /** @type {?} */
-        const defaultStyles = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
-        /** @type {?} */
-        const fallback = this.buildStyleMap(defaultStyles);
-        this.ngStyleInstance.ngStyle = Object.assign({}, fallback, styles);
+        this.ngStyleInstance.ngStyle = Object.assign({}, this.fallbackStyles, styles);
         this.ngStyleInstance.ngDoCheck();
     }
     /**

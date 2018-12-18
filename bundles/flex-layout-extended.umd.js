@@ -628,8 +628,8 @@ function buildMapFromSet(source, sanitize) {
  * @return {?}
  */
 function stringToKeyValue(it) {
-    var _a = it.split(':'), key = _a[0], val = _a[1];
-    return new NgStyleKeyValue(key, val);
+    var _a = it.split(':'), key = _a[0], vals = _a.slice(1);
+    return new NgStyleKeyValue(key, vals.join(':'));
 }
 /**
  * Convert [ [key,value] ] -> { key : value }
@@ -660,13 +660,16 @@ var StyleDirective = /** @class */ (function (_super) {
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
+        _this.fallbackStyles = {};
         if (!_this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
             _this.ngStyleInstance = new common.NgStyle(_this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
         _this.init();
-        _this.setValue(_this.nativeElement.getAttribute('style') || '', '');
+        /** @type {?} */
+        var styles = _this.nativeElement.getAttribute('style') || '';
+        _this.fallbackStyles = _this.buildStyleMap(styles);
         return _this;
     }
     /**
@@ -680,11 +683,7 @@ var StyleDirective = /** @class */ (function (_super) {
     function (value) {
         /** @type {?} */
         var styles = this.buildStyleMap(value);
-        /** @type {?} */
-        var defaultStyles = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
-        /** @type {?} */
-        var fallback = this.buildStyleMap(defaultStyles);
-        this.ngStyleInstance.ngStyle = __assign({}, fallback, styles);
+        this.ngStyleInstance.ngStyle = __assign({}, this.fallbackStyles, styles);
         this.ngStyleInstance.ngDoCheck();
     };
     /**

@@ -19,6 +19,7 @@ export declare class StyleDirective extends BaseDirective2 implements DoCheck {
     protected sanitizer: DomSanitizer;
     private readonly ngStyleInstance;
     protected DIRECTIVE_KEY: string;
+    protected fallbackStyles: NgStyleMap;
     constructor(elementRef: ElementRef, styler: StyleUtils, marshal: MediaMarshaller, keyValueDiffers: KeyValueDiffers, renderer: Renderer2, sanitizer: DomSanitizer, ngStyleInstance: NgStyle);
     protected updateWithValue(value: any): void;
     /**

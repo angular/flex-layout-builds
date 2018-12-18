@@ -3028,15 +3028,18 @@ class MediaMarshaller {
     activate(mc) {
         /** @type {?} */
         const bp = this.findByQuery(mc.mediaQuery);
-        if (mc.matches && bp) {
-            this.activatedBreakpoints.push(bp);
-            this.activatedBreakpoints.sort(prioritySort);
+        if (bp) {
+            if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
+                this.activatedBreakpoints.push(bp);
+                this.activatedBreakpoints.sort(prioritySort);
+                this.updateStyles();
+            }
+            else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
+                // Remove the breakpoint when it's deactivated
+                this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+                this.updateStyles();
+            }
         }
-        else if (!mc.matches && bp) {
-            // Remove the breakpoint when it's deactivated
-            this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
-        }
-        this.updateStyles();
     }
     /**
      * initialize the marshaller with necessary elements for delegation on an element
