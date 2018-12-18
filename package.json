@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "7.0.0-beta.21-f9ae4fc",
+  "version": "7.0.0-beta.21-47fa8a7",
   "description": "Angular Flex-Layout",
   "main": "./bundles/flex-layout.umd.js",
   "module": "./esm5/flex-layout.es5.js",
