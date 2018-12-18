@@ -364,7 +364,7 @@ class LayoutGapDirective extends BaseDirective2 {
         }
         /** @type {?} */
         const items = this.childrenNodes
-            .filter(el => el.nodeType === 1 && this.getDisplayStyle(el) !== 'none')
+            .filter(el => el.nodeType === 1 && this.willDisplay(el))
             .sort((a, b) => {
             /** @type {?} */
             const orderA = +this.styler.lookupStyle(a, 'order');
@@ -398,16 +398,15 @@ class LayoutGapDirective extends BaseDirective2 {
         }
     }
     /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     * @param {?=} source
+     * Determine if an element will show or hide based on current activation
+     * @param {?} source
      * @return {?}
      */
-    getDisplayStyle(source = this.nativeElement) {
+    willDisplay(source) {
         /** @type {?} */
-        const query = 'display';
-        return this.styler.lookupStyle(source, query);
+        const value = this.marshal.getValue(source, 'show-hide');
+        return value === true ||
+            (value === '' && this.styleUtils.lookupStyle(source, 'display') !== 'none');
     }
     /**
      * @return {?}

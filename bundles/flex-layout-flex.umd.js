@@ -445,7 +445,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         }
         /** @type {?} */
         var items = this.childrenNodes
-            .filter(function (el) { return el.nodeType === 1 && _this.getDisplayStyle(el) !== 'none'; })
+            .filter(function (el) { return el.nodeType === 1 && _this.willDisplay(el); })
             .sort(function (a, b) {
             /** @type {?} */
             var orderA = +_this.styler.lookupStyle(a, 'order');
@@ -478,30 +478,22 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             this.addStyles(value, { directionality: directionality, items: items, layout: layout });
         }
     };
+    /** Determine if an element will show or hide based on current activation */
     /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     */
-    /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     * @param {?=} source
+     * Determine if an element will show or hide based on current activation
+     * @param {?} source
      * @return {?}
      */
-    LayoutGapDirective.prototype.getDisplayStyle = /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     * @param {?=} source
+    LayoutGapDirective.prototype.willDisplay = /**
+     * Determine if an element will show or hide based on current activation
+     * @param {?} source
      * @return {?}
      */
     function (source) {
-        if (source === void 0) { source = this.nativeElement; }
         /** @type {?} */
-        var query = 'display';
-        return this.styler.lookupStyle(source, query);
+        var value = this.marshal.getValue(source, 'show-hide');
+        return value === true ||
+            (value === '' && this.styleUtils.lookupStyle(source, 'display') !== 'none');
     };
     /**
      * @return {?}
