@@ -14,7 +14,7 @@ import { StyleBuilder } from '../style-builder/style-builder';
 /**
  * Abstract base class for the Layout API styling directives.
  * @deprecated
- * @deletion-target v7.0.0-beta.21-720052e
+ * @deletion-target v7.0.0-beta.21-a120ff0
  */
 export declare abstract class BaseDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
