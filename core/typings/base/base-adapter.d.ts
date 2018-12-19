@@ -15,7 +15,7 @@ import { StyleUtils } from '../style-utils/style-utils';
  * Adapter to the BaseDirective abstract class so it can be used via composition.
  * @see BaseDirective
  * @deprecated
- * @deletion-target v7.0.0-beta.21-ffd8331
+ * @deletion-target v7.0.0-beta.21-25c902e
  */
 export declare class BaseDirectiveAdapter extends BaseDirective {
     protected _baseKey: string;
