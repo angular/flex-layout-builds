@@ -3145,6 +3145,7 @@ exports.SERVER_TOKEN = SERVER_TOKEN;
 exports.BREAKPOINT = BREAKPOINT;
 exports.BaseDirective2 = BaseDirective2;
 exports.sortDescendingPriority = sortDescendingPriority;
+exports.sortAscendingPriority = sortAscendingPriority;
 exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;

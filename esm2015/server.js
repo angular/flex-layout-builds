@@ -7,7 +7,7 @@
  */
 import { DOCUMENT } from '@angular/common';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
-import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia } from '@angular/flex-layout/core';
+import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia, sortAscendingPriority } from '@angular/flex-layout/core';
 import { NgModule } from '@angular/core';
 
 /**
@@ -157,18 +157,6 @@ function getClassName(element, classMap) {
     element.classList.add(className);
     return className;
 }
-/**
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortAscendingPriority(a, b) {
-    /** @type {?} */
-    const pA = a.priority || 0;
-    /** @type {?} */
-    const pB = b.priority || 0;
-    return pA - pB;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -192,5 +180,5 @@ FlexLayoutServerModule.decorators = [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, sortAscendingPriority, SERVER_PROVIDERS };
+export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS };
 //# sourceMappingURL=server.js.map
