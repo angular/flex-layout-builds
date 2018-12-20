@@ -18,4 +18,5 @@ export declare function validateSuffixes(list: BreakPoint[]): BreakPoint[];
  */
 export declare function mergeByAlias(defaults: BreakPoint[], custom?: BreakPoint[]): BreakPoint[];
 /** HOF to sort the breakpoints by priority */
-export declare function prioritySort(a: BreakPoint, b: BreakPoint): number;
+export declare function sortDescendingPriority(a: BreakPoint, b: BreakPoint): number;
+export declare function sortAscendingPriority(a: BreakPoint, b: BreakPoint): number;

@@ -855,12 +855,24 @@ function mergeByAlias(defaults, custom) {
  * @param {?} b
  * @return {?}
  */
-function prioritySort(a, b) {
+function sortDescendingPriority(a, b) {
     /** @type {?} */
     var priorityA = a.priority || 0;
     /** @type {?} */
     var priorityB = b.priority || 0;
     return priorityB - priorityA;
+}
+/**
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortAscendingPriority(a, b) {
+    /** @type {?} */
+    var pA = a.priority || 0;
+    /** @type {?} */
+    var pB = b.priority || 0;
+    return pA - pB;
 }
 
 /**
@@ -903,32 +915,8 @@ var BreakPointRegistry = /** @class */ (function () {
          * Memoized BreakPoint Lookups
          */
         this.findByMap = new Map();
-        this.items = list.slice().sort(sortByAscendingPriority);
+        this.items = list.slice().sort(sortAscendingPriority);
     }
-    Object.defineProperty(BreakPointRegistry.prototype, "sortedItems", {
-        /**
-         * Accessor to sorted list used for registration with matchMedia API
-         *
-         * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-         *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-         *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-         */
-        get: /**
-         * Accessor to sorted list used for registration with matchMedia API
-         *
-         * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-         *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-         *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-         * @return {?}
-         */
-        function () {
-            // let overlaps = this.items.filter(it => it.overlapping === true);
-            // let nonOverlaps = this.items.filter(it => it.overlapping !== true);
-            return this.items;
-        },
-        enumerable: true,
-        configurable: true
-    });
     /**
      * Search breakpoints by alias (e.g. gt-xs)
      */
@@ -1035,18 +1023,6 @@ var BreakPointRegistry = /** @class */ (function () {
     /** @nocollapse */ BreakPointRegistry.ngInjectableDef = defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
-/**
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortByAscendingPriority(a, b) {
-    /** @type {?} */
-    var pA = a.priority || 0;
-    /** @type {?} */
-    var pB = b.priority || 0;
-    return pA - pB;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -2066,7 +2042,7 @@ var MediaObserver = /** @class */ (function () {
      */
     function () {
         /** @type {?} */
-        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         return this.buildObservable(queries);
     };
     /**
@@ -2675,7 +2651,7 @@ var MediaMarshaller = /** @class */ (function () {
         if (bp) {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
-                this.activatedBreakpoints.sort(prioritySort);
+                this.activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
@@ -3073,7 +3049,7 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function () {
         /** @type {?} */
-        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
             .observe(queries)
             .subscribe(this.activate.bind(this));
@@ -3118,5 +3094,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, prioritySort, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, sortByAscendingPriority, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
 //# sourceMappingURL=core.es5.js.map

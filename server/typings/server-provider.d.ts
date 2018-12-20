@@ -48,3 +48,4 @@ export declare const SERVER_PROVIDERS: ({
 })[];
 export declare type StyleSheet = Map<HTMLElement, Map<string, string | number>>;
 export declare type ClassMap = Map<HTMLElement, string>;
+export declare function sortAscendingPriority(a: BreakPoint, b: BreakPoint): number;

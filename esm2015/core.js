@@ -721,12 +721,24 @@ function mergeByAlias(defaults, custom = []) {
  * @param {?} b
  * @return {?}
  */
-function prioritySort(a, b) {
+function sortDescendingPriority(a, b) {
     /** @type {?} */
     const priorityA = a.priority || 0;
     /** @type {?} */
     const priorityB = b.priority || 0;
     return priorityB - priorityA;
+}
+/**
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortAscendingPriority(a, b) {
+    /** @type {?} */
+    const pA = a.priority || 0;
+    /** @type {?} */
+    const pB = b.priority || 0;
+    return pA - pB;
 }
 
 /**
@@ -772,20 +784,7 @@ class BreakPointRegistry {
          * Memoized BreakPoint Lookups
          */
         this.findByMap = new Map();
-        this.items = [...list].sort(sortByAscendingPriority);
-    }
-    /**
-     * Accessor to sorted list used for registration with matchMedia API
-     *
-     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-     * @return {?}
-     */
-    get sortedItems() {
-        // let overlaps = this.items.filter(it => it.overlapping === true);
-        // let nonOverlaps = this.items.filter(it => it.overlapping !== true);
-        return this.items;
+        this.items = [...list].sort(sortAscendingPriority);
     }
     /**
      * Search breakpoints by alias (e.g. gt-xs)
@@ -850,18 +849,6 @@ BreakPointRegistry.ctorParameters = () => [
     { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
 ];
 /** @nocollapse */ BreakPointRegistry.ngInjectableDef = defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
-/**
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortByAscendingPriority(a, b) {
-    /** @type {?} */
-    const pA = a.priority || 0;
-    /** @type {?} */
-    const pB = b.priority || 0;
-    return pA - pB;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -1637,7 +1624,7 @@ class MediaObserver {
      */
     watchActivations() {
         /** @type {?} */
-        const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
+        const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
         return this.buildObservable(queries);
     }
     /**
@@ -2108,7 +2095,7 @@ class MediaMarshaller {
         if (bp) {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
-                this.activatedBreakpoints.sort(prioritySort);
+                this.activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
@@ -2371,7 +2358,7 @@ class MediaMarshaller {
      */
     observeActivations() {
         /** @type {?} */
-        const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
+        const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
         this.matchMedia
             .observe(queries)
             .subscribe(this.activate.bind(this));
@@ -2415,5 +2402,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, prioritySort, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, sortByAscendingPriority, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
 //# sourceMappingURL=core.js.map

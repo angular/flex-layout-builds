@@ -31,7 +31,7 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
     var defaultStyles = new Map(serverSheet.stylesheet);
     /** @type {?} */
     var styleText = generateCss(defaultStyles, 'all', classMap);
-    breakpoints.sort(core.prioritySort).reverse().forEach(function (bp, i) {
+    breakpoints.slice().sort(sortAscendingPriority).forEach(function (bp, i) {
         serverSheet.clearStyles();
         (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
         /** @type {?} */
@@ -163,6 +163,18 @@ function getClassName(element, classMap) {
     element.classList.add(className);
     return className;
 }
+/**
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortAscendingPriority(a, b) {
+    /** @type {?} */
+    var pA = a.priority || 0;
+    /** @type {?} */
+    var pB = b.priority || 0;
+    return pA - pB;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -182,6 +194,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
 exports.FlexLayoutServerModule = FlexLayoutServerModule;
 exports.generateStaticFlexLayoutStyles = generateStaticFlexLayoutStyles;
 exports.FLEX_SSR_SERIALIZER_FACTORY = FLEX_SSR_SERIALIZER_FACTORY;
+exports.sortAscendingPriority = sortAscendingPriority;
 exports.SERVER_PROVIDERS = SERVER_PROVIDERS;
 
 Object.defineProperty(exports, '__esModule', { value: true });
