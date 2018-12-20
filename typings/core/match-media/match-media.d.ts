@@ -34,7 +34,7 @@ export declare class MatchMedia {
      * be announced.
      */
     observe(): Observable<MediaChange>;
-    observe(mqList: string[]): Observable<MediaChange>;
+    observe(mediaQueries: string[]): Observable<MediaChange>;
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
      * mediaQuery. Each listener emits specific MediaChange data to observers

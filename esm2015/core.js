@@ -833,12 +833,12 @@ class BreakPointRegistry {
      */
     findWithPredicate(key, searchFn) {
         /** @type {?} */
-        let response = this.findByMap.get(key) || null;
+        let response = this.findByMap.get(key);
         if (!response) {
             response = this.items.find(searchFn) || null;
             this.findByMap.set(key, response);
         }
-        return response;
+        return response || null;
     }
 }
 BreakPointRegistry.decorators = [
@@ -895,30 +895,35 @@ class MatchMedia {
      * Typically used by the MediaQueryAdaptor; optionally available to components
      * who wish to use the MediaMonitor as mediaMonitor$ observable service.
      *
-     * Use lazy registration...
+     * Use deferred registration process to register breakpoints only on subscription
+     * This logic also enforces logic to register all mediaQueries BEFORE notify
+     * subscribers of notifications.
      * @param {?=} mqList
      * @return {?}
      */
     observe(mqList) {
-        /** @type {?} */
-        const matchMedia$ = this._observable$.pipe(filter((change) => {
-            return !!(mqList || []).find((query) => change.mediaQuery === query);
-        }));
-        /** @type {?} */
-        const registration$ = Observable.create((observer) => {
+        if (mqList) {
             /** @type {?} */
-            const matches = this.registerQuery(mqList || []);
-            if (matches.length) {
+            const matchMedia$ = this._observable$.pipe(filter((change) => {
+                return mqList.indexOf(change.mediaQuery) > -1;
+            }));
+            /** @type {?} */
+            const registration$ = new Observable((observer) => {
                 /** @type {?} */
-                const lastChange = /** @type {?} */ ((matches.pop()));
-                matches.forEach((e) => {
-                    observer.next(e);
-                });
-                this._source.next(lastChange); // last match is cached
-            }
-            observer.complete();
-        });
-        return mqList ? merge(registration$, matchMedia$) : this._observable$;
+                const matches = this.registerQuery(mqList);
+                if (matches.length) {
+                    /** @type {?} */
+                    const lastChange = /** @type {?} */ ((matches.pop()));
+                    matches.forEach((e) => {
+                        observer.next(e);
+                    });
+                    this._source.next(lastChange); // last match is cached
+                }
+                observer.complete();
+            });
+            return merge(registration$, matchMedia$);
+        }
+        return this._observable$;
     }
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
@@ -928,7 +933,7 @@ class MatchMedia {
      */
     registerQuery(mediaQuery) {
         /** @type {?} */
-        const list = Array.isArray(mediaQuery) ? /** @type {?} */ (mediaQuery) : [mediaQuery];
+        const list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
         /** @type {?} */
         const matches = [];
         buildQueryCss(list, this._document);

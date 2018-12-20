@@ -1006,12 +1006,12 @@ var BreakPointRegistry = /** @class */ (function () {
      */
     function (key, searchFn) {
         /** @type {?} */
-        var response = this.findByMap.get(key) || null;
+        var response = this.findByMap.get(key);
         if (!response) {
             response = this.items.find(searchFn) || null;
             this.findByMap.set(key, response);
         }
-        return response;
+        return response || null;
     };
     BreakPointRegistry.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
@@ -1072,14 +1072,18 @@ var MatchMedia = /** @class */ (function () {
      * Typically used by the MediaQueryAdaptor; optionally available to components
      * who wish to use the MediaMonitor as mediaMonitor$ observable service.
      *
-     * Use lazy registration...
+     * Use deferred registration process to register breakpoints only on subscription
+     * This logic also enforces logic to register all mediaQueries BEFORE notify
+     * subscribers of notifications.
      */
     /**
      * External observers can watch for all (or a specific) mql changes.
      * Typically used by the MediaQueryAdaptor; optionally available to components
      * who wish to use the MediaMonitor as mediaMonitor$ observable service.
      *
-     * Use lazy registration...
+     * Use deferred registration process to register breakpoints only on subscription
+     * This logic also enforces logic to register all mediaQueries BEFORE notify
+     * subscribers of notifications.
      * @param {?=} mqList
      * @return {?}
      */
@@ -1088,31 +1092,36 @@ var MatchMedia = /** @class */ (function () {
      * Typically used by the MediaQueryAdaptor; optionally available to components
      * who wish to use the MediaMonitor as mediaMonitor$ observable service.
      *
-     * Use lazy registration...
+     * Use deferred registration process to register breakpoints only on subscription
+     * This logic also enforces logic to register all mediaQueries BEFORE notify
+     * subscribers of notifications.
      * @param {?=} mqList
      * @return {?}
      */
     function (mqList) {
         var _this = this;
-        /** @type {?} */
-        var matchMedia$ = this._observable$.pipe(filter(function (change) {
-            return !!(mqList || []).find(function (query) { return change.mediaQuery === query; });
-        }));
-        /** @type {?} */
-        var registration$ = Observable.create(function (observer) {
+        if (mqList) {
             /** @type {?} */
-            var matches = _this.registerQuery(mqList || []);
-            if (matches.length) {
+            var matchMedia$ = this._observable$.pipe(filter(function (change) {
+                return mqList.indexOf(change.mediaQuery) > -1;
+            }));
+            /** @type {?} */
+            var registration$ = new Observable(function (observer) {
                 /** @type {?} */
-                var lastChange = /** @type {?} */ ((matches.pop()));
-                matches.forEach(function (e) {
-                    observer.next(e);
-                });
-                _this._source.next(lastChange); // last match is cached
-            }
-            observer.complete();
-        });
-        return mqList ? merge(registration$, matchMedia$) : this._observable$;
+                var matches = _this.registerQuery(mqList);
+                if (matches.length) {
+                    /** @type {?} */
+                    var lastChange = /** @type {?} */ ((matches.pop()));
+                    matches.forEach(function (e) {
+                        observer.next(e);
+                    });
+                    _this._source.next(lastChange); // last match is cached
+                }
+                observer.complete();
+            });
+            return merge(registration$, matchMedia$);
+        }
+        return this._observable$;
     };
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
@@ -1133,7 +1142,7 @@ var MatchMedia = /** @class */ (function () {
     function (mediaQuery) {
         var _this = this;
         /** @type {?} */
-        var list = Array.isArray(mediaQuery) ? /** @type {?} */ (mediaQuery) : [mediaQuery];
+        var list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
         /** @type {?} */
         var matches = [];
         buildQueryCss(list, this._document);
