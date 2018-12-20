@@ -51,6 +51,8 @@ export declare class ShowHideDirective extends BaseDirective2 implements AfterVi
      * unless it was already explicitly specified inline or in a CSS stylesheet.
      */
     protected getDisplayStyle(): string;
+    /** Respond to layout changes on host element by reactivating show-hide */
+    protected onLayoutChange(): void;
     /** Validate the visibility value and then update the host's inline display style */
     protected updateWithValue(value?: boolean | string): void;
 }
