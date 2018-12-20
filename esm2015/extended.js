@@ -293,7 +293,7 @@ class ShowHideDirective extends BaseDirective2 {
         this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(takeUntil(this.destroySubject))
-            .subscribe(this.onLayoutChange.bind(this));
+            .subscribe(this.triggerUpdate.bind(this));
         /** @type {?} */
         const children = Array.from(this.nativeElement.children);
         for (let i = 0; i < children.length; i++) {
@@ -355,13 +355,6 @@ class ShowHideDirective extends BaseDirective2 {
     getDisplayStyle() {
         return (this.hasLayout || (this.hasFlexChild && this.layoutConfig.addFlexToParent)) ?
             'flex' : this.styler.lookupStyle(this.nativeElement, 'display', true);
-    }
-    /**
-     * Respond to layout changes on host element by reactivating show-hide
-     * @return {?}
-     */
-    onLayoutChange() {
-        this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
     }
     /**
      * Validate the visibility value and then update the host's inline display style

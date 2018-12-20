@@ -342,7 +342,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(takeUntil(this.destroySubject))
-            .subscribe(this.onLayoutChange.bind(this));
+            .subscribe(this.triggerUpdate.bind(this));
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {
@@ -431,18 +431,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
     function () {
         return (this.hasLayout || (this.hasFlexChild && this.layoutConfig.addFlexToParent)) ?
             'flex' : this.styler.lookupStyle(this.nativeElement, 'display', true);
-    };
-    /** Respond to layout changes on host element by reactivating show-hide */
-    /**
-     * Respond to layout changes on host element by reactivating show-hide
-     * @return {?}
-     */
-    ShowHideDirective.prototype.onLayoutChange = /**
-     * Respond to layout changes on host element by reactivating show-hide
-     * @return {?}
-     */
-    function () {
-        this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
     };
     /** Validate the visibility value and then update the host's inline display style */
     /**
