@@ -2,8 +2,9 @@ import { Observable } from 'rxjs';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
-declare type ClearCallback = () => void;
-declare type UpdateCallback = (val: any) => void;
+export declare type ClearCallback = () => void;
+export declare type UpdateCallback = (val: any) => void;
+export declare type Builder = UpdateCallback | ClearCallback;
 export interface ElementMatcher {
     element: HTMLElement;
     key: string;
@@ -99,6 +100,8 @@ export declare class MediaMarshaller {
      * @param key
      */
     private getFallback;
-    private registerBreakpoints;
+    /**
+     * Watch for mediaQuery breakpoint activations
+     */
+    private observeActivations;
 }
-export {};

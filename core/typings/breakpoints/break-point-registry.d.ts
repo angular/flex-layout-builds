@@ -1,16 +1,13 @@
 import { BreakPoint } from './break-point';
+declare type OptionalBreakPoint = BreakPoint | null;
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overridden from custom, application-specific ranges
  *
  */
 export declare class BreakPointRegistry {
-    private _registry;
-    constructor(_registry: BreakPoint[]);
-    /**
-     * Accessor to raw list
-     */
     readonly items: BreakPoint[];
+    constructor(list: BreakPoint[]);
     /**
      * Accessor to sorted list used for registration with matchMedia API
      *
@@ -22,8 +19,8 @@ export declare class BreakPointRegistry {
     /**
      * Search breakpoints by alias (e.g. gt-xs)
      */
-    findByAlias(alias: string): BreakPoint | null;
-    findByQuery(query: string): BreakPoint | null;
+    findByAlias(alias: string): OptionalBreakPoint;
+    findByQuery(query: string): OptionalBreakPoint;
     /**
      * Get all the breakpoints whose ranges could overlapping `normal` ranges;
      * e.g. gt-sm overlaps md, lg, and xl
@@ -39,4 +36,14 @@ export declare class BreakPointRegistry {
      * for property layoutGtSM.
      */
     readonly suffixes: string[];
+    /**
+     * Memoized lookup using custom predicate function
+     */
+    private findWithPredicate;
+    /**
+     * Memoized BreakPoint Lookups
+     */
+    private readonly findByMap;
 }
+export declare function sortByAscendingPriority(a: BreakPoint, b: BreakPoint): number;
+export {};

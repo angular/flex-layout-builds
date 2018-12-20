@@ -51,7 +51,7 @@ export declare class ServerMatchMedia extends MatchMedia {
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
      */
-    protected _buildMQL(query: string): ServerMediaQueryList;
+    protected buildMQL(query: string): ServerMediaQueryList;
 }
 declare type MediaQueryListListener = ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null;
 export {};

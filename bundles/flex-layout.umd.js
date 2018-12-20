@@ -18,7 +18,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.22-d9c520f');
+var VERSION = new core.Version('7.0.0-beta.22-7a86044');
 
 /**
  * @fileoverview added by tsickle
@@ -93,14 +93,12 @@ exports.DEFAULT_CONFIG = core$1.DEFAULT_CONFIG;
 exports.LAYOUT_CONFIG = core$1.LAYOUT_CONFIG;
 exports.SERVER_TOKEN = core$1.SERVER_TOKEN;
 exports.BREAKPOINT = core$1.BREAKPOINT;
-exports.BaseDirective = core$1.BaseDirective;
-exports.BaseDirectiveAdapter = core$1.BaseDirectiveAdapter;
 exports.BaseDirective2 = core$1.BaseDirective2;
 exports.prioritySort = core$1.prioritySort;
-exports.RESPONSIVE_ALIASES = core$1.RESPONSIVE_ALIASES;
 exports.DEFAULT_BREAKPOINTS = core$1.DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = core$1.ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = core$1.ORIENTATION_BREAKPOINTS;
+exports.sortByAscendingPriority = core$1.sortByAscendingPriority;
 exports.BreakPointRegistry = core$1.BreakPointRegistry;
 exports.BREAKPOINTS = core$1.BREAKPOINTS;
 exports.MatchMedia = core$1.MatchMedia;
@@ -109,13 +107,7 @@ exports.MockMediaQueryList = core$1.MockMediaQueryList;
 exports.MockMatchMediaProvider = core$1.MockMatchMediaProvider;
 exports.ServerMediaQueryList = core$1.ServerMediaQueryList;
 exports.ServerMatchMedia = core$1.ServerMatchMedia;
-exports.MediaMonitor = core$1.MediaMonitor;
-exports.ObservableMedia = core$1.ObservableMedia;
-exports.MediaService = core$1.MediaService;
-exports.ObservableMediaProvider = core$1.ObservableMediaProvider;
 exports.MediaObserver = core$1.MediaObserver;
-exports.KeyOptions = core$1.KeyOptions;
-exports.ResponsiveActivation = core$1.ResponsiveActivation;
 exports.StyleUtils = core$1.StyleUtils;
 exports.StyleBuilder = core$1.StyleBuilder;
 exports.validateBasis = core$1.validateBasis;
@@ -126,7 +118,6 @@ exports.DefaultClassDirective = extended.DefaultClassDirective;
 exports.ImgSrcStyleBuilder = extended.ImgSrcStyleBuilder;
 exports.ImgSrcDirective = extended.ImgSrcDirective;
 exports.DefaultImgSrcDirective = extended.DefaultImgSrcDirective;
-exports.negativeOf = extended.negativeOf;
 exports.ShowHideStyleBuilder = extended.ShowHideStyleBuilder;
 exports.ShowHideDirective = extended.ShowHideDirective;
 exports.DefaultShowHideDirective = extended.DefaultShowHideDirective;

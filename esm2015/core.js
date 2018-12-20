@@ -5,9 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, InjectionToken, inject, Injectable, Inject, NgModule, NgZone, SimpleChange, Optional, defineInjectable } from '@angular/core';
+import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, defineInjectable } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { BehaviorSubject, Subject, merge } from 'rxjs';
+import { Subject, BehaviorSubject, Observable, merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 /**
@@ -52,382 +52,18 @@ const CLASS_NAME = 'flex-layout-';
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/** @type {?} */
-const BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
-    providedIn: 'root',
-    factory: () => null
-});
-
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * *****************************************************************
+ * Define module for the MediaQuery API
+ * *****************************************************************
  */
-/** @type {?} */
-const RESPONSIVE_ALIASES = [
-    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
+class CoreModule {
+}
+CoreModule.decorators = [
+    { type: NgModule, args: [{
+                providers: [BROWSER_PROVIDER]
+            },] },
 ];
-/** @type {?} */
-const DEFAULT_BREAKPOINTS = [
-    {
-        alias: 'xs',
-        mediaQuery: '(min-width: 0px) and (max-width: 599px)',
-        priority: 100,
-    },
-    {
-        alias: 'gt-xs',
-        overlapping: true,
-        mediaQuery: '(min-width: 600px)',
-        priority: 7,
-    },
-    {
-        alias: 'lt-sm',
-        overlapping: true,
-        mediaQuery: '(max-width: 599px)',
-        priority: 10,
-    },
-    {
-        alias: 'sm',
-        mediaQuery: '(min-width: 600px) and (max-width: 959px)',
-        priority: 100,
-    },
-    {
-        alias: 'gt-sm',
-        overlapping: true,
-        mediaQuery: '(min-width: 960px)',
-        priority: 8,
-    },
-    {
-        alias: 'lt-md',
-        overlapping: true,
-        mediaQuery: '(max-width: 959px)',
-        priority: 9,
-    },
-    {
-        alias: 'md',
-        mediaQuery: '(min-width: 960px) and (max-width: 1279px)',
-        priority: 100,
-    },
-    {
-        alias: 'gt-md',
-        overlapping: true,
-        mediaQuery: '(min-width: 1280px)',
-        priority: 9,
-    },
-    {
-        alias: 'lt-lg',
-        overlapping: true,
-        mediaQuery: '(max-width: 1279px)',
-        priority: 8,
-    },
-    {
-        alias: 'lg',
-        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)',
-        priority: 100,
-    },
-    {
-        alias: 'gt-lg',
-        overlapping: true,
-        mediaQuery: '(min-width: 1920px)',
-        priority: 10,
-    },
-    {
-        alias: 'lt-xl',
-        overlapping: true,
-        mediaQuery: '(max-width: 1919px)',
-        priority: 7,
-    },
-    {
-        alias: 'xl',
-        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)',
-        priority: 100,
-    }
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/** @type {?} */
-const HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599px)';
-/** @type {?} */
-const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
-/** @type {?} */
-const TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
-/** @type {?} */
-const TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
-/** @type {?} */
-const WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
-/** @type {?} */
-const WEB_LANDSCAPE = '(orientation: landscape) and (min-width: 1280px)';
-/** @type {?} */
-const ScreenTypes = {
-    'HANDSET': `${HANDSET_PORTRAIT}, ${HANDSET_LANDSCAPE}`,
-    'TABLET': `${TABLET_PORTRAIT} , ${TABLET_LANDSCAPE}`,
-    'WEB': `${WEB_PORTRAIT}, ${WEB_LANDSCAPE} `,
-    'HANDSET_PORTRAIT': `${HANDSET_PORTRAIT}`,
-    'TABLET_PORTRAIT': `${TABLET_PORTRAIT} `,
-    'WEB_PORTRAIT': `${WEB_PORTRAIT}`,
-    'HANDSET_LANDSCAPE': `${HANDSET_LANDSCAPE}]`,
-    'TABLET_LANDSCAPE': `${TABLET_LANDSCAPE}`,
-    'WEB_LANDSCAPE': `${WEB_LANDSCAPE}`
-};
-/** *
- * Extended Breakpoints for handset/tablets with landscape or portrait orientations
-  @type {?} */
-const ORIENTATION_BREAKPOINTS = [
-    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
-    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
-    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
-    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
-    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
-    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
-    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Extends an object with the *enumerable* and *own* properties of one or more source objects,
- * similar to Object.assign.
- *
- * @param {?} dest The object which will have properties copied to it.
- * @param {...?} sources The source objects from which properties will be copied.
- * @return {?}
- */
-function extendObject(dest, ...sources) {
-    if (dest == null) {
-        throw TypeError('Cannot convert undefined or null to object');
-    }
-    for (let source of sources) {
-        if (source != null) {
-            for (let key in source) {
-                if (source.hasOwnProperty(key)) {
-                    dest[key] = source[key];
-                }
-            }
-        }
-    }
-    return dest;
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/** @type {?} */
-const ALIAS_DELIMITERS = /(\.|-|_)/g;
-/**
- * @param {?} part
- * @return {?}
- */
-function firstUpperCase(part) {
-    /** @type {?} */
-    let first = part.length > 0 ? part.charAt(0) : '';
-    /** @type {?} */
-    let remainder = (part.length > 1) ? part.slice(1) : '';
-    return first.toUpperCase() + remainder;
-}
-/**
- * Converts snake-case to SnakeCase.
- * @param {?} name Text to UpperCamelCase
- * @return {?}
- */
-function camelCase(name) {
-    return name
-        .replace(ALIAS_DELIMITERS, '|')
-        .split('|')
-        .map(firstUpperCase)
-        .join('');
-}
-/**
- * For each breakpoint, ensure that a Suffix is defined;
- * fallback to UpperCamelCase the unique Alias value
- * @param {?} list
- * @return {?}
- */
-function validateSuffixes(list) {
-    list.forEach((bp) => {
-        if (!bp.suffix) {
-            bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
-            bp.overlapping = !!bp.overlapping; // ensure default value
-        }
-    });
-    return list;
-}
-/**
- * Merge a custom breakpoint list with the default list based on unique alias values
- *  - Items are added if the alias is not in the default list
- *  - Items are merged with the custom override if the alias exists in the default list
- * @param {?} defaults
- * @param {?=} custom
- * @return {?}
- */
-function mergeByAlias(defaults, custom = []) {
-    /** @type {?} */
-    const dict = {};
-    defaults.forEach(bp => {
-        dict[bp.alias] = bp;
-    });
-    // Merge custom breakpoints
-    custom.forEach((bp) => {
-        if (dict[bp.alias]) {
-            extendObject(dict[bp.alias], bp);
-        }
-        else {
-            dict[bp.alias] = bp;
-        }
-    });
-    return validateSuffixes(Object.keys(dict).map(k => dict[k]));
-}
-/**
- * HOF to sort the breakpoints by priority
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function prioritySort(a, b) {
-    /** @type {?} */
-    const priorityA = a.priority || 0;
-    /** @type {?} */
-    const priorityB = b.priority || 0;
-    return priorityB - priorityA;
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/** @type {?} */
-const DEFAULT_CONFIG = {
-    addFlexToParent: true,
-    addOrientationBps: false,
-    disableDefaultBps: false,
-    disableVendorPrefixes: false,
-    serverLoaded: false,
-    useColumnBasisZero: true,
-};
-/** @type {?} */
-const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
-    providedIn: 'root',
-    factory: () => DEFAULT_CONFIG
-});
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/** *
- *  Injection token unique to the flex-layout library.
- *  Use this token when build a custom provider (see below).
-  @type {?} */
-const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints', {
-    providedIn: 'root',
-    factory: () => {
-        /** @type {?} */
-        const breakpoints = inject(BREAKPOINT);
-        /** @type {?} */
-        const layoutConfig = inject(LAYOUT_CONFIG);
-        /** @type {?} */
-        const bpFlattenArray = [].concat.apply([], (breakpoints || [])
-            .map((v) => Array.isArray(v) ? v : [v]));
-        /** @type {?} */
-        const builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
-            .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
-        return mergeByAlias(builtIns, bpFlattenArray);
-    }
-});
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Registry of 1..n MediaQuery breakpoint ranges
- * This is published as a provider and may be overridden from custom, application-specific ranges
- *
- */
-class BreakPointRegistry {
-    /**
-     * @param {?} _registry
-     */
-    constructor(_registry) {
-        this._registry = _registry;
-    }
-    /**
-     * Accessor to raw list
-     * @return {?}
-     */
-    get items() {
-        return [...this._registry];
-    }
-    /**
-     * Accessor to sorted list used for registration with matchMedia API
-     *
-     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-     * @return {?}
-     */
-    get sortedItems() {
-        /** @type {?} */
-        let overlaps = this._registry.filter(it => it.overlapping === true);
-        /** @type {?} */
-        let nonOverlaps = this._registry.filter(it => it.overlapping !== true);
-        return [...overlaps, ...nonOverlaps];
-    }
-    /**
-     * Search breakpoints by alias (e.g. gt-xs)
-     * @param {?} alias
-     * @return {?}
-     */
-    findByAlias(alias) {
-        return this._registry.find(bp => bp.alias == alias) || null;
-    }
-    /**
-     * @param {?} query
-     * @return {?}
-     */
-    findByQuery(query) {
-        return this._registry.find(bp => bp.mediaQuery == query) || null;
-    }
-    /**
-     * Get all the breakpoints whose ranges could overlapping `normal` ranges;
-     * e.g. gt-sm overlaps md, lg, and xl
-     * @return {?}
-     */
-    get overlappings() {
-        return this._registry.filter(it => it.overlapping == true);
-    }
-    /**
-     * Get list of all registered (non-empty) breakpoint aliases
-     * @return {?}
-     */
-    get aliases() {
-        return this._registry.map(it => it.alias);
-    }
-    /**
-     * Aliases are mapped to properties using suffixes
-     * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
-     * for property layoutGtSM.
-     * @return {?}
-     */
-    get suffixes() {
-        return this._registry.map(it => !!it.suffix ? it.suffix : '');
-    }
-}
-BreakPointRegistry.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
-];
-/** @nocollapse */
-BreakPointRegistry.ctorParameters = () => [
-    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
-];
-/** @nocollapse */ BreakPointRegistry.ngInjectableDef = defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -458,383 +94,6 @@ class MediaChange {
         return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
     }
 }
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
- * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
- * performed within the ng Zone to trigger change detections and component updates.
- *
- * NOTE: both mediaQuery activations and de-activations are announced in notifications
- */
-class MatchMedia {
-    /**
-     * @param {?} _zone
-     * @param {?} _platformId
-     * @param {?} _document
-     */
-    constructor(_zone, _platformId, _document) {
-        this._zone = _zone;
-        this._platformId = _platformId;
-        this._document = _document;
-        this._registry = new Map();
-        this._source = new BehaviorSubject(new MediaChange(true));
-        this._observable$ = this._source.asObservable();
-    }
-    /**
-     * For the specified mediaQuery?
-     * @param {?} mediaQuery
-     * @return {?}
-     */
-    isActive(mediaQuery) {
-        /** @type {?} */
-        const mql = this._registry.get(mediaQuery);
-        return !!mql ? mql.matches : false;
-    }
-    /**
-     * External observers can watch for all (or a specific) mql changes.
-     * Typically used by the MediaQueryAdaptor; optionally available to components
-     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
-     *
-     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-     *       be announced.
-     * @param {?=} mediaQuery
-     * @return {?}
-     */
-    observe(mediaQuery) {
-        if (mediaQuery) {
-            this.registerQuery(mediaQuery);
-        }
-        return this._observable$.pipe(filter(change => (mediaQuery ? (change.mediaQuery === mediaQuery) : true)));
-    }
-    /**
-     * Based on the BreakPointRegistry provider, register internal listeners for each unique
-     * mediaQuery. Each listener emits specific MediaChange data to observers
-     * @param {?} mediaQuery
-     * @return {?}
-     */
-    registerQuery(mediaQuery) {
-        /** @type {?} */
-        const list = Array.isArray(mediaQuery) ? Array.from(new Set(mediaQuery)) : [mediaQuery];
-        if (list.length > 0) {
-            buildQueryCss(list, this._document);
-        }
-        list.forEach(query => {
-            /** @type {?} */
-            const onMQLEvent = (e) => {
-                this._zone.run(() => this._source.next(new MediaChange(e.matches, query)));
-            };
-            /** @type {?} */
-            let mql = this._registry.get(query);
-            if (!mql) {
-                mql = this._buildMQL(query);
-                mql.addListener(onMQLEvent);
-                this._registry.set(query, mql);
-            }
-            if (mql.matches) {
-                onMQLEvent(/** @type {?} */ ((mql)));
-            }
-        });
-    }
-    /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     * @param {?} query
-     * @return {?}
-     */
-    _buildMQL(query) {
-        return constructMql(query, isPlatformBrowser(this._platformId));
-    }
-}
-MatchMedia.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
-];
-/** @nocollapse */
-MatchMedia.ctorParameters = () => [
-    { type: NgZone },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-];
-/** @nocollapse */ MatchMedia.ngInjectableDef = defineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(inject(NgZone), inject(PLATFORM_ID), inject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
-/** *
- * Private global registry for all dynamically-created, injected style tags
- * @see prepare(query)
-  @type {?} */
-const ALL_STYLES = {};
-/**
- * For Webkit engines that only trigger the MediaQueryList Listener
- * when there is at least one CSS selector for the respective media query.
- *
- * @param {?} mediaQueries
- * @param {?} _document
- * @return {?}
- */
-function buildQueryCss(mediaQueries, _document) {
-    /** @type {?} */
-    const list = mediaQueries.filter(it => !ALL_STYLES[it]);
-    if (list.length > 0) {
-        /** @type {?} */
-        const query = list.join(', ');
-        try {
-            /** @type {?} */
-            const styleEl = _document.createElement('style');
-            styleEl.setAttribute('type', 'text/css');
-            if (!(/** @type {?} */ (styleEl)).styleSheet) {
-                /** @type {?} */
-                const cssText = `
-/*
-  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
-  see http://bit.ly/2sd4HMP
-*/
-@media ${query} {.fx-query-test{ }}
-`;
-                styleEl.appendChild(_document.createTextNode(cssText));
-            } /** @type {?} */
-            ((_document.head)).appendChild(styleEl);
-            // Store in private global registry
-            list.forEach(mq => ALL_STYLES[mq] = styleEl);
-        }
-        catch (e) {
-            console.error(e);
-        }
-    }
-}
-/**
- * @param {?} query
- * @param {?} isBrowser
- * @return {?}
- */
-function constructMql(query, isBrowser) {
-    /** @type {?} */
-    const canListen = isBrowser && !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-    return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
-        matches: query === 'all' || query === '',
-        media: query,
-        addListener: () => {
-        },
-        removeListener: () => {
-        }
-    }));
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * For the specified MediaChange, make sure it contains the breakpoint alias
- * and suffix (if available).
- * @param {?} dest
- * @param {?} source
- * @return {?}
- */
-function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
-        mqAlias: source.alias,
-        suffix: source.suffix
-    } : {});
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Base class for MediaService and pseudo-token for
- * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21
- * @abstract
- */
-class ObservableMedia {
-}
-/**
- * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
- * This an Observable with that exposes a feature to subscribe to mediaQuery
- * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
- * currently active.
- *
- * !! Only mediaChange activations (not de-activations) are announced by the ObservableMedia
- *
- * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
- * notification. For custom mediaQuery notifications, alias information will not be injected and
- * those fields will be ''.
- *
- * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
- * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.asObservable()` with syntax like media.asObservable().map(....).
- *
- * \@usage
- *
- *  // RxJS
- *  import {filter} from 'rxjs/operators/filter';
- *  import { ObservableMedia } from '\@angular/flex-layout';
- *
- * \@Component({ ... })
- *  export class AppComponent {
- *    status : string = '';
- *
- *    constructor(  media:ObservableMedia ) {
- *      let onChange = (change:MediaChange) => {
- *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
- *      };
- *
- *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g.
- *      //      media.subscribe(onChange);
- *
- *      media.asObservable()
- *        .pipe(
- *          filter((change:MediaChange) => true)   // silly noop filter
- *        ).subscribe(onChange);
- *    }
- *  }
- * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21
- */
-class MediaService {
-    /**
-     * @param {?} breakpoints
-     * @param {?} mediaWatcher
-     */
-    constructor(breakpoints, mediaWatcher) {
-        this.breakpoints = breakpoints;
-        this.mediaWatcher = mediaWatcher;
-        /**
-         * Should we announce gt-<xxx> breakpoint activations ?
-         */
-        this.filterOverlaps = true;
-        this._registerBreakPoints();
-        this.observable$ = this._buildObservable();
-    }
-    /**
-     * Test if specified query/alias is active.
-     * @param {?} alias
-     * @return {?}
-     */
-    isActive(alias) {
-        return this.mediaWatcher.isActive(this._toMediaQuery(alias));
-    }
-    /**
-     * Proxy to the Observable subscribe method
-     * @param {?=} observerOrNext
-     * @param {?=} error
-     * @param {?=} complete
-     * @return {?}
-     */
-    subscribe(observerOrNext, error, complete) {
-        if (observerOrNext) {
-            if (typeof observerOrNext === 'object') {
-                return this.observable$.subscribe(observerOrNext.next, observerOrNext.error, observerOrNext.complete);
-            }
-        }
-        return this.observable$.subscribe(observerOrNext, error, complete);
-    }
-    /**
-     * Access to observable for use with operators like
-     * .filter(), .map(), etc.
-     * @return {?}
-     */
-    asObservable() {
-        return this.observable$;
-    }
-    /**
-     * Register all the mediaQueries registered in the BreakPointRegistry
-     * This is needed so subscribers can be auto-notified of all standard, registered
-     * mediaQuery activations
-     * @return {?}
-     */
-    _registerBreakPoints() {
-        /** @type {?} */
-        const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this.mediaWatcher.registerQuery(queries);
-    }
-    /**
-     * Prepare internal observable
-     *
-     * NOTE: the raw MediaChange events [from MatchMedia] do not
-     *       contain important alias information; as such this info
-     *       must be injected into the MediaChange
-     * @return {?}
-     */
-    _buildObservable() {
-        /** @type {?} */
-        const excludeOverlaps = (change) => {
-            /** @type {?} */
-            const bp = this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !(this.filterOverlaps && bp.overlapping);
-        };
-        /**
-             * Only pass/announce activations (not de-activations)
-             * Inject associated (if any) alias information into the MediaChange event
-             * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
-             */
-        return this.mediaWatcher.observe().pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => mergeAlias(change, this._findByQuery(change.mediaQuery))));
-    }
-    /**
-     * Breakpoint locator by alias
-     * @param {?} alias
-     * @return {?}
-     */
-    _findByAlias(alias) {
-        return this.breakpoints.findByAlias(alias);
-    }
-    /**
-     * Breakpoint locator by mediaQuery
-     * @param {?} query
-     * @return {?}
-     */
-    _findByQuery(query) {
-        return this.breakpoints.findByQuery(query);
-    }
-    /**
-     * Find associated breakpoint (if any)
-     * @param {?} query
-     * @return {?}
-     */
-    _toMediaQuery(query) {
-        /** @type {?} */
-        const bp = this._findByAlias(query) || this._findByQuery(query);
-        return bp ? bp.mediaQuery : query;
-    }
-}
-MediaService.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
-];
-/** @nocollapse */
-MediaService.ctorParameters = () => [
-    { type: BreakPointRegistry },
-    { type: MatchMedia }
-];
-/** @nocollapse */ MediaService.ngInjectableDef = defineInjectable({ factory: function MediaService_Factory() { return new MediaService(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaService, providedIn: "root" });
-/** *
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
-  @type {?} */
-const ObservableMediaProvider = {
-    // tslint:disable-line:variable-name
-    provide: ObservableMedia,
-    useClass: MediaService
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * *****************************************************************
- * Define module for the MediaQuery API
- * *****************************************************************
- */
-class CoreModule {
-}
-CoreModule.decorators = [
-    { type: NgModule, args: [{
-                providers: [BROWSER_PROVIDER, ObservableMediaProvider]
-            },] },
-];
 
 /**
  * @fileoverview added by tsickle
@@ -909,6 +168,25 @@ StylesheetMap.decorators = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
+const DEFAULT_CONFIG = {
+    addFlexToParent: true,
+    addOrientationBps: false,
+    disableDefaultBps: false,
+    disableVendorPrefixes: false,
+    serverLoaded: false,
+    useColumnBasisZero: true,
+};
+/** @type {?} */
+const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
+    providedIn: 'root',
+    factory: () => DEFAULT_CONFIG
+});
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 /** *
  * Token that is provided to tell whether the FlexLayoutServerModule
  * has been included in the bundle
@@ -918,6 +196,16 @@ StylesheetMap.decorators = [
 const SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded', {
     providedIn: 'root',
     factory: () => false
+});
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
+const BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
+    providedIn: 'root',
+    factory: () => null
 });
 
 /**
@@ -1013,656 +301,6 @@ function buildCSS(direction, wrap = null, inline = false) {
         'flex-direction': direction,
         'flex-wrap': !!wrap ? wrap : null
     };
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- */
-class KeyOptions {
-    /**
-     * @param {?} baseKey
-     * @param {?} defaultValue
-     * @param {?} inputKeys
-     */
-    constructor(baseKey, defaultValue, inputKeys) {
-        this.baseKey = baseKey;
-        this.defaultValue = defaultValue;
-        this.inputKeys = inputKeys;
-    }
-}
-/**
- * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
- * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
- * directive via the specified callback.
- *
- * - The MQA also determines which directive property should be used to determine the
- *   current change 'value'... BEFORE the original `onMediaQueryChanges()` method is called.
- * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the
- *   MediaQueryServices.
- *
- * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- */
-class ResponsiveActivation {
-    /**
-     * Constructor
-     * @param {?} _options
-     * @param {?} _mediaMonitor
-     * @param {?} _onMediaChanges
-     */
-    constructor(_options, _mediaMonitor, _onMediaChanges) {
-        this._options = _options;
-        this._mediaMonitor = _mediaMonitor;
-        this._onMediaChanges = _onMediaChanges;
-        this._activatedInputKey = '';
-        this._registryMap = this._buildRegistryMap();
-        this._subscribers = this._configureChangeObservers();
-    }
-    /**
-     * Get a readonly sorted list of the breakpoints corresponding to the directive properties
-     * defined in the HTML markup: the sorting is done from largest to smallest. The order is
-     * important when several media queries are 'registered' and from which, the browser uses the
-     * first matching media query.
-     * @return {?}
-     */
-    get registryFromLargest() {
-        return [...this._registryMap].reverse();
-    }
-    /**
-     * Determine which directive \@Input() property is currently active (for the viewport size):
-     * The key must be defined (in use) or fallback to the 'closest' overlapping property key
-     * that is defined; otherwise the default property key will be used.
-     * e.g.
-     *      if `<div fxHide fxHide.gt-sm="false">` is used but the current activated mediaQuery alias
-     *      key is `.md` then `.gt-sm` should be used instead
-     * @return {?}
-     */
-    get activatedInputKey() {
-        return this._activatedInputKey || this._options.baseKey;
-    }
-    /**
-     * Get the currently activated \@Input value or the fallback default \@Input value
-     * @return {?}
-     */
-    get activatedInput() {
-        /** @type {?} */
-        const key = this.activatedInputKey;
-        return this.hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
-    }
-    /**
-     * Fast validator for presence of attribute on the host element
-     * @param {?} key
-     * @return {?}
-     */
-    hasKeyValue(key) {
-        return this._options.inputKeys[key] !== undefined;
-    }
-    /**
-     * Remove interceptors, restore original functions, and forward the onDestroy() call
-     * @return {?}
-     */
-    destroy() {
-        this._subscribers.forEach(link => link.unsubscribe());
-        this._subscribers = [];
-    }
-    /**
-     * For each *defined* API property, register a callback to `_onMonitorEvents( )`
-     * Cache 1..n subscriptions for internal auto-unsubscribes when the the directive destructs
-     * @return {?}
-     */
-    _configureChangeObservers() {
-        /** @type {?} */
-        const subscriptions = [];
-        this._registryMap.forEach(bp => {
-            if (this._keyInUse(bp.key)) {
-                /** @type {?} */
-                const buildChanges = (change) => {
-                    change = change.clone();
-                    change.property = this._options.baseKey;
-                    return change;
-                };
-                subscriptions.push(this._mediaMonitor
-                    .observe(bp.alias)
-                    .pipe(map(buildChanges))
-                    .subscribe(change => {
-                    this._onMonitorEvents(change);
-                }));
-            }
-        });
-        return subscriptions;
-    }
-    /**
-     * Build mediaQuery key-hashmap; only for the directive properties that are actually defined/used
-     * in the HTML markup
-     * @return {?}
-     */
-    _buildRegistryMap() {
-        return this._mediaMonitor.breakpoints
-            .map(bp => /** @type {?} */ (extendObject({}, bp, {
-            baseKey: this._options.baseKey,
-            // e.g. layout, hide, self-align, flex-wrap
-            key: this._options.baseKey + bp.suffix // e.g. layoutGtSm, layoutMd, layoutGtLg
-        })))
-            .filter(bp => this._keyInUse(bp.key));
-    }
-    /**
-     * Synchronizes change notifications with the current mq-activated \@Input and calculates the
-     * mq-activated input value or the default value
-     * @param {?} change
-     * @return {?}
-     */
-    _onMonitorEvents(change) {
-        if (change.property === this._options.baseKey) {
-            change.value = this._calculateActivatedValue(change);
-            this._onMediaChanges(change);
-        }
-    }
-    /**
-     * Has the key been specified in the HTML markup and thus is intended
-     * to participate in activation processes.
-     * @param {?} key
-     * @return {?}
-     */
-    _keyInUse(key) {
-        return this._lookupKeyValue(key) !== undefined;
-    }
-    /**
-     *  Map input key associated with mediaQuery activation to closest defined input key
-     *  then return the values associated with the targeted input property
-     *
-     *  !! change events may arrive out-of-order (activate before deactivate)
-     *     so make sure the deactivate is used ONLY when the keys match
-     *     (since a different activate may be in use)
-     * @param {?} current
-     * @return {?}
-     */
-    _calculateActivatedValue(current) {
-        /** @type {?} */
-        const currentKey = this._options.baseKey + current.suffix;
-        /** @type {?} */
-        let newKey = this._activatedInputKey; // e.g. newKey == hideGtSm
-        newKey = current.matches ? currentKey : ((newKey === currentKey) ? '' : newKey);
-        this._activatedInputKey = this._validateInputKey(newKey);
-        return this.activatedInput;
-    }
-    /**
-     * For the specified input property key, validate it is defined (used in the markup)
-     * If not see if a overlapping mediaQuery-related input key fallback has been defined
-     *
-     * NOTE: scans in the order defined by activeOverLaps (largest viewport ranges -> smallest ranges)
-     * @param {?} inputKey
-     * @return {?}
-     */
-    _validateInputKey(inputKey) {
-        /** @type {?} */
-        const isMissingKey = (key) => !this._keyInUse(key);
-        if (isMissingKey(inputKey)) {
-            this._mediaMonitor.activeOverlaps.some(bp => {
-                /** @type {?} */
-                const key = this._options.baseKey + bp.suffix;
-                if (!isMissingKey(key)) {
-                    inputKey = key;
-                    return true; // exit .some()
-                }
-                return false;
-            });
-        }
-        return inputKey;
-    }
-    /**
-     * Get the value (if any) for the directive instances \@Input property (aka key)
-     * @param {?} key
-     * @return {?}
-     */
-    _lookupKeyValue(key) {
-        return this._options.inputKeys[key];
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Abstract base class for the Layout API styling directives.
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- * @abstract
- */
-class BaseDirective {
-    /**
-     * @param {?} _mediaMonitor
-     * @param {?} _elementRef
-     * @param {?} _styler
-     * @param {?=} _styleBuilder
-     */
-    constructor(_mediaMonitor, _elementRef, _styler, _styleBuilder) {
-        this._mediaMonitor = _mediaMonitor;
-        this._elementRef = _elementRef;
-        this._styler = _styler;
-        this._styleBuilder = _styleBuilder;
-        /**
-         * Dictionary of input keys with associated values
-         */
-        this._inputMap = {};
-        /**
-         * Has the `ngOnInit()` method fired
-         *
-         * Used to allow *ngFor tasks to finish and support queries like
-         * getComputedStyle() during ngOnInit().
-         */
-        this._hasInitialized = false;
-        /**
-         * Cache map for style computation
-         */
-        this._styleCache = new Map();
-    }
-    /**
-     * Imperatively determine the current activated [input] value;
-     * if called before ngOnInit() this will return `undefined`
-     * @return {?}
-     */
-    get activatedValue() {
-        return this._mqActivation ? this._mqActivation.activatedInput : undefined;
-    }
-    /**
-     * Change the currently activated input value and force-update
-     * the injected CSS (by-passing change detection).
-     *
-     * NOTE: Only the currently activated input value will be modified;
-     *       other input values will NOT be affected.
-     * @param {?} value
-     * @return {?}
-     */
-    set activatedValue(value) {
-        /** @type {?} */
-        let key = 'baseKey';
-        /** @type {?} */
-        let previousVal;
-        if (this._mqActivation) {
-            key = this._mqActivation.activatedInputKey;
-            previousVal = this._inputMap[key];
-            this._inputMap[key] = value;
-        }
-        /** @type {?} */
-        const change = new SimpleChange(previousVal, value, false);
-        this.ngOnChanges(/** @type {?} */ ({ [key]: change }));
-    }
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @param {?} baseKey
-     * @return {?}
-     */
-    hasResponsiveAPI(baseKey) {
-        /** @type {?} */
-        const totalKeys = Object.keys(this._inputMap).length;
-        /** @type {?} */
-        const baseValue = this._inputMap[baseKey];
-        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
-    }
-    /**
-     * Use post-component-initialization event to perform extra
-     * querying such as computed Display style
-     * @return {?}
-     */
-    ngOnInit() {
-        this._hasInitialized = true;
-    }
-    /**
-     * @param {?} change
-     * @return {?}
-     */
-    ngOnChanges(change) {
-        throw new Error(`BaseDirective::ngOnChanges should be overridden in subclass: ${change}`);
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this._mqActivation) {
-            this._mqActivation.destroy();
-        }
-        delete this._mediaMonitor;
-    }
-    /**
-     * Access to host element's parent DOM node
-     * @return {?}
-     */
-    get parentElement() {
-        return this._elementRef.nativeElement.parentNode;
-    }
-    /**
-     * @return {?}
-     */
-    get nativeElement() {
-        return this._elementRef.nativeElement;
-    }
-    /**
-     * Add styles to the element using predefined style builder
-     * @param {?} input
-     * @param {?=} parent
-     * @return {?}
-     */
-    addStyles(input, parent) {
-        /** @type {?} */
-        const builder = /** @type {?} */ ((this._styleBuilder));
-        /** @type {?} */
-        const useCache = builder.shouldCache;
-        /** @type {?} */
-        let genStyles = this._styleCache.get(input);
-        if (!genStyles || !useCache) {
-            genStyles = builder.buildStyles(input, parent);
-            if (useCache) {
-                this._styleCache.set(input, genStyles);
-            }
-        }
-        this._applyStyleToElement(genStyles);
-        builder.sideEffect(input, genStyles, parent);
-    }
-    /**
-     * Access the current value (if any) of the \@Input property
-     * @param {?} key
-     * @return {?}
-     */
-    _queryInput(key) {
-        return this._inputMap[key];
-    }
-    /**
-     * Was the directive's default selector used ?
-     * If not, use the fallback value!
-     * @param {?} key
-     * @param {?} fallbackVal
-     * @return {?}
-     */
-    _getDefaultVal(key, fallbackVal) {
-        /** @type {?} */
-        const val = this._queryInput(key);
-        /** @type {?} */
-        const hasDefaultVal = (val !== undefined && val !== null);
-        return (hasDefaultVal && val !== '') ? val : fallbackVal;
-    }
-    /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     * @param {?=} source
-     * @return {?}
-     */
-    _getDisplayStyle(source = this.nativeElement) {
-        /** @type {?} */
-        const query = 'display';
-        return this._styler.lookupStyle(source, query);
-    }
-    /**
-     * Quick accessor to raw attribute value on the target DOM element
-     * @param {?} attribute
-     * @param {?=} source
-     * @return {?}
-     */
-    _getAttributeValue(attribute, source = this.nativeElement) {
-        return this._styler.lookupAttributeValue(source, attribute);
-    }
-    /**
-     * Determine the DOM element's Flexbox flow (flex-direction).
-     *
-     * Check inline style first then check computed (stylesheet) style.
-     * And optionally add the flow value to element's inline style.
-     * @param {?} target
-     * @param {?=} addIfMissing
-     * @return {?}
-     */
-    _getFlexFlowDirection(target, addIfMissing = false) {
-        if (target) {
-            let [value, hasInlineValue] = this._styler.getFlowDirection(target);
-            if (!hasInlineValue && addIfMissing) {
-                /** @type {?} */
-                const style = buildLayoutCSS(value);
-                /** @type {?} */
-                const elements = [target];
-                this._styler.applyStyleToElements(style, elements);
-            }
-            return value.trim();
-        }
-        return 'row';
-    }
-    /**
-     * Applies styles given via string pair or object map to the directive element
-     * @param {?} style
-     * @param {?=} value
-     * @param {?=} element
-     * @return {?}
-     */
-    _applyStyleToElement(style, value, element = this.nativeElement) {
-        this._styler.applyStyleToElement(element, style, value);
-    }
-    /**
-     * Applies styles given via string pair or object map to the directive's element
-     * @param {?} style
-     * @param {?} elements
-     * @return {?}
-     */
-    _applyStyleToElements(style, elements) {
-        this._styler.applyStyleToElements(style, elements);
-    }
-    /**
-     *  Save the property value; which may be a complex object.
-     *  Complex objects support property chains
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInput(key, source) {
-        if (typeof source === 'object') {
-            for (let prop in source) {
-                this._inputMap[prop] = source[prop];
-            }
-        }
-        else {
-            if (!!key) {
-                this._inputMap[key] = source;
-            }
-        }
-    }
-    /**
-     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
-     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
-     *  (or closest match).
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    _listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
-        // tslint:disable-line:max-line-length
-        if (!this._mqActivation) {
-            /** @type {?} */
-            let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-            this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, (change) => onMediaQueryChange(change));
-        }
-        return this._mqActivation;
-    }
-    /**
-     * Special accessor to query for all child 'element' nodes regardless of type, class, etc
-     * @return {?}
-     */
-    get childrenNodes() {
-        /** @type {?} */
-        const obj = this.nativeElement.children;
-        /** @type {?} */
-        const buffer = [];
-        // iterate backwards ensuring that length is an UInt32
-        for (let i = obj.length; i--;) {
-            buffer[i] = obj[i];
-        }
-        return buffer;
-    }
-    /**
-     * @return {?}
-     */
-    get hasInitialized() {
-        return this._hasInitialized;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Adapter to the BaseDirective abstract class so it can be used via composition.
- * @see BaseDirective
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- */
-class BaseDirectiveAdapter extends BaseDirective {
-    /**
-     * BaseDirectiveAdapter constructor
-     * @param {?} _baseKey
-     * @param {?} _mediaMonitor
-     * @param {?} _elementRef
-     * @param {?} _styler
-     */
-    constructor(_baseKey, // non-responsive @Input property name
-    // non-responsive @Input property name
-    _mediaMonitor, _elementRef, _styler) {
-        super(_mediaMonitor, _elementRef, _styler);
-        this._baseKey = _baseKey;
-        this._mediaMonitor = _mediaMonitor;
-        this._elementRef = _elementRef;
-        this._styler = _styler;
-    }
-    /**
-     * Accessor to determine which \@Input property is "active"
-     * e.g. which property value will be used.
-     * @return {?}
-     */
-    get activeKey() {
-        /** @type {?} */
-        let mqa = this._mqActivation;
-        /** @type {?} */
-        let key = mqa ? mqa.activatedInputKey : this._baseKey;
-        // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
-        return (key === 'class') ? 'klazz' : key;
-    }
-    /**
-     * Hash map of all \@Input keys/values defined/used
-     * @return {?}
-     */
-    get inputMap() {
-        return this._inputMap;
-    }
-    /**
-     * @see BaseDirective._mqActivation
-     * @return {?}
-     */
-    get mqActivation() {
-        return /** @type {?} */ ((this._mqActivation));
-    }
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @return {?}
-     */
-    hasResponsiveAPI() {
-        return super.hasResponsiveAPI(this._baseKey);
-    }
-    /**
-     * @see BaseDirective._queryInput
-     * @param {?} key
-     * @return {?}
-     */
-    queryInput(key) {
-        return key ? this._queryInput(key) : undefined;
-    }
-    /**
-     *  Save the property value.
-     * @param {?=} key
-     * @param {?=} source
-     * @param {?=} cacheRaw
-     * @return {?}
-     */
-    cacheInput(key, source, cacheRaw = false) {
-        if (cacheRaw) {
-            this._cacheInputRaw(key, source);
-        }
-        else if (Array.isArray(source)) {
-            this._cacheInputArray(key, source);
-        }
-        else if (typeof source === 'object') {
-            this._cacheInputObject(key, source);
-        }
-        else if (typeof source === 'string') {
-            this._cacheInputString(key, source);
-        }
-        else {
-            throw new Error(`Invalid class value '${key}' provided. Did you want to cache the raw value?`);
-        }
-    }
-    /**
-     * @see BaseDirective._listenForMediaQueryChanges
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
-        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-    }
-    /**
-     * No implicit transforms of the source.
-     * Required when caching values expected later for KeyValueDiffers
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputRaw(key, source) {
-        if (key) {
-            this._inputMap[key] = source;
-        }
-    }
-    /**
-     *  Save the property value for Array values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputArray(key = '', source) {
-        this._inputMap[key] = source ? source.join(' ') : '';
-    }
-    /**
-     *  Save the property value for key/value pair values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputObject(key = '', source) {
-        /** @type {?} */
-        let classes = [];
-        if (source) {
-            for (let prop in source) {
-                if (!!source[prop]) {
-                    classes.push(prop);
-                }
-            }
-        }
-        this._inputMap[key] = classes.join(' ');
-    }
-    /**
-     *  Save the property value for string values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputString(key = '', source) {
-        this._inputMap[key] = source;
-    }
 }
 
 /**
@@ -1858,6 +496,553 @@ class BaseDirective2 {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** *
+ * NOTE: Smaller ranges have HIGHER priority since the match is more specific
+  @type {?} */
+const DEFAULT_BREAKPOINTS = [
+    {
+        alias: 'xs',
+        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599px)',
+        priority: 10000,
+    },
+    {
+        alias: 'sm',
+        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959px)',
+        priority: 9000,
+    },
+    {
+        alias: 'md',
+        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279px)',
+        priority: 8000,
+    },
+    {
+        alias: 'lg',
+        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919px)',
+        priority: 7000,
+    },
+    {
+        alias: 'xl',
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 5000px)',
+        priority: 6000,
+    },
+    {
+        alias: 'gt-xs',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 600px)',
+        priority: 200,
+    },
+    {
+        alias: 'gt-sm',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 960px)',
+        priority: 300,
+    }, {
+        alias: 'gt-md',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 1280px)',
+        priority: 400,
+    },
+    {
+        alias: 'gt-lg',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 1920px)',
+        priority: 500,
+    },
+    {
+        alias: 'lt-sm',
+        overlapping: true,
+        mediaQuery: 'screen and (max-width: 599px)',
+        priority: 1000,
+    },
+    {
+        alias: 'lt-md',
+        overlapping: true,
+        mediaQuery: 'screen and (max-width: 959px)',
+        priority: 800,
+    },
+    {
+        alias: 'lt-lg',
+        overlapping: true,
+        mediaQuery: 'screen and (max-width: 1279px)',
+        priority: 700,
+    },
+    {
+        alias: 'lt-xl',
+        overlapping: true,
+        priority: 600,
+        mediaQuery: 'screen and (max-width: 1919px)',
+    }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+
+/** @type {?} */
+const HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599px)';
+/** @type {?} */
+const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
+/** @type {?} */
+const TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
+/** @type {?} */
+const TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
+/** @type {?} */
+const WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
+/** @type {?} */
+const WEB_LANDSCAPE = '(orientation: landscape) and (min-width: 1280px)';
+/** @type {?} */
+const ScreenTypes = {
+    'HANDSET': `${HANDSET_PORTRAIT}, ${HANDSET_LANDSCAPE}`,
+    'TABLET': `${TABLET_PORTRAIT} , ${TABLET_LANDSCAPE}`,
+    'WEB': `${WEB_PORTRAIT}, ${WEB_LANDSCAPE} `,
+    'HANDSET_PORTRAIT': `${HANDSET_PORTRAIT}`,
+    'TABLET_PORTRAIT': `${TABLET_PORTRAIT} `,
+    'WEB_PORTRAIT': `${WEB_PORTRAIT}`,
+    'HANDSET_LANDSCAPE': `${HANDSET_LANDSCAPE}]`,
+    'TABLET_LANDSCAPE': `${TABLET_LANDSCAPE}`,
+    'WEB_LANDSCAPE': `${WEB_LANDSCAPE}`
+};
+/** *
+ * Extended Breakpoints for handset/tablets with landscape or portrait orientations
+  @type {?} */
+const ORIENTATION_BREAKPOINTS = [
+    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
+    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
+    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
+    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
+    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
+    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
+    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Extends an object with the *enumerable* and *own* properties of one or more source objects,
+ * similar to Object.assign.
+ *
+ * @param {?} dest The object which will have properties copied to it.
+ * @param {...?} sources The source objects from which properties will be copied.
+ * @return {?}
+ */
+function extendObject(dest, ...sources) {
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (let source of sources) {
+        if (source != null) {
+            for (let key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
+        }
+    }
+    return dest;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
+const ALIAS_DELIMITERS = /(\.|-|_)/g;
+/**
+ * @param {?} part
+ * @return {?}
+ */
+function firstUpperCase(part) {
+    /** @type {?} */
+    let first = part.length > 0 ? part.charAt(0) : '';
+    /** @type {?} */
+    let remainder = (part.length > 1) ? part.slice(1) : '';
+    return first.toUpperCase() + remainder;
+}
+/**
+ * Converts snake-case to SnakeCase.
+ * @param {?} name Text to UpperCamelCase
+ * @return {?}
+ */
+function camelCase(name) {
+    return name
+        .replace(ALIAS_DELIMITERS, '|')
+        .split('|')
+        .map(firstUpperCase)
+        .join('');
+}
+/**
+ * For each breakpoint, ensure that a Suffix is defined;
+ * fallback to UpperCamelCase the unique Alias value
+ * @param {?} list
+ * @return {?}
+ */
+function validateSuffixes(list) {
+    list.forEach((bp) => {
+        if (!bp.suffix) {
+            bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
+            bp.overlapping = !!bp.overlapping; // ensure default value
+        }
+    });
+    return list;
+}
+/**
+ * Merge a custom breakpoint list with the default list based on unique alias values
+ *  - Items are added if the alias is not in the default list
+ *  - Items are merged with the custom override if the alias exists in the default list
+ * @param {?} defaults
+ * @param {?=} custom
+ * @return {?}
+ */
+function mergeByAlias(defaults, custom = []) {
+    /** @type {?} */
+    const dict = {};
+    defaults.forEach(bp => {
+        dict[bp.alias] = bp;
+    });
+    // Merge custom breakpoints
+    custom.forEach((bp) => {
+        if (dict[bp.alias]) {
+            extendObject(dict[bp.alias], bp);
+        }
+        else {
+            dict[bp.alias] = bp;
+        }
+    });
+    return validateSuffixes(Object.keys(dict).map(k => dict[k]));
+}
+/**
+ * HOF to sort the breakpoints by priority
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function prioritySort(a, b) {
+    /** @type {?} */
+    const priorityA = a.priority || 0;
+    /** @type {?} */
+    const priorityB = b.priority || 0;
+    return priorityB - priorityA;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** *
+ *  Injection token unique to the flex-layout library.
+ *  Use this token when build a custom provider (see below).
+  @type {?} */
+const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints', {
+    providedIn: 'root',
+    factory: () => {
+        /** @type {?} */
+        const breakpoints = inject(BREAKPOINT);
+        /** @type {?} */
+        const layoutConfig = inject(LAYOUT_CONFIG);
+        /** @type {?} */
+        const bpFlattenArray = [].concat.apply([], (breakpoints || [])
+            .map((v) => Array.isArray(v) ? v : [v]));
+        /** @type {?} */
+        const builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
+            .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
+        return mergeByAlias(builtIns, bpFlattenArray);
+    }
+});
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Registry of 1..n MediaQuery breakpoint ranges
+ * This is published as a provider and may be overridden from custom, application-specific ranges
+ *
+ */
+class BreakPointRegistry {
+    /**
+     * @param {?} list
+     */
+    constructor(list) {
+        /**
+         * Memoized BreakPoint Lookups
+         */
+        this.findByMap = new Map();
+        this.items = [...list].sort(sortByAscendingPriority);
+    }
+    /**
+     * Accessor to sorted list used for registration with matchMedia API
+     *
+     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
+     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
+     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
+     * @return {?}
+     */
+    get sortedItems() {
+        // let overlaps = this.items.filter(it => it.overlapping === true);
+        // let nonOverlaps = this.items.filter(it => it.overlapping !== true);
+        return this.items;
+    }
+    /**
+     * Search breakpoints by alias (e.g. gt-xs)
+     * @param {?} alias
+     * @return {?}
+     */
+    findByAlias(alias) {
+        return this.findWithPredicate(alias, (bp) => bp.alias == alias);
+    }
+    /**
+     * @param {?} query
+     * @return {?}
+     */
+    findByQuery(query) {
+        return this.findWithPredicate(query, (bp) => bp.mediaQuery == query);
+    }
+    /**
+     * Get all the breakpoints whose ranges could overlapping `normal` ranges;
+     * e.g. gt-sm overlaps md, lg, and xl
+     * @return {?}
+     */
+    get overlappings() {
+        return this.items.filter(it => it.overlapping == true);
+    }
+    /**
+     * Get list of all registered (non-empty) breakpoint aliases
+     * @return {?}
+     */
+    get aliases() {
+        return this.items.map(it => it.alias);
+    }
+    /**
+     * Aliases are mapped to properties using suffixes
+     * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
+     * for property layoutGtSM.
+     * @return {?}
+     */
+    get suffixes() {
+        return this.items.map(it => !!it.suffix ? it.suffix : '');
+    }
+    /**
+     * Memoized lookup using custom predicate function
+     * @param {?} key
+     * @param {?} searchFn
+     * @return {?}
+     */
+    findWithPredicate(key, searchFn) {
+        /** @type {?} */
+        let response = this.findByMap.get(key) || null;
+        if (!response) {
+            response = this.items.find(searchFn) || null;
+            this.findByMap.set(key, response);
+        }
+        return response;
+    }
+}
+BreakPointRegistry.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */
+BreakPointRegistry.ctorParameters = () => [
+    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
+];
+/** @nocollapse */ BreakPointRegistry.ngInjectableDef = defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+/**
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortByAscendingPriority(a, b) {
+    /** @type {?} */
+    const pA = a.priority || 0;
+    /** @type {?} */
+    const pB = b.priority || 0;
+    return pA - pB;
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
+ * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
+ * performed within the ng Zone to trigger change detections and component updates.
+ *
+ * NOTE: both mediaQuery activations and de-activations are announced in notifications
+ */
+class MatchMedia {
+    /**
+     * @param {?} _zone
+     * @param {?} _platformId
+     * @param {?} _document
+     */
+    constructor(_zone, _platformId, _document) {
+        this._zone = _zone;
+        this._platformId = _platformId;
+        this._document = _document;
+        this._registry = new Map();
+        this._source = new BehaviorSubject(new MediaChange(true));
+        this._observable$ = this._source.asObservable();
+    }
+    /**
+     * For the specified mediaQuery?
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    isActive(mediaQuery) {
+        /** @type {?} */
+        const mql = this._registry.get(mediaQuery);
+        return !!mql ? mql.matches : false;
+    }
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * Typically used by the MediaQueryAdaptor; optionally available to components
+     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
+     *
+     * Use lazy registration...
+     * @param {?=} mqList
+     * @return {?}
+     */
+    observe(mqList) {
+        /** @type {?} */
+        const matchMedia$ = this._observable$.pipe(filter((change) => {
+            return !!(mqList || []).find((query) => change.mediaQuery === query);
+        }));
+        /** @type {?} */
+        const registration$ = Observable.create((observer) => {
+            /** @type {?} */
+            const matches = this.registerQuery(mqList || []);
+            if (matches.length) {
+                /** @type {?} */
+                const lastChange = /** @type {?} */ ((matches.pop()));
+                matches.forEach((e) => {
+                    observer.next(e);
+                });
+                this._source.next(lastChange); // last match is cached
+            }
+            observer.complete();
+        });
+        return mqList ? merge(registration$, matchMedia$) : this._observable$;
+    }
+    /**
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    registerQuery(mediaQuery) {
+        /** @type {?} */
+        const list = Array.isArray(mediaQuery) ? /** @type {?} */ (mediaQuery) : [mediaQuery];
+        /** @type {?} */
+        const matches = [];
+        buildQueryCss(list, this._document);
+        list.forEach((query) => {
+            /** @type {?} */
+            const onMQLEvent = (e) => {
+                this._zone.run(() => this._source.next(new MediaChange(e.matches, query)));
+            };
+            /** @type {?} */
+            let mql = this._registry.get(query);
+            if (!mql) {
+                mql = this.buildMQL(query);
+                mql.addListener(onMQLEvent);
+                this._registry.set(query, mql);
+            }
+            if (mql.matches) {
+                matches.push(new MediaChange(true, query));
+            }
+        });
+        return matches;
+    }
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
+    buildMQL(query) {
+        return constructMql(query, isPlatformBrowser(this._platformId));
+    }
+}
+MatchMedia.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */
+MatchMedia.ctorParameters = () => [
+    { type: NgZone },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
+/** @nocollapse */ MatchMedia.ngInjectableDef = defineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(inject(NgZone), inject(PLATFORM_ID), inject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+/** *
+ * Private global registry for all dynamically-created, injected style tags
+ * @see prepare(query)
+  @type {?} */
+const ALL_STYLES = {};
+/**
+ * For Webkit engines that only trigger the MediaQueryList Listener
+ * when there is at least one CSS selector for the respective media query.
+ *
+ * @param {?} mediaQueries
+ * @param {?} _document
+ * @return {?}
+ */
+function buildQueryCss(mediaQueries, _document) {
+    /** @type {?} */
+    const list = mediaQueries.filter(it => !ALL_STYLES[it]);
+    if (list.length > 0) {
+        /** @type {?} */
+        const query = list.join(', ');
+        try {
+            /** @type {?} */
+            const styleEl = _document.createElement('style');
+            styleEl.setAttribute('type', 'text/css');
+            if (!(/** @type {?} */ (styleEl)).styleSheet) {
+                /** @type {?} */
+                const cssText = `
+/*
+  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
+  see http://bit.ly/2sd4HMP
+*/
+@media ${query} {.fx-query-test{ }}
+`;
+                styleEl.appendChild(_document.createTextNode(cssText));
+            } /** @type {?} */
+            ((_document.head)).appendChild(styleEl);
+            // Store in private global registry
+            list.forEach(mq => ALL_STYLES[mq] = styleEl);
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+}
+/**
+ * @param {?} query
+ * @param {?} isBrowser
+ * @return {?}
+ */
+function constructMql(query, isBrowser) {
+    /** @type {?} */
+    const canListen = isBrowser && !!(/** @type {?} */ (window)).matchMedia('all').addListener;
+    return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
+        matches: query === 'all' || query === '',
+        media: query,
+        addListener: () => {
+        },
+        removeListener: () => {
+        }
+    }));
+}
 
 /**
  * @fileoverview added by tsickle
@@ -2034,7 +1219,7 @@ class MockMatchMedia extends MatchMedia {
      * @param {?} query
      * @return {?}
      */
-    _buildMQL(query) {
+    buildMQL(query) {
         return new MockMediaQueryList(query);
     }
     /**
@@ -2340,7 +1525,7 @@ class ServerMatchMedia extends MatchMedia {
      * @param {?} query
      * @return {?}
      */
-    _buildMQL(query) {
+    buildMQL(query) {
         return new ServerMediaQueryList(query);
     }
 }
@@ -2364,111 +1549,18 @@ ServerMatchMedia.ctorParameters = () => [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
- * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
- * deactivations). These changes are are published as MediaChange notifications.
- *
- * Note: all notifications will be performed within the
- * ng Zone to trigger change detections and component updates.
- *
- * It is the MediaMonitor that:
- *  - auto registers all known breakpoints
- *  - injects alias information into each raw MediaChange event
- *  - provides accessor to the currently active BreakPoint
- *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * For the specified MediaChange, make sure it contains the breakpoint alias
+ * and suffix (if available).
+ * @param {?} dest
+ * @param {?} source
+ * @return {?}
  */
-class MediaMonitor {
-    /**
-     * @param {?} _breakpoints
-     * @param {?} _matchMedia
-     */
-    constructor(_breakpoints, _matchMedia) {
-        this._breakpoints = _breakpoints;
-        this._matchMedia = _matchMedia;
-        this._registerBreakpoints();
-    }
-    /**
-     * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
-     * @return {?}
-     */
-    get breakpoints() {
-        return [...this._breakpoints.items];
-    }
-    /**
-     * @return {?}
-     */
-    get activeOverlaps() {
-        return this._breakpoints.overlappings
-            .reverse()
-            .filter(bp => this._matchMedia.isActive(bp.mediaQuery));
-    }
-    /**
-     * @return {?}
-     */
-    get active() {
-        /** @type {?} */
-        const items = this.breakpoints.reverse();
-        /** @type {?} */
-        const first = items.find(bp => bp.alias !== '' && this._matchMedia.isActive(bp.mediaQuery));
-        return first || null;
-    }
-    /**
-     * For the specified mediaQuery alias, is the mediaQuery range active?
-     * @param {?} alias
-     * @return {?}
-     */
-    isActive(alias) {
-        /** @type {?} */
-        const bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
-    }
-    /**
-     * External observers can watch for all (or a specific) mql changes.
-     * If specific breakpoint is observed, only return *activated* events
-     * otherwise return all events for BOTH activated + deactivated changes.
-     * @param {?=} alias
-     * @return {?}
-     */
-    observe(alias = '') {
-        /** @type {?} */
-        const bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        /** @type {?} */
-        const hasAlias = (change) => (bp ? change.mqAlias !== '' : true);
-        /** @type {?} */
-        const media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-        return media$.pipe(map(change => mergeAlias(change, bp)), filter(hasAlias));
-    }
-    /**
-     * Immediate calls to matchMedia() to establish listeners
-     * and prepare for immediate subscription notifications
-     * @return {?}
-     */
-    _registerBreakpoints() {
-        /** @type {?} */
-        const queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this._matchMedia.registerQuery(queries);
-    }
+function mergeAlias(dest, source) {
+    return extendObject(dest, source ? {
+        mqAlias: source.alias,
+        suffix: source.suffix
+    } : {});
 }
-MediaMonitor.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
-];
-/** @nocollapse */
-MediaMonitor.ctorParameters = () => [
-    { type: BreakPointRegistry },
-    { type: MatchMedia }
-];
-/** @nocollapse */ MediaMonitor.ngInjectableDef = defineInjectable({ factory: function MediaMonitor_Factory() { return new MediaMonitor(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaMonitor, providedIn: "root" });
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 
 /**
  * @fileoverview added by tsickle
@@ -2527,8 +1619,7 @@ class MediaObserver {
          * Whether to announce gt-<xxx> breakpoint activations
          */
         this.filterOverlaps = true;
-        this._registerBreakPoints();
-        this.media$ = this._buildObservable();
+        this.media$ = this.watchActivations();
     }
     /**
      * Test if specified query/alias is active.
@@ -2536,7 +1627,7 @@ class MediaObserver {
      * @return {?}
      */
     isActive(alias) {
-        return this.mediaWatcher.isActive(this._toMediaQuery(alias));
+        return this.mediaWatcher.isActive(this.toMediaQuery(alias));
     }
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
@@ -2544,10 +1635,10 @@ class MediaObserver {
      * mediaQuery activations
      * @return {?}
      */
-    _registerBreakPoints() {
+    watchActivations() {
         /** @type {?} */
         const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this.mediaWatcher.registerQuery(queries);
+        return this.buildObservable(queries);
     }
     /**
      * Prepare internal observable
@@ -2555,13 +1646,16 @@ class MediaObserver {
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
+     * @param {?} mqList
      * @return {?}
      */
-    _buildObservable() {
+    buildObservable(mqList) {
+        /** @type {?} */
+        const locator = this.breakpoints;
         /** @type {?} */
         const excludeOverlaps = (change) => {
             /** @type {?} */
-            const bp = this.breakpoints.findByQuery(change.mediaQuery);
+            const bp = locator.findByQuery(change.mediaQuery);
             return !bp ? true : !(this.filterOverlaps && bp.overlapping);
         };
         /**
@@ -2569,33 +1663,19 @@ class MediaObserver {
              * Inject associated (if any) alias information into the MediaChange event
              * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
              */
-        return this.mediaWatcher.observe()
-            .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => mergeAlias(change, this._findByQuery(change.mediaQuery))));
-    }
-    /**
-     * Breakpoint locator by alias
-     * @param {?} alias
-     * @return {?}
-     */
-    _findByAlias(alias) {
-        return this.breakpoints.findByAlias(alias);
-    }
-    /**
-     * Breakpoint locator by mediaQuery
-     * @param {?} query
-     * @return {?}
-     */
-    _findByQuery(query) {
-        return this.breakpoints.findByQuery(query);
+        return this.mediaWatcher.observe(mqList)
+            .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => mergeAlias(change, locator.findByQuery(change.mediaQuery))));
     }
     /**
      * Find associated breakpoint (if any)
      * @param {?} query
      * @return {?}
      */
-    _toMediaQuery(query) {
+    toMediaQuery(query) {
         /** @type {?} */
-        const bp = this._findByAlias(query) || this._findByQuery(query);
+        const locator = this.breakpoints;
+        /** @type {?} */
+        const bp = locator.findByAlias(query) || locator.findByQuery(query);
         return bp ? bp.mediaQuery : query;
     }
 }
@@ -3009,10 +2089,7 @@ class MediaMarshaller {
         this.builderMap = new WeakMap();
         this.clearBuilderMap = new WeakMap();
         this.subject = new Subject();
-        this.matchMedia
-            .observe()
-            .subscribe(this.activate.bind(this));
-        this.registerBreakpoints();
+        this.observeActivations();
     }
     /**
      * @return {?}
@@ -3169,9 +2246,9 @@ class MediaMarshaller {
         const builders = this.clearBuilderMap.get(element);
         if (builders) {
             /** @type {?} */
-            const builder = builders.get(key);
-            if (builder) {
-                builder();
+            const clearFn = /** @type {?} */ (builders.get(key));
+            if (!!clearFn) {
+                clearFn();
                 this.subject.next({ element, key, value: '' });
             }
         }
@@ -3188,9 +2265,9 @@ class MediaMarshaller {
         const builders = this.builderMap.get(element);
         if (builders) {
             /** @type {?} */
-            const builder = builders.get(key);
-            if (builder) {
-                builder(value);
+            const updateFn = /** @type {?} */ (builders.get(key));
+            if (!!updateFn) {
+                updateFn(value);
                 this.subject.next({ element, key, value });
             }
         }
@@ -3289,12 +2366,15 @@ class MediaMarshaller {
         return bpMap.get('');
     }
     /**
+     * Watch for mediaQuery breakpoint activations
      * @return {?}
      */
-    registerBreakpoints() {
+    observeActivations() {
         /** @type {?} */
         const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this.matchMedia.registerQuery(queries);
+        this.matchMedia
+            .observe(queries)
+            .subscribe(this.activate.bind(this));
     }
 }
 MediaMarshaller.decorators = [
@@ -3335,5 +2415,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective, BaseDirectiveAdapter, BaseDirective2, prioritySort, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, ObservableMedia, MediaService, ObservableMediaProvider, MediaObserver, KeyOptions, ResponsiveActivation, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, prioritySort, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, sortByAscendingPriority, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
 //# sourceMappingURL=core.js.map

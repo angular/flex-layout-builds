@@ -29,21 +29,20 @@ export declare class MatchMedia {
     isActive(mediaQuery: string): boolean;
     /**
      * External observers can watch for all (or a specific) mql changes.
-     * Typically used by the MediaQueryAdaptor; optionally available to components
-     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
      *
-     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-     *       be announced.
+     * If a mediaQuery is not specified, then ALL mediaQuery activations will
+     * be announced.
      */
-    observe(mediaQuery?: string): Observable<MediaChange>;
+    observe(): Observable<MediaChange>;
+    observe(mqList: string[]): Observable<MediaChange>;
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
      * mediaQuery. Each listener emits specific MediaChange data to observers
      */
-    registerQuery(mediaQuery: string | string[]): void;
+    registerQuery(mediaQuery: string | string[]): MediaChange[];
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
      */
-    protected _buildMQL(query: string): MediaQueryList;
+    protected buildMQL(query: string): MediaQueryList;
 }

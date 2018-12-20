@@ -62,7 +62,7 @@ export declare class MediaObserver {
      * This is needed so subscribers can be auto-notified of all standard, registered
      * mediaQuery activations
      */
-    private _registerBreakPoints;
+    private watchActivations;
     /**
      * Prepare internal observable
      *
@@ -70,17 +70,9 @@ export declare class MediaObserver {
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
      */
-    private _buildObservable;
-    /**
-     * Breakpoint locator by alias
-     */
-    private _findByAlias;
-    /**
-     * Breakpoint locator by mediaQuery
-     */
-    private _findByQuery;
+    private buildObservable;
     /**
      * Find associated breakpoint (if any)
      */
-    private _toMediaQuery;
+    private toMediaQuery;
 }
