@@ -551,7 +551,6 @@ class StyleDirective extends BaseDirective2 {
         this.sanitizer = sanitizer;
         this.ngStyleInstance = ngStyleInstance;
         this.DIRECTIVE_KEY = 'ngStyle';
-        this.fallbackStyles = {};
         if (!this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -563,6 +562,7 @@ class StyleDirective extends BaseDirective2 {
         this.fallbackStyles = this.buildStyleMap(styles);
     }
     /**
+     * Add generated styles
      * @param {?} value
      * @return {?}
      */
@@ -570,6 +570,14 @@ class StyleDirective extends BaseDirective2 {
         /** @type {?} */
         const styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = Object.assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngDoCheck();
+    }
+    /**
+     * Remove generated styles
+     * @return {?}
+     */
+    clearStyles() {
+        this.ngStyleInstance.ngStyle = this.fallbackStyles;
         this.ngStyleInstance.ngDoCheck();
     }
     /**
