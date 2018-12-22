@@ -259,7 +259,8 @@ var DEFAULT_CONFIG = {
     disableDefaultBps: false,
     disableVendorPrefixes: false,
     serverLoaded: false,
-    useColumnBasisZero: true
+    useColumnBasisZero: true,
+    printWithBreakpoint: ''
 };
 /** @type {?} */
 var LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options for the library', {
@@ -971,7 +972,7 @@ var BreakPointRegistry = /** @class */ (function () {
      * @return {?}
      */
     function (alias) {
-        return this.findWithPredicate(alias, function (bp) { return bp.alias == alias; });
+        return !alias ? null : this.findWithPredicate(alias, function (bp) { return bp.alias == alias; });
     };
     /**
      * @param {?} query
@@ -2006,10 +2007,16 @@ function mergeAlias(dest, source) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-var PrintHookService = /** @class */ (function () {
-    function PrintHookService(layoutConfig, breakpoints) {
-        this.layoutConfig = layoutConfig;
+/**
+ * PrintHook - Use to intercept print MediaQuery activations and force
+ *             layouts to render with the specified print alias/breakpoint
+ *
+ * Used in MediaMarshaller and MediaObserver
+ */
+var PrintHook = /** @class */ (function () {
+    function PrintHook(breakpoints, layoutConfig) {
         this.breakpoints = breakpoints;
+        this.layoutConfig = layoutConfig;
         this.offlineActivations = null;
     }
     /**
@@ -2020,7 +2027,7 @@ var PrintHookService = /** @class */ (function () {
      * @param {?} queries
      * @return {?}
      */
-    PrintHookService.prototype.addPrintListener = /**
+    PrintHook.prototype.withPrintListener = /**
      * Add 'print' mediaQuery: to listen for matchMedia activations
      * @param {?} queries
      * @return {?}
@@ -2031,7 +2038,7 @@ var PrintHookService = /** @class */ (function () {
         }
         return queries;
     };
-    Object.defineProperty(PrintHookService.prototype, "isPrinting", {
+    Object.defineProperty(PrintHook.prototype, "isPrinting", {
         /**
          * Is this service currently in Print-mode ?
          */
@@ -2045,7 +2052,7 @@ var PrintHookService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(PrintHookService.prototype, "printAlias", {
+    Object.defineProperty(PrintHook.prototype, "printAlias", {
         /**
          * What is the desired mqAlias to use while printing?
          */
@@ -2059,7 +2066,7 @@ var PrintHookService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(PrintHookService.prototype, "printBreakPoint", {
+    Object.defineProperty(PrintHook.prototype, "printBreakPoint", {
         /**
          * Lookup breakpoint associated with print alias.
          */
@@ -2082,7 +2089,7 @@ var PrintHookService = /** @class */ (function () {
      * @param {?} target
      * @return {?} pipeable filter predicate
      */
-    PrintHookService.prototype.interceptEvents = /**
+    PrintHook.prototype.interceptEvents = /**
      * Prepare RxJs filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
@@ -2114,7 +2121,7 @@ var PrintHookService = /** @class */ (function () {
      * @param {?} bp
      * @return {?}
      */
-    PrintHookService.prototype.enablePrintMode = /**
+    PrintHook.prototype.enablePrintMode = /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
      * @param {?} target
@@ -2137,7 +2144,7 @@ var PrintHookService = /** @class */ (function () {
      * @param {?} target
      * @return {?}
      */
-    PrintHookService.prototype.disablePrintMode = /**
+    PrintHook.prototype.disablePrintMode = /**
      * Restore cached activatedBreakpoints and clear isPrinting
      * state
      * @param {?} target
@@ -2147,16 +2154,16 @@ var PrintHookService = /** @class */ (function () {
         target.activatedBreakpoints = /** @type {?} */ ((this.offlineActivations));
         this.offlineActivations = null;
     };
-    PrintHookService.decorators = [
+    PrintHook.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
     /** @nocollapse */
-    PrintHookService.ctorParameters = function () { return [
-        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] },
-        { type: BreakPointRegistry }
+    PrintHook.ctorParameters = function () { return [
+        { type: BreakPointRegistry },
+        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ PrintHookService.ngInjectableDef = core.defineInjectable({ factory: function PrintHookService_Factory() { return new PrintHookService(core.inject(LAYOUT_CONFIG), core.inject(BreakPointRegistry)); }, token: PrintHookService, providedIn: "root" });
-    return PrintHookService;
+    /** @nocollapse */ PrintHook.ngInjectableDef = core.defineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.inject(BreakPointRegistry), core.inject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    return PrintHook;
 }());
 
 /**
@@ -2281,11 +2288,11 @@ var MediaObserver = /** @class */ (function () {
              * Inject associated (if any) alias information into the MediaChange event
              * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
              */
-        return this.mediaWatcher.observe(this.hook.addPrintListener(mqList))
+        return this.mediaWatcher.observe(this.hook.withPrintListener(mqList))
             .pipe(operators.filter(function (change) { return change.matches; }), operators.filter(excludeOverlaps), operators.map(function (change) {
             /** @type {?} */
             var bp = (change.mediaQuery === 'print')
-                ? locator.findByAlias(/** @type {?} */ ((_this.hook.printAlias)))
+                ? locator.findByAlias(_this.hook.printAlias)
                 : locator.findByQuery(change.mediaQuery);
             if (bp) {
                 change.mediaQuery = bp.mediaQuery;
@@ -2317,9 +2324,9 @@ var MediaObserver = /** @class */ (function () {
     MediaObserver.ctorParameters = function () { return [
         { type: BreakPointRegistry },
         { type: MatchMedia },
-        { type: PrintHookService }
+        { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ngInjectableDef = core.defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(PrintHookService)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ngInjectableDef = core.defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 
@@ -3021,7 +3028,8 @@ var MediaMarshaller = /** @class */ (function () {
      * @return {?}
      */
     function (element, key) {
-        return this.subject.asObservable()
+        return this.subject
+            .asObservable()
             .pipe(operators.filter(function (v) { return v.element === element && v.key === key; }));
     };
     /**
@@ -3267,7 +3275,7 @@ var MediaMarshaller = /** @class */ (function () {
         /** @type {?} */
         var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
-            .observe(this.hook.addPrintListener(queries))
+            .observe(this.hook.withPrintListener(queries))
             .pipe(operators.filter(this.hook.interceptEvents(target)))
             .subscribe(this.activate.bind(this));
     };
@@ -3278,9 +3286,9 @@ var MediaMarshaller = /** @class */ (function () {
     MediaMarshaller.ctorParameters = function () { return [
         { type: MatchMedia },
         { type: BreakPointRegistry },
-        { type: PrintHookService }
+        { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.inject(MatchMedia), core.inject(BreakPointRegistry), core.inject(PrintHookService)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.inject(MatchMedia), core.inject(BreakPointRegistry), core.inject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**
@@ -3331,7 +3339,7 @@ exports.StyleUtils = StyleUtils;
 exports.StyleBuilder = StyleBuilder;
 exports.validateBasis = validateBasis;
 exports.MediaMarshaller = MediaMarshaller;
-exports.PrintHookService = PrintHookService;
+exports.PrintHook = PrintHook;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

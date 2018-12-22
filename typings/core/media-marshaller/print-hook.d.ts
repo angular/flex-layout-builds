@@ -9,15 +9,21 @@ export interface HookTarget {
     activatedBreakpoints: BreakPoint[];
     updateStyles(): void;
 }
-export declare class PrintHookService {
-    protected layoutConfig: LayoutConfigOptions;
+/**
+ * PrintHook - Use to intercept print MediaQuery activations and force
+ *             layouts to render with the specified print alias/breakpoint
+ *
+ * Used in MediaMarshaller and MediaObserver
+ */
+export declare class PrintHook {
     protected breakpoints: BreakPointRegistry;
+    protected layoutConfig: LayoutConfigOptions;
     protected offlineActivations: BreakPoint[] | null;
-    constructor(layoutConfig: LayoutConfigOptions, breakpoints: BreakPointRegistry);
+    constructor(breakpoints: BreakPointRegistry, layoutConfig: LayoutConfigOptions);
     /**
      * Add 'print' mediaQuery: to listen for matchMedia activations
      */
-    addPrintListener(queries: string[]): string[];
+    withPrintListener(queries: string[]): string[];
     /**
      * Is this service currently in Print-mode ?
      */

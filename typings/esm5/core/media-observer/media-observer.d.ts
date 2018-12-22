@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { MediaChange } from '../media-change';
 import { MatchMedia } from '../match-media/match-media';
-import { PrintHookService } from '../media-marshaller/print-hook.service';
+import { PrintHook } from '../media-marshaller/print-hook';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 /**
  * Class internalizes a MatchMedia service and exposes an Observable interface.
@@ -48,13 +48,13 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 export declare class MediaObserver {
     protected breakpoints: BreakPointRegistry;
     protected mediaWatcher: MatchMedia;
-    protected hook: PrintHookService;
+    protected hook: PrintHook;
     /**
      * Whether to announce gt-<xxx> breakpoint activations
      */
     filterOverlaps: boolean;
     readonly media$: Observable<MediaChange>;
-    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia, hook: PrintHookService);
+    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia, hook: PrintHook);
     /**
      * Test if specified query/alias is active.
      */

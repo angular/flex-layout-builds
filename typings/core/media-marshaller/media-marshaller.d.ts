@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
-import { PrintHookService } from './print-hook.service';
+import { PrintHook } from './print-hook';
 declare type ClearCallback = () => void;
 declare type UpdateCallback = (val: any) => void;
 export interface ElementMatcher {
@@ -17,7 +17,7 @@ export interface ElementMatcher {
 export declare class MediaMarshaller {
     protected matchMedia: MatchMedia;
     protected breakpoints: BreakPointRegistry;
-    protected hook: PrintHookService;
+    protected hook: PrintHook;
     private activatedBreakpoints;
     private elementMap;
     private elementKeyMap;
@@ -26,7 +26,7 @@ export declare class MediaMarshaller {
     private clearMap;
     private subject;
     readonly activatedBreakpoint: string;
-    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHookService);
+    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHook);
     /**
      * activate or deactivate a given breakpoint
      * @param mc
