@@ -912,7 +912,9 @@ class MatchMedia {
                 if (matches.length) {
                     /** @type {?} */
                     const lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach(observer.next);
+                    matches.forEach((e) => {
+                        observer.next(e);
+                    });
                     this._source.next(lastChange); // last match is cached
                 }
                 observer.complete();

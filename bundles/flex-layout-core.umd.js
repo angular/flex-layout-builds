@@ -1150,7 +1150,9 @@ var MatchMedia = /** @class */ (function () {
                 if (matches.length) {
                     /** @type {?} */
                     var lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach(observer.next);
+                    matches.forEach(function (e) {
+                        observer.next(e);
+                    });
                     _this._source.next(lastChange); // last match is cached
                 }
                 observer.complete();
