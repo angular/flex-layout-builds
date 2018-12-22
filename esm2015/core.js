@@ -2477,10 +2477,12 @@ class MediaMarshaller {
      */
     observeActivations() {
         /** @type {?} */
+        const target = /** @type {?} */ ((this));
+        /** @type {?} */
         const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
         this.matchMedia
             .observe(this.hook.addPrintListener(queries))
-            .pipe(filter(this.hook.interceptEvents(/** @type {?} */ ((this)))))
+            .pipe(filter(this.hook.interceptEvents(target)))
             .subscribe(this.activate.bind(this));
     }
 }
