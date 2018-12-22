@@ -2992,9 +2992,7 @@ var MediaMarshaller = /** @class */ (function () {
             .asObservable()
             .pipe(filter(function (v) { return v.element === element && v.key === key; }));
     };
-    /**
-     * update all styles for all elements on the current breakpoint
-     */
+    /** update all styles for all elements on the current breakpoint */
     /**
      * update all styles for all elements on the current breakpoint
      * @return {?}

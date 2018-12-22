@@ -64,9 +64,7 @@ export declare class MediaMarshaller {
     setValue(element: HTMLElement, key: string, val: any, bp: string): void;
     /** Track element value changes for a specific key */
     trackValue(element: HTMLElement, key: string): Observable<ElementMatcher>;
-    /**
-     * update all styles for all elements on the current breakpoint
-     */
+    /** update all styles for all elements on the current breakpoint */
     updateStyles(): void;
     /**
      * clear the styles for a given element
