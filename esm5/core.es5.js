@@ -1102,9 +1102,7 @@ var MatchMedia = /** @class */ (function () {
         var _this = this;
         if (mqList) {
             /** @type {?} */
-            var matchMedia$ = this._observable$.pipe(filter(function (change) {
-                return mqList.indexOf(change.mediaQuery) > -1;
-            }));
+            var matchMedia$ = this._observable$.pipe(filter(function (change) { return mqList.indexOf(change.mediaQuery) > -1; }));
             /** @type {?} */
             var registration$ = new Observable(function (observer) {
                 /** @type {?} */
@@ -1112,9 +1110,7 @@ var MatchMedia = /** @class */ (function () {
                 if (matches.length) {
                     /** @type {?} */
                     var lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach(function (e) {
-                        observer.next(e);
-                    });
+                    matches.forEach(observer.next);
                     _this._source.next(lastChange); // last match is cached
                 }
                 observer.complete();
