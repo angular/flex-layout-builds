@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs';
-import { BreakPoint } from '../breakpoints/break-point';
-import { BreakPointRegistry, OptionalBreakPoint } from '../breakpoints/break-point-registry';
+import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
-import { LayoutConfigOptions } from '../tokens/library-config';
+import { PrintHookService } from './print-hook.service';
 export declare type ClearCallback = () => void;
 export declare type UpdateCallback = (val: any) => void;
 export declare type Builder = UpdateCallback | ClearCallback;
@@ -19,7 +18,7 @@ export interface ElementMatcher {
 export declare class MediaMarshaller {
     protected matchMedia: MatchMedia;
     protected breakpoints: BreakPointRegistry;
-    protected layoutConfig: LayoutConfigOptions;
+    protected hook: PrintHookService;
     private activatedBreakpoints;
     private elementMap;
     private elementKeyMap;
@@ -28,7 +27,7 @@ export declare class MediaMarshaller {
     private clearMap;
     private subject;
     readonly activatedBreakpoint: string;
-    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, layoutConfig: LayoutConfigOptions);
+    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHookService);
     /**
      * activate or deactivate a given breakpoint
      * @param mc
@@ -109,14 +108,4 @@ export declare class MediaMarshaller {
      * Watch for mediaQuery breakpoint activations
      */
     private observeActivations;
-    protected offlineActivations: BreakPoint[] | null;
-    protected readonly isPrinting: boolean;
-    protected handlePrintActivation(change: MediaChange): boolean;
-    protected enablePrintMode(bp: OptionalBreakPoint): void;
-    protected disablePrintMode(): void;
-    protected readonly printAlias: string | undefined;
-    /**
-     * If configured, add listener for 'print'
-     */
-    protected addPrintListener(queries: string[]): string[];
 }
