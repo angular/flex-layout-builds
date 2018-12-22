@@ -7,7 +7,7 @@
  */
 import { DOCUMENT } from '@angular/common';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
-import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia, prioritySort } from '@angular/flex-layout/core';
+import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia, sortAscendingPriority } from '@angular/flex-layout/core';
 import { NgModule } from '@angular/core';
 
 /**
@@ -30,9 +30,7 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
     const defaultStyles = new Map(serverSheet.stylesheet);
     /** @type {?} */
     let styleText = generateCss(defaultStyles, 'all', classMap);
-    breakpoints.sort(prioritySort);
-    breakpoints.reverse();
-    breakpoints.forEach((bp, i) => {
+    [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
         serverSheet.clearStyles();
         (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
         /** @type {?} */

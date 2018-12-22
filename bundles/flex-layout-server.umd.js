@@ -31,9 +31,7 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
     var defaultStyles = new Map(serverSheet.stylesheet);
     /** @type {?} */
     var styleText = generateCss(defaultStyles, 'all', classMap);
-    breakpoints.sort(core.prioritySort);
-    breakpoints.reverse();
-    breakpoints.forEach(function (bp, i) {
+    breakpoints.slice().sort(core.sortAscendingPriority).forEach(function (bp, i) {
         serverSheet.clearStyles();
         (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
         /** @type {?} */

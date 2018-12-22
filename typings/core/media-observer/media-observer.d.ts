@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { LayoutConfigOptions } from '../tokens/library-config';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MediaChange } from '../media-change';
 import { MatchMedia } from '../match-media/match-media';
@@ -45,14 +46,15 @@ import { MatchMedia } from '../match-media/match-media';
  *  }
  */
 export declare class MediaObserver {
-    private breakpoints;
-    private mediaWatcher;
+    protected breakpoints: BreakPointRegistry;
+    protected mediaWatcher: MatchMedia;
+    protected layoutConfig: LayoutConfigOptions;
     /**
      * Whether to announce gt-<xxx> breakpoint activations
      */
     filterOverlaps: boolean;
     readonly media$: Observable<MediaChange>;
-    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia);
+    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia, layoutConfig: LayoutConfigOptions);
     /**
      * Test if specified query/alias is active.
      */
@@ -62,7 +64,7 @@ export declare class MediaObserver {
      * This is needed so subscribers can be auto-notified of all standard, registered
      * mediaQuery activations
      */
-    private _registerBreakPoints;
+    private watchActivations;
     /**
      * Prepare internal observable
      *
@@ -70,17 +72,13 @@ export declare class MediaObserver {
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
      */
-    private _buildObservable;
+    private buildObservable;
     /**
-     * Breakpoint locator by alias
+     * If configured, add listener for 'print'
      */
-    private _findByAlias;
-    /**
-     * Breakpoint locator by mediaQuery
-     */
-    private _findByQuery;
+    protected addPrintListener(queries: string[]): string[];
     /**
      * Find associated breakpoint (if any)
      */
-    private _toMediaQuery;
+    private toMediaQuery;
 }

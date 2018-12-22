@@ -1,9 +1,12 @@
 import { Observable } from 'rxjs';
-import { BreakPointRegistry } from '../breakpoints/break-point-registry';
+import { BreakPoint } from '../breakpoints/break-point';
+import { BreakPointRegistry, OptionalBreakPoint } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
-declare type ClearCallback = () => void;
-declare type UpdateCallback = (val: any) => void;
+import { LayoutConfigOptions } from '../tokens/library-config';
+export declare type ClearCallback = () => void;
+export declare type UpdateCallback = (val: any) => void;
+export declare type Builder = UpdateCallback | ClearCallback;
 export interface ElementMatcher {
     element: HTMLElement;
     key: string;
@@ -16,15 +19,16 @@ export interface ElementMatcher {
 export declare class MediaMarshaller {
     protected matchMedia: MatchMedia;
     protected breakpoints: BreakPointRegistry;
+    protected layoutConfig: LayoutConfigOptions;
     private activatedBreakpoints;
     private elementMap;
     private elementKeyMap;
     private watcherMap;
-    private builderMap;
-    private clearBuilderMap;
+    private updateMap;
+    private clearMap;
     private subject;
     readonly activatedBreakpoint: string;
-    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry);
+    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, layoutConfig: LayoutConfigOptions);
     /**
      * activate or deactivate a given breakpoint
      * @param mc
@@ -62,7 +66,9 @@ export declare class MediaMarshaller {
     setValue(element: HTMLElement, key: string, val: any, bp: string): void;
     /** Track element value changes for a specific key */
     trackValue(element: HTMLElement, key: string): Observable<ElementMatcher>;
-    /** update all styles for all elements on the current breakpoint */
+    /**
+     * update all styles for all elements on the current breakpoint
+     */
     updateStyles(): void;
     /**
      * clear the styles for a given element
@@ -99,6 +105,18 @@ export declare class MediaMarshaller {
      * @param key
      */
     private getFallback;
-    private registerBreakpoints;
+    /**
+     * Watch for mediaQuery breakpoint activations
+     */
+    private observeActivations;
+    protected offlineActivations: BreakPoint[] | null;
+    protected readonly isPrinting: boolean;
+    protected handlePrintActivation(change: MediaChange): boolean;
+    protected enablePrintMode(bp: OptionalBreakPoint): void;
+    protected disablePrintMode(): void;
+    protected readonly printAlias: string | undefined;
+    /**
+     * If configured, add listener for 'print'
+     */
+    protected addPrintListener(queries: string[]): string[];
 }
-export {};

@@ -11,6 +11,32 @@
 	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.flexLayout.extended,global.ng.flexLayout.flex,global.ng.flexLayout.grid));
 }(this, (function (exports,core,common,core$1,extended,flex,grid) { 'use strict';
 
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
@@ -18,7 +44,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.22-d9c520f');
+var VERSION = new core.Version('7.0.0-beta.22-d215896');
 
 /**
  * @fileoverview added by tsickle
@@ -60,11 +86,11 @@ var FlexLayoutModule = /** @class */ (function () {
             ngModule: FlexLayoutModule,
             providers: configOptions.serverLoaded ?
                 [
-                    { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                    { provide: core$1.LAYOUT_CONFIG, useValue: __assign({}, core$1.DEFAULT_CONFIG, configOptions) },
                     { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
                     { provide: core$1.SERVER_TOKEN, useValue: true },
                 ] : [
-                { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                { provide: core$1.LAYOUT_CONFIG, useValue: __assign({}, core$1.DEFAULT_CONFIG, configOptions) },
                 { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
             ]
         };
@@ -93,11 +119,9 @@ exports.DEFAULT_CONFIG = core$1.DEFAULT_CONFIG;
 exports.LAYOUT_CONFIG = core$1.LAYOUT_CONFIG;
 exports.SERVER_TOKEN = core$1.SERVER_TOKEN;
 exports.BREAKPOINT = core$1.BREAKPOINT;
-exports.BaseDirective = core$1.BaseDirective;
-exports.BaseDirectiveAdapter = core$1.BaseDirectiveAdapter;
 exports.BaseDirective2 = core$1.BaseDirective2;
-exports.prioritySort = core$1.prioritySort;
-exports.RESPONSIVE_ALIASES = core$1.RESPONSIVE_ALIASES;
+exports.sortDescendingPriority = core$1.sortDescendingPriority;
+exports.sortAscendingPriority = core$1.sortAscendingPriority;
 exports.DEFAULT_BREAKPOINTS = core$1.DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = core$1.ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = core$1.ORIENTATION_BREAKPOINTS;
@@ -109,13 +133,7 @@ exports.MockMediaQueryList = core$1.MockMediaQueryList;
 exports.MockMatchMediaProvider = core$1.MockMatchMediaProvider;
 exports.ServerMediaQueryList = core$1.ServerMediaQueryList;
 exports.ServerMatchMedia = core$1.ServerMatchMedia;
-exports.MediaMonitor = core$1.MediaMonitor;
-exports.ObservableMedia = core$1.ObservableMedia;
-exports.MediaService = core$1.MediaService;
-exports.ObservableMediaProvider = core$1.ObservableMediaProvider;
 exports.MediaObserver = core$1.MediaObserver;
-exports.KeyOptions = core$1.KeyOptions;
-exports.ResponsiveActivation = core$1.ResponsiveActivation;
 exports.StyleUtils = core$1.StyleUtils;
 exports.StyleBuilder = core$1.StyleBuilder;
 exports.validateBasis = core$1.validateBasis;
@@ -126,7 +144,6 @@ exports.DefaultClassDirective = extended.DefaultClassDirective;
 exports.ImgSrcStyleBuilder = extended.ImgSrcStyleBuilder;
 exports.ImgSrcDirective = extended.ImgSrcDirective;
 exports.DefaultImgSrcDirective = extended.DefaultImgSrcDirective;
-exports.negativeOf = extended.negativeOf;
 exports.ShowHideStyleBuilder = extended.ShowHideStyleBuilder;
 exports.ShowHideDirective = extended.ShowHideDirective;
 exports.DefaultShowHideDirective = extended.DefaultShowHideDirective;
