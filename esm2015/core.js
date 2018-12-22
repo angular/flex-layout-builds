@@ -1576,7 +1576,7 @@ class PrintHook {
      * @param {?} queries
      * @return {?}
      */
-    withPrintListener(queries) {
+    withPrintQuery(queries) {
         if (!!this.printAlias) {
             queries.push('print');
         }
@@ -1760,7 +1760,7 @@ class MediaObserver {
              * Inject associated (if any) alias information into the MediaChange event
              * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
              */
-        return this.mediaWatcher.observe(this.hook.withPrintListener(mqList))
+        return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
             .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => {
             /** @type {?} */
             const bp = (change.mediaQuery === 'print')
@@ -2485,7 +2485,7 @@ class MediaMarshaller {
         /** @type {?} */
         const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
         this.matchMedia
-            .observe(this.hook.withPrintListener(queries))
+            .observe(this.hook.withPrintQuery(queries))
             .pipe(filter(this.hook.interceptEvents(target)))
             .subscribe(this.activate.bind(this));
     }

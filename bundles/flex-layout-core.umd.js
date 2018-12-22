@@ -2027,7 +2027,7 @@ var PrintHook = /** @class */ (function () {
      * @param {?} queries
      * @return {?}
      */
-    PrintHook.prototype.withPrintListener = /**
+    PrintHook.prototype.withPrintQuery = /**
      * Add 'print' mediaQuery: to listen for matchMedia activations
      * @param {?} queries
      * @return {?}
@@ -2288,7 +2288,7 @@ var MediaObserver = /** @class */ (function () {
              * Inject associated (if any) alias information into the MediaChange event
              * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
              */
-        return this.mediaWatcher.observe(this.hook.withPrintListener(mqList))
+        return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
             .pipe(operators.filter(function (change) { return change.matches; }), operators.filter(excludeOverlaps), operators.map(function (change) {
             /** @type {?} */
             var bp = (change.mediaQuery === 'print')
@@ -3273,7 +3273,7 @@ var MediaMarshaller = /** @class */ (function () {
         /** @type {?} */
         var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
-            .observe(this.hook.withPrintListener(queries))
+            .observe(this.hook.withPrintQuery(queries))
             .pipe(operators.filter(this.hook.interceptEvents(target)))
             .subscribe(this.activate.bind(this));
     };

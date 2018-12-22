@@ -23,7 +23,7 @@ export declare class PrintHook {
     /**
      * Add 'print' mediaQuery: to listen for matchMedia activations
      */
-    withPrintListener(queries: string[]): string[];
+    withPrintQuery(queries: string[]): string[];
     /**
      * Is this service currently in Print-mode ?
      */
