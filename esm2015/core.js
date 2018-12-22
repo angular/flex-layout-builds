@@ -904,9 +904,7 @@ class MatchMedia {
     observe(mqList) {
         if (mqList) {
             /** @type {?} */
-            const matchMedia$ = this._observable$.pipe(filter((change) => {
-                return mqList.indexOf(change.mediaQuery) > -1;
-            }));
+            const matchMedia$ = this._observable$.pipe(filter(change => mqList.indexOf(change.mediaQuery) > -1));
             /** @type {?} */
             const registration$ = new Observable((observer) => {
                 /** @type {?} */
@@ -914,9 +912,7 @@ class MatchMedia {
                 if (matches.length) {
                     /** @type {?} */
                     const lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach((e) => {
-                        observer.next(e);
-                    });
+                    matches.forEach(observer.next);
                     this._source.next(lastChange); // last match is cached
                 }
                 observer.complete();

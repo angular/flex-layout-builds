@@ -3,9 +3,8 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
 import { PrintHookService } from './print-hook.service';
-export declare type ClearCallback = () => void;
-export declare type UpdateCallback = (val: any) => void;
-export declare type Builder = UpdateCallback | ClearCallback;
+declare type ClearCallback = () => void;
+declare type UpdateCallback = (val: any) => void;
 export interface ElementMatcher {
     element: HTMLElement;
     key: string;
@@ -109,3 +108,4 @@ export declare class MediaMarshaller {
      */
     private observeActivations;
 }
+export {};
