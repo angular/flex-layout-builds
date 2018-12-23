@@ -35,6 +35,7 @@ export declare class PrintHook {
      * @return pipeable filter predicate
      */
     interceptEvents(target: HookTarget): (event: MediaChange) => boolean;
+    updateEvent(event: MediaChange): MediaChange;
     /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint

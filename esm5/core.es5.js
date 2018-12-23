@@ -2079,6 +2079,24 @@ var PrintHook = /** @class */ (function () {
         };
     };
     /**
+     * @param {?} event
+     * @return {?}
+     */
+    PrintHook.prototype.updateEvent = /**
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        /** @type {?} */
+        var bp = this.breakpoints.findByQuery(event.mediaQuery);
+        if (this.isPrintEvent(event)) {
+            // Reset from 'print' to specified print breakpoint
+            bp = this.printBreakPoint;
+            event.mediaQuery = bp ? bp.mediaQuery : '';
+        }
+        return mergeAlias(event, bp);
+    };
+    /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
      */
@@ -2254,14 +2272,15 @@ var MediaObserver = /** @class */ (function () {
              */
         return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
             .pipe(filter(function (change) { return change.matches; }), filter(excludeOverlaps), map(function (change) {
-            /** @type {?} */
-            var bp = locator.findByQuery(change.mediaQuery);
             if (_this.hook.isPrintEvent(change)) {
-                // Reset from 'print' to specified print breakpoint
-                bp = _this.hook.printBreakPoint;
-                change.mediaQuery = bp ? bp.mediaQuery : '';
+                change = _this.hook.updateEvent(change);
             }
-            return mergeAlias(change, bp);
+            else {
+                /** @type {?} */
+                var bp = locator.findByQuery(change.mediaQuery);
+                change = mergeAlias(change, bp);
+            }
+            return change;
         }));
     };
     /**
