@@ -2105,7 +2105,7 @@ var PrintHook = /** @class */ (function () {
     function (target) {
         var _this = this;
         return function (event) {
-            if (_this.isPrintEvent(event)) {
+            if (_this.printAlias && _this.isPrintEvent(event)) {
                 if (event.matches && !_this.isPrinting) {
                     _this.startPrinting(target, _this.printBreakPoint);
                     target.updateStyles();

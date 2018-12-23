@@ -1620,7 +1620,7 @@ class PrintHook {
      */
     interceptEvents(target) {
         return (event) => {
-            if (this.isPrintEvent(event)) {
+            if (this.printAlias && this.isPrintEvent(event)) {
                 if (event.matches && !this.isPrinting) {
                     this.startPrinting(target, this.printBreakPoint);
                     target.updateStyles();
