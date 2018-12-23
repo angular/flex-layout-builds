@@ -25,13 +25,13 @@ export declare class MediaMarshaller {
     private updateMap;
     private clearMap;
     private subject;
-    readonly activatedBreakpoint: string;
+    readonly activatedAlias: string;
     constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHook);
     /**
-     * activate or deactivate a given breakpoint
+     * onMediaChange or deactivate a given breakpoint
      * @param mc
      */
-    activate(mc: MediaChange): void;
+    onMediaChange(mc: MediaChange): void;
     /**
      * initialize the marshaller with necessary elements for delegation on an element
      * @param element
@@ -100,7 +100,7 @@ export declare class MediaMarshaller {
      * @param bpMap
      * @param key
      */
-    private getFallback;
+    private getActivatedValues;
     /**
      * Watch for mediaQuery breakpoint activations
      */

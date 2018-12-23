@@ -20,8 +20,8 @@
  * retrieve the associated stylings from the virtual stylesheet
  * @param {?} serverSheet the virtual stylesheet that stores styles for each
  *        element
- * @param {?} matchMedia the service to activate/deactivate breakpoints
- * @param {?} breakpoints the registered breakpoints to activate/deactivate
+ * @param {?} matchMedia the service to onMediaChange/deactivate breakpoints
+ * @param {?} breakpoints the registered breakpoints to onMediaChange/deactivate
  * @return {?}
  */
 function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {

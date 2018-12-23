@@ -31,7 +31,7 @@ export declare class MockMatchMedia extends MatchMedia {
     /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
     _validateQuery(queryOrAlias: string): string;
     /**
-     * Manually activate any overlapping mediaQueries to simulate
+     * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      */
     private _activateWithOverlaps;
@@ -76,7 +76,7 @@ export declare class MockMediaQueryList implements MediaQueryList {
     activate(): MockMediaQueryList;
     /** Notify all listeners that 'matches === false' */
     deactivate(): MockMediaQueryList;
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     addListener(listener: MediaQueryListListener): void;
     /** Don't need to remove listeners in the testing environment */
     removeListener(_: EventListenerOrEventListenerObject | null): void;

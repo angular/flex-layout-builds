@@ -361,7 +361,7 @@ class BaseDirective2 {
      * @return {?}
      */
     set activatedValue(value) {
-        this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedBreakpoint);
+        this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedAlias);
     }
     /**
      * For \@Input changes
@@ -913,7 +913,9 @@ class MatchMedia {
                 if (matches.length) {
                     /** @type {?} */
                     const lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach(observer.next);
+                    matches.forEach((e) => {
+                        observer.next(e);
+                    });
                     this._source.next(lastChange); // last match is cached
                 }
                 observer.complete();
@@ -1102,7 +1104,7 @@ class MockMatchMedia extends MatchMedia {
         return (bp && bp.mediaQuery) || queryOrAlias;
     }
     /**
-     * Manually activate any overlapping mediaQueries to simulate
+     * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      * @param {?} mediaQuery
      * @param {?} useOverlaps
@@ -1129,7 +1131,7 @@ class MockMatchMedia extends MatchMedia {
                     this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
-            // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
+            // Simulate onMediaChange of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
                     this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
@@ -1295,7 +1297,7 @@ class MockMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1420,7 +1422,7 @@ class ServerMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1469,7 +1471,7 @@ class ServerMediaQueryList {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to activate and deactivate breakpoints
+ * Also contains methods to onMediaChange and deactivate breakpoints
  */
 class ServerMatchMedia extends MatchMedia {
     /**
@@ -1545,7 +1547,7 @@ ServerMatchMedia.ctorParameters = () => [
  * @return {?}
  */
 function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
+    return extendObject(dest || {}, source ? {
         mqAlias: source.alias,
         suffix: source.suffix
     } : {});
@@ -1569,7 +1571,7 @@ class PrintHook {
     constructor(breakpoints, layoutConfig) {
         this.breakpoints = breakpoints;
         this.layoutConfig = layoutConfig;
-        this.offlineActivations = null;
+        this._isPrinting = false;
     }
     /**
      * Add 'print' mediaQuery: to listen for matchMedia activations
@@ -1583,11 +1585,19 @@ class PrintHook {
         return queries;
     }
     /**
+     * Is the MediaChange event for a 'print' \@media
+     * @param {?} e
+     * @return {?}
+     */
+    isPrintEvent(e) {
+        return e.mediaQuery === 'print';
+    }
+    /**
      * Is this service currently in Print-mode ?
      * @return {?}
      */
     get isPrinting() {
-        return !!this.offlineActivations;
+        return this._isPrinting;
     }
     /**
      * What is the desired mqAlias to use while printing?
@@ -1609,14 +1619,14 @@ class PrintHook {
      * @return {?} pipeable filter predicate
      */
     interceptEvents(target) {
-        return (change) => {
-            if (change.mediaQuery == 'print') {
-                if (change.matches && !this.isPrinting) {
-                    this.enablePrintMode(target, this.printBreakPoint);
+        return (event) => {
+            if (this.isPrintEvent(event)) {
+                if (event.matches && !this.isPrinting) {
+                    this.startPrinting(target, this.printBreakPoint);
                     target.updateStyles();
                 }
-                else if (!change.matches && this.isPrinting) {
-                    this.disablePrintMode(target);
+                else if (!event.matches && this.isPrinting) {
+                    this.stopPrinting(target);
                     target.updateStyles();
                 }
             }
@@ -1630,21 +1640,21 @@ class PrintHook {
      * @param {?} bp
      * @return {?}
      */
-    enablePrintMode(target, bp) {
+    startPrinting(target, bp) {
         if (!!bp) {
-            this.offlineActivations = target.activatedBreakpoints;
-            target.activatedBreakpoints = [bp];
+            // Just add the print breakpoint as highest priority in the queue
+            target.activatedBreakpoints = [bp, ...target.activatedBreakpoints];
         }
     }
     /**
-     * Restore cached activatedBreakpoints and clear isPrinting
-     * state
+     * Remove the print breakpoint
      * @param {?} target
      * @return {?}
      */
-    disablePrintMode(target) {
-        target.activatedBreakpoints = /** @type {?} */ ((this.offlineActivations));
-        this.offlineActivations = null;
+    stopPrinting(target) {
+        if (this._isPrinting) {
+            target.activatedBreakpoints.shift(); // remove print breakpoint
+        }
     }
 }
 PrintHook.decorators = [
@@ -1763,11 +1773,11 @@ class MediaObserver {
         return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
             .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => {
             /** @type {?} */
-            const bp = (change.mediaQuery === 'print')
-                ? locator.findByAlias(this.hook.printAlias)
-                : locator.findByQuery(change.mediaQuery);
-            if (bp) {
-                change.mediaQuery = bp.mediaQuery;
+            let bp = locator.findByQuery(change.mediaQuery);
+            if (this.hook.isPrintEvent(change)) {
+                // Reset from 'print' to specified print breakpoint
+                bp = this.hook.printBreakPoint;
+                change.mediaQuery = bp ? bp.mediaQuery : '';
             }
             return mergeAlias(change, bp);
         }));
@@ -2203,18 +2213,19 @@ class MediaMarshaller {
     /**
      * @return {?}
      */
-    get activatedBreakpoint() {
+    get activatedAlias() {
         return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
     }
     /**
-     * activate or deactivate a given breakpoint
+     * onMediaChange or deactivate a given breakpoint
      * @param {?} mc
      * @return {?}
      */
-    activate(mc) {
+    onMediaChange(mc) {
         /** @type {?} */
         const bp = this.findByQuery(mc.mediaQuery);
         if (bp) {
+            mc = mergeAlias(mc, bp);
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
@@ -2254,7 +2265,7 @@ class MediaMarshaller {
         const bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
+            const values = bp !== undefined ? bpMap.get(bp) : this.getActivatedValues(bpMap, key);
             if (values) {
                 /** @type {?} */
                 const value = values.get(key);
@@ -2274,7 +2285,7 @@ class MediaMarshaller {
         const bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            const values = this.getFallback(bpMap, key);
+            const values = this.getActivatedValues(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -2322,9 +2333,9 @@ class MediaMarshaller {
     updateStyles() {
         this.elementMap.forEach((bpMap, el) => {
             /** @type {?} */
-            const valueMap = this.getFallback(bpMap);
-            /** @type {?} */
             const keyMap = new Set(/** @type {?} */ ((this.elementKeyMap.get(el))));
+            /** @type {?} */
+            let valueMap = this.getActivatedValues(bpMap);
             if (valueMap) {
                 valueMap.forEach((v, k) => {
                     this.updateElement(el, k, v);
@@ -2332,11 +2343,10 @@ class MediaMarshaller {
                 });
             }
             keyMap.forEach(k => {
-                /** @type {?} */
-                const fallbackMap = this.getFallback(bpMap, k);
-                if (fallbackMap) {
+                valueMap = this.getActivatedValues(bpMap, k);
+                if (valueMap) {
                     /** @type {?} */
-                    const value = fallbackMap.get(k);
+                    const value = valueMap.get(k);
                     this.updateElement(el, k, value);
                 }
                 else {
@@ -2461,7 +2471,7 @@ class MediaMarshaller {
      * @param {?=} key
      * @return {?}
      */
-    getFallback(bpMap, key) {
+    getActivatedValues(bpMap, key) {
         for (let i = 0; i < this.activatedBreakpoints.length; i++) {
             /** @type {?} */
             const activatedBp = this.activatedBreakpoints[i];
@@ -2487,7 +2497,7 @@ class MediaMarshaller {
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
             .pipe(filter(this.hook.interceptEvents(target)))
-            .subscribe(this.activate.bind(this));
+            .subscribe(this.onMediaChange.bind(this));
     }
 }
 MediaMarshaller.decorators = [

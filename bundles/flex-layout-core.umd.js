@@ -456,7 +456,7 @@ BaseDirective2 = /** @class */ (function () {
          * @return {?}
          */
         function (value) {
-            this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedBreakpoint);
+            this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedAlias);
         },
         enumerable: true,
         configurable: true
@@ -1151,7 +1151,9 @@ var MatchMedia = /** @class */ (function () {
                 if (matches.length) {
                     /** @type {?} */
                     var lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach(observer.next);
+                    matches.forEach(function (e) {
+                        observer.next(e);
+                    });
                     _this._source.next(lastChange); // last match is cached
                 }
                 observer.complete();
@@ -1371,14 +1373,14 @@ var MockMatchMedia = /** @class */ (function (_super) {
         return (bp && bp.mediaQuery) || queryOrAlias;
     };
     /**
-     * Manually activate any overlapping mediaQueries to simulate
+     * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      * @param {?} mediaQuery
      * @param {?} useOverlaps
      * @return {?}
      */
     MockMatchMedia.prototype._activateWithOverlaps = /**
-     * Manually activate any overlapping mediaQueries to simulate
+     * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      * @param {?} mediaQuery
      * @param {?} useOverlaps
@@ -1405,7 +1407,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
                     this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
-            // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
+            // Simulate onMediaChange of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
                     this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
@@ -1637,14 +1639,14 @@ MockMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
     MockMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1822,14 +1824,14 @@ ServerMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
     ServerMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1901,7 +1903,7 @@ ServerMediaQueryList = /** @class */ (function () {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to activate and deactivate breakpoints
+ * Also contains methods to onMediaChange and deactivate breakpoints
  */
 var ServerMatchMedia = /** @class */ (function (_super) {
     __extends(ServerMatchMedia, _super);
@@ -1997,7 +1999,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  * @return {?}
  */
 function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
+    return extendObject(dest || {}, source ? {
         mqAlias: source.alias,
         suffix: source.suffix
     } : {});
@@ -2017,11 +2019,9 @@ var PrintHook = /** @class */ (function () {
     function PrintHook(breakpoints, layoutConfig) {
         this.breakpoints = breakpoints;
         this.layoutConfig = layoutConfig;
-        this.offlineActivations = null;
+        this._isPrinting = false;
     }
-    /**
-     * Add 'print' mediaQuery: to listen for matchMedia activations
-     */
+    /** Add 'print' mediaQuery: to listen for matchMedia activations */
     /**
      * Add 'print' mediaQuery: to listen for matchMedia activations
      * @param {?} queries
@@ -2038,24 +2038,34 @@ var PrintHook = /** @class */ (function () {
         }
         return queries;
     };
+    /** Is the MediaChange event for a 'print' @media */
+    /**
+     * Is the MediaChange event for a 'print' \@media
+     * @param {?} e
+     * @return {?}
+     */
+    PrintHook.prototype.isPrintEvent = /**
+     * Is the MediaChange event for a 'print' \@media
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        return e.mediaQuery === 'print';
+    };
     Object.defineProperty(PrintHook.prototype, "isPrinting", {
-        /**
-         * Is this service currently in Print-mode ?
-         */
+        /** Is this service currently in Print-mode ? */
         get: /**
          * Is this service currently in Print-mode ?
          * @return {?}
          */
         function () {
-            return !!this.offlineActivations;
+            return this._isPrinting;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(PrintHook.prototype, "printAlias", {
-        /**
-         * What is the desired mqAlias to use while printing?
-         */
+        /** What is the desired mqAlias to use while printing? */
         get: /**
          * What is the desired mqAlias to use while printing?
          * @return {?}
@@ -2067,9 +2077,7 @@ var PrintHook = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(PrintHook.prototype, "printBreakPoint", {
-        /**
-         * Lookup breakpoint associated with print alias.
-         */
+        /** Lookup breakpoint associated with print alias. */
         get: /**
          * Lookup breakpoint associated with print alias.
          * @return {?}
@@ -2096,14 +2104,14 @@ var PrintHook = /** @class */ (function () {
      */
     function (target) {
         var _this = this;
-        return function (change) {
-            if (change.mediaQuery == 'print') {
-                if (change.matches && !_this.isPrinting) {
-                    _this.enablePrintMode(target, _this.printBreakPoint);
+        return function (event) {
+            if (_this.isPrintEvent(event)) {
+                if (event.matches && !_this.isPrinting) {
+                    _this.startPrinting(target, _this.printBreakPoint);
                     target.updateStyles();
                 }
-                else if (!change.matches && _this.isPrinting) {
-                    _this.disablePrintMode(target);
+                else if (!event.matches && _this.isPrinting) {
+                    _this.stopPrinting(target);
                     target.updateStyles();
                 }
             }
@@ -2121,7 +2129,7 @@ var PrintHook = /** @class */ (function () {
      * @param {?} bp
      * @return {?}
      */
-    PrintHook.prototype.enablePrintMode = /**
+    PrintHook.prototype.startPrinting = /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
      * @param {?} target
@@ -2130,29 +2138,25 @@ var PrintHook = /** @class */ (function () {
      */
     function (target, bp) {
         if (!!bp) {
-            this.offlineActivations = target.activatedBreakpoints;
-            target.activatedBreakpoints = [bp];
+            // Just add the print breakpoint as highest priority in the queue
+            target.activatedBreakpoints = [bp].concat(target.activatedBreakpoints);
         }
     };
+    /** Remove the print breakpoint */
     /**
-     * Restore cached activatedBreakpoints and clear isPrinting
-     * state
-     */
-    /**
-     * Restore cached activatedBreakpoints and clear isPrinting
-     * state
+     * Remove the print breakpoint
      * @param {?} target
      * @return {?}
      */
-    PrintHook.prototype.disablePrintMode = /**
-     * Restore cached activatedBreakpoints and clear isPrinting
-     * state
+    PrintHook.prototype.stopPrinting = /**
+     * Remove the print breakpoint
      * @param {?} target
      * @return {?}
      */
     function (target) {
-        target.activatedBreakpoints = /** @type {?} */ ((this.offlineActivations));
-        this.offlineActivations = null;
+        if (this._isPrinting) {
+            target.activatedBreakpoints.shift(); // remove print breakpoint
+        }
     };
     PrintHook.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -2291,11 +2295,11 @@ var MediaObserver = /** @class */ (function () {
         return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
             .pipe(operators.filter(function (change) { return change.matches; }), operators.filter(excludeOverlaps), operators.map(function (change) {
             /** @type {?} */
-            var bp = (change.mediaQuery === 'print')
-                ? locator.findByAlias(_this.hook.printAlias)
-                : locator.findByQuery(change.mediaQuery);
-            if (bp) {
-                change.mediaQuery = bp.mediaQuery;
+            var bp = locator.findByQuery(change.mediaQuery);
+            if (_this.hook.isPrintEvent(change)) {
+                // Reset from 'print' to specified print breakpoint
+                bp = _this.hook.printBreakPoint;
+                change.mediaQuery = bp ? bp.mediaQuery : '';
             }
             return mergeAlias(change, bp);
         }));
@@ -2840,7 +2844,7 @@ var MediaMarshaller = /** @class */ (function () {
         this.subject = new rxjs.Subject();
         this.observeActivations();
     }
-    Object.defineProperty(MediaMarshaller.prototype, "activatedBreakpoint", {
+    Object.defineProperty(MediaMarshaller.prototype, "activatedAlias", {
         get: /**
          * @return {?}
          */
@@ -2851,16 +2855,16 @@ var MediaMarshaller = /** @class */ (function () {
         configurable: true
     });
     /**
-     * activate or deactivate a given breakpoint
+     * onMediaChange or deactivate a given breakpoint
      * @param mc
      */
     /**
-     * activate or deactivate a given breakpoint
+     * onMediaChange or deactivate a given breakpoint
      * @param {?} mc
      * @return {?}
      */
-    MediaMarshaller.prototype.activate = /**
-     * activate or deactivate a given breakpoint
+    MediaMarshaller.prototype.onMediaChange = /**
+     * onMediaChange or deactivate a given breakpoint
      * @param {?} mc
      * @return {?}
      */
@@ -2868,6 +2872,7 @@ var MediaMarshaller = /** @class */ (function () {
         /** @type {?} */
         var bp = this.findByQuery(mc.mediaQuery);
         if (bp) {
+            mc = mergeAlias(mc, bp);
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
@@ -2938,7 +2943,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
+            var values = bp !== undefined ? bpMap.get(bp) : this.getActivatedValues(bpMap, key);
             if (values) {
                 /** @type {?} */
                 var value = values.get(key);
@@ -2969,7 +2974,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = this.getFallback(bpMap, key);
+            var values = this.getActivatedValues(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -3045,9 +3050,9 @@ var MediaMarshaller = /** @class */ (function () {
         var _this = this;
         this.elementMap.forEach(function (bpMap, el) {
             /** @type {?} */
-            var valueMap = _this.getFallback(bpMap);
-            /** @type {?} */
             var keyMap = new Set(/** @type {?} */ ((_this.elementKeyMap.get(el))));
+            /** @type {?} */
+            var valueMap = _this.getActivatedValues(bpMap);
             if (valueMap) {
                 valueMap.forEach(function (v, k) {
                     _this.updateElement(el, k, v);
@@ -3055,11 +3060,10 @@ var MediaMarshaller = /** @class */ (function () {
                 });
             }
             keyMap.forEach(function (k) {
-                /** @type {?} */
-                var fallbackMap = _this.getFallback(bpMap, k);
-                if (fallbackMap) {
+                valueMap = _this.getActivatedValues(bpMap, k);
+                if (valueMap) {
                     /** @type {?} */
-                    var value = fallbackMap.get(k);
+                    var value = valueMap.get(k);
                     _this.updateElement(el, k, value);
                 }
                 else {
@@ -3239,7 +3243,7 @@ var MediaMarshaller = /** @class */ (function () {
      * @param {?=} key
      * @return {?}
      */
-    MediaMarshaller.prototype.getFallback = /**
+    MediaMarshaller.prototype.getActivatedValues = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
      * @param {?=} key
@@ -3275,7 +3279,7 @@ var MediaMarshaller = /** @class */ (function () {
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
             .pipe(operators.filter(this.hook.interceptEvents(target)))
-            .subscribe(this.activate.bind(this));
+            .subscribe(this.onMediaChange.bind(this));
     };
     MediaMarshaller.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
