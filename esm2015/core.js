@@ -1656,8 +1656,12 @@ class PrintHook {
      */
     startPrinting(target, bp) {
         if (!!bp) {
-            // Just add the print breakpoint as highest priority in the queue
-            target.activatedBreakpoints = [bp, ...target.activatedBreakpoints];
+            /** @type {?} */
+            const bpInList = target.activatedBreakpoints.find(it => it.mediaQuery === bp.mediaQuery);
+            if (bpInList === undefined) {
+                // Just add the print breakpoint as highest priority in the queue
+                target.activatedBreakpoints = [bp, ...target.activatedBreakpoints];
+            }
         }
     }
     /**
@@ -1774,6 +1778,8 @@ class MediaObserver {
         /** @type {?} */
         const locator = this.breakpoints;
         /** @type {?} */
+        const printNotConfigured = (change) => change.mediaQuery !== '';
+        /** @type {?} */
         const excludeOverlaps = (change) => {
             /** @type {?} */
             const bp = locator.findByQuery(change.mediaQuery);
@@ -1781,21 +1787,20 @@ class MediaObserver {
         };
         /**
              * Only pass/announce activations (not de-activations)
+             *
              * Inject associated (if any) alias information into the MediaChange event
-             * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+             * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+             * - Exclude print activations that do not have an associated mediaQuery
              */
         return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
             .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => {
             if (this.hook.isPrintEvent(change)) {
-                change = this.hook.updateEvent(change);
+                return this.hook.updateEvent(change);
             }
-            else {
-                /** @type {?} */
-                let bp = locator.findByQuery(change.mediaQuery);
-                change = mergeAlias(change, bp);
-            }
-            return change;
-        }));
+            /** @type {?} */
+            let bp = locator.findByQuery(change.mediaQuery);
+            return mergeAlias(change, bp);
+        }), filter(printNotConfigured));
     }
     /**
      * Find associated breakpoint (if any)
