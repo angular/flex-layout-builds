@@ -22,25 +22,29 @@ export declare class PrintHook {
     constructor(breakpoints: BreakPointRegistry, layoutConfig: LayoutConfigOptions);
     /** Add 'print' mediaQuery: to listen for matchMedia activations */
     withPrintQuery(queries: string[]): string[];
-    /** Is the MediaChange event for a 'print' @media */
-    isPrintEvent(e: MediaChange): boolean;
+    /** Is the MediaChange event for any 'print' @media */
+    isPrintEvent(e: MediaChange): Boolean;
     /** Is this service currently in Print-mode ? */
     readonly isPrinting: boolean;
     /** What is the desired mqAlias to use while printing? */
-    readonly printAlias: string;
-    /** Lookup breakpoint associated with print alias. */
-    readonly printBreakPoint: OptionalBreakPoint;
+    readonly printAlias: string[];
+    /** Lookup breakpoints associated with print aliases. */
+    readonly printBreakPoints: BreakPoint[];
+    /** Lookup breakpoint associated with mediaQuery */
+    getEventBreakpoints({ mediaQuery }: MediaChange): BreakPoint[];
     /**
      * Prepare RxJs filter operator with partial application
      * @return pipeable filter predicate
      */
     interceptEvents(target: HookTarget): (event: MediaChange) => boolean;
+    /** Update event with printAlias mediaQuery information */
     updateEvent(event: MediaChange): MediaChange;
     /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
      */
-    protected startPrinting(target: HookTarget, bp: OptionalBreakPoint): void;
-    /** Remove the print breakpoint */
+    protected startPrinting(target: HookTarget, bpList: OptionalBreakPoint[]): void;
+    /** For any print deactivations, reset the entire print queue */
     protected stopPrinting(target: HookTarget): void;
+    private queue;
 }
