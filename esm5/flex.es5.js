@@ -928,7 +928,7 @@ var FlexDirective = /** @class */ (function (_super) {
     function () {
         /** @type {?} */
         var activatedValue = this.activatedValue;
-        if (activatedValue) {
+        if (activatedValue !== undefined) {
             /** @type {?} */
             var parts = validateBasis(activatedValue, this.flexGrow, this.flexShrink);
             this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));

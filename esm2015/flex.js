@@ -843,7 +843,7 @@ class FlexDirective extends BaseDirective2 {
     triggerReflow() {
         /** @type {?} */
         const activatedValue = this.activatedValue;
-        if (activatedValue) {
+        if (activatedValue !== undefined) {
             /** @type {?} */
             const parts = validateBasis(activatedValue, this.flexGrow, this.flexShrink);
             this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
