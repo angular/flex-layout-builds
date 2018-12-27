@@ -359,9 +359,6 @@ class LayoutGapDirective extends BaseDirective2 {
      * @return {?}
      */
     updateWithValue(value) {
-        if (!value) {
-            value = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        }
         /** @type {?} */
         const items = this.childrenNodes
             .filter(el => el.nodeType === 1 && this.willDisplay(el))
@@ -406,7 +403,7 @@ class LayoutGapDirective extends BaseDirective2 {
         /** @type {?} */
         const value = this.marshal.getValue(source, 'show-hide');
         return value === true ||
-            (value === '' && this.styleUtils.lookupStyle(source, 'display') !== 'none');
+            (value === undefined && this.styleUtils.lookupStyle(source, 'display') !== 'none');
     }
     /**
      * @return {?}
@@ -845,8 +842,12 @@ class FlexDirective extends BaseDirective2 {
      */
     triggerReflow() {
         /** @type {?} */
-        const parts = validateBasis(this.activatedValue, this.flexGrow, this.flexShrink);
-        this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
+        const activatedValue = this.activatedValue;
+        if (activatedValue !== undefined) {
+            /** @type {?} */
+            const parts = validateBasis(activatedValue, this.flexGrow, this.flexShrink);
+            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
+        }
     }
 }
 /** @nocollapse */

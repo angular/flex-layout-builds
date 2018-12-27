@@ -529,7 +529,9 @@ BaseDirective2 = /** @class */ (function () {
     function () {
         /** @type {?} */
         var val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        if (val !== undefined) {
+            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        }
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -737,15 +739,15 @@ var ScreenTypes = {
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
   @type {?} */
 var ORIENTATION_BREAKPOINTS = [
-    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
-    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
-    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
-    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
-    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
-    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
-    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
+    { 'alias': 'handset', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET },
+    { 'alias': 'handset.landscape', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
+    { 'alias': 'handset.portrait', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
+    { 'alias': 'tablet', priority: 8000, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', priority: 8000, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.portrait', priority: 8000, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
+    { 'alias': 'web', priority: 9000, 'mediaQuery': ScreenTypes.WEB, overlapping: true },
+    { 'alias': 'web.landscape', priority: 9000, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
+    { 'alias': 'web.portrait', priority: 9000, 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
 ];
 
 /**
@@ -3066,12 +3068,10 @@ var MediaMarshaller = /** @class */ (function () {
             /** @type {?} */
             var values = bp !== undefined ? bpMap.get(bp) : this.getActivatedValues(bpMap, key);
             if (values) {
-                /** @type {?} */
-                var value = values.get(key);
-                return value !== undefined ? value : '';
+                return values.get(key);
             }
         }
-        return '';
+        return undefined;
     };
     /**
      * whether the element has values for a given key
@@ -3138,7 +3138,11 @@ var MediaMarshaller = /** @class */ (function () {
             bpMap.set(bp, values);
             this.elementMap.set(element, bpMap);
         }
-        this.updateElement(element, key, this.getValue(element, key));
+        /** @type {?} */
+        var value = this.getValue(element, key);
+        if (value !== undefined) {
+            this.updateElement(element, key, value);
+        }
     };
     /** Track element value changes for a specific key */
     /**
@@ -3382,7 +3386,9 @@ var MediaMarshaller = /** @class */ (function () {
                 }
             }
         }
-        return bpMap.get('');
+        /** @type {?} */
+        var lastHope = bpMap.get('');
+        return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
     };
     /**
      * Watch for mediaQuery breakpoint activations

@@ -329,6 +329,9 @@ var ShowHideDirective = /** @class */ (function (_super) {
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(takeUntil(this.destroySubject))
             .subscribe(this.triggerUpdate.bind(this));
+        this.marshal.trackValue(this.nativeElement, 'layout-align')
+            .pipe(takeUntil(this.destroySubject))
+            .subscribe(this.triggerUpdate.bind(this));
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {
@@ -608,7 +611,6 @@ var StyleDirective = /** @class */ (function (_super) {
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
-        _this.fallbackStyles = {};
         if (!_this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -620,11 +622,14 @@ var StyleDirective = /** @class */ (function (_super) {
         _this.fallbackStyles = _this.buildStyleMap(styles);
         return _this;
     }
+    /** Add generated styles */
     /**
+     * Add generated styles
      * @param {?} value
      * @return {?}
      */
     StyleDirective.prototype.updateWithValue = /**
+     * Add generated styles
      * @param {?} value
      * @return {?}
      */
@@ -632,6 +637,19 @@ var StyleDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = __assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngDoCheck();
+    };
+    /** Remove generated styles */
+    /**
+     * Remove generated styles
+     * @return {?}
+     */
+    StyleDirective.prototype.clearStyles = /**
+     * Remove generated styles
+     * @return {?}
+     */
+    function () {
+        this.ngStyleInstance.ngStyle = this.fallbackStyles;
         this.ngStyleInstance.ngDoCheck();
     };
     /**
