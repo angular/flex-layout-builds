@@ -280,6 +280,9 @@ class ShowHideDirective extends BaseDirective2 {
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(takeUntil(this.destroySubject))
             .subscribe(this.triggerUpdate.bind(this));
+        this.marshal.trackValue(this.nativeElement, 'layout-align')
+            .pipe(takeUntil(this.destroySubject))
+            .subscribe(this.triggerUpdate.bind(this));
         /** @type {?} */
         const children = Array.from(this.nativeElement.children);
         for (let i = 0; i < children.length; i++) {
