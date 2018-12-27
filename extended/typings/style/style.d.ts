@@ -21,7 +21,10 @@ export declare class StyleDirective extends BaseDirective2 implements DoCheck {
     protected DIRECTIVE_KEY: string;
     protected fallbackStyles: NgStyleMap;
     constructor(elementRef: ElementRef, styler: StyleUtils, marshal: MediaMarshaller, keyValueDiffers: KeyValueDiffers, renderer: Renderer2, sanitizer: DomSanitizer, ngStyleInstance: NgStyle);
+    /** Add generated styles */
     protected updateWithValue(value: any): void;
+    /** Remove generated styles */
+    protected clearStyles(): void;
     /**
      * Convert raw strings to ngStyleMap; which is required by ngStyle
      * NOTE: Raw string key-value pairs MUST be delimited by `;`

@@ -440,9 +440,6 @@ var LayoutGapDirective = /** @class */ (function (_super) {
      */
     function (value) {
         var _this = this;
-        if (!value) {
-            value = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        }
         /** @type {?} */
         var items = this.childrenNodes
             .filter(function (el) { return el.nodeType === 1 && _this.willDisplay(el); })
@@ -493,7 +490,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var value = this.marshal.getValue(source, 'show-hide');
         return value === true ||
-            (value === '' && this.styleUtils.lookupStyle(source, 'display') !== 'none');
+            (value === undefined && this.styleUtils.lookupStyle(source, 'display') !== 'none');
     };
     /**
      * @return {?}
@@ -969,8 +966,12 @@ var FlexDirective = /** @class */ (function (_super) {
      */
     function () {
         /** @type {?} */
-        var parts = core$1.validateBasis(this.activatedValue, this.flexGrow, this.flexShrink);
-        this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
+        var activatedValue = this.activatedValue;
+        if (activatedValue !== undefined) {
+            /** @type {?} */
+            var parts = core$1.validateBasis(activatedValue, this.flexGrow, this.flexShrink);
+            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
+        }
     };
     /** @nocollapse */
     FlexDirective.ctorParameters = function () { return [
