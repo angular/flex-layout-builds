@@ -307,20 +307,6 @@ var DefaultClassDirective = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * For fxHide selectors, we invert the 'value'
- * and assign to the equivalent fxShow selector cache
- *  - When 'hide' === '' === true, do NOT show the element
- *  - When 'hide' === false or 0... we WILL show the element
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- * @param {?} hide
- * @return {?}
- */
-function negativeOf(hide) {
-    return (hide === '') ? false :
-        ((hide === 'false') || (hide === 0)) ? true : !hide;
-}
 var ShowHideStyleBuilder = /** @class */ (function (_super) {
     __extends(ShowHideStyleBuilder, _super);
     function ShowHideStyleBuilder() {
@@ -660,7 +646,6 @@ var StyleDirective = /** @class */ (function (_super) {
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
-        _this.fallbackStyles = {};
         if (!_this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -672,11 +657,14 @@ var StyleDirective = /** @class */ (function (_super) {
         _this.fallbackStyles = _this.buildStyleMap(styles);
         return _this;
     }
+    /** Add generated styles */
     /**
+     * Add generated styles
      * @param {?} value
      * @return {?}
      */
     StyleDirective.prototype.updateWithValue = /**
+     * Add generated styles
      * @param {?} value
      * @return {?}
      */
@@ -684,6 +672,19 @@ var StyleDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = __assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngDoCheck();
+    };
+    /** Remove generated styles */
+    /**
+     * Remove generated styles
+     * @return {?}
+     */
+    StyleDirective.prototype.clearStyles = /**
+     * Remove generated styles
+     * @return {?}
+     */
+    function () {
+        this.ngStyleInstance.ngStyle = this.fallbackStyles;
         this.ngStyleInstance.ngDoCheck();
     };
     /**
@@ -832,7 +833,6 @@ exports.DefaultClassDirective = DefaultClassDirective;
 exports.ImgSrcStyleBuilder = ImgSrcStyleBuilder;
 exports.ImgSrcDirective = ImgSrcDirective;
 exports.DefaultImgSrcDirective = DefaultImgSrcDirective;
-exports.negativeOf = negativeOf;
 exports.ShowHideStyleBuilder = ShowHideStyleBuilder;
 exports.ShowHideDirective = ShowHideDirective;
 exports.DefaultShowHideDirective = DefaultShowHideDirective;

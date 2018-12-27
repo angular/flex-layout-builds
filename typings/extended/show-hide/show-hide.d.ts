@@ -7,15 +7,6 @@
  */
 import { ElementRef, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { BaseDirective2, LayoutConfigOptions, MediaMarshaller, StyleUtils, StyleBuilder } from '@angular/flex-layout/core';
-/**
- * For fxHide selectors, we invert the 'value'
- * and assign to the equivalent fxShow selector cache
- *  - When 'hide' === '' === true, do NOT show the element
- *  - When 'hide' === false or 0... we WILL show the element
- * @deprecated
- * @deletion-target v7.0.0-beta.21
- */
-export declare function negativeOf(hide: any): boolean;
 export interface ShowHideParent {
     display: string;
 }

@@ -229,20 +229,6 @@ DefaultClassDirective.decorators = [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * For fxHide selectors, we invert the 'value'
- * and assign to the equivalent fxShow selector cache
- *  - When 'hide' === '' === true, do NOT show the element
- *  - When 'hide' === false or 0... we WILL show the element
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- * @param {?} hide
- * @return {?}
- */
-function negativeOf(hide) {
-    return (hide === '') ? false :
-        ((hide === 'false') || (hide === 0)) ? true : !hide;
-}
 class ShowHideStyleBuilder extends StyleBuilder {
     /**
      * @param {?} show
@@ -551,7 +537,6 @@ class StyleDirective extends BaseDirective2 {
         this.sanitizer = sanitizer;
         this.ngStyleInstance = ngStyleInstance;
         this.DIRECTIVE_KEY = 'ngStyle';
-        this.fallbackStyles = {};
         if (!this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -563,6 +548,7 @@ class StyleDirective extends BaseDirective2 {
         this.fallbackStyles = this.buildStyleMap(styles);
     }
     /**
+     * Add generated styles
      * @param {?} value
      * @return {?}
      */
@@ -570,6 +556,14 @@ class StyleDirective extends BaseDirective2 {
         /** @type {?} */
         const styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = Object.assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngDoCheck();
+    }
+    /**
+     * Remove generated styles
+     * @return {?}
+     */
+    clearStyles() {
+        this.ngStyleInstance.ngStyle = this.fallbackStyles;
         this.ngStyleInstance.ngDoCheck();
     }
     /**
@@ -695,5 +689,5 @@ ExtendedModule.decorators = [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, negativeOf, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, DefaultStyleDirective };
+export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, DefaultStyleDirective };
 //# sourceMappingURL=extended.js.map

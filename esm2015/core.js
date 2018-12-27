@@ -5,9 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, InjectionToken, inject, Injectable, Inject, NgModule, NgZone, SimpleChange, Optional, defineInjectable } from '@angular/core';
+import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, defineInjectable } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { BehaviorSubject, Subject, merge } from 'rxjs';
+import { Subject, BehaviorSubject, merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 /**
@@ -52,11 +52,447 @@ const CLASS_NAME = 'flex-layout-';
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/**
+ * *****************************************************************
+ * Define module for the MediaQuery API
+ * *****************************************************************
+ */
+class CoreModule {
+}
+CoreModule.decorators = [
+    { type: NgModule, args: [{
+                providers: [BROWSER_PROVIDER]
+            },] },
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Class instances emitted [to observers] for each mql notification
+ */
+class MediaChange {
+    /**
+     * @param {?=} matches whether the mediaQuery is currently activated
+     * @param {?=} mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
+     * @param {?=} mqAlias e.g. gt-sm, md, gt-lg
+     * @param {?=} suffix e.g. GtSM, Md, GtLg
+     */
+    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '') {
+        this.matches = matches;
+        this.mediaQuery = mediaQuery;
+        this.mqAlias = mqAlias;
+        this.suffix = suffix;
+        this.property = '';
+    }
+    /**
+     * Create an exact copy of the MediaChange
+     * @return {?}
+     */
+    clone() {
+        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Utility to emulate a CSS stylesheet
+ *
+ * This utility class stores all of the styles for a given HTML element
+ * as a readonly `stylesheet` map.
+ */
+class StylesheetMap {
+    constructor() {
+        this.stylesheet = new Map();
+    }
+    /**
+     * Add an individual style to an HTML element
+     * @param {?} element
+     * @param {?} style
+     * @param {?} value
+     * @return {?}
+     */
+    addStyleToElement(element, style, value) {
+        /** @type {?} */
+        const stylesheet = this.stylesheet.get(element);
+        if (stylesheet) {
+            stylesheet.set(style, value);
+        }
+        else {
+            this.stylesheet.set(element, new Map([[style, value]]));
+        }
+    }
+    /**
+     * Clear the virtual stylesheet
+     * @return {?}
+     */
+    clearStyles() {
+        this.stylesheet.clear();
+    }
+    /**
+     * Retrieve a given style for an HTML element
+     * @param {?} el
+     * @param {?} styleName
+     * @return {?}
+     */
+    getStyleForElement(el, styleName) {
+        /** @type {?} */
+        const styles = this.stylesheet.get(el);
+        /** @type {?} */
+        let value = '';
+        if (styles) {
+            /** @type {?} */
+            const style = styles.get(styleName);
+            if (typeof style === 'number' || typeof style === 'string') {
+                value = style + '';
+            }
+        }
+        return value;
+    }
+}
+StylesheetMap.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] },
+];
+/** @nocollapse */ StylesheetMap.ngInjectableDef = defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
+const DEFAULT_CONFIG = {
+    addFlexToParent: true,
+    addOrientationBps: false,
+    disableDefaultBps: false,
+    disableVendorPrefixes: false,
+    serverLoaded: false,
+    useColumnBasisZero: true,
+};
+/** @type {?} */
+const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
+    providedIn: 'root',
+    factory: () => DEFAULT_CONFIG
+});
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** *
+ * Token that is provided to tell whether the FlexLayoutServerModule
+ * has been included in the bundle
+ *
+ * NOTE: This can be manually provided to disable styles when using SSR
+  @type {?} */
+const SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded', {
+    providedIn: 'root',
+    factory: () => false
+});
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 /** @type {?} */
 const BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
     providedIn: 'root',
     factory: () => null
 });
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** *
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+  @type {?} */
+const INLINE = 'inline';
+/** @type {?} */
+const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+/**
+ * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
+ * @param {?} value
+ * @return {?}
+ */
+function buildLayoutCSS(value) {
+    let [direction, wrap, isInline] = validateValue(value);
+    return buildCSS(direction, wrap, isInline);
+}
+/**
+ * Validate the value to be one of the acceptable value options
+ * Use default fallback of 'row'
+ * @param {?} value
+ * @return {?}
+ */
+function validateValue(value) {
+    value = value ? value.toLowerCase() : '';
+    let [direction, wrap, inline] = value.split(' ');
+    // First value must be the `flex-direction`
+    if (!LAYOUT_VALUES.find(x => x === direction)) {
+        direction = LAYOUT_VALUES[0];
+    }
+    if (wrap === INLINE) {
+        wrap = (inline !== INLINE) ? inline : '';
+        inline = INLINE;
+    }
+    return [direction, validateWrapValue(wrap), !!inline];
+}
+/**
+ * Convert layout-wrap='<value>' to expected flex-wrap style
+ * @param {?} value
+ * @return {?}
+ */
+function validateWrapValue(value) {
+    if (!!value) {
+        switch (value.toLowerCase()) {
+            case 'reverse':
+            case 'wrap-reverse':
+            case 'reverse-wrap':
+                value = 'wrap-reverse';
+                break;
+            case 'no':
+            case 'none':
+            case 'nowrap':
+                value = 'nowrap';
+                break;
+            // All other values fallback to 'wrap'
+            default:
+                value = 'wrap';
+                break;
+        }
+    }
+    return value;
+}
+/**
+ * Build the CSS that should be assigned to the element instance
+ * BUG:
+ *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
+ *      Use height instead if possible; height : <xxx>vh;
+ *
+ *  This way any padding or border specified on the child elements are
+ *  laid out and drawn inside that element's specified width and height.
+ * @param {?} direction
+ * @param {?=} wrap
+ * @param {?=} inline
+ * @return {?}
+ */
+function buildCSS(direction, wrap = null, inline = false) {
+    return {
+        'display': inline ? 'inline-flex' : 'flex',
+        'box-sizing': 'border-box',
+        'flex-direction': direction,
+        'flex-wrap': !!wrap ? wrap : null
+    };
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * @abstract
+ */
+class BaseDirective2 {
+    /**
+     * @param {?} elementRef
+     * @param {?} styleBuilder
+     * @param {?} styler
+     * @param {?} marshal
+     */
+    constructor(elementRef, styleBuilder, styler, marshal) {
+        this.elementRef = elementRef;
+        this.styleBuilder = styleBuilder;
+        this.styler = styler;
+        this.marshal = marshal;
+        this.DIRECTIVE_KEY = '';
+        this.inputs = [];
+        /**
+         * The most recently used styles for the builder
+         */
+        this.mru = {};
+        this.destroySubject = new Subject();
+        /**
+         * Cache map for style computation
+         */
+        this.styleCache = new Map();
+    }
+    /**
+     * Access to host element's parent DOM node
+     * @return {?}
+     */
+    get parentElement() {
+        return this.elementRef.nativeElement.parentElement;
+    }
+    /**
+     * Access to the HTMLElement for the directive
+     * @return {?}
+     */
+    get nativeElement() {
+        return this.elementRef.nativeElement;
+    }
+    /**
+     * Access to the activated value for the directive
+     * @return {?}
+     */
+    get activatedValue() {
+        return this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set activatedValue(value) {
+        this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedBreakpoint);
+    }
+    /**
+     * For \@Input changes
+     * @param {?} changes
+     * @return {?}
+     */
+    ngOnChanges(changes) {
+        Object.keys(changes).forEach(key => {
+            if (this.inputs.indexOf(key) !== -1) {
+                /** @type {?} */
+                const bp = key.split('.').slice(1).join('.');
+                /** @type {?} */
+                const val = changes[key].currentValue;
+                this.setValue(val, bp);
+            }
+        });
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.destroySubject.next();
+        this.destroySubject.complete();
+        this.marshal.releaseElement(this.nativeElement);
+    }
+    /**
+     * Register with central marshaller service
+     * @param {?=} extraTriggers
+     * @return {?}
+     */
+    init(extraTriggers = []) {
+        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this), this.clearStyles.bind(this), extraTriggers);
+    }
+    /**
+     * Add styles to the element using predefined style builder
+     * @param {?} input
+     * @param {?=} parent
+     * @return {?}
+     */
+    addStyles(input, parent) {
+        /** @type {?} */
+        const builder = this.styleBuilder;
+        /** @type {?} */
+        const useCache = builder.shouldCache;
+        /** @type {?} */
+        let genStyles = this.styleCache.get(input);
+        if (!genStyles || !useCache) {
+            genStyles = builder.buildStyles(input, parent);
+            if (useCache) {
+                this.styleCache.set(input, genStyles);
+            }
+        }
+        this.mru = Object.assign({}, genStyles);
+        this.applyStyleToElement(genStyles);
+        builder.sideEffect(input, genStyles, parent);
+    }
+    /**
+     * Remove generated styles from an element using predefined style builder
+     * @return {?}
+     */
+    clearStyles() {
+        Object.keys(this.mru).forEach(k => {
+            this.mru[k] = '';
+        });
+        this.applyStyleToElement(this.mru);
+        this.mru = {};
+    }
+    /**
+     * Force trigger style updates on DOM element
+     * @return {?}
+     */
+    triggerUpdate() {
+        /** @type {?} */
+        const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
+        if (val !== undefined) {
+            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        }
+    }
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction).
+     *
+     * Check inline style first then check computed (stylesheet) style.
+     * And optionally add the flow value to element's inline style.
+     * @param {?} target
+     * @param {?=} addIfMissing
+     * @return {?}
+     */
+    getFlexFlowDirection(target, addIfMissing = false) {
+        if (target) {
+            const [value, hasInlineValue] = this.styler.getFlowDirection(target);
+            if (!hasInlineValue && addIfMissing) {
+                /** @type {?} */
+                const style = buildLayoutCSS(value);
+                /** @type {?} */
+                const elements = [target];
+                this.styler.applyStyleToElements(style, elements);
+            }
+            return value.trim();
+        }
+        return 'row';
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive element
+     * @param {?} style
+     * @param {?=} value
+     * @param {?=} element
+     * @return {?}
+     */
+    applyStyleToElement(style, value, element = this.nativeElement) {
+        this.styler.applyStyleToElement(element, style, value);
+    }
+    /**
+     * @param {?} val
+     * @param {?} bp
+     * @return {?}
+     */
+    setValue(val, bp) {
+        this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, val, bp);
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    updateWithValue(input) {
+        this.addStyles(input);
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 
 /**
  * @fileoverview added by tsickle
@@ -302,25 +738,6 @@ function prioritySort(a, b) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/** @type {?} */
-const DEFAULT_CONFIG = {
-    addFlexToParent: true,
-    addOrientationBps: false,
-    disableDefaultBps: false,
-    disableVendorPrefixes: false,
-    serverLoaded: false,
-    useColumnBasisZero: true,
-};
-/** @type {?} */
-const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
-    providedIn: 'root',
-    factory: () => DEFAULT_CONFIG
-});
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 /** *
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
@@ -433,31 +850,6 @@ BreakPointRegistry.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/**
- * Class instances emitted [to observers] for each mql notification
- */
-class MediaChange {
-    /**
-     * @param {?=} matches whether the mediaQuery is currently activated
-     * @param {?=} mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
-     * @param {?=} mqAlias e.g. gt-sm, md, gt-lg
-     * @param {?=} suffix e.g. GtSM, Md, GtLg
-     */
-    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '') {
-        this.matches = matches;
-        this.mediaQuery = mediaQuery;
-        this.mqAlias = mqAlias;
-        this.suffix = suffix;
-        this.property = '';
-    }
-    /**
-     * Create an exact copy of the MediaChange
-     * @return {?}
-     */
-    clone() {
-        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
-    }
-}
 
 /**
  * @fileoverview added by tsickle
@@ -619,1245 +1011,6 @@ function constructMql(query, isBrowser) {
         }
     }));
 }
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * For the specified MediaChange, make sure it contains the breakpoint alias
- * and suffix (if available).
- * @param {?} dest
- * @param {?} source
- * @return {?}
- */
-function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
-        mqAlias: source.alias,
-        suffix: source.suffix
-    } : {});
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Base class for MediaService and pseudo-token for
- * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21
- * @abstract
- */
-class ObservableMedia {
-}
-/**
- * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
- * This an Observable with that exposes a feature to subscribe to mediaQuery
- * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
- * currently active.
- *
- * !! Only mediaChange activations (not de-activations) are announced by the ObservableMedia
- *
- * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
- * notification. For custom mediaQuery notifications, alias information will not be injected and
- * those fields will be ''.
- *
- * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
- * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.asObservable()` with syntax like media.asObservable().map(....).
- *
- * \@usage
- *
- *  // RxJS
- *  import {filter} from 'rxjs/operators/filter';
- *  import { ObservableMedia } from '\@angular/flex-layout';
- *
- * \@Component({ ... })
- *  export class AppComponent {
- *    status : string = '';
- *
- *    constructor(  media:ObservableMedia ) {
- *      let onChange = (change:MediaChange) => {
- *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
- *      };
- *
- *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g.
- *      //      media.subscribe(onChange);
- *
- *      media.asObservable()
- *        .pipe(
- *          filter((change:MediaChange) => true)   // silly noop filter
- *        ).subscribe(onChange);
- *    }
- *  }
- * @deprecated use MediaObserver instead
- * \@deletion-target v7.0.0-beta.21
- */
-class MediaService {
-    /**
-     * @param {?} breakpoints
-     * @param {?} mediaWatcher
-     */
-    constructor(breakpoints, mediaWatcher) {
-        this.breakpoints = breakpoints;
-        this.mediaWatcher = mediaWatcher;
-        /**
-         * Should we announce gt-<xxx> breakpoint activations ?
-         */
-        this.filterOverlaps = true;
-        this._registerBreakPoints();
-        this.observable$ = this._buildObservable();
-    }
-    /**
-     * Test if specified query/alias is active.
-     * @param {?} alias
-     * @return {?}
-     */
-    isActive(alias) {
-        return this.mediaWatcher.isActive(this._toMediaQuery(alias));
-    }
-    /**
-     * Proxy to the Observable subscribe method
-     * @param {?=} observerOrNext
-     * @param {?=} error
-     * @param {?=} complete
-     * @return {?}
-     */
-    subscribe(observerOrNext, error, complete) {
-        if (observerOrNext) {
-            if (typeof observerOrNext === 'object') {
-                return this.observable$.subscribe(observerOrNext.next, observerOrNext.error, observerOrNext.complete);
-            }
-        }
-        return this.observable$.subscribe(observerOrNext, error, complete);
-    }
-    /**
-     * Access to observable for use with operators like
-     * .filter(), .map(), etc.
-     * @return {?}
-     */
-    asObservable() {
-        return this.observable$;
-    }
-    /**
-     * Register all the mediaQueries registered in the BreakPointRegistry
-     * This is needed so subscribers can be auto-notified of all standard, registered
-     * mediaQuery activations
-     * @return {?}
-     */
-    _registerBreakPoints() {
-        /** @type {?} */
-        const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this.mediaWatcher.registerQuery(queries);
-    }
-    /**
-     * Prepare internal observable
-     *
-     * NOTE: the raw MediaChange events [from MatchMedia] do not
-     *       contain important alias information; as such this info
-     *       must be injected into the MediaChange
-     * @return {?}
-     */
-    _buildObservable() {
-        /** @type {?} */
-        const excludeOverlaps = (change) => {
-            /** @type {?} */
-            const bp = this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !(this.filterOverlaps && bp.overlapping);
-        };
-        /**
-             * Only pass/announce activations (not de-activations)
-             * Inject associated (if any) alias information into the MediaChange event
-             * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
-             */
-        return this.mediaWatcher.observe().pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => mergeAlias(change, this._findByQuery(change.mediaQuery))));
-    }
-    /**
-     * Breakpoint locator by alias
-     * @param {?} alias
-     * @return {?}
-     */
-    _findByAlias(alias) {
-        return this.breakpoints.findByAlias(alias);
-    }
-    /**
-     * Breakpoint locator by mediaQuery
-     * @param {?} query
-     * @return {?}
-     */
-    _findByQuery(query) {
-        return this.breakpoints.findByQuery(query);
-    }
-    /**
-     * Find associated breakpoint (if any)
-     * @param {?} query
-     * @return {?}
-     */
-    _toMediaQuery(query) {
-        /** @type {?} */
-        const bp = this._findByAlias(query) || this._findByQuery(query);
-        return bp ? bp.mediaQuery : query;
-    }
-}
-MediaService.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
-];
-/** @nocollapse */
-MediaService.ctorParameters = () => [
-    { type: BreakPointRegistry },
-    { type: MatchMedia }
-];
-/** @nocollapse */ MediaService.ngInjectableDef = defineInjectable({ factory: function MediaService_Factory() { return new MediaService(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaService, providedIn: "root" });
-/** *
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
-  @type {?} */
-const ObservableMediaProvider = {
-    // tslint:disable-line:variable-name
-    provide: ObservableMedia,
-    useClass: MediaService
-};
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * *****************************************************************
- * Define module for the MediaQuery API
- * *****************************************************************
- */
-class CoreModule {
-}
-CoreModule.decorators = [
-    { type: NgModule, args: [{
-                providers: [BROWSER_PROVIDER, ObservableMediaProvider]
-            },] },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Utility to emulate a CSS stylesheet
- *
- * This utility class stores all of the styles for a given HTML element
- * as a readonly `stylesheet` map.
- */
-class StylesheetMap {
-    constructor() {
-        this.stylesheet = new Map();
-    }
-    /**
-     * Add an individual style to an HTML element
-     * @param {?} element
-     * @param {?} style
-     * @param {?} value
-     * @return {?}
-     */
-    addStyleToElement(element, style, value) {
-        /** @type {?} */
-        const stylesheet = this.stylesheet.get(element);
-        if (stylesheet) {
-            stylesheet.set(style, value);
-        }
-        else {
-            this.stylesheet.set(element, new Map([[style, value]]));
-        }
-    }
-    /**
-     * Clear the virtual stylesheet
-     * @return {?}
-     */
-    clearStyles() {
-        this.stylesheet.clear();
-    }
-    /**
-     * Retrieve a given style for an HTML element
-     * @param {?} el
-     * @param {?} styleName
-     * @return {?}
-     */
-    getStyleForElement(el, styleName) {
-        /** @type {?} */
-        const styles = this.stylesheet.get(el);
-        /** @type {?} */
-        let value = '';
-        if (styles) {
-            /** @type {?} */
-            const style = styles.get(styleName);
-            if (typeof style === 'number' || typeof style === 'string') {
-                value = style + '';
-            }
-        }
-        return value;
-    }
-}
-StylesheetMap.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
-];
-/** @nocollapse */ StylesheetMap.ngInjectableDef = defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/** *
- * Token that is provided to tell whether the FlexLayoutServerModule
- * has been included in the bundle
- *
- * NOTE: This can be manually provided to disable styles when using SSR
-  @type {?} */
-const SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded', {
-    providedIn: 'root',
-    factory: () => false
-});
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/** *
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
-  @type {?} */
-const INLINE = 'inline';
-/** @type {?} */
-const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
-/**
- * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
- * @param {?} value
- * @return {?}
- */
-function buildLayoutCSS(value) {
-    let [direction, wrap, isInline] = validateValue(value);
-    return buildCSS(direction, wrap, isInline);
-}
-/**
- * Validate the value to be one of the acceptable value options
- * Use default fallback of 'row'
- * @param {?} value
- * @return {?}
- */
-function validateValue(value) {
-    value = value ? value.toLowerCase() : '';
-    let [direction, wrap, inline] = value.split(' ');
-    // First value must be the `flex-direction`
-    if (!LAYOUT_VALUES.find(x => x === direction)) {
-        direction = LAYOUT_VALUES[0];
-    }
-    if (wrap === INLINE) {
-        wrap = (inline !== INLINE) ? inline : '';
-        inline = INLINE;
-    }
-    return [direction, validateWrapValue(wrap), !!inline];
-}
-/**
- * Convert layout-wrap='<value>' to expected flex-wrap style
- * @param {?} value
- * @return {?}
- */
-function validateWrapValue(value) {
-    if (!!value) {
-        switch (value.toLowerCase()) {
-            case 'reverse':
-            case 'wrap-reverse':
-            case 'reverse-wrap':
-                value = 'wrap-reverse';
-                break;
-            case 'no':
-            case 'none':
-            case 'nowrap':
-                value = 'nowrap';
-                break;
-            // All other values fallback to 'wrap'
-            default:
-                value = 'wrap';
-                break;
-        }
-    }
-    return value;
-}
-/**
- * Build the CSS that should be assigned to the element instance
- * BUG:
- *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
- *      Use height instead if possible; height : <xxx>vh;
- *
- *  This way any padding or border specified on the child elements are
- *  laid out and drawn inside that element's specified width and height.
- * @param {?} direction
- * @param {?=} wrap
- * @param {?=} inline
- * @return {?}
- */
-function buildCSS(direction, wrap = null, inline = false) {
-    return {
-        'display': inline ? 'inline-flex' : 'flex',
-        'box-sizing': 'border-box',
-        'flex-direction': direction,
-        'flex-wrap': !!wrap ? wrap : null
-    };
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- */
-class KeyOptions {
-    /**
-     * @param {?} baseKey
-     * @param {?} defaultValue
-     * @param {?} inputKeys
-     */
-    constructor(baseKey, defaultValue, inputKeys) {
-        this.baseKey = baseKey;
-        this.defaultValue = defaultValue;
-        this.inputKeys = inputKeys;
-    }
-}
-/**
- * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
- * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
- * directive via the specified callback.
- *
- * - The MQA also determines which directive property should be used to determine the
- *   current change 'value'... BEFORE the original `onMediaQueryChanges()` method is called.
- * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the
- *   MediaQueryServices.
- *
- * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- */
-class ResponsiveActivation {
-    /**
-     * Constructor
-     * @param {?} _options
-     * @param {?} _mediaMonitor
-     * @param {?} _onMediaChanges
-     */
-    constructor(_options, _mediaMonitor, _onMediaChanges) {
-        this._options = _options;
-        this._mediaMonitor = _mediaMonitor;
-        this._onMediaChanges = _onMediaChanges;
-        this._activatedInputKey = '';
-        this._registryMap = this._buildRegistryMap();
-        this._subscribers = this._configureChangeObservers();
-    }
-    /**
-     * Get a readonly sorted list of the breakpoints corresponding to the directive properties
-     * defined in the HTML markup: the sorting is done from largest to smallest. The order is
-     * important when several media queries are 'registered' and from which, the browser uses the
-     * first matching media query.
-     * @return {?}
-     */
-    get registryFromLargest() {
-        return [...this._registryMap].reverse();
-    }
-    /**
-     * Determine which directive \@Input() property is currently active (for the viewport size):
-     * The key must be defined (in use) or fallback to the 'closest' overlapping property key
-     * that is defined; otherwise the default property key will be used.
-     * e.g.
-     *      if `<div fxHide fxHide.gt-sm="false">` is used but the current activated mediaQuery alias
-     *      key is `.md` then `.gt-sm` should be used instead
-     * @return {?}
-     */
-    get activatedInputKey() {
-        return this._activatedInputKey || this._options.baseKey;
-    }
-    /**
-     * Get the currently activated \@Input value or the fallback default \@Input value
-     * @return {?}
-     */
-    get activatedInput() {
-        /** @type {?} */
-        const key = this.activatedInputKey;
-        return this.hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
-    }
-    /**
-     * Fast validator for presence of attribute on the host element
-     * @param {?} key
-     * @return {?}
-     */
-    hasKeyValue(key) {
-        return this._options.inputKeys[key] !== undefined;
-    }
-    /**
-     * Remove interceptors, restore original functions, and forward the onDestroy() call
-     * @return {?}
-     */
-    destroy() {
-        this._subscribers.forEach(link => link.unsubscribe());
-        this._subscribers = [];
-    }
-    /**
-     * For each *defined* API property, register a callback to `_onMonitorEvents( )`
-     * Cache 1..n subscriptions for internal auto-unsubscribes when the the directive destructs
-     * @return {?}
-     */
-    _configureChangeObservers() {
-        /** @type {?} */
-        const subscriptions = [];
-        this._registryMap.forEach(bp => {
-            if (this._keyInUse(bp.key)) {
-                /** @type {?} */
-                const buildChanges = (change) => {
-                    change = change.clone();
-                    change.property = this._options.baseKey;
-                    return change;
-                };
-                subscriptions.push(this._mediaMonitor
-                    .observe(bp.alias)
-                    .pipe(map(buildChanges))
-                    .subscribe(change => {
-                    this._onMonitorEvents(change);
-                }));
-            }
-        });
-        return subscriptions;
-    }
-    /**
-     * Build mediaQuery key-hashmap; only for the directive properties that are actually defined/used
-     * in the HTML markup
-     * @return {?}
-     */
-    _buildRegistryMap() {
-        return this._mediaMonitor.breakpoints
-            .map(bp => /** @type {?} */ (extendObject({}, bp, {
-            baseKey: this._options.baseKey,
-            // e.g. layout, hide, self-align, flex-wrap
-            key: this._options.baseKey + bp.suffix // e.g. layoutGtSm, layoutMd, layoutGtLg
-        })))
-            .filter(bp => this._keyInUse(bp.key));
-    }
-    /**
-     * Synchronizes change notifications with the current mq-activated \@Input and calculates the
-     * mq-activated input value or the default value
-     * @param {?} change
-     * @return {?}
-     */
-    _onMonitorEvents(change) {
-        if (change.property === this._options.baseKey) {
-            change.value = this._calculateActivatedValue(change);
-            this._onMediaChanges(change);
-        }
-    }
-    /**
-     * Has the key been specified in the HTML markup and thus is intended
-     * to participate in activation processes.
-     * @param {?} key
-     * @return {?}
-     */
-    _keyInUse(key) {
-        return this._lookupKeyValue(key) !== undefined;
-    }
-    /**
-     *  Map input key associated with mediaQuery activation to closest defined input key
-     *  then return the values associated with the targeted input property
-     *
-     *  !! change events may arrive out-of-order (activate before deactivate)
-     *     so make sure the deactivate is used ONLY when the keys match
-     *     (since a different activate may be in use)
-     * @param {?} current
-     * @return {?}
-     */
-    _calculateActivatedValue(current) {
-        /** @type {?} */
-        const currentKey = this._options.baseKey + current.suffix;
-        /** @type {?} */
-        let newKey = this._activatedInputKey; // e.g. newKey == hideGtSm
-        newKey = current.matches ? currentKey : ((newKey === currentKey) ? '' : newKey);
-        this._activatedInputKey = this._validateInputKey(newKey);
-        return this.activatedInput;
-    }
-    /**
-     * For the specified input property key, validate it is defined (used in the markup)
-     * If not see if a overlapping mediaQuery-related input key fallback has been defined
-     *
-     * NOTE: scans in the order defined by activeOverLaps (largest viewport ranges -> smallest ranges)
-     * @param {?} inputKey
-     * @return {?}
-     */
-    _validateInputKey(inputKey) {
-        /** @type {?} */
-        const isMissingKey = (key) => !this._keyInUse(key);
-        if (isMissingKey(inputKey)) {
-            this._mediaMonitor.activeOverlaps.some(bp => {
-                /** @type {?} */
-                const key = this._options.baseKey + bp.suffix;
-                if (!isMissingKey(key)) {
-                    inputKey = key;
-                    return true; // exit .some()
-                }
-                return false;
-            });
-        }
-        return inputKey;
-    }
-    /**
-     * Get the value (if any) for the directive instances \@Input property (aka key)
-     * @param {?} key
-     * @return {?}
-     */
-    _lookupKeyValue(key) {
-        return this._options.inputKeys[key];
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Abstract base class for the Layout API styling directives.
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- * @abstract
- */
-class BaseDirective {
-    /**
-     * @param {?} _mediaMonitor
-     * @param {?} _elementRef
-     * @param {?} _styler
-     * @param {?=} _styleBuilder
-     */
-    constructor(_mediaMonitor, _elementRef, _styler, _styleBuilder) {
-        this._mediaMonitor = _mediaMonitor;
-        this._elementRef = _elementRef;
-        this._styler = _styler;
-        this._styleBuilder = _styleBuilder;
-        /**
-         * Dictionary of input keys with associated values
-         */
-        this._inputMap = {};
-        /**
-         * Has the `ngOnInit()` method fired
-         *
-         * Used to allow *ngFor tasks to finish and support queries like
-         * getComputedStyle() during ngOnInit().
-         */
-        this._hasInitialized = false;
-        /**
-         * Cache map for style computation
-         */
-        this._styleCache = new Map();
-    }
-    /**
-     * Imperatively determine the current activated [input] value;
-     * if called before ngOnInit() this will return `undefined`
-     * @return {?}
-     */
-    get activatedValue() {
-        return this._mqActivation ? this._mqActivation.activatedInput : undefined;
-    }
-    /**
-     * Change the currently activated input value and force-update
-     * the injected CSS (by-passing change detection).
-     *
-     * NOTE: Only the currently activated input value will be modified;
-     *       other input values will NOT be affected.
-     * @param {?} value
-     * @return {?}
-     */
-    set activatedValue(value) {
-        /** @type {?} */
-        let key = 'baseKey';
-        /** @type {?} */
-        let previousVal;
-        if (this._mqActivation) {
-            key = this._mqActivation.activatedInputKey;
-            previousVal = this._inputMap[key];
-            this._inputMap[key] = value;
-        }
-        /** @type {?} */
-        const change = new SimpleChange(previousVal, value, false);
-        this.ngOnChanges(/** @type {?} */ ({ [key]: change }));
-    }
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @param {?} baseKey
-     * @return {?}
-     */
-    hasResponsiveAPI(baseKey) {
-        /** @type {?} */
-        const totalKeys = Object.keys(this._inputMap).length;
-        /** @type {?} */
-        const baseValue = this._inputMap[baseKey];
-        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
-    }
-    /**
-     * Use post-component-initialization event to perform extra
-     * querying such as computed Display style
-     * @return {?}
-     */
-    ngOnInit() {
-        this._hasInitialized = true;
-    }
-    /**
-     * @param {?} change
-     * @return {?}
-     */
-    ngOnChanges(change) {
-        throw new Error(`BaseDirective::ngOnChanges should be overridden in subclass: ${change}`);
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this._mqActivation) {
-            this._mqActivation.destroy();
-        }
-        delete this._mediaMonitor;
-    }
-    /**
-     * Access to host element's parent DOM node
-     * @return {?}
-     */
-    get parentElement() {
-        return this._elementRef.nativeElement.parentNode;
-    }
-    /**
-     * @return {?}
-     */
-    get nativeElement() {
-        return this._elementRef.nativeElement;
-    }
-    /**
-     * Add styles to the element using predefined style builder
-     * @param {?} input
-     * @param {?=} parent
-     * @return {?}
-     */
-    addStyles(input, parent) {
-        /** @type {?} */
-        const builder = /** @type {?} */ ((this._styleBuilder));
-        /** @type {?} */
-        const useCache = builder.shouldCache;
-        /** @type {?} */
-        let genStyles = this._styleCache.get(input);
-        if (!genStyles || !useCache) {
-            genStyles = builder.buildStyles(input, parent);
-            if (useCache) {
-                this._styleCache.set(input, genStyles);
-            }
-        }
-        this._applyStyleToElement(genStyles);
-        builder.sideEffect(input, genStyles, parent);
-    }
-    /**
-     * Access the current value (if any) of the \@Input property
-     * @param {?} key
-     * @return {?}
-     */
-    _queryInput(key) {
-        return this._inputMap[key];
-    }
-    /**
-     * Was the directive's default selector used ?
-     * If not, use the fallback value!
-     * @param {?} key
-     * @param {?} fallbackVal
-     * @return {?}
-     */
-    _getDefaultVal(key, fallbackVal) {
-        /** @type {?} */
-        const val = this._queryInput(key);
-        /** @type {?} */
-        const hasDefaultVal = (val !== undefined && val !== null);
-        return (hasDefaultVal && val !== '') ? val : fallbackVal;
-    }
-    /**
-     * Quick accessor to the current HTMLElement's `display` style
-     * Note: this allows us to preserve the original style
-     * and optional restore it when the mediaQueries deactivate
-     * @param {?=} source
-     * @return {?}
-     */
-    _getDisplayStyle(source = this.nativeElement) {
-        /** @type {?} */
-        const query = 'display';
-        return this._styler.lookupStyle(source, query);
-    }
-    /**
-     * Quick accessor to raw attribute value on the target DOM element
-     * @param {?} attribute
-     * @param {?=} source
-     * @return {?}
-     */
-    _getAttributeValue(attribute, source = this.nativeElement) {
-        return this._styler.lookupAttributeValue(source, attribute);
-    }
-    /**
-     * Determine the DOM element's Flexbox flow (flex-direction).
-     *
-     * Check inline style first then check computed (stylesheet) style.
-     * And optionally add the flow value to element's inline style.
-     * @param {?} target
-     * @param {?=} addIfMissing
-     * @return {?}
-     */
-    _getFlexFlowDirection(target, addIfMissing = false) {
-        if (target) {
-            let [value, hasInlineValue] = this._styler.getFlowDirection(target);
-            if (!hasInlineValue && addIfMissing) {
-                /** @type {?} */
-                const style = buildLayoutCSS(value);
-                /** @type {?} */
-                const elements = [target];
-                this._styler.applyStyleToElements(style, elements);
-            }
-            return value.trim();
-        }
-        return 'row';
-    }
-    /**
-     * Applies styles given via string pair or object map to the directive element
-     * @param {?} style
-     * @param {?=} value
-     * @param {?=} element
-     * @return {?}
-     */
-    _applyStyleToElement(style, value, element = this.nativeElement) {
-        this._styler.applyStyleToElement(element, style, value);
-    }
-    /**
-     * Applies styles given via string pair or object map to the directive's element
-     * @param {?} style
-     * @param {?} elements
-     * @return {?}
-     */
-    _applyStyleToElements(style, elements) {
-        this._styler.applyStyleToElements(style, elements);
-    }
-    /**
-     *  Save the property value; which may be a complex object.
-     *  Complex objects support property chains
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInput(key, source) {
-        if (typeof source === 'object') {
-            for (let prop in source) {
-                this._inputMap[prop] = source[prop];
-            }
-        }
-        else {
-            if (!!key) {
-                this._inputMap[key] = source;
-            }
-        }
-    }
-    /**
-     *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
-     *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
-     *  (or closest match).
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    _listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
-        // tslint:disable-line:max-line-length
-        if (!this._mqActivation) {
-            /** @type {?} */
-            let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-            this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, (change) => onMediaQueryChange(change));
-        }
-        return this._mqActivation;
-    }
-    /**
-     * Special accessor to query for all child 'element' nodes regardless of type, class, etc
-     * @return {?}
-     */
-    get childrenNodes() {
-        /** @type {?} */
-        const obj = this.nativeElement.children;
-        /** @type {?} */
-        const buffer = [];
-        // iterate backwards ensuring that length is an UInt32
-        for (let i = obj.length; i--;) {
-            buffer[i] = obj[i];
-        }
-        return buffer;
-    }
-    /**
-     * @return {?}
-     */
-    get hasInitialized() {
-        return this._hasInitialized;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Adapter to the BaseDirective abstract class so it can be used via composition.
- * @see BaseDirective
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
- */
-class BaseDirectiveAdapter extends BaseDirective {
-    /**
-     * BaseDirectiveAdapter constructor
-     * @param {?} _baseKey
-     * @param {?} _mediaMonitor
-     * @param {?} _elementRef
-     * @param {?} _styler
-     */
-    constructor(_baseKey, // non-responsive @Input property name
-    // non-responsive @Input property name
-    _mediaMonitor, _elementRef, _styler) {
-        super(_mediaMonitor, _elementRef, _styler);
-        this._baseKey = _baseKey;
-        this._mediaMonitor = _mediaMonitor;
-        this._elementRef = _elementRef;
-        this._styler = _styler;
-    }
-    /**
-     * Accessor to determine which \@Input property is "active"
-     * e.g. which property value will be used.
-     * @return {?}
-     */
-    get activeKey() {
-        /** @type {?} */
-        let mqa = this._mqActivation;
-        /** @type {?} */
-        let key = mqa ? mqa.activatedInputKey : this._baseKey;
-        // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
-        return (key === 'class') ? 'klazz' : key;
-    }
-    /**
-     * Hash map of all \@Input keys/values defined/used
-     * @return {?}
-     */
-    get inputMap() {
-        return this._inputMap;
-    }
-    /**
-     * @see BaseDirective._mqActivation
-     * @return {?}
-     */
-    get mqActivation() {
-        return /** @type {?} */ ((this._mqActivation));
-    }
-    /**
-     * Does this directive have 1 or more responsive keys defined
-     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-     * @return {?}
-     */
-    hasResponsiveAPI() {
-        return super.hasResponsiveAPI(this._baseKey);
-    }
-    /**
-     * @see BaseDirective._queryInput
-     * @param {?} key
-     * @return {?}
-     */
-    queryInput(key) {
-        return key ? this._queryInput(key) : undefined;
-    }
-    /**
-     *  Save the property value.
-     * @param {?=} key
-     * @param {?=} source
-     * @param {?=} cacheRaw
-     * @return {?}
-     */
-    cacheInput(key, source, cacheRaw = false) {
-        if (cacheRaw) {
-            this._cacheInputRaw(key, source);
-        }
-        else if (Array.isArray(source)) {
-            this._cacheInputArray(key, source);
-        }
-        else if (typeof source === 'object') {
-            this._cacheInputObject(key, source);
-        }
-        else if (typeof source === 'string') {
-            this._cacheInputString(key, source);
-        }
-        else {
-            throw new Error(`Invalid class value '${key}' provided. Did you want to cache the raw value?`);
-        }
-    }
-    /**
-     * @see BaseDirective._listenForMediaQueryChanges
-     * @param {?} key
-     * @param {?} defaultValue
-     * @param {?} onMediaQueryChange
-     * @return {?}
-     */
-    listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
-        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-    }
-    /**
-     * No implicit transforms of the source.
-     * Required when caching values expected later for KeyValueDiffers
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputRaw(key, source) {
-        if (key) {
-            this._inputMap[key] = source;
-        }
-    }
-    /**
-     *  Save the property value for Array values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputArray(key = '', source) {
-        this._inputMap[key] = source ? source.join(' ') : '';
-    }
-    /**
-     *  Save the property value for key/value pair values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputObject(key = '', source) {
-        /** @type {?} */
-        let classes = [];
-        if (source) {
-            for (let prop in source) {
-                if (!!source[prop]) {
-                    classes.push(prop);
-                }
-            }
-        }
-        this._inputMap[key] = classes.join(' ');
-    }
-    /**
-     *  Save the property value for string values.
-     * @param {?=} key
-     * @param {?=} source
-     * @return {?}
-     */
-    _cacheInputString(key = '', source) {
-        this._inputMap[key] = source;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * @abstract
- */
-class BaseDirective2 {
-    /**
-     * @param {?} elementRef
-     * @param {?} styleBuilder
-     * @param {?} styler
-     * @param {?} marshal
-     */
-    constructor(elementRef, styleBuilder, styler, marshal) {
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
-        this.DIRECTIVE_KEY = '';
-        this.inputs = [];
-        /**
-         * The most recently used styles for the builder
-         */
-        this.mru = {};
-        this.destroySubject = new Subject();
-        /**
-         * Cache map for style computation
-         */
-        this.styleCache = new Map();
-    }
-    /**
-     * Access to host element's parent DOM node
-     * @return {?}
-     */
-    get parentElement() {
-        return this.elementRef.nativeElement.parentElement;
-    }
-    /**
-     * Access to the HTMLElement for the directive
-     * @return {?}
-     */
-    get nativeElement() {
-        return this.elementRef.nativeElement;
-    }
-    /**
-     * Access to the activated value for the directive
-     * @return {?}
-     */
-    get activatedValue() {
-        return this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    set activatedValue(value) {
-        this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedBreakpoint);
-    }
-    /**
-     * For \@Input changes
-     * @param {?} changes
-     * @return {?}
-     */
-    ngOnChanges(changes) {
-        Object.keys(changes).forEach(key => {
-            if (this.inputs.indexOf(key) !== -1) {
-                /** @type {?} */
-                const bp = key.split('.').slice(1).join('.');
-                /** @type {?} */
-                const val = changes[key].currentValue;
-                this.setValue(val, bp);
-            }
-        });
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.destroySubject.next();
-        this.destroySubject.complete();
-        this.marshal.releaseElement(this.nativeElement);
-    }
-    /**
-     * Register with central marshaller service
-     * @param {?=} extraTriggers
-     * @return {?}
-     */
-    init(extraTriggers = []) {
-        this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this), this.clearStyles.bind(this), extraTriggers);
-    }
-    /**
-     * Add styles to the element using predefined style builder
-     * @param {?} input
-     * @param {?=} parent
-     * @return {?}
-     */
-    addStyles(input, parent) {
-        /** @type {?} */
-        const builder = this.styleBuilder;
-        /** @type {?} */
-        const useCache = builder.shouldCache;
-        /** @type {?} */
-        let genStyles = this.styleCache.get(input);
-        if (!genStyles || !useCache) {
-            genStyles = builder.buildStyles(input, parent);
-            if (useCache) {
-                this.styleCache.set(input, genStyles);
-            }
-        }
-        this.mru = Object.assign({}, genStyles);
-        this.applyStyleToElement(genStyles);
-        builder.sideEffect(input, genStyles, parent);
-    }
-    /**
-     * Remove generated styles from an element using predefined style builder
-     * @return {?}
-     */
-    clearStyles() {
-        Object.keys(this.mru).forEach(k => {
-            this.mru[k] = '';
-        });
-        this.applyStyleToElement(this.mru);
-        this.mru = {};
-    }
-    /**
-     * Force trigger style updates on DOM element
-     * @return {?}
-     */
-    triggerUpdate() {
-        /** @type {?} */
-        const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
-    }
-    /**
-     * Determine the DOM element's Flexbox flow (flex-direction).
-     *
-     * Check inline style first then check computed (stylesheet) style.
-     * And optionally add the flow value to element's inline style.
-     * @param {?} target
-     * @param {?=} addIfMissing
-     * @return {?}
-     */
-    getFlexFlowDirection(target, addIfMissing = false) {
-        if (target) {
-            const [value, hasInlineValue] = this.styler.getFlowDirection(target);
-            if (!hasInlineValue && addIfMissing) {
-                /** @type {?} */
-                const style = buildLayoutCSS(value);
-                /** @type {?} */
-                const elements = [target];
-                this.styler.applyStyleToElements(style, elements);
-            }
-            return value.trim();
-        }
-        return 'row';
-    }
-    /**
-     * Applies styles given via string pair or object map to the directive element
-     * @param {?} style
-     * @param {?=} value
-     * @param {?=} element
-     * @return {?}
-     */
-    applyStyleToElement(style, value, element = this.nativeElement) {
-        this.styler.applyStyleToElement(element, style, value);
-    }
-    /**
-     * @param {?} val
-     * @param {?} bp
-     * @return {?}
-     */
-    setValue(val, bp) {
-        this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, val, bp);
-    }
-    /**
-     * @param {?} input
-     * @return {?}
-     */
-    updateWithValue(input) {
-        this.addStyles(input);
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 
 /**
  * @fileoverview added by tsickle
@@ -2364,111 +1517,18 @@ ServerMatchMedia.ctorParameters = () => [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
- * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
- * deactivations). These changes are are published as MediaChange notifications.
- *
- * Note: all notifications will be performed within the
- * ng Zone to trigger change detections and component updates.
- *
- * It is the MediaMonitor that:
- *  - auto registers all known breakpoints
- *  - injects alias information into each raw MediaChange event
- *  - provides accessor to the currently active BreakPoint
- *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
- * @deprecated
- * \@deletion-target v7.0.0-beta.21
+ * For the specified MediaChange, make sure it contains the breakpoint alias
+ * and suffix (if available).
+ * @param {?} dest
+ * @param {?} source
+ * @return {?}
  */
-class MediaMonitor {
-    /**
-     * @param {?} _breakpoints
-     * @param {?} _matchMedia
-     */
-    constructor(_breakpoints, _matchMedia) {
-        this._breakpoints = _breakpoints;
-        this._matchMedia = _matchMedia;
-        this._registerBreakpoints();
-    }
-    /**
-     * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
-     * @return {?}
-     */
-    get breakpoints() {
-        return [...this._breakpoints.items];
-    }
-    /**
-     * @return {?}
-     */
-    get activeOverlaps() {
-        return this._breakpoints.overlappings
-            .reverse()
-            .filter(bp => this._matchMedia.isActive(bp.mediaQuery));
-    }
-    /**
-     * @return {?}
-     */
-    get active() {
-        /** @type {?} */
-        const items = this.breakpoints.reverse();
-        /** @type {?} */
-        const first = items.find(bp => bp.alias !== '' && this._matchMedia.isActive(bp.mediaQuery));
-        return first || null;
-    }
-    /**
-     * For the specified mediaQuery alias, is the mediaQuery range active?
-     * @param {?} alias
-     * @return {?}
-     */
-    isActive(alias) {
-        /** @type {?} */
-        const bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
-    }
-    /**
-     * External observers can watch for all (or a specific) mql changes.
-     * If specific breakpoint is observed, only return *activated* events
-     * otherwise return all events for BOTH activated + deactivated changes.
-     * @param {?=} alias
-     * @return {?}
-     */
-    observe(alias = '') {
-        /** @type {?} */
-        const bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        /** @type {?} */
-        const hasAlias = (change) => (bp ? change.mqAlias !== '' : true);
-        /** @type {?} */
-        const media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-        return media$.pipe(map(change => mergeAlias(change, bp)), filter(hasAlias));
-    }
-    /**
-     * Immediate calls to matchMedia() to establish listeners
-     * and prepare for immediate subscription notifications
-     * @return {?}
-     */
-    _registerBreakpoints() {
-        /** @type {?} */
-        const queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this._matchMedia.registerQuery(queries);
-    }
+function mergeAlias(dest, source) {
+    return extendObject(dest, source ? {
+        mqAlias: source.alias,
+        suffix: source.suffix
+    } : {});
 }
-MediaMonitor.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
-];
-/** @nocollapse */
-MediaMonitor.ctorParameters = () => [
-    { type: BreakPointRegistry },
-    { type: MatchMedia }
-];
-/** @nocollapse */ MediaMonitor.ngInjectableDef = defineInjectable({ factory: function MediaMonitor_Factory() { return new MediaMonitor(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaMonitor, providedIn: "root" });
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
 
 /**
  * @fileoverview added by tsickle
@@ -3070,12 +2130,10 @@ class MediaMarshaller {
             /** @type {?} */
             const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
-                /** @type {?} */
-                const value = values.get(key);
-                return value !== undefined ? value : '';
+                return values.get(key);
             }
         }
-        return '';
+        return undefined;
     }
     /**
      * whether the element has values for a given key
@@ -3116,7 +2174,11 @@ class MediaMarshaller {
             bpMap.set(bp, values);
             this.elementMap.set(element, bpMap);
         }
-        this.updateElement(element, key, this.getValue(element, key));
+        /** @type {?} */
+        const value = this.getValue(element, key);
+        if (value !== undefined) {
+            this.updateElement(element, key, value);
+        }
     }
     /**
      * Track element value changes for a specific key
@@ -3286,7 +2348,9 @@ class MediaMarshaller {
                 }
             }
         }
-        return bpMap.get('');
+        /** @type {?} */
+        const lastHope = bpMap.get('');
+        return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
     }
     /**
      * @return {?}
@@ -3335,5 +2399,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective, BaseDirectiveAdapter, BaseDirective2, prioritySort, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaMonitor, ObservableMedia, MediaService, ObservableMediaProvider, MediaObserver, KeyOptions, ResponsiveActivation, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, prioritySort, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
 //# sourceMappingURL=core.js.map
