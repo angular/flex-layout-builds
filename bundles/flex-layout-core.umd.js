@@ -568,7 +568,9 @@ BaseDirective2 = /** @class */ (function () {
     function () {
         /** @type {?} */
         var val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        if (val !== undefined) {
+            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        }
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -2768,12 +2770,10 @@ var MediaMarshaller = /** @class */ (function () {
             /** @type {?} */
             var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
-                /** @type {?} */
-                var value = values.get(key);
-                return value !== undefined ? value : '';
+                return values.get(key);
             }
         }
-        return '';
+        return undefined;
     };
     /**
      * whether the element has values for a given key
@@ -2840,7 +2840,11 @@ var MediaMarshaller = /** @class */ (function () {
             bpMap.set(bp, values);
             this.elementMap.set(element, bpMap);
         }
-        this.updateElement(element, key, this.getValue(element, key));
+        /** @type {?} */
+        var value = this.getValue(element, key);
+        if (value !== undefined) {
+            this.updateElement(element, key, value);
+        }
     };
     /** Track element value changes for a specific key */
     /**
@@ -3084,7 +3088,9 @@ var MediaMarshaller = /** @class */ (function () {
                 }
             }
         }
-        return bpMap.get('');
+        /** @type {?} */
+        var lastHope = bpMap.get('');
+        return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
     };
     /**
      * Watch for mediaQuery breakpoint activations

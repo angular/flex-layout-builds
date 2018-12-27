@@ -435,7 +435,9 @@ class BaseDirective2 {
     triggerUpdate() {
         /** @type {?} */
         const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        if (val !== undefined) {
+            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        }
     }
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -2137,12 +2139,10 @@ class MediaMarshaller {
             /** @type {?} */
             const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
             if (values) {
-                /** @type {?} */
-                const value = values.get(key);
-                return value !== undefined ? value : '';
+                return values.get(key);
             }
         }
-        return '';
+        return undefined;
     }
     /**
      * whether the element has values for a given key
@@ -2183,7 +2183,11 @@ class MediaMarshaller {
             bpMap.set(bp, values);
             this.elementMap.set(element, bpMap);
         }
-        this.updateElement(element, key, this.getValue(element, key));
+        /** @type {?} */
+        const value = this.getValue(element, key);
+        if (value !== undefined) {
+            this.updateElement(element, key, value);
+        }
     }
     /**
      * Track element value changes for a specific key
@@ -2353,7 +2357,9 @@ class MediaMarshaller {
                 }
             }
         }
-        return bpMap.get('');
+        /** @type {?} */
+        const lastHope = bpMap.get('');
+        return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
     }
     /**
      * Watch for mediaQuery breakpoint activations

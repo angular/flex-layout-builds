@@ -279,7 +279,10 @@ class ShowHideDirective extends BaseDirective2 {
         this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(takeUntil(this.destroySubject))
-            .subscribe(this.updateWithValue.bind(this));
+            .subscribe(this.triggerUpdate.bind(this));
+        this.marshal.trackValue(this.nativeElement, 'layout-align')
+            .pipe(takeUntil(this.destroySubject))
+            .subscribe(this.triggerUpdate.bind(this));
         /** @type {?} */
         const children = Array.from(this.nativeElement.children);
         for (let i = 0; i < children.length; i++) {
@@ -537,7 +540,6 @@ class StyleDirective extends BaseDirective2 {
         this.sanitizer = sanitizer;
         this.ngStyleInstance = ngStyleInstance;
         this.DIRECTIVE_KEY = 'ngStyle';
-        this.fallbackStyles = {};
         if (!this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
@@ -549,6 +551,7 @@ class StyleDirective extends BaseDirective2 {
         this.fallbackStyles = this.buildStyleMap(styles);
     }
     /**
+     * Add generated styles
      * @param {?} value
      * @return {?}
      */
@@ -556,6 +559,14 @@ class StyleDirective extends BaseDirective2 {
         /** @type {?} */
         const styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = Object.assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngDoCheck();
+    }
+    /**
+     * Remove generated styles
+     * @return {?}
+     */
+    clearStyles() {
+        this.ngStyleInstance.ngStyle = this.fallbackStyles;
         this.ngStyleInstance.ngDoCheck();
     }
     /**
