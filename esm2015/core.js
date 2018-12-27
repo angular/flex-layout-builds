@@ -537,7 +537,8 @@ const DEFAULT_BREAKPOINTS = [
         overlapping: true,
         mediaQuery: 'screen and (min-width: 960px)',
         priority: 300,
-    }, {
+    },
+    {
         alias: 'gt-md',
         overlapping: true,
         mediaQuery: 'screen and (min-width: 1280px)',
