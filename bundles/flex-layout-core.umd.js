@@ -898,9 +898,9 @@ function mergeByAlias(defaults, custom) {
  */
 function sortDescendingPriority(a, b) {
     /** @type {?} */
-    var priorityA = a.priority || 0;
+    var priorityA = a ? a.priority || 0 : 0;
     /** @type {?} */
-    var priorityB = b.priority || 0;
+    var priorityB = b ? b.priority || 0 : 0;
     return priorityB - priorityA;
 }
 /**
@@ -2009,6 +2009,14 @@ function mergeAlias(dest, source) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
+var PRINT = 'print';
+/** @type {?} */
+var BREAKPOINT_PRINT = {
+    alias: PRINT,
+    mediaQuery: PRINT,
+    priority: 20000
+};
 /**
  * PrintHook - Use to intercept print MediaQuery activations and force
  *             layouts to render with the specified print alias/breakpoint
@@ -2034,10 +2042,7 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (queries) {
-        if (!!this.printAlias) {
-            queries.push('print');
-        }
-        return queries;
+        return queries.concat([PRINT]);
     };
     /** Is the MediaChange event for any 'print' @media */
     /**
@@ -2051,7 +2056,7 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (e) {
-        return e.mediaQuery.startsWith('print');
+        return e.mediaQuery.startsWith(PRINT);
     };
     Object.defineProperty(PrintHook.prototype, "isPrinting", {
         /** Is this service currently in Print-mode ? */
@@ -2267,6 +2272,8 @@ PrintQueue = /** @class */ (function () {
      */
     function (bpList) {
         var _this = this;
+        bpList.push(BREAKPOINT_PRINT);
+        bpList.sort(sortDescendingPriority);
         bpList.forEach(function (bp) { return _this.addBreakpoint(bp); });
         return this.activatedBreakpoints;
     };
@@ -2315,7 +2322,7 @@ PrintQueue = /** @class */ (function () {
  * @return {?}
  */
 function isPrintBreakPoint(bp) {
-    return bp ? bp.mediaQuery.startsWith('print') : false;
+    return bp ? bp.mediaQuery.startsWith(PRINT) : false;
 }
 
 /**
@@ -3494,6 +3501,7 @@ exports.StyleUtils = StyleUtils;
 exports.StyleBuilder = StyleBuilder;
 exports.validateBasis = validateBasis;
 exports.MediaMarshaller = MediaMarshaller;
+exports.BREAKPOINT_PRINT = BREAKPOINT_PRINT;
 exports.PrintHook = PrintHook;
 
 Object.defineProperty(exports, '__esModule', { value: true });

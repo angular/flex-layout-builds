@@ -366,7 +366,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
         this.marshal.trackValue(this.nativeElement, 'layout')
             .pipe(operators.takeUntil(this.destroySubject))
-            .subscribe(this.updateWithValue.bind(this));
+            .subscribe(this.triggerUpdate.bind(this));
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {

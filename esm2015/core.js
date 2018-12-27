@@ -724,9 +724,9 @@ function mergeByAlias(defaults, custom = []) {
  */
 function sortDescendingPriority(a, b) {
     /** @type {?} */
-    const priorityA = a.priority || 0;
+    const priorityA = a ? a.priority || 0 : 0;
     /** @type {?} */
-    const priorityB = b.priority || 0;
+    const priorityB = b ? b.priority || 0 : 0;
     return priorityB - priorityA;
 }
 /**
@@ -1557,6 +1557,14 @@ function mergeAlias(dest, source) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+/** @type {?} */
+const PRINT = 'print';
+/** @type {?} */
+const BREAKPOINT_PRINT = {
+    alias: PRINT,
+    mediaQuery: PRINT,
+    priority: 20000
+};
 /**
  * PrintHook - Use to intercept print MediaQuery activations and force
  *             layouts to render with the specified print alias/breakpoint
@@ -1580,10 +1588,7 @@ class PrintHook {
      * @return {?}
      */
     withPrintQuery(queries) {
-        if (!!this.printAlias) {
-            queries.push('print');
-        }
-        return queries;
+        return [...queries, PRINT];
     }
     /**
      * Is the MediaChange event for any 'print' \@media
@@ -1591,7 +1596,7 @@ class PrintHook {
      * @return {?}
      */
     isPrintEvent(e) {
-        return e.mediaQuery.startsWith('print');
+        return e.mediaQuery.startsWith(PRINT);
     }
     /**
      * Is this service currently in Print-mode ?
@@ -1731,6 +1736,8 @@ class PrintQueue {
      * @return {?}
      */
     addBreakpoints(bpList) {
+        bpList.push(BREAKPOINT_PRINT);
+        bpList.sort(sortDescendingPriority);
         bpList.forEach(bp => this.addBreakpoint(bp));
         return this.activatedBreakpoints;
     }
@@ -1767,7 +1774,7 @@ class PrintQueue {
  * @return {?}
  */
 function isPrintBreakPoint(bp) {
-    return bp ? bp.mediaQuery.startsWith('print') : false;
+    return bp ? bp.mediaQuery.startsWith(PRINT) : false;
 }
 
 /**
@@ -2647,5 +2654,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, PrintHook };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
 //# sourceMappingURL=core.js.map

@@ -9,6 +9,11 @@ export interface HookTarget {
     activatedBreakpoints: BreakPoint[];
     updateStyles(): void;
 }
+export declare const BREAKPOINT_PRINT: {
+    alias: string;
+    mediaQuery: string;
+    priority: number;
+};
 /**
  * PrintHook - Use to intercept print MediaQuery activations and force
  *             layouts to render with the specified print alias/breakpoint

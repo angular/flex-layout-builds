@@ -44,7 +44,7 @@ var __assign = function() {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.22-a386fed');
+var VERSION = new core.Version('7.0.0-beta.22-bff6040');
 
 /**
  * @fileoverview added by tsickle
@@ -138,6 +138,7 @@ exports.StyleUtils = core$1.StyleUtils;
 exports.StyleBuilder = core$1.StyleBuilder;
 exports.validateBasis = core$1.validateBasis;
 exports.MediaMarshaller = core$1.MediaMarshaller;
+exports.BREAKPOINT_PRINT = core$1.BREAKPOINT_PRINT;
 exports.PrintHook = core$1.PrintHook;
 exports.ExtendedModule = extended.ExtendedModule;
 exports.ClassDirective = extended.ClassDirective;
