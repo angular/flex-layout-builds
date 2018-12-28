@@ -601,7 +601,7 @@ function keyValuesToMap(map, entry) {
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance) {
+    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance, serverLoaded, platformId) {
         var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
@@ -620,6 +620,7 @@ var StyleDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var styles = _this.nativeElement.getAttribute('style') || '';
         _this.fallbackStyles = _this.buildStyleMap(styles);
+        _this.isServer = serverLoaded && isPlatformServer(platformId);
         return _this;
     }
     /** Add generated styles */
@@ -637,6 +638,9 @@ var StyleDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = __assign({}, this.fallbackStyles, styles);
+        if (this.isServer) {
+            this.applyStyleToElement(styles);
+        }
         this.ngStyleInstance.ngDoCheck();
     };
     /** Remove generated styles */
@@ -713,7 +717,9 @@ var StyleDirective = /** @class */ (function (_super) {
         { type: KeyValueDiffers },
         { type: Renderer2 },
         { type: DomSanitizer },
-        { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] }
+        { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] },
+        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
     ]; };
     return StyleDirective;
 }(BaseDirective2));
