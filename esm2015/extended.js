@@ -529,8 +529,10 @@ class StyleDirective extends BaseDirective2 {
      * @param {?} renderer
      * @param {?} sanitizer
      * @param {?} ngStyleInstance
+     * @param {?} serverLoaded
+     * @param {?} platformId
      */
-    constructor(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance) {
+    constructor(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance, serverLoaded, platformId) {
         super(elementRef, /** @type {?} */ ((null)), styler, marshal);
         this.elementRef = elementRef;
         this.styler = styler;
@@ -549,6 +551,7 @@ class StyleDirective extends BaseDirective2 {
         /** @type {?} */
         const styles = this.nativeElement.getAttribute('style') || '';
         this.fallbackStyles = this.buildStyleMap(styles);
+        this.isServer = serverLoaded && isPlatformServer(platformId);
     }
     /**
      * Add generated styles
@@ -559,6 +562,9 @@ class StyleDirective extends BaseDirective2 {
         /** @type {?} */
         const styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = Object.assign({}, this.fallbackStyles, styles);
+        if (this.isServer) {
+            this.applyStyleToElement(styles);
+        }
         this.ngStyleInstance.ngDoCheck();
     }
     /**
@@ -606,7 +612,9 @@ StyleDirective.ctorParameters = () => [
     { type: KeyValueDiffers },
     { type: Renderer2 },
     { type: DomSanitizer },
-    { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] }
+    { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] },
+    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ];
 /** @type {?} */
 const inputs$3 = [
