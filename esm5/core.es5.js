@@ -633,74 +633,74 @@ var DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
         mediaQuery: 'screen and (min-width: 0px) and (max-width: 599px)',
-        priority: 10000,
+        priority: 1000,
     },
     {
         alias: 'sm',
         mediaQuery: 'screen and (min-width: 600px) and (max-width: 959px)',
-        priority: 9000,
+        priority: 900,
     },
     {
         alias: 'md',
         mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279px)',
-        priority: 8000,
+        priority: 800,
     },
     {
         alias: 'lg',
         mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919px)',
-        priority: 7000,
+        priority: 700,
     },
     {
         alias: 'xl',
         mediaQuery: 'screen and (min-width: 1920px) and (max-width: 5000px)',
-        priority: 6000,
-    },
-    {
-        alias: 'gt-xs',
-        overlapping: true,
-        mediaQuery: 'screen and (min-width: 600px)',
-        priority: 200,
-    },
-    {
-        alias: 'gt-sm',
-        overlapping: true,
-        mediaQuery: 'screen and (min-width: 960px)',
-        priority: 300,
-    }, {
-        alias: 'gt-md',
-        overlapping: true,
-        mediaQuery: 'screen and (min-width: 1280px)',
-        priority: 400,
-    },
-    {
-        alias: 'gt-lg',
-        overlapping: true,
-        mediaQuery: 'screen and (min-width: 1920px)',
-        priority: 500,
+        priority: 600,
     },
     {
         alias: 'lt-sm',
         overlapping: true,
         mediaQuery: 'screen and (max-width: 599px)',
-        priority: 1000,
+        priority: 950,
     },
     {
         alias: 'lt-md',
         overlapping: true,
         mediaQuery: 'screen and (max-width: 959px)',
-        priority: 800,
+        priority: 850,
     },
     {
         alias: 'lt-lg',
         overlapping: true,
         mediaQuery: 'screen and (max-width: 1279px)',
-        priority: 700,
+        priority: 750,
     },
     {
         alias: 'lt-xl',
         overlapping: true,
-        priority: 600,
+        priority: 650,
         mediaQuery: 'screen and (max-width: 1919px)',
+    },
+    {
+        alias: 'gt-xs',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 600px)',
+        priority: -950,
+    },
+    {
+        alias: 'gt-sm',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 960px)',
+        priority: -850,
+    }, {
+        alias: 'gt-md',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 1280px)',
+        priority: -750,
+    },
+    {
+        alias: 'gt-lg',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 1920px)',
+        priority: -650,
     }
 ];
 
