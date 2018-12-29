@@ -43,7 +43,7 @@ export declare class MockMatchMedia extends MatchMedia {
      *
      */
     private _activateByQuery;
-    /** Deactivate all current Mock MQLs */
+    /** Deactivate all current MQLs and reset the buffer */
     private _deactivateAll;
     /** Insure the mediaQuery is registered with MatchMedia */
     private _registerMediaQuery;

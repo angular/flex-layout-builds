@@ -1175,25 +1175,21 @@ class MockMatchMedia extends MatchMedia {
         /** @type {?} */
         const mql = this._registry.get(mediaQuery);
         /** @type {?} */
-        const alreadyAdded = this._actives
-            .reduce((found, it) => (found || (mql ? (it.media === mql.media) : false)), false);
+        const alreadyAdded = this._actives.reduce((found, it) => {
+            return found || (mql ? (it.media === mql.media) : false);
+        }, false);
         if (mql && !alreadyAdded) {
             this._actives.push(mql.activate());
         }
         return this.hasActivated;
     }
     /**
-     * Deactivate all current Mock MQLs
+     * Deactivate all current MQLs and reset the buffer
      * @return {?}
      */
     _deactivateAll() {
-        if (this._actives.length) {
-            // Deactivate all current MQLs and reset the buffer
-            for (const it of this._actives) {
-                it.deactivate();
-            }
-            this._actives = [];
-        }
+        this._actives.forEach(it => it.deactivate());
+        this._actives = [];
         return this;
     }
     /**
@@ -1581,7 +1577,7 @@ class PrintHook {
     constructor(breakpoints, layoutConfig) {
         this.breakpoints = breakpoints;
         this.layoutConfig = layoutConfig;
-        this._isPrinting = false;
+        this.deactivations = [];
         this.queue = new PrintQueue();
     }
     /**
@@ -1636,6 +1632,21 @@ class PrintHook {
         return list.sort(sortDescendingPriority);
     }
     /**
+     * Update event with printAlias mediaQuery information
+     * @param {?} event
+     * @return {?}
+     */
+    updateEvent(event) {
+        /** @type {?} */
+        let bp = this.breakpoints.findByQuery(event.mediaQuery);
+        if (this.isPrintEvent(event)) {
+            // Reset from 'print' to first (highest priority) print breakpoint
+            bp = this.getEventBreakpoints(event)[0];
+            event.mediaQuery = bp ? bp.mediaQuery : '';
+        }
+        return mergeAlias(event, bp);
+    }
+    /**
      * Prepare RxJs filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
@@ -1652,23 +1663,11 @@ class PrintHook {
                     target.updateStyles();
                 }
             }
+            else {
+                this.collectActivations(event);
+            }
             return !this.isPrinting;
         };
-    }
-    /**
-     * Update event with printAlias mediaQuery information
-     * @param {?} event
-     * @return {?}
-     */
-    updateEvent(event) {
-        /** @type {?} */
-        let bp = this.breakpoints.findByQuery(event.mediaQuery);
-        if (this.isPrintEvent(event)) {
-            // Reset from 'print' to first (highest priority) print breakpoint
-            bp = this.getEventBreakpoints(event)[0];
-            event.mediaQuery = bp ? bp.mediaQuery : '';
-        }
-        return mergeAlias(event, bp);
     }
     /**
      * Save current activateBreakpoints (for later restore)
@@ -1678,10 +1677,7 @@ class PrintHook {
      * @return {?}
      */
     startPrinting(target, bpList) {
-        if (!this.isPrinting) {
-            this.queue.activatedBreakpoints = target.activatedBreakpoints;
-        }
-        target.activatedBreakpoints = this.queue.addBreakpoints(bpList);
+        target.activatedBreakpoints = this.queue.addPrintBps(bpList);
     }
     /**
      * For any print deactivations, reset the entire print queue
@@ -1690,7 +1686,42 @@ class PrintHook {
      */
     stopPrinting(target) {
         if (this.isPrinting) {
-            target.activatedBreakpoints = this.queue.clearAllBreakpoints();
+            this.queue.clear();
+            target.activatedBreakpoints = this.deactivations;
+        }
+    }
+    /**
+     * To restore pre-Print Activations, we must capture the proper
+     * list of breakpoint activations BEFORE print starts. OnBeforePrint()
+     * is not supported; so 'print' mediaQuery activations must be used.
+     *
+     * >  But activated breakpoints are deactivated BEFORE 'print' activation.
+     *
+     * Let's capture all de-activations using the following logic:
+     *
+     *  When not printing:
+     *    - clear cache when activating non-print breakpoint
+     *    - update cache (and sort) when deactivating
+     *
+     *  When printing:
+     *    - sort and save when starting print
+     *    - restore as activatedTargets and clear when stop printing
+     * @param {?} event
+     * @return {?}
+     */
+    collectActivations(event) {
+        /** @type {?} */
+        const isDeactivation = (event.matches === false);
+        if (isDeactivation) {
+            /** @type {?} */
+            const bp = this.breakpoints.findByQuery(event.mediaQuery);
+            if (bp) {
+                this.deactivations.push(bp);
+                this.deactivations.sort(sortDescendingPriority);
+            }
+        }
+        else {
+            this.deactivations = [];
         }
     }
 }
@@ -1709,8 +1740,14 @@ PrintHook.ctorParameters = () => [
  */
 class PrintQueue {
     constructor() {
-        this.origActivations = [];
         this.printBps = [];
+    }
+    /**
+     * Sorted queue with prioritized print breakpoints
+     * @return {?}
+     */
+    get printBreakpoints() {
+        return [...this.printBps];
     }
     /**
      * Accessor to determine if 1 or more print breakpoints are queued
@@ -1720,35 +1757,21 @@ class PrintQueue {
         return (this.printBps.length > 0);
     }
     /**
-     * Sorted queue with prioritized print breakpoints
-     * @return {?}
-     */
-    get activatedBreakpoints() {
-        return [...this.printBps, ...this.origActivations];
-    }
-    /**
-     * @param {?} list
-     * @return {?}
-     */
-    set activatedBreakpoints(list) {
-        this.origActivations = list;
-    }
-    /**
      * @param {?} bpList
      * @return {?}
      */
-    addBreakpoints(bpList) {
+    addPrintBps(bpList) {
         bpList.push(BREAKPOINT_PRINT);
         bpList.sort(sortDescendingPriority);
-        bpList.forEach(bp => this.addBreakpoint(bp));
-        return this.activatedBreakpoints;
+        bpList.forEach(bp => this.addPrintBp(bp));
+        return this.printBreakpoints;
     }
     /**
      * Add Print breakpoint to queue
      * @param {?} bp
      * @return {?}
      */
-    addBreakpoint(bp) {
+    addPrintBp(bp) {
         if (!!bp) {
             /** @type {?} */
             const bpInList = this.printBps.find(it => it.mediaQuery === bp.mediaQuery);
@@ -1763,11 +1786,8 @@ class PrintQueue {
      * Restore original activated breakpoints and clear internal caches
      * @return {?}
      */
-    clearAllBreakpoints() {
-        /** @type {?} */
-        const activatedList = this.origActivations;
-        this.origActivations = this.printBps = [];
-        return activatedList;
+    clear() {
+        this.printBps = [];
     }
 }
 /**

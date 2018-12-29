@@ -23,7 +23,6 @@ export declare const BREAKPOINT_PRINT: {
 export declare class PrintHook {
     protected breakpoints: BreakPointRegistry;
     protected layoutConfig: LayoutConfigOptions;
-    protected _isPrinting: boolean;
     constructor(breakpoints: BreakPointRegistry, layoutConfig: LayoutConfigOptions);
     /** Add 'print' mediaQuery: to listen for matchMedia activations */
     withPrintQuery(queries: string[]): string[];
@@ -37,13 +36,13 @@ export declare class PrintHook {
     readonly printBreakPoints: BreakPoint[];
     /** Lookup breakpoint associated with mediaQuery */
     getEventBreakpoints({ mediaQuery }: MediaChange): BreakPoint[];
+    /** Update event with printAlias mediaQuery information */
+    updateEvent(event: MediaChange): MediaChange;
     /**
      * Prepare RxJs filter operator with partial application
      * @return pipeable filter predicate
      */
     interceptEvents(target: HookTarget): (event: MediaChange) => boolean;
-    /** Update event with printAlias mediaQuery information */
-    updateEvent(event: MediaChange): MediaChange;
     /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
@@ -51,5 +50,24 @@ export declare class PrintHook {
     protected startPrinting(target: HookTarget, bpList: OptionalBreakPoint[]): void;
     /** For any print deactivations, reset the entire print queue */
     protected stopPrinting(target: HookTarget): void;
+    /**
+     * To restore pre-Print Activations, we must capture the proper
+     * list of breakpoint activations BEFORE print starts. OnBeforePrint()
+     * is not supported; so 'print' mediaQuery activations must be used.
+     *
+     * >  But activated breakpoints are deactivated BEFORE 'print' activation.
+     *
+     * Let's capture all de-activations using the following logic:
+     *
+     *  When not printing:
+     *    - clear cache when activating non-print breakpoint
+     *    - update cache (and sort) when deactivating
+     *
+     *  When printing:
+     *    - sort and save when starting print
+     *    - restore as activatedTargets and clear when stop printing
+     */
+    collectActivations(event: MediaChange): void;
+    private deactivations;
     private queue;
 }
