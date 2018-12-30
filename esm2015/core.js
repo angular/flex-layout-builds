@@ -7,7 +7,7 @@
  */
 import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, defineInjectable } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Subject, BehaviorSubject, merge } from 'rxjs';
+import { Subject, BehaviorSubject, Observable, merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 /**
@@ -498,84 +498,81 @@ class BaseDirective2 {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-/** @type {?} */
-const RESPONSIVE_ALIASES = [
-    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
-];
-/** @type {?} */
+/** *
+ * NOTE: Smaller ranges have HIGHER priority since the match is more specific
+  @type {?} */
 const DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
-        mediaQuery: '(min-width: 0px) and (max-width: 599px)',
-        priority: 100,
+        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599px)',
+        priority: 1000,
     },
     {
-        alias: 'gt-xs',
-        overlapping: true,
-        mediaQuery: '(min-width: 600px)',
-        priority: 7,
+        alias: 'sm',
+        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959px)',
+        priority: 900,
+    },
+    {
+        alias: 'md',
+        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279px)',
+        priority: 800,
+    },
+    {
+        alias: 'lg',
+        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919px)',
+        priority: 700,
+    },
+    {
+        alias: 'xl',
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 5000px)',
+        priority: 600,
     },
     {
         alias: 'lt-sm',
         overlapping: true,
-        mediaQuery: '(max-width: 599px)',
-        priority: 10,
-    },
-    {
-        alias: 'sm',
-        mediaQuery: '(min-width: 600px) and (max-width: 959px)',
-        priority: 100,
-    },
-    {
-        alias: 'gt-sm',
-        overlapping: true,
-        mediaQuery: '(min-width: 960px)',
-        priority: 8,
+        mediaQuery: 'screen and (max-width: 599px)',
+        priority: 950,
     },
     {
         alias: 'lt-md',
         overlapping: true,
-        mediaQuery: '(max-width: 959px)',
-        priority: 9,
-    },
-    {
-        alias: 'md',
-        mediaQuery: '(min-width: 960px) and (max-width: 1279px)',
-        priority: 100,
-    },
-    {
-        alias: 'gt-md',
-        overlapping: true,
-        mediaQuery: '(min-width: 1280px)',
-        priority: 9,
+        mediaQuery: 'screen and (max-width: 959px)',
+        priority: 850,
     },
     {
         alias: 'lt-lg',
         overlapping: true,
-        mediaQuery: '(max-width: 1279px)',
-        priority: 8,
-    },
-    {
-        alias: 'lg',
-        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)',
-        priority: 100,
-    },
-    {
-        alias: 'gt-lg',
-        overlapping: true,
-        mediaQuery: '(min-width: 1920px)',
-        priority: 10,
+        mediaQuery: 'screen and (max-width: 1279px)',
+        priority: 750,
     },
     {
         alias: 'lt-xl',
         overlapping: true,
-        mediaQuery: '(max-width: 1919px)',
-        priority: 7,
+        priority: 650,
+        mediaQuery: 'screen and (max-width: 1919px)',
     },
     {
-        alias: 'xl',
-        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)',
-        priority: 100,
+        alias: 'gt-xs',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 600px)',
+        priority: -950,
+    },
+    {
+        alias: 'gt-sm',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 960px)',
+        priority: -850,
+    }, {
+        alias: 'gt-md',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 1280px)',
+        priority: -750,
+    },
+    {
+        alias: 'gt-lg',
+        overlapping: true,
+        mediaQuery: 'screen and (min-width: 1920px)',
+        priority: -650,
     }
 ];
 
@@ -612,15 +609,15 @@ const ScreenTypes = {
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
   @type {?} */
 const ORIENTATION_BREAKPOINTS = [
-    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
-    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
-    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
-    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
-    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
-    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
-    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
+    { 'alias': 'handset', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET },
+    { 'alias': 'handset.landscape', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
+    { 'alias': 'handset.portrait', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
+    { 'alias': 'tablet', priority: 8000, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', priority: 8000, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.portrait', priority: 8000, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
+    { 'alias': 'web', priority: 9000, 'mediaQuery': ScreenTypes.WEB, overlapping: true },
+    { 'alias': 'web.landscape', priority: 9000, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
+    { 'alias': 'web.portrait', priority: 9000, 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
 ];
 
 /**
@@ -726,12 +723,24 @@ function mergeByAlias(defaults, custom = []) {
  * @param {?} b
  * @return {?}
  */
-function prioritySort(a, b) {
+function sortDescendingPriority(a, b) {
     /** @type {?} */
     const priorityA = a.priority || 0;
     /** @type {?} */
     const priorityB = b.priority || 0;
     return priorityB - priorityA;
+}
+/**
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortAscendingPriority(a, b) {
+    /** @type {?} */
+    const pA = a.priority || 0;
+    /** @type {?} */
+    const pB = b.priority || 0;
+    return pA - pB;
 }
 
 /**
@@ -770,32 +779,14 @@ const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints
  */
 class BreakPointRegistry {
     /**
-     * @param {?} _registry
+     * @param {?} list
      */
-    constructor(_registry) {
-        this._registry = _registry;
-    }
-    /**
-     * Accessor to raw list
-     * @return {?}
-     */
-    get items() {
-        return [...this._registry];
-    }
-    /**
-     * Accessor to sorted list used for registration with matchMedia API
-     *
-     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-     * @return {?}
-     */
-    get sortedItems() {
-        /** @type {?} */
-        let overlaps = this._registry.filter(it => it.overlapping === true);
-        /** @type {?} */
-        let nonOverlaps = this._registry.filter(it => it.overlapping !== true);
-        return [...overlaps, ...nonOverlaps];
+    constructor(list) {
+        /**
+         * Memoized BreakPoint Lookups
+         */
+        this.findByMap = new Map();
+        this.items = [...list].sort(sortAscendingPriority);
     }
     /**
      * Search breakpoints by alias (e.g. gt-xs)
@@ -803,14 +794,14 @@ class BreakPointRegistry {
      * @return {?}
      */
     findByAlias(alias) {
-        return this._registry.find(bp => bp.alias == alias) || null;
+        return this.findWithPredicate(alias, (bp) => bp.alias == alias);
     }
     /**
      * @param {?} query
      * @return {?}
      */
     findByQuery(query) {
-        return this._registry.find(bp => bp.mediaQuery == query) || null;
+        return this.findWithPredicate(query, (bp) => bp.mediaQuery == query);
     }
     /**
      * Get all the breakpoints whose ranges could overlapping `normal` ranges;
@@ -818,14 +809,14 @@ class BreakPointRegistry {
      * @return {?}
      */
     get overlappings() {
-        return this._registry.filter(it => it.overlapping == true);
+        return this.items.filter(it => it.overlapping == true);
     }
     /**
      * Get list of all registered (non-empty) breakpoint aliases
      * @return {?}
      */
     get aliases() {
-        return this._registry.map(it => it.alias);
+        return this.items.map(it => it.alias);
     }
     /**
      * Aliases are mapped to properties using suffixes
@@ -834,7 +825,22 @@ class BreakPointRegistry {
      * @return {?}
      */
     get suffixes() {
-        return this._registry.map(it => !!it.suffix ? it.suffix : '');
+        return this.items.map(it => !!it.suffix ? it.suffix : '');
+    }
+    /**
+     * Memoized lookup using custom predicate function
+     * @param {?} key
+     * @param {?} searchFn
+     * @return {?}
+     */
+    findWithPredicate(key, searchFn) {
+        /** @type {?} */
+        let response = this.findByMap.get(key);
+        if (!response) {
+            response = this.items.find(searchFn) || null;
+            this.findByMap.set(key, response);
+        }
+        return response || null;
     }
 }
 BreakPointRegistry.decorators = [
@@ -872,8 +878,11 @@ class MatchMedia {
         this._zone = _zone;
         this._platformId = _platformId;
         this._document = _document;
-        this._registry = new Map();
+        /**
+         * Initialize with 'all' so all non-responsive APIs trigger style updates
+         */
         this._source = new BehaviorSubject(new MediaChange(true));
+        this._registry = new Map();
         this._observable$ = this._source.asObservable();
     }
     /**
@@ -891,16 +900,36 @@ class MatchMedia {
      * Typically used by the MediaQueryAdaptor; optionally available to components
      * who wish to use the MediaMonitor as mediaMonitor$ observable service.
      *
-     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-     *       be announced.
-     * @param {?=} mediaQuery
+     * Use deferred registration process to register breakpoints only on subscription
+     * This logic also enforces logic to register all mediaQueries BEFORE notify
+     * subscribers of notifications.
+     * @param {?=} mqList
+     * @param {?=} filterOthers
      * @return {?}
      */
-    observe(mediaQuery) {
-        if (mediaQuery) {
-            this.registerQuery(mediaQuery);
+    observe(mqList, filterOthers = false) {
+        if (mqList) {
+            /** @type {?} */
+            const matchMedia$ = this._observable$.pipe(filter((change) => {
+                return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
+            }));
+            /** @type {?} */
+            const registration$ = new Observable((observer) => {
+                /** @type {?} */
+                const matches = this.registerQuery(mqList);
+                if (matches.length) {
+                    /** @type {?} */
+                    const lastChange = /** @type {?} */ ((matches.pop()));
+                    matches.forEach((e) => {
+                        observer.next(e);
+                    });
+                    this._source.next(lastChange); // last match is cached
+                }
+                observer.complete();
+            });
+            return merge(registration$, matchMedia$);
         }
-        return this._observable$.pipe(filter(change => (mediaQuery ? (change.mediaQuery === mediaQuery) : true)));
+        return this._observable$;
     }
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
@@ -910,11 +939,11 @@ class MatchMedia {
      */
     registerQuery(mediaQuery) {
         /** @type {?} */
-        const list = Array.isArray(mediaQuery) ? Array.from(new Set(mediaQuery)) : [mediaQuery];
-        if (list.length > 0) {
-            buildQueryCss(list, this._document);
-        }
-        list.forEach(query => {
+        const list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
+        /** @type {?} */
+        const matches = [];
+        buildQueryCss(list, this._document);
+        list.forEach((query) => {
             /** @type {?} */
             const onMQLEvent = (e) => {
                 this._zone.run(() => this._source.next(new MediaChange(e.matches, query)));
@@ -922,14 +951,15 @@ class MatchMedia {
             /** @type {?} */
             let mql = this._registry.get(query);
             if (!mql) {
-                mql = this._buildMQL(query);
+                mql = this.buildMQL(query);
                 mql.addListener(onMQLEvent);
                 this._registry.set(query, mql);
             }
             if (mql.matches) {
-                onMQLEvent(/** @type {?} */ ((mql)));
+                matches.push(new MediaChange(true, query));
             }
         });
+        return matches;
     }
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
@@ -937,7 +967,7 @@ class MatchMedia {
      * @param {?} query
      * @return {?}
      */
-    _buildMQL(query) {
+    buildMQL(query) {
         return constructMql(query, isPlatformBrowser(this._platformId));
     }
 }
@@ -1187,7 +1217,7 @@ class MockMatchMedia extends MatchMedia {
      * @param {?} query
      * @return {?}
      */
-    _buildMQL(query) {
+    buildMQL(query) {
         return new MockMediaQueryList(query);
     }
     /**
@@ -1493,7 +1523,7 @@ class ServerMatchMedia extends MatchMedia {
      * @param {?} query
      * @return {?}
      */
-    _buildMQL(query) {
+    buildMQL(query) {
         return new ServerMediaQueryList(query);
     }
 }
@@ -1587,8 +1617,7 @@ class MediaObserver {
          * Whether to announce gt-<xxx> breakpoint activations
          */
         this.filterOverlaps = true;
-        this._registerBreakPoints();
-        this.media$ = this._buildObservable();
+        this.media$ = this.watchActivations();
     }
     /**
      * Test if specified query/alias is active.
@@ -1596,7 +1625,7 @@ class MediaObserver {
      * @return {?}
      */
     isActive(alias) {
-        return this.mediaWatcher.isActive(this._toMediaQuery(alias));
+        return this.mediaWatcher.isActive(this.toMediaQuery(alias));
     }
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
@@ -1604,10 +1633,10 @@ class MediaObserver {
      * mediaQuery activations
      * @return {?}
      */
-    _registerBreakPoints() {
+    watchActivations() {
         /** @type {?} */
-        const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this.mediaWatcher.registerQuery(queries);
+        const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
+        return this.buildObservable(queries);
     }
     /**
      * Prepare internal observable
@@ -1615,13 +1644,16 @@ class MediaObserver {
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
+     * @param {?} mqList
      * @return {?}
      */
-    _buildObservable() {
+    buildObservable(mqList) {
+        /** @type {?} */
+        const locator = this.breakpoints;
         /** @type {?} */
         const excludeOverlaps = (change) => {
             /** @type {?} */
-            const bp = this.breakpoints.findByQuery(change.mediaQuery);
+            const bp = locator.findByQuery(change.mediaQuery);
             return !bp ? true : !(this.filterOverlaps && bp.overlapping);
         };
         /**
@@ -1629,33 +1661,21 @@ class MediaObserver {
              * Inject associated (if any) alias information into the MediaChange event
              * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
              */
-        return this.mediaWatcher.observe()
-            .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => mergeAlias(change, this._findByQuery(change.mediaQuery))));
-    }
-    /**
-     * Breakpoint locator by alias
-     * @param {?} alias
-     * @return {?}
-     */
-    _findByAlias(alias) {
-        return this.breakpoints.findByAlias(alias);
-    }
-    /**
-     * Breakpoint locator by mediaQuery
-     * @param {?} query
-     * @return {?}
-     */
-    _findByQuery(query) {
-        return this.breakpoints.findByQuery(query);
+        return this.mediaWatcher.observe(mqList)
+            .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => {
+            return mergeAlias(change, locator.findByQuery(change.mediaQuery));
+        }));
     }
     /**
      * Find associated breakpoint (if any)
      * @param {?} query
      * @return {?}
      */
-    _toMediaQuery(query) {
+    toMediaQuery(query) {
         /** @type {?} */
-        const bp = this._findByAlias(query) || this._findByQuery(query);
+        const locator = this.breakpoints;
+        /** @type {?} */
+        const bp = locator.findByAlias(query) || locator.findByQuery(query);
         return bp ? bp.mediaQuery : query;
     }
 }
@@ -2069,10 +2089,7 @@ class MediaMarshaller {
         this.builderMap = new WeakMap();
         this.clearBuilderMap = new WeakMap();
         this.subject = new Subject();
-        this.matchMedia
-            .observe()
-            .subscribe(this.activate.bind(this));
-        this.registerBreakpoints();
+        this.observeActivations();
     }
     /**
      * @return {?}
@@ -2091,7 +2108,7 @@ class MediaMarshaller {
         if (bp) {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
-                this.activatedBreakpoints.sort(prioritySort);
+                this.activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
@@ -2231,9 +2248,9 @@ class MediaMarshaller {
         const builders = this.clearBuilderMap.get(element);
         if (builders) {
             /** @type {?} */
-            const builder = builders.get(key);
-            if (builder) {
-                builder();
+            const clearFn = /** @type {?} */ (builders.get(key));
+            if (!!clearFn) {
+                clearFn();
                 this.subject.next({ element, key, value: '' });
             }
         }
@@ -2250,9 +2267,9 @@ class MediaMarshaller {
         const builders = this.builderMap.get(element);
         if (builders) {
             /** @type {?} */
-            const builder = builders.get(key);
-            if (builder) {
-                builder(value);
+            const updateFn = /** @type {?} */ (builders.get(key));
+            if (!!updateFn) {
+                updateFn(value);
                 this.subject.next({ element, key, value });
             }
         }
@@ -2353,12 +2370,15 @@ class MediaMarshaller {
         return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
     }
     /**
+     * Watch for mediaQuery breakpoint activations
      * @return {?}
      */
-    registerBreakpoints() {
+    observeActivations() {
         /** @type {?} */
-        const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this.matchMedia.registerQuery(queries);
+        const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
+        this.matchMedia
+            .observe(queries)
+            .subscribe(this.activate.bind(this));
     }
 }
 MediaMarshaller.decorators = [
@@ -2399,5 +2419,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, prioritySort, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
 //# sourceMappingURL=core.js.map

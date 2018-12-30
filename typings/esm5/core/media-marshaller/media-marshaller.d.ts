@@ -99,6 +99,9 @@ export declare class MediaMarshaller {
      * @param key
      */
     private getFallback;
-    private registerBreakpoints;
+    /**
+     * Watch for mediaQuery breakpoint activations
+     */
+    private observeActivations;
 }
 export {};

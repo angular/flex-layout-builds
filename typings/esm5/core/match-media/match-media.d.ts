@@ -19,8 +19,9 @@ export declare class MatchMedia {
     protected _zone: NgZone;
     protected _platformId: Object;
     protected _document: any;
-    protected _registry: Map<string, MediaQueryList>;
+    /** Initialize with 'all' so all non-responsive APIs trigger style updates */
     protected _source: BehaviorSubject<MediaChange>;
+    protected _registry: Map<string, MediaQueryList>;
     protected _observable$: Observable<MediaChange>;
     constructor(_zone: NgZone, _platformId: Object, _document: any);
     /**
@@ -29,21 +30,21 @@ export declare class MatchMedia {
     isActive(mediaQuery: string): boolean;
     /**
      * External observers can watch for all (or a specific) mql changes.
-     * Typically used by the MediaQueryAdaptor; optionally available to components
-     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
      *
-     * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-     *       be announced.
+     * If a mediaQuery is not specified, then ALL mediaQuery activations will
+     * be announced.
      */
-    observe(mediaQuery?: string): Observable<MediaChange>;
+    observe(): Observable<MediaChange>;
+    observe(mediaQueries: string[]): Observable<MediaChange>;
+    observe(mediaQueries: string[], filterOthers: boolean): Observable<MediaChange>;
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
      * mediaQuery. Each listener emits specific MediaChange data to observers
      */
-    registerQuery(mediaQuery: string | string[]): void;
+    registerQuery(mediaQuery: string | string[]): MediaChange[];
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
      */
-    protected _buildMQL(query: string): MediaQueryList;
+    protected buildMQL(query: string): MediaQueryList;
 }
