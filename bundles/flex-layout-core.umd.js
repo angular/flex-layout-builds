@@ -2151,11 +2151,11 @@ var PrintHook = /** @class */ (function () {
         var _this = this;
         return function (event) {
             if (_this.isPrintEvent(event)) {
-                if (event.matches) {
+                if (event.matches && !_this.isPrinting) {
                     _this.startPrinting(target, _this.getEventBreakpoints(event));
                     target.updateStyles();
                 }
-                else if (!event.matches) {
+                else if (!event.matches && _this.isPrinting) {
                     _this.stopPrinting(target);
                     target.updateStyles();
                 }
@@ -2186,10 +2186,8 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (target, bpList) {
-        if (!this.isPrinting) {
-            this.isPrinting = true;
-            target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
-        }
+        this.isPrinting = true;
+        target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
     };
     /** For any print de-activations, reset the entire print queue */
     /**
@@ -2203,12 +2201,10 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (target) {
-        if (this.isPrinting) {
-            target.activatedBreakpoints = this.deactivations;
-            this.deactivations = [];
-            this.queue.clear();
-            this.isPrinting = false;
-        }
+        target.activatedBreakpoints = this.deactivations;
+        this.deactivations = [];
+        this.queue.clear();
+        this.isPrinting = false;
     };
     /**
      * To restore pre-Print Activations, we must capture the proper

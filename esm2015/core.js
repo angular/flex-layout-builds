@@ -1656,11 +1656,11 @@ class PrintHook {
     interceptEvents(target) {
         return (event) => {
             if (this.isPrintEvent(event)) {
-                if (event.matches) {
+                if (event.matches && !this.isPrinting) {
                     this.startPrinting(target, this.getEventBreakpoints(event));
                     target.updateStyles();
                 }
-                else if (!event.matches) {
+                else if (!event.matches && this.isPrinting) {
                     this.stopPrinting(target);
                     target.updateStyles();
                 }
@@ -1680,10 +1680,8 @@ class PrintHook {
      * @return {?}
      */
     startPrinting(target, bpList) {
-        if (!this.isPrinting) {
-            this.isPrinting = true;
-            target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
-        }
+        this.isPrinting = true;
+        target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
     }
     /**
      * For any print de-activations, reset the entire print queue
@@ -1691,12 +1689,10 @@ class PrintHook {
      * @return {?}
      */
     stopPrinting(target) {
-        if (this.isPrinting) {
-            target.activatedBreakpoints = this.deactivations;
-            this.deactivations = [];
-            this.queue.clear();
-            this.isPrinting = false;
-        }
+        target.activatedBreakpoints = this.deactivations;
+        this.deactivations = [];
+        this.queue.clear();
+        this.isPrinting = false;
     }
     /**
      * To restore pre-Print Activations, we must capture the proper
