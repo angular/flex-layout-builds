@@ -3491,7 +3491,7 @@ function logActivations(list) {
     /** @type {?} */
     var aliases = list.reduce(function (seed, it) {
         return seed ? seed + ", " + it.alias : it.alias;
-    }, "");
+    }, '');
     console.log("Update styles with: (" + aliases + ")");
 }
 

@@ -1776,7 +1776,8 @@ class PrintQueue {
             if (bpInList === undefined) {
                 // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
                 // register as highest priority in the queue
-                this.printBreakpoints = isPrintBreakPoint(bp) ? [bp, ...this.printBreakpoints] : [...this.printBreakpoints, bp];
+                this.printBreakpoints = isPrintBreakPoint(bp) ? [bp, ...this.printBreakpoints]
+                    : [...this.printBreakpoints, bp];
             }
         }
     }
@@ -2681,7 +2682,7 @@ function logActivations(list) {
     /** @type {?} */
     const aliases = list.reduce((seed, it) => {
         return seed ? `${seed}, ${it.alias}` : it.alias;
-    }, "");
+    }, '');
     console.log(`Update styles with: (${aliases})`);
 }
 
