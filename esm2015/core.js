@@ -1582,8 +1582,12 @@ class PrintHook {
     constructor(breakpoints, layoutConfig) {
         this.breakpoints = breakpoints;
         this.layoutConfig = layoutConfig;
-        this.deactivations = [];
+        /**
+         * Is this service currently in Print-mode ?
+         */
+        this.isPrinting = false;
         this.queue = new PrintQueue();
+        this.deactivations = [];
     }
     /**
      * Add 'print' mediaQuery: to listen for matchMedia activations
@@ -1600,13 +1604,6 @@ class PrintHook {
      */
     isPrintEvent(e) {
         return e.mediaQuery.startsWith(PRINT);
-    }
-    /**
-     * Is this service currently in Print-mode ?
-     * @return {?}
-     */
-    get isPrinting() {
-        return this.queue.hasPrintBps;
     }
     /**
      * What is the desired mqAlias to use while printing?
@@ -1683,17 +1680,22 @@ class PrintHook {
      * @return {?}
      */
     startPrinting(target, bpList) {
-        target.activatedBreakpoints = this.queue.addPrintBps(bpList);
+        if (!this.isPrinting) {
+            this.isPrinting = true;
+            target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
+        }
     }
     /**
-     * For any print deactivations, reset the entire print queue
+     * For any print de-activations, reset the entire print queue
      * @param {?} target
      * @return {?}
      */
     stopPrinting(target) {
         if (this.isPrinting) {
-            this.queue.clear();
             target.activatedBreakpoints = this.deactivations;
+            this.deactivations = [];
+            this.queue.clear();
+            this.isPrinting = false;
         }
     }
     /**
@@ -1716,18 +1718,19 @@ class PrintHook {
      * @return {?}
      */
     collectActivations(event) {
-        /** @type {?} */
-        const isDeactivation = (event.matches === false);
-        if (isDeactivation) {
-            /** @type {?} */
-            const bp = this.breakpoints.findByQuery(event.mediaQuery);
-            if (bp) {
-                this.deactivations.push(bp);
-                this.deactivations.sort(sortDescendingPriority);
+        if (!this.isPrinting) {
+            if (!event.matches) {
+                /** @type {?} */
+                const bp = this.breakpoints.findByQuery(event.mediaQuery);
+                if (bp) { // Deactivating a breakpoint
+                    // Deactivating a breakpoint
+                    this.deactivations.push(bp);
+                    this.deactivations.sort(sortDescendingPriority);
+                }
             }
-        }
-        else {
-            this.deactivations = [];
+            else {
+                this.deactivations = [];
+            }
         }
     }
 }
@@ -1746,30 +1749,19 @@ PrintHook.ctorParameters = () => [
  */
 class PrintQueue {
     constructor() {
-        this.printBps = [];
-    }
-    /**
-     * Sorted queue with prioritized print breakpoints
-     * @return {?}
-     */
-    get printBreakpoints() {
-        return [...this.printBps];
-    }
-    /**
-     * Accessor to determine if 1 or more print breakpoints are queued
-     * @return {?}
-     */
-    get hasPrintBps() {
-        return (this.printBps.length > 0);
+        /**
+         * Sorted queue with prioritized print breakpoints
+         */
+        this.printBreakpoints = [];
     }
     /**
      * @param {?} bpList
      * @return {?}
      */
-    addPrintBps(bpList) {
+    addPrintBreakpoints(bpList) {
         bpList.push(BREAKPOINT_PRINT);
         bpList.sort(sortDescendingPriority);
-        bpList.forEach(bp => this.addPrintBp(bp));
+        bpList.forEach(bp => this.addBreakpoint(bp));
         return this.printBreakpoints;
     }
     /**
@@ -1777,14 +1769,14 @@ class PrintQueue {
      * @param {?} bp
      * @return {?}
      */
-    addPrintBp(bp) {
+    addBreakpoint(bp) {
         if (!!bp) {
             /** @type {?} */
-            const bpInList = this.printBps.find(it => it.mediaQuery === bp.mediaQuery);
+            const bpInList = this.printBreakpoints.find(it => it.mediaQuery === bp.mediaQuery);
             if (bpInList === undefined) {
-                // If a printAlias breakpoint, then append. If a true print breakpoint,
+                // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
                 // register as highest priority in the queue
-                this.printBps = isPrintBreakPoint(bp) ? [bp, ...this.printBps] : [...this.printBps, bp];
+                this.printBreakpoints = isPrintBreakPoint(bp) ? [bp, ...this.printBreakpoints] : [...this.printBreakpoints, bp];
             }
         }
     }
@@ -1793,7 +1785,7 @@ class PrintQueue {
      * @return {?}
      */
     clear() {
-        this.printBps = [];
+        this.printBreakpoints = [];
     }
 }
 /**
@@ -2376,11 +2368,13 @@ class MediaMarshaller {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
+                // logActivations(this.activatedBreakpoints)
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
                 // Remove the breakpoint when it's deactivated
                 this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+                this.activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
         }
@@ -2679,6 +2673,17 @@ function initBuilderMap(map$$1, element, key, input) {
         oldMap.set(key, input);
     }
 }
+/**
+ * @param {?} list
+ * @return {?}
+ */
+function logActivations(list) {
+    /** @type {?} */
+    const aliases = list.reduce((seed, it) => {
+        return seed ? `${seed}, ${it.alias}` : it.alias;
+    }, "");
+    console.log(`Update styles with: (${aliases})`);
+}
 
 /**
  * @fileoverview added by tsickle
@@ -2690,5 +2695,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, logActivations, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
 //# sourceMappingURL=core.js.map

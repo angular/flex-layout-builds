@@ -28,8 +28,6 @@ export declare class PrintHook {
     withPrintQuery(queries: string[]): string[];
     /** Is the MediaChange event for any 'print' @media */
     isPrintEvent(e: MediaChange): Boolean;
-    /** Is this service currently in Print-mode ? */
-    readonly isPrinting: boolean;
     /** What is the desired mqAlias to use while printing? */
     readonly printAlias: string[];
     /** Lookup breakpoints associated with print aliases. */
@@ -48,7 +46,7 @@ export declare class PrintHook {
      * and substitute only the printAlias breakpoint
      */
     protected startPrinting(target: HookTarget, bpList: OptionalBreakPoint[]): void;
-    /** For any print deactivations, reset the entire print queue */
+    /** For any print de-activations, reset the entire print queue */
     protected stopPrinting(target: HookTarget): void;
     /**
      * To restore pre-Print Activations, we must capture the proper
@@ -68,6 +66,8 @@ export declare class PrintHook {
      *    - restore as activatedTargets and clear when stop printing
      */
     collectActivations(event: MediaChange): void;
-    private deactivations;
+    /** Is this service currently in Print-mode ? */
+    private isPrinting;
     private queue;
+    private deactivations;
 }
