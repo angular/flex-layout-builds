@@ -878,8 +878,11 @@ class MatchMedia {
         this._zone = _zone;
         this._platformId = _platformId;
         this._document = _document;
-        this._registry = new Map();
+        /**
+         * Initialize with 'all' so all non-responsive APIs trigger style updates
+         */
         this._source = new BehaviorSubject(new MediaChange(true));
+        this._registry = new Map();
         this._observable$ = this._source.asObservable();
     }
     /**
@@ -901,12 +904,15 @@ class MatchMedia {
      * This logic also enforces logic to register all mediaQueries BEFORE notify
      * subscribers of notifications.
      * @param {?=} mqList
+     * @param {?=} filterOthers
      * @return {?}
      */
-    observe(mqList) {
+    observe(mqList, filterOthers = false) {
         if (mqList) {
             /** @type {?} */
-            const matchMedia$ = this._observable$.pipe(filter(change => mqList.indexOf(change.mediaQuery) > -1));
+            const matchMedia$ = this._observable$.pipe(filter((change) => {
+                return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
+            }));
             /** @type {?} */
             const registration$ = new Observable((observer) => {
                 /** @type {?} */
@@ -1656,7 +1662,9 @@ class MediaObserver {
              * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
              */
         return this.mediaWatcher.observe(mqList)
-            .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => mergeAlias(change, locator.findByQuery(change.mediaQuery))));
+            .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => {
+            return mergeAlias(change, locator.findByQuery(change.mediaQuery));
+        }));
     }
     /**
      * Find associated breakpoint (if any)

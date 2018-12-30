@@ -1087,8 +1087,11 @@ var MatchMedia = /** @class */ (function () {
         this._zone = _zone;
         this._platformId = _platformId;
         this._document = _document;
-        this._registry = new Map();
+        /**
+         * Initialize with 'all' so all non-responsive APIs trigger style updates
+         */
         this._source = new rxjs.BehaviorSubject(new MediaChange(true));
+        this._registry = new Map();
         this._observable$ = this._source.asObservable();
     }
     /**
@@ -1127,6 +1130,7 @@ var MatchMedia = /** @class */ (function () {
      * This logic also enforces logic to register all mediaQueries BEFORE notify
      * subscribers of notifications.
      * @param {?=} mqList
+     * @param {?=} filterOthers
      * @return {?}
      */
     MatchMedia.prototype.observe = /**
@@ -1138,13 +1142,17 @@ var MatchMedia = /** @class */ (function () {
      * This logic also enforces logic to register all mediaQueries BEFORE notify
      * subscribers of notifications.
      * @param {?=} mqList
+     * @param {?=} filterOthers
      * @return {?}
      */
-    function (mqList) {
+    function (mqList, filterOthers) {
         var _this = this;
+        if (filterOthers === void 0) { filterOthers = false; }
         if (mqList) {
             /** @type {?} */
-            var matchMedia$ = this._observable$.pipe(operators.filter(function (change) { return mqList.indexOf(change.mediaQuery) > -1; }));
+            var matchMedia$ = this._observable$.pipe(operators.filter(function (change) {
+                return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
+            }));
             /** @type {?} */
             var registration$ = new rxjs.Observable(function (observer) {
                 /** @type {?} */

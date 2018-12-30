@@ -19,8 +19,9 @@ export declare class MatchMedia {
     protected _zone: NgZone;
     protected _platformId: Object;
     protected _document: any;
-    protected _registry: Map<string, MediaQueryList>;
+    /** Initialize with 'all' so all non-responsive APIs trigger style updates */
     protected _source: BehaviorSubject<MediaChange>;
+    protected _registry: Map<string, MediaQueryList>;
     protected _observable$: Observable<MediaChange>;
     constructor(_zone: NgZone, _platformId: Object, _document: any);
     /**
@@ -35,6 +36,7 @@ export declare class MatchMedia {
      */
     observe(): Observable<MediaChange>;
     observe(mediaQueries: string[]): Observable<MediaChange>;
+    observe(mediaQueries: string[], filterOthers: boolean): Observable<MediaChange>;
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
      * mediaQuery. Each listener emits specific MediaChange data to observers
