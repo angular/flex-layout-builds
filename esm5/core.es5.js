@@ -1048,8 +1048,11 @@ var MatchMedia = /** @class */ (function () {
         this._zone = _zone;
         this._platformId = _platformId;
         this._document = _document;
-        this._registry = new Map();
+        /**
+         * Initialize with 'all' so all non-responsive APIs trigger style updates
+         */
         this._source = new BehaviorSubject(new MediaChange(true));
+        this._registry = new Map();
         this._observable$ = this._source.asObservable();
     }
     /**
@@ -1088,6 +1091,7 @@ var MatchMedia = /** @class */ (function () {
      * This logic also enforces logic to register all mediaQueries BEFORE notify
      * subscribers of notifications.
      * @param {?=} mqList
+     * @param {?=} filterOthers
      * @return {?}
      */
     MatchMedia.prototype.observe = /**
@@ -1099,13 +1103,17 @@ var MatchMedia = /** @class */ (function () {
      * This logic also enforces logic to register all mediaQueries BEFORE notify
      * subscribers of notifications.
      * @param {?=} mqList
+     * @param {?=} filterOthers
      * @return {?}
      */
-    function (mqList) {
+    function (mqList, filterOthers) {
         var _this = this;
+        if (filterOthers === void 0) { filterOthers = false; }
         if (mqList) {
             /** @type {?} */
-            var matchMedia$ = this._observable$.pipe(filter(function (change) { return mqList.indexOf(change.mediaQuery) > -1; }));
+            var matchMedia$ = this._observable$.pipe(filter(function (change) {
+                return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
+            }));
             /** @type {?} */
             var registration$ = new Observable(function (observer) {
                 /** @type {?} */
@@ -1422,9 +1430,8 @@ var MockMatchMedia = /** @class */ (function (_super) {
         /** @type {?} */
         var mql = this._registry.get(mediaQuery);
         /** @type {?} */
-        var alreadyAdded = this._actives.reduce(function (found, it) {
-            return found || (mql ? (it.media === mql.media) : false);
-        }, false);
+        var alreadyAdded = this._actives
+            .reduce(function (found, it) { return (found || (mql ? (it.media === mql.media) : false)); }, false);
         if (mql && !alreadyAdded) {
             this._actives.push(mql.activate());
         }
@@ -2124,7 +2131,8 @@ var PrintHook = /** @class */ (function () {
             else {
                 _this.collectActivations(event);
             }
-            return !_this.isPrinting;
+            // Stop event propagation ?
+            return !(_this.isPrinting || _this.isPrintEvent(event));
         };
     };
     /**
@@ -2454,14 +2462,26 @@ var MediaObserver = /** @class */ (function () {
         /** @type {?} */
         var locator = this.breakpoints;
         /** @type {?} */
+        var onlyActivations = function (change) { return change.matches; };
+        /** @type {?} */
         var excludeUnknown = function (change) { return change.mediaQuery !== ''; };
         /** @type {?} */
-        var excludePrintEvents = function (change) { return !change.mediaQuery.startsWith('print'); };
+        var excludeCustomPrints = function (change) { return !change.mediaQuery.startsWith('print'); };
         /** @type {?} */
         var excludeOverlaps = function (change) {
             /** @type {?} */
             var bp = locator.findByQuery(change.mediaQuery);
             return !bp ? true : !(_this.filterOverlaps && bp.overlapping);
+        };
+        /** @type {?} */
+        var replaceWithPrintAlias = function (change) {
+            if (_this.hook.isPrintEvent(change)) {
+                // replace with aliased substitute (if configured)
+                return _this.hook.updateEvent(change);
+            }
+            /** @type {?} */
+            var bp = locator.findByQuery(change.mediaQuery);
+            return mergeAlias(change, bp);
         };
         /**
              * Only pass/announce activations (not de-activations)
@@ -2471,15 +2491,7 @@ var MediaObserver = /** @class */ (function () {
              * - Exclude print activations that do not have an associated mediaQuery
              */
         return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
-            .pipe(filter(function (change) { return change.matches; }), filter(excludeOverlaps), map(function (change) {
-            if (_this.hook.isPrintEvent(change)) {
-                // replace with aliased substitute (if configured)
-                return _this.hook.updateEvent(change);
-            }
-            /** @type {?} */
-            var bp = locator.findByQuery(change.mediaQuery);
-            return mergeAlias(change, bp);
-        }), filter(excludePrintEvents), filter(excludeUnknown));
+            .pipe(filter(onlyActivations), filter(excludeOverlaps), map(replaceWithPrintAlias), filter(excludeCustomPrints), filter(excludeUnknown));
     };
     /**
      * Find associated breakpoint (if any)

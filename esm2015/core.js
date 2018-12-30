@@ -879,8 +879,11 @@ class MatchMedia {
         this._zone = _zone;
         this._platformId = _platformId;
         this._document = _document;
-        this._registry = new Map();
+        /**
+         * Initialize with 'all' so all non-responsive APIs trigger style updates
+         */
         this._source = new BehaviorSubject(new MediaChange(true));
+        this._registry = new Map();
         this._observable$ = this._source.asObservable();
     }
     /**
@@ -902,12 +905,15 @@ class MatchMedia {
      * This logic also enforces logic to register all mediaQueries BEFORE notify
      * subscribers of notifications.
      * @param {?=} mqList
+     * @param {?=} filterOthers
      * @return {?}
      */
-    observe(mqList) {
+    observe(mqList, filterOthers = false) {
         if (mqList) {
             /** @type {?} */
-            const matchMedia$ = this._observable$.pipe(filter(change => mqList.indexOf(change.mediaQuery) > -1));
+            const matchMedia$ = this._observable$.pipe(filter((change) => {
+                return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
+            }));
             /** @type {?} */
             const registration$ = new Observable((observer) => {
                 /** @type {?} */
@@ -1175,9 +1181,8 @@ class MockMatchMedia extends MatchMedia {
         /** @type {?} */
         const mql = this._registry.get(mediaQuery);
         /** @type {?} */
-        const alreadyAdded = this._actives.reduce((found, it) => {
-            return found || (mql ? (it.media === mql.media) : false);
-        }, false);
+        const alreadyAdded = this._actives
+            .reduce((found, it) => (found || (mql ? (it.media === mql.media) : false)), false);
         if (mql && !alreadyAdded) {
             this._actives.push(mql.activate());
         }
@@ -1666,7 +1671,8 @@ class PrintHook {
             else {
                 this.collectActivations(event);
             }
-            return !this.isPrinting;
+            // Stop event propagation ?
+            return !(this.isPrinting || this.isPrintEvent(event));
         };
     }
     /**
@@ -1892,14 +1898,26 @@ class MediaObserver {
         /** @type {?} */
         const locator = this.breakpoints;
         /** @type {?} */
+        const onlyActivations = (change) => change.matches;
+        /** @type {?} */
         const excludeUnknown = (change) => change.mediaQuery !== '';
         /** @type {?} */
-        const excludePrintEvents = (change) => !change.mediaQuery.startsWith('print');
+        const excludeCustomPrints = (change) => !change.mediaQuery.startsWith('print');
         /** @type {?} */
         const excludeOverlaps = (change) => {
             /** @type {?} */
             const bp = locator.findByQuery(change.mediaQuery);
             return !bp ? true : !(this.filterOverlaps && bp.overlapping);
+        };
+        /** @type {?} */
+        const replaceWithPrintAlias = (change) => {
+            if (this.hook.isPrintEvent(change)) {
+                // replace with aliased substitute (if configured)
+                return this.hook.updateEvent(change);
+            }
+            /** @type {?} */
+            let bp = locator.findByQuery(change.mediaQuery);
+            return mergeAlias(change, bp);
         };
         /**
              * Only pass/announce activations (not de-activations)
@@ -1909,15 +1927,7 @@ class MediaObserver {
              * - Exclude print activations that do not have an associated mediaQuery
              */
         return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
-            .pipe(filter(change => change.matches), filter(excludeOverlaps), map((change) => {
-            if (this.hook.isPrintEvent(change)) {
-                // replace with aliased substitute (if configured)
-                return this.hook.updateEvent(change);
-            }
-            /** @type {?} */
-            let bp = locator.findByQuery(change.mediaQuery);
-            return mergeAlias(change, bp);
-        }), filter(excludePrintEvents), filter(excludeUnknown));
+            .pipe(filter(onlyActivations), filter(excludeOverlaps), map(replaceWithPrintAlias), filter(excludeCustomPrints), filter(excludeUnknown));
     }
     /**
      * Find associated breakpoint (if any)

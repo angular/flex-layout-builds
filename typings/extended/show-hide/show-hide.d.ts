@@ -37,6 +37,10 @@ export declare class ShowHideDirective extends BaseDirective2 implements AfterVi
      */
     ngOnChanges(changes: SimpleChanges): void;
     /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     */
+    protected trackExtraTriggers(): void;
+    /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
      * unless it was already explicitly specified inline or in a CSS stylesheet.

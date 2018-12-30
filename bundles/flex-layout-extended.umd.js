@@ -363,13 +363,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
-        this.marshal.trackValue(this.nativeElement, 'layout')
-            .pipe(operators.takeUntil(this.destroySubject))
-            .subscribe(this.triggerUpdate.bind(this));
-        this.marshal.trackValue(this.nativeElement, 'layout-align')
-            .pipe(operators.takeUntil(this.destroySubject))
-            .subscribe(this.triggerUpdate.bind(this));
+        this.trackExtraTriggers();
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {
@@ -438,6 +432,27 @@ var ShowHideDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     */
+    /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @return {?}
+     */
+    ShowHideDirective.prototype.trackExtraTriggers = /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
+        ['layout', 'layout-align'].forEach(function (key) {
+            _this.marshal
+                .trackValue(_this.nativeElement, key)
+                .pipe(operators.takeUntil(_this.destroySubject))
+                .subscribe(_this.triggerUpdate.bind(_this));
+        });
+    };
     /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
@@ -639,7 +654,7 @@ function keyValuesToMap(map, entry) {
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance) {
+    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance, serverLoaded, platformId) {
         var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
@@ -658,6 +673,7 @@ var StyleDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var styles = _this.nativeElement.getAttribute('style') || '';
         _this.fallbackStyles = _this.buildStyleMap(styles);
+        _this.isServer = serverLoaded && common.isPlatformServer(platformId);
         return _this;
     }
     /** Add generated styles */
@@ -675,6 +691,9 @@ var StyleDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var styles = this.buildStyleMap(value);
         this.ngStyleInstance.ngStyle = __assign({}, this.fallbackStyles, styles);
+        if (this.isServer) {
+            this.applyStyleToElement(styles);
+        }
         this.ngStyleInstance.ngDoCheck();
     };
     /** Remove generated styles */
@@ -751,7 +770,9 @@ var StyleDirective = /** @class */ (function (_super) {
         { type: core.KeyValueDiffers },
         { type: core.Renderer2 },
         { type: platformBrowser.DomSanitizer },
-        { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] }
+        { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] },
+        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] }] },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] }
     ]; };
     return StyleDirective;
 }(core$1.BaseDirective2));
