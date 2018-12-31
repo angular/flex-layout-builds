@@ -1,7 +1,9 @@
 import { Observable } from 'rxjs';
+import { BreakPoint } from '../breakpoints/break-point';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
+import { PrintHook } from './print-hook';
 declare type ClearCallback = () => void;
 declare type UpdateCallback = (val: any) => void;
 export interface ElementMatcher {
@@ -16,20 +18,21 @@ export interface ElementMatcher {
 export declare class MediaMarshaller {
     protected matchMedia: MatchMedia;
     protected breakpoints: BreakPointRegistry;
+    protected hook: PrintHook;
     private activatedBreakpoints;
     private elementMap;
     private elementKeyMap;
     private watcherMap;
-    private builderMap;
-    private clearBuilderMap;
+    private updateMap;
+    private clearMap;
     private subject;
-    readonly activatedBreakpoint: string;
-    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry);
+    readonly activatedAlias: string;
+    constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHook);
     /**
-     * activate or deactivate a given breakpoint
+     * onMediaChange or deactivate a given breakpoint
      * @param mc
      */
-    activate(mc: MediaChange): void;
+    onMediaChange(mc: MediaChange): void;
     /**
      * initialize the marshaller with necessary elements for delegation on an element
      * @param element
@@ -98,10 +101,11 @@ export declare class MediaMarshaller {
      * @param bpMap
      * @param key
      */
-    private getFallback;
+    private getActivatedValues;
     /**
      * Watch for mediaQuery breakpoint activations
      */
     private observeActivations;
 }
+export declare function logActivations(list: BreakPoint[]): void;
 export {};

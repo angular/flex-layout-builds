@@ -11,6 +11,32 @@
 	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.flexLayout.extended,global.ng.flexLayout.flex,global.ng.flexLayout.grid));
 }(this, (function (exports,core,common,core$1,extended,flex,grid) { 'use strict';
 
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
@@ -18,7 +44,7 @@
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.22-d57b293');
+var VERSION = new core.Version('7.0.0-beta.22-1d79fec');
 
 /**
  * @fileoverview added by tsickle
@@ -60,11 +86,11 @@ var FlexLayoutModule = /** @class */ (function () {
             ngModule: FlexLayoutModule,
             providers: configOptions.serverLoaded ?
                 [
-                    { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                    { provide: core$1.LAYOUT_CONFIG, useValue: __assign({}, core$1.DEFAULT_CONFIG, configOptions) },
                     { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
                     { provide: core$1.SERVER_TOKEN, useValue: true },
                 ] : [
-                { provide: core$1.LAYOUT_CONFIG, useValue: configOptions },
+                { provide: core$1.LAYOUT_CONFIG, useValue: __assign({}, core$1.DEFAULT_CONFIG, configOptions) },
                 { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
             ]
         };
@@ -111,7 +137,10 @@ exports.MediaObserver = core$1.MediaObserver;
 exports.StyleUtils = core$1.StyleUtils;
 exports.StyleBuilder = core$1.StyleBuilder;
 exports.validateBasis = core$1.validateBasis;
+exports.logActivations = core$1.logActivations;
 exports.MediaMarshaller = core$1.MediaMarshaller;
+exports.BREAKPOINT_PRINT = core$1.BREAKPOINT_PRINT;
+exports.PrintHook = core$1.PrintHook;
 exports.ExtendedModule = extended.ExtendedModule;
 exports.ClassDirective = extended.ClassDirective;
 exports.DefaultClassDirective = extended.DefaultClassDirective;

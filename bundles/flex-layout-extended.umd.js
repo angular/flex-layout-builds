@@ -363,13 +363,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
-        this.marshal.trackValue(this.nativeElement, 'layout')
-            .pipe(operators.takeUntil(this.destroySubject))
-            .subscribe(this.triggerUpdate.bind(this));
-        this.marshal.trackValue(this.nativeElement, 'layout-align')
-            .pipe(operators.takeUntil(this.destroySubject))
-            .subscribe(this.triggerUpdate.bind(this));
+        this.trackExtraTriggers();
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {
@@ -439,6 +433,27 @@ var ShowHideDirective = /** @class */ (function (_super) {
     // Protected methods
     // *********************************************
     /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     */
+    /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @return {?}
+     */
+    ShowHideDirective.prototype.trackExtraTriggers = /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
+        ['layout', 'layout-align'].forEach(function (key) {
+            _this.marshal
+                .trackValue(_this.nativeElement, key)
+                .pipe(operators.takeUntil(_this.destroySubject))
+                .subscribe(_this.triggerUpdate.bind(_this));
+        });
+    };
+    /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
      * unless it was already explicitly specified inline or in a CSS stylesheet.
@@ -496,17 +511,17 @@ var ShowHideDirective = /** @class */ (function (_super) {
 var DISPLAY_MAP = new WeakMap();
 /** @type {?} */
 var inputs$2 = [
-    'fxShow',
+    'fxShow', 'fxShow.print',
     'fxShow.xs', 'fxShow.sm', 'fxShow.md', 'fxShow.lg', 'fxShow.xl',
     'fxShow.lt-sm', 'fxShow.lt-md', 'fxShow.lt-lg', 'fxShow.lt-xl',
     'fxShow.gt-xs', 'fxShow.gt-sm', 'fxShow.gt-md', 'fxShow.gt-lg',
-    'fxHide',
+    'fxHide', 'fxHide.print',
     'fxHide.xs', 'fxHide.sm', 'fxHide.md', 'fxHide.lg', 'fxHide.xl',
     'fxHide.lt-sm', 'fxHide.lt-md', 'fxHide.lt-lg', 'fxHide.lt-xl',
     'fxHide.gt-xs', 'fxHide.gt-sm', 'fxHide.gt-md', 'fxHide.gt-lg'
 ];
 /** @type {?} */
-var selector$2 = "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n";
+var selector$2 = "\n  [fxShow], [fxShow.print],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide], [fxHide.print],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n";
 /**
  * 'show' Layout API directive
  */

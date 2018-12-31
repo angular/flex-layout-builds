@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs';
-import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MediaChange } from '../media-change';
 import { MatchMedia } from '../match-media/match-media';
+import { PrintHook } from '../media-marshaller/print-hook';
+import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 /**
  * Class internalizes a MatchMedia service and exposes an Observable interface.
 
@@ -17,7 +18,7 @@ import { MatchMedia } from '../match-media/match-media';
  *
  * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.media$.map(....).
+ * `.media$` with syntax like mediaObserver.asObservable().map(....).
  *
  *  @usage
  *
@@ -29,15 +30,15 @@ import { MatchMedia } from '../match-media/match-media';
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(mediaObserver: MediaObserver) {
+ *    constructor(media: MediaObserver) {
  *      const onChange = (change: MediaChange) => {
  *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. mediaObserver.media$.subscribe(onChange);
+ *      // e.g. media.asObservable().subscribe(onChange);
  *
- *      mediaObserver.media$()
+ *      media.asObservable()
  *        .pipe(
  *          filter((change: MediaChange) => true)   // silly noop filter
  *        ).subscribe(onChange);
@@ -45,14 +46,20 @@ import { MatchMedia } from '../match-media/match-media';
  *  }
  */
 export declare class MediaObserver {
-    private breakpoints;
-    private mediaWatcher;
+    protected breakpoints: BreakPointRegistry;
+    protected mediaWatcher: MatchMedia;
+    protected hook: PrintHook;
     /**
      * Whether to announce gt-<xxx> breakpoint activations
      */
     filterOverlaps: boolean;
+    /**
+     * @deprecated Use `asObservable()` instead.
+     * @breaking-change 7.0.0-beta.23
+     */
     readonly media$: Observable<MediaChange>;
-    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia);
+    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia, hook: PrintHook);
+    asObservable(): Observable<MediaChange>;
     /**
      * Test if specified query/alias is active.
      */
@@ -75,4 +82,5 @@ export declare class MediaObserver {
      * Find associated breakpoint (if any)
      */
     private toMediaQuery;
+    readonly _media$: Observable<MediaChange>;
 }

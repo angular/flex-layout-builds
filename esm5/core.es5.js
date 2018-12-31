@@ -220,6 +220,7 @@ var DEFAULT_CONFIG = {
     disableVendorPrefixes: false,
     serverLoaded: false,
     useColumnBasisZero: true,
+    printWithBreakpoints: []
 };
 /** @type {?} */
 var LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
@@ -415,7 +416,7 @@ BaseDirective2 = /** @class */ (function () {
          * @return {?}
          */
         function (value) {
-            this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedBreakpoint);
+            this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedAlias);
         },
         enumerable: true,
         configurable: true
@@ -737,15 +738,15 @@ var ScreenTypes = {
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
   @type {?} */
 var ORIENTATION_BREAKPOINTS = [
-    { 'alias': 'handset', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET },
-    { 'alias': 'handset.landscape', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
-    { 'alias': 'handset.portrait', priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
-    { 'alias': 'tablet', priority: 8000, 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', priority: 8000, 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.portrait', priority: 8000, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
-    { 'alias': 'web', priority: 9000, 'mediaQuery': ScreenTypes.WEB, overlapping: true },
-    { 'alias': 'web.landscape', priority: 9000, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
-    { 'alias': 'web.portrait', priority: 9000, 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
+    { 'alias': 'handset', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET },
+    { 'alias': 'handset.landscape', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
+    { 'alias': 'handset.portrait', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
+    { 'alias': 'tablet', priority: 2100, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', priority: 2100, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.portrait', priority: 2100, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
+    { 'alias': 'web', priority: 2200, 'mediaQuery': ScreenTypes.WEB, overlapping: true },
+    { 'alias': 'web.landscape', priority: 2200, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
+    { 'alias': 'web.portrait', priority: 2200, 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
 ];
 
 /**
@@ -859,9 +860,9 @@ function mergeByAlias(defaults, custom) {
  */
 function sortDescendingPriority(a, b) {
     /** @type {?} */
-    var priorityA = a.priority || 0;
+    var priorityA = a ? a.priority || 0 : 0;
     /** @type {?} */
-    var priorityB = b.priority || 0;
+    var priorityB = b ? b.priority || 0 : 0;
     return priorityB - priorityA;
 }
 /**
@@ -933,7 +934,7 @@ var BreakPointRegistry = /** @class */ (function () {
      * @return {?}
      */
     function (alias) {
-        return this.findWithPredicate(alias, function (bp) { return bp.alias == alias; });
+        return !alias ? null : this.findWithPredicate(alias, function (bp) { return bp.alias == alias; });
     };
     /**
      * @param {?} query
@@ -1342,14 +1343,14 @@ var MockMatchMedia = /** @class */ (function (_super) {
         return (bp && bp.mediaQuery) || queryOrAlias;
     };
     /**
-     * Manually activate any overlapping mediaQueries to simulate
+     * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      * @param {?} mediaQuery
      * @param {?} useOverlaps
      * @return {?}
      */
     MockMatchMedia.prototype._activateWithOverlaps = /**
-     * Manually activate any overlapping mediaQueries to simulate
+     * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      * @param {?} mediaQuery
      * @param {?} useOverlaps
@@ -1376,7 +1377,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
                     this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
-            // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
+            // Simulate onMediaChange of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
                     this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
@@ -1437,22 +1438,16 @@ var MockMatchMedia = /** @class */ (function (_super) {
         return this.hasActivated;
     };
     /**
-     * Deactivate all current Mock MQLs
+     * Deactivate all current MQLs and reset the buffer
      * @return {?}
      */
     MockMatchMedia.prototype._deactivateAll = /**
-     * Deactivate all current Mock MQLs
+     * Deactivate all current MQLs and reset the buffer
      * @return {?}
      */
     function () {
-        if (this._actives.length) {
-            // Deactivate all current MQLs and reset the buffer
-            for (var _i = 0, _a = this._actives; _i < _a.length; _i++) {
-                var it = _a[_i];
-                it.deactivate();
-            }
-            this._actives = [];
-        }
+        this._actives.forEach(function (it) { return it.deactivate(); });
+        this._actives = [];
         return this;
     };
     /**
@@ -1608,14 +1603,14 @@ MockMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
     MockMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1793,14 +1788,14 @@ ServerMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
     ServerMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1872,7 +1867,7 @@ ServerMediaQueryList = /** @class */ (function () {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to activate and deactivate breakpoints
+ * Also contains methods to onMediaChange and deactivate breakpoints
  */
 var ServerMatchMedia = /** @class */ (function (_super) {
     __extends(ServerMatchMedia, _super);
@@ -1968,10 +1963,364 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  * @return {?}
  */
 function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
+    return extendObject(dest || {}, source ? {
         mqAlias: source.alias,
         suffix: source.suffix
     } : {});
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/** @type {?} */
+var PRINT = 'print';
+/** @type {?} */
+var BREAKPOINT_PRINT = {
+    alias: PRINT,
+    mediaQuery: PRINT,
+    priority: 1000
+};
+/**
+ * PrintHook - Use to intercept print MediaQuery activations and force
+ *             layouts to render with the specified print alias/breakpoint
+ *
+ * Used in MediaMarshaller and MediaObserver
+ */
+var PrintHook = /** @class */ (function () {
+    function PrintHook(breakpoints, layoutConfig) {
+        this.breakpoints = breakpoints;
+        this.layoutConfig = layoutConfig;
+        /**
+         * Is this service currently in Print-mode ?
+         */
+        this.isPrinting = false;
+        this.queue = new PrintQueue();
+        this.deactivations = [];
+    }
+    /** Add 'print' mediaQuery: to listen for matchMedia activations */
+    /**
+     * Add 'print' mediaQuery: to listen for matchMedia activations
+     * @param {?} queries
+     * @return {?}
+     */
+    PrintHook.prototype.withPrintQuery = /**
+     * Add 'print' mediaQuery: to listen for matchMedia activations
+     * @param {?} queries
+     * @return {?}
+     */
+    function (queries) {
+        return queries.concat([PRINT]);
+    };
+    /** Is the MediaChange event for any 'print' @media */
+    /**
+     * Is the MediaChange event for any 'print' \@media
+     * @param {?} e
+     * @return {?}
+     */
+    PrintHook.prototype.isPrintEvent = /**
+     * Is the MediaChange event for any 'print' \@media
+     * @param {?} e
+     * @return {?}
+     */
+    function (e) {
+        return e.mediaQuery.startsWith(PRINT);
+    };
+    Object.defineProperty(PrintHook.prototype, "printAlias", {
+        /** What is the desired mqAlias to use while printing? */
+        get: /**
+         * What is the desired mqAlias to use while printing?
+         * @return {?}
+         */
+        function () {
+            return this.layoutConfig.printWithBreakpoints || [];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PrintHook.prototype, "printBreakPoints", {
+        /** Lookup breakpoints associated with print aliases. */
+        get: /**
+         * Lookup breakpoints associated with print aliases.
+         * @return {?}
+         */
+        function () {
+            var _this = this;
+            return /** @type {?} */ (this.printAlias
+                .map(function (alias) { return _this.breakpoints.findByAlias(alias); })
+                .filter(function (bp) { return bp !== null; }));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** Lookup breakpoint associated with mediaQuery */
+    /**
+     * Lookup breakpoint associated with mediaQuery
+     * @param {?} __0
+     * @return {?}
+     */
+    PrintHook.prototype.getEventBreakpoints = /**
+     * Lookup breakpoint associated with mediaQuery
+     * @param {?} __0
+     * @return {?}
+     */
+    function (_a) {
+        var mediaQuery = _a.mediaQuery;
+        /** @type {?} */
+        var bp = this.breakpoints.findByQuery(mediaQuery);
+        /** @type {?} */
+        var list = bp ? this.printBreakPoints.concat([bp]) : this.printBreakPoints;
+        return list.sort(sortDescendingPriority);
+    };
+    /** Update event with printAlias mediaQuery information */
+    /**
+     * Update event with printAlias mediaQuery information
+     * @param {?} event
+     * @return {?}
+     */
+    PrintHook.prototype.updateEvent = /**
+     * Update event with printAlias mediaQuery information
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        /** @type {?} */
+        var bp = this.breakpoints.findByQuery(event.mediaQuery);
+        if (this.isPrintEvent(event)) {
+            // Reset from 'print' to first (highest priority) print breakpoint
+            bp = this.getEventBreakpoints(event)[0];
+            event.mediaQuery = bp ? bp.mediaQuery : '';
+        }
+        return mergeAlias(event, bp);
+    };
+    /**
+     * Prepare RxJs filter operator with partial application
+     * @return pipeable filter predicate
+     */
+    /**
+     * Prepare RxJs filter operator with partial application
+     * @param {?} target
+     * @return {?} pipeable filter predicate
+     */
+    PrintHook.prototype.interceptEvents = /**
+     * Prepare RxJs filter operator with partial application
+     * @param {?} target
+     * @return {?} pipeable filter predicate
+     */
+    function (target) {
+        var _this = this;
+        return function (event) {
+            if (_this.isPrintEvent(event)) {
+                if (event.matches && !_this.isPrinting) {
+                    _this.startPrinting(target, _this.getEventBreakpoints(event));
+                    target.updateStyles();
+                }
+                else if (!event.matches && _this.isPrinting) {
+                    _this.stopPrinting(target);
+                    target.updateStyles();
+                }
+            }
+            else {
+                _this.collectActivations(event);
+            }
+            // Stop event propagation ?
+            return !(_this.isPrinting || _this.isPrintEvent(event));
+        };
+    };
+    /**
+     * Save current activateBreakpoints (for later restore)
+     * and substitute only the printAlias breakpoint
+     */
+    /**
+     * Save current activateBreakpoints (for later restore)
+     * and substitute only the printAlias breakpoint
+     * @param {?} target
+     * @param {?} bpList
+     * @return {?}
+     */
+    PrintHook.prototype.startPrinting = /**
+     * Save current activateBreakpoints (for later restore)
+     * and substitute only the printAlias breakpoint
+     * @param {?} target
+     * @param {?} bpList
+     * @return {?}
+     */
+    function (target, bpList) {
+        this.isPrinting = true;
+        target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
+    };
+    /** For any print de-activations, reset the entire print queue */
+    /**
+     * For any print de-activations, reset the entire print queue
+     * @param {?} target
+     * @return {?}
+     */
+    PrintHook.prototype.stopPrinting = /**
+     * For any print de-activations, reset the entire print queue
+     * @param {?} target
+     * @return {?}
+     */
+    function (target) {
+        target.activatedBreakpoints = this.deactivations;
+        this.deactivations = [];
+        this.queue.clear();
+        this.isPrinting = false;
+    };
+    /**
+     * To restore pre-Print Activations, we must capture the proper
+     * list of breakpoint activations BEFORE print starts. OnBeforePrint()
+     * is not supported; so 'print' mediaQuery activations must be used.
+     *
+     * >  But activated breakpoints are deactivated BEFORE 'print' activation.
+     *
+     * Let's capture all de-activations using the following logic:
+     *
+     *  When not printing:
+     *    - clear cache when activating non-print breakpoint
+     *    - update cache (and sort) when deactivating
+     *
+     *  When printing:
+     *    - sort and save when starting print
+     *    - restore as activatedTargets and clear when stop printing
+     */
+    /**
+     * To restore pre-Print Activations, we must capture the proper
+     * list of breakpoint activations BEFORE print starts. OnBeforePrint()
+     * is not supported; so 'print' mediaQuery activations must be used.
+     *
+     * >  But activated breakpoints are deactivated BEFORE 'print' activation.
+     *
+     * Let's capture all de-activations using the following logic:
+     *
+     *  When not printing:
+     *    - clear cache when activating non-print breakpoint
+     *    - update cache (and sort) when deactivating
+     *
+     *  When printing:
+     *    - sort and save when starting print
+     *    - restore as activatedTargets and clear when stop printing
+     * @param {?} event
+     * @return {?}
+     */
+    PrintHook.prototype.collectActivations = /**
+     * To restore pre-Print Activations, we must capture the proper
+     * list of breakpoint activations BEFORE print starts. OnBeforePrint()
+     * is not supported; so 'print' mediaQuery activations must be used.
+     *
+     * >  But activated breakpoints are deactivated BEFORE 'print' activation.
+     *
+     * Let's capture all de-activations using the following logic:
+     *
+     *  When not printing:
+     *    - clear cache when activating non-print breakpoint
+     *    - update cache (and sort) when deactivating
+     *
+     *  When printing:
+     *    - sort and save when starting print
+     *    - restore as activatedTargets and clear when stop printing
+     * @param {?} event
+     * @return {?}
+     */
+    function (event) {
+        if (!this.isPrinting) {
+            if (!event.matches) {
+                /** @type {?} */
+                var bp = this.breakpoints.findByQuery(event.mediaQuery);
+                if (bp) { // Deactivating a breakpoint
+                    // Deactivating a breakpoint
+                    this.deactivations.push(bp);
+                    this.deactivations.sort(sortDescendingPriority);
+                }
+            }
+            else {
+                this.deactivations = [];
+            }
+        }
+    };
+    PrintHook.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    PrintHook.ctorParameters = function () { return [
+        { type: BreakPointRegistry },
+        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
+    ]; };
+    /** @nocollapse */ PrintHook.ngInjectableDef = defineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(inject(BreakPointRegistry), inject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    return PrintHook;
+}());
+/**
+ * Utility class to manage print breakpoints + activatedBreakpoints
+ * with correct sorting WHILE printing
+ */
+var /**
+ * Utility class to manage print breakpoints + activatedBreakpoints
+ * with correct sorting WHILE printing
+ */
+PrintQueue = /** @class */ (function () {
+    function PrintQueue() {
+        /**
+         * Sorted queue with prioritized print breakpoints
+         */
+        this.printBreakpoints = [];
+    }
+    /**
+     * @param {?} bpList
+     * @return {?}
+     */
+    PrintQueue.prototype.addPrintBreakpoints = /**
+     * @param {?} bpList
+     * @return {?}
+     */
+    function (bpList) {
+        var _this = this;
+        bpList.push(BREAKPOINT_PRINT);
+        bpList.sort(sortDescendingPriority);
+        bpList.forEach(function (bp) { return _this.addBreakpoint(bp); });
+        return this.printBreakpoints;
+    };
+    /** Add Print breakpoint to queue */
+    /**
+     * Add Print breakpoint to queue
+     * @param {?} bp
+     * @return {?}
+     */
+    PrintQueue.prototype.addBreakpoint = /**
+     * Add Print breakpoint to queue
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
+        if (!!bp) {
+            /** @type {?} */
+            var bpInList = this.printBreakpoints.find(function (it) { return it.mediaQuery === bp.mediaQuery; });
+            if (bpInList === undefined) {
+                // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
+                // register as highest priority in the queue
+                this.printBreakpoints = isPrintBreakPoint(bp) ? [bp].concat(this.printBreakpoints) : this.printBreakpoints.concat([bp]);
+            }
+        }
+    };
+    /** Restore original activated breakpoints and clear internal caches */
+    /**
+     * Restore original activated breakpoints and clear internal caches
+     * @return {?}
+     */
+    PrintQueue.prototype.clear = /**
+     * Restore original activated breakpoints and clear internal caches
+     * @return {?}
+     */
+    function () {
+        this.printBreakpoints = [];
+    };
+    return PrintQueue;
+}());
+/**
+ * Only support intercept queueing if the Breakpoint is a print \@media query
+ * @param {?} bp
+ * @return {?}
+ */
+function isPrintBreakPoint(bp) {
+    return bp ? bp.mediaQuery.startsWith(PRINT) : false;
 }
 
 /**
@@ -1992,7 +2341,7 @@ function mergeAlias(dest, source) {
  *
  * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.media$.map(....).
+ * `.media$` with syntax like mediaObserver.asObservable().map(....).
  *
  * \@usage
  *
@@ -2004,15 +2353,15 @@ function mergeAlias(dest, source) {
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(mediaObserver: MediaObserver) {
+ *    constructor(media: MediaObserver) {
  *      const onChange = (change: MediaChange) => {
  *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. mediaObserver.media$.subscribe(onChange);
+ *      // e.g. media.asObservable().subscribe(onChange);
  *
- *      mediaObserver.media$()
+ *      media.asObservable()
  *        .pipe(
  *          filter((change: MediaChange) => true)   // silly noop filter
  *        ).subscribe(onChange);
@@ -2020,15 +2369,41 @@ function mergeAlias(dest, source) {
  *  }
  */
 var MediaObserver = /** @class */ (function () {
-    function MediaObserver(breakpoints, mediaWatcher) {
+    function MediaObserver(breakpoints, mediaWatcher, hook) {
         this.breakpoints = breakpoints;
         this.mediaWatcher = mediaWatcher;
+        this.hook = hook;
         /**
          * Whether to announce gt-<xxx> breakpoint activations
          */
         this.filterOverlaps = true;
-        this.media$ = this.watchActivations();
+        this._media$ = this.watchActivations();
     }
+    Object.defineProperty(MediaObserver.prototype, "media$", {
+        /**
+         * @deprecated Use `asObservable()` instead.
+         * @breaking-change 7.0.0-beta.23
+         */
+        get: /**
+         * @deprecated Use `asObservable()` instead.
+         * \@breaking-change 7.0.0-beta.23
+         * @return {?}
+         */
+        function () {
+            return this._media$;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    MediaObserver.prototype.asObservable = /**
+     * @return {?}
+     */
+    function () {
+        return this._media$;
+    };
     /**
      * Test if specified query/alias is active.
      */
@@ -2085,20 +2460,36 @@ var MediaObserver = /** @class */ (function () {
         /** @type {?} */
         var locator = this.breakpoints;
         /** @type {?} */
+        var onlyActivations = function (change) { return change.matches; };
+        /** @type {?} */
+        var excludeUnknown = function (change) { return change.mediaQuery !== ''; };
+        /** @type {?} */
+        var excludeCustomPrints = function (change) { return !change.mediaQuery.startsWith('print'); };
+        /** @type {?} */
         var excludeOverlaps = function (change) {
             /** @type {?} */
             var bp = locator.findByQuery(change.mediaQuery);
             return !bp ? true : !(_this.filterOverlaps && bp.overlapping);
         };
+        /** @type {?} */
+        var replaceWithPrintAlias = function (change) {
+            if (_this.hook.isPrintEvent(change)) {
+                // replace with aliased substitute (if configured)
+                return _this.hook.updateEvent(change);
+            }
+            /** @type {?} */
+            var bp = locator.findByQuery(change.mediaQuery);
+            return mergeAlias(change, bp);
+        };
         /**
              * Only pass/announce activations (not de-activations)
+             *
              * Inject associated (if any) alias information into the MediaChange event
-             * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+             * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+             * - Exclude print activations that do not have an associated mediaQuery
              */
-        return this.mediaWatcher.observe(mqList)
-            .pipe(filter(function (change) { return change.matches; }), filter(excludeOverlaps), map(function (change) {
-            return mergeAlias(change, locator.findByQuery(change.mediaQuery));
-        }));
+        return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
+            .pipe(filter(onlyActivations), filter(excludeOverlaps), map(replaceWithPrintAlias), filter(excludeCustomPrints), filter(excludeUnknown));
     };
     /**
      * Find associated breakpoint (if any)
@@ -2123,9 +2514,10 @@ var MediaObserver = /** @class */ (function () {
     /** @nocollapse */
     MediaObserver.ctorParameters = function () { return [
         { type: BreakPointRegistry },
-        { type: MatchMedia }
+        { type: MatchMedia },
+        { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ngInjectableDef = defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(inject(BreakPointRegistry), inject(MatchMedia)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ngInjectableDef = defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(inject(BreakPointRegistry), inject(MatchMedia), inject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 
@@ -2626,19 +3018,20 @@ function _validateCalcValue(calc) {
  *                   trigger them based on media query events
  */
 var MediaMarshaller = /** @class */ (function () {
-    function MediaMarshaller(matchMedia, breakpoints) {
+    function MediaMarshaller(matchMedia, breakpoints, hook) {
         this.matchMedia = matchMedia;
         this.breakpoints = breakpoints;
+        this.hook = hook;
         this.activatedBreakpoints = [];
         this.elementMap = new Map();
         this.elementKeyMap = new WeakMap();
         this.watcherMap = new WeakMap();
-        this.builderMap = new WeakMap();
-        this.clearBuilderMap = new WeakMap();
+        this.updateMap = new WeakMap();
+        this.clearMap = new WeakMap();
         this.subject = new Subject();
         this.observeActivations();
     }
-    Object.defineProperty(MediaMarshaller.prototype, "activatedBreakpoint", {
+    Object.defineProperty(MediaMarshaller.prototype, "activatedAlias", {
         get: /**
          * @return {?}
          */
@@ -2649,16 +3042,16 @@ var MediaMarshaller = /** @class */ (function () {
         configurable: true
     });
     /**
-     * activate or deactivate a given breakpoint
+     * onMediaChange or deactivate a given breakpoint
      * @param mc
      */
     /**
-     * activate or deactivate a given breakpoint
+     * onMediaChange or deactivate a given breakpoint
      * @param {?} mc
      * @return {?}
      */
-    MediaMarshaller.prototype.activate = /**
-     * activate or deactivate a given breakpoint
+    MediaMarshaller.prototype.onMediaChange = /**
+     * onMediaChange or deactivate a given breakpoint
      * @param {?} mc
      * @return {?}
      */
@@ -2666,14 +3059,17 @@ var MediaMarshaller = /** @class */ (function () {
         /** @type {?} */
         var bp = this.findByQuery(mc.mediaQuery);
         if (bp) {
+            mc = mergeAlias(mc, bp);
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
+                // logActivations(this.activatedBreakpoints)
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
                 // Remove the breakpoint when it's deactivated
                 this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+                this.activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
         }
@@ -2706,9 +3102,9 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function (element, key, updateFn, clearFn, extraTriggers) {
         if (extraTriggers === void 0) { extraTriggers = []; }
+        initBuilderMap(this.updateMap, element, key, updateFn);
+        initBuilderMap(this.clearMap, element, key, clearFn);
         this.buildElementKeyMap(element, key);
-        initBuilderMap(this.builderMap, element, key, updateFn);
-        initBuilderMap(this.clearBuilderMap, element, key, clearFn);
         this.watchExtraTriggers(element, key, extraTriggers);
     };
     /**
@@ -2736,7 +3132,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
+            var values = bp !== undefined ? bpMap.get(bp) : this.getActivatedValues(bpMap, key);
             if (values) {
                 return values.get(key);
             }
@@ -2765,7 +3161,7 @@ var MediaMarshaller = /** @class */ (function () {
         var bpMap = this.elementMap.get(element);
         if (bpMap) {
             /** @type {?} */
-            var values = this.getFallback(bpMap, key);
+            var values = this.getActivatedValues(bpMap, key);
             if (values) {
                 return values.get(key) !== undefined || false;
             }
@@ -2828,7 +3224,8 @@ var MediaMarshaller = /** @class */ (function () {
      * @return {?}
      */
     function (element, key) {
-        return this.subject.asObservable()
+        return this.subject
+            .asObservable()
             .pipe(filter(function (v) { return v.element === element && v.key === key; }));
     };
     /** update all styles for all elements on the current breakpoint */
@@ -2844,9 +3241,9 @@ var MediaMarshaller = /** @class */ (function () {
         var _this = this;
         this.elementMap.forEach(function (bpMap, el) {
             /** @type {?} */
-            var valueMap = _this.getFallback(bpMap);
-            /** @type {?} */
             var keyMap = new Set(/** @type {?} */ ((_this.elementKeyMap.get(el))));
+            /** @type {?} */
+            var valueMap = _this.getActivatedValues(bpMap);
             if (valueMap) {
                 valueMap.forEach(function (v, k) {
                     _this.updateElement(el, k, v);
@@ -2854,11 +3251,10 @@ var MediaMarshaller = /** @class */ (function () {
                 });
             }
             keyMap.forEach(function (k) {
-                /** @type {?} */
-                var fallbackMap = _this.getFallback(bpMap, k);
-                if (fallbackMap) {
+                valueMap = _this.getActivatedValues(bpMap, k);
+                if (valueMap) {
                     /** @type {?} */
-                    var value = fallbackMap.get(k);
+                    var value = valueMap.get(k);
                     _this.updateElement(el, k, value);
                 }
                 else {
@@ -2886,7 +3282,7 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function (element, key) {
         /** @type {?} */
-        var builders = this.clearBuilderMap.get(element);
+        var builders = this.clearMap.get(element);
         if (builders) {
             /** @type {?} */
             var clearFn = /** @type {?} */ (builders.get(key));
@@ -2918,7 +3314,7 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function (element, key, value) {
         /** @type {?} */
-        var builders = this.builderMap.get(element);
+        var builders = this.updateMap.get(element);
         if (builders) {
             /** @type {?} */
             var updateFn = /** @type {?} */ (builders.get(key));
@@ -3038,7 +3434,7 @@ var MediaMarshaller = /** @class */ (function () {
      * @param {?=} key
      * @return {?}
      */
-    MediaMarshaller.prototype.getFallback = /**
+    MediaMarshaller.prototype.getActivatedValues = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
      * @param {?} bpMap
      * @param {?=} key
@@ -3070,10 +3466,13 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function () {
         /** @type {?} */
+        var target = /** @type {?} */ ((this));
+        /** @type {?} */
         var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
-            .observe(queries)
-            .subscribe(this.activate.bind(this));
+            .observe(this.hook.withPrintQuery(queries))
+            .pipe(filter(this.hook.interceptEvents(target)))
+            .subscribe(this.onMediaChange.bind(this));
     };
     MediaMarshaller.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
@@ -3081,9 +3480,10 @@ var MediaMarshaller = /** @class */ (function () {
     /** @nocollapse */
     MediaMarshaller.ctorParameters = function () { return [
         { type: MatchMedia },
-        { type: BreakPointRegistry }
+        { type: BreakPointRegistry },
+        { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ngInjectableDef = defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(inject(MatchMedia), inject(BreakPointRegistry)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ngInjectableDef = defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(inject(MatchMedia), inject(BreakPointRegistry), inject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**
@@ -3104,6 +3504,17 @@ function initBuilderMap(map$$1, element, key, input) {
         oldMap.set(key, input);
     }
 }
+/**
+ * @param {?} list
+ * @return {?}
+ */
+function logActivations(list) {
+    /** @type {?} */
+    var aliases = list.reduce(function (seed, it) {
+        return seed ? seed + ", " + it.alias : it.alias;
+    }, '');
+    console.log("Update styles with: (" + aliases + ")");
+}
 
 /**
  * @fileoverview added by tsickle
@@ -3115,5 +3526,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, logActivations, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
 //# sourceMappingURL=core.es5.js.map
