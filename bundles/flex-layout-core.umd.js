@@ -1417,7 +1417,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
                     this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
-            // Simulate onMediaChange of overlapping gt-<xxxx> mediaQuery ranges
+            // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
                     this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
@@ -1643,14 +1643,14 @@ MockMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to onMediaChange later */
+    /** Add a listener to our internal list to activate later */
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
     MockMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1828,14 +1828,14 @@ ServerMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to onMediaChange later */
+    /** Add a listener to our internal list to activate later */
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
     ServerMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1907,7 +1907,7 @@ ServerMediaQueryList = /** @class */ (function () {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to onMediaChange and deactivate breakpoints
+ * Also contains methods to activate and deactivate breakpoints
  */
 var ServerMatchMedia = /** @class */ (function (_super) {
     __extends(ServerMatchMedia, _super);
@@ -3057,16 +3057,16 @@ var MediaMarshaller = /** @class */ (function () {
         configurable: true
     });
     /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param mc
      */
     /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param {?} mc
      * @return {?}
      */
     MediaMarshaller.prototype.onMediaChange = /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param {?} mc
      * @return {?}
      */
@@ -3078,7 +3078,6 @@ var MediaMarshaller = /** @class */ (function () {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
-                // logActivations(this.activatedBreakpoints)
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
@@ -3519,17 +3518,6 @@ function initBuilderMap(map$$1, element, key, input) {
         oldMap.set(key, input);
     }
 }
-/**
- * @param {?} list
- * @return {?}
- */
-function logActivations(list) {
-    /** @type {?} */
-    var aliases = list.reduce(function (seed, it) {
-        return seed ? seed + ", " + it.alias : it.alias;
-    }, '');
-    console.log("Update styles with: (" + aliases + ")");
-}
 
 exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
@@ -3559,7 +3547,6 @@ exports.MediaObserver = MediaObserver;
 exports.StyleUtils = StyleUtils;
 exports.StyleBuilder = StyleBuilder;
 exports.validateBasis = validateBasis;
-exports.logActivations = logActivations;
 exports.MediaMarshaller = MediaMarshaller;
 exports.BREAKPOINT_PRINT = BREAKPOINT_PRINT;
 exports.PrintHook = PrintHook;

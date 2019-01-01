@@ -8,7 +8,7 @@
 import { Version, Inject, NgModule, Optional, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { SERVER_TOKEN, LAYOUT_CONFIG, DEFAULT_CONFIG, BREAKPOINT } from '@angular/flex-layout/core';
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, logActivations, MediaMarshaller, BREAKPOINT_PRINT, PrintHook } from '@angular/flex-layout/core';
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook } from '@angular/flex-layout/core';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, DefaultStyleDirective } from '@angular/flex-layout/extended';
 import { FlexModule } from '@angular/flex-layout/flex';
@@ -23,7 +23,7 @@ export { ɵf, ɵe, ɵd, ɵi, ɵh, ɵg, ɵl, ɵk, ɵj, ɵo, ɵn, ɵm, ɵr, ɵq, �
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-const VERSION = new Version('7.0.0-beta.22-febc7a6');
+const VERSION = new Version('7.0.0-beta.22-4c373b0');
 
 /**
  * @fileoverview added by tsickle

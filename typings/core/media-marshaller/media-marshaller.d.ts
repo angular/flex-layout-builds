@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { BreakPoint } from '../breakpoints/break-point';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
@@ -29,7 +28,7 @@ export declare class MediaMarshaller {
     readonly activatedAlias: string;
     constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHook);
     /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param mc
      */
     onMediaChange(mc: MediaChange): void;
@@ -107,5 +106,4 @@ export declare class MediaMarshaller {
      */
     private observeActivations;
 }
-export declare function logActivations(list: BreakPoint[]): void;
 export {};

@@ -1139,7 +1139,7 @@ class MockMatchMedia extends MatchMedia {
                     this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
-            // Simulate onMediaChange of overlapping gt-<xxxx> mediaQuery ranges
+            // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
                     this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
@@ -1300,7 +1300,7 @@ class MockMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1425,7 +1425,7 @@ class ServerMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1474,7 +1474,7 @@ class ServerMediaQueryList {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to onMediaChange and deactivate breakpoints
+ * Also contains methods to activate and deactivate breakpoints
  */
 class ServerMatchMedia extends MatchMedia {
     /**
@@ -2353,7 +2353,7 @@ class MediaMarshaller {
         return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
     }
     /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param {?} mc
      * @return {?}
      */
@@ -2365,7 +2365,6 @@ class MediaMarshaller {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
-                // logActivations(this.activatedBreakpoints)
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
@@ -2670,17 +2669,6 @@ function initBuilderMap(map$$1, element, key, input) {
         oldMap.set(key, input);
     }
 }
-/**
- * @param {?} list
- * @return {?}
- */
-function logActivations(list) {
-    /** @type {?} */
-    const aliases = list.reduce((seed, it) => {
-        return seed ? `${seed}, ${it.alias}` : it.alias;
-    }, '');
-    console.log(`Update styles with: (${aliases})`);
-}
 
 /**
  * @fileoverview added by tsickle
@@ -2692,5 +2680,5 @@ function logActivations(list) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, logActivations, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
 //# sourceMappingURL=core.js.map
