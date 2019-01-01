@@ -2422,10 +2422,12 @@ var MediaObserver = /** @class */ (function () {
     Object.defineProperty(MediaObserver.prototype, "media$", {
         /**
          * @deprecated Use `asObservable()` instead.
+         * @deletion-target v7.0.0-beta.23
          * @breaking-change 7.0.0-beta.23
          */
         get: /**
          * @deprecated Use `asObservable()` instead.
+         * \@deletion-target v7.0.0-beta.23
          * \@breaking-change 7.0.0-beta.23
          * @return {?}
          */

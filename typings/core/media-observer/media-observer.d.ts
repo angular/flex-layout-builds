@@ -55,6 +55,7 @@ export declare class MediaObserver {
     filterOverlaps: boolean;
     /**
      * @deprecated Use `asObservable()` instead.
+     * @deletion-target v7.0.0-beta.23
      * @breaking-change 7.0.0-beta.23
      */
     readonly media$: Observable<MediaChange>;
