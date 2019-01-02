@@ -2163,7 +2163,20 @@ var PrintHook = /** @class */ (function () {
             else {
                 _this.collectActivations(event);
             }
-            // Stop event propagation ?
+        };
+    };
+    /** Stop mediaChange event propagation in event streams */
+    /**
+     * Stop mediaChange event propagation in event streams
+     * @return {?}
+     */
+    PrintHook.prototype.blockPropagation = /**
+     * Stop mediaChange event propagation in event streams
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        return function (event) {
             return !(_this.isPrinting || _this.isPrintEvent(event));
         };
     };
@@ -3485,7 +3498,7 @@ var MediaMarshaller = /** @class */ (function () {
         var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
-            .pipe(operators.filter(this.hook.interceptEvents(target)))
+            .pipe(operators.tap(this.hook.interceptEvents(target)), operators.filter(this.hook.blockPropagation()))
             .subscribe(this.onMediaChange.bind(this));
     };
     MediaMarshaller.decorators = [

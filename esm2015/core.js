@@ -8,7 +8,7 @@
 import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, defineInjectable } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Subject, BehaviorSubject, Observable, merge } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 /**
  * @fileoverview added by tsickle
@@ -1668,7 +1668,14 @@ class PrintHook {
             else {
                 this.collectActivations(event);
             }
-            // Stop event propagation ?
+        };
+    }
+    /**
+     * Stop mediaChange event propagation in event streams
+     * @return {?}
+     */
+    blockPropagation() {
+        return (event) => {
             return !(this.isPrinting || this.isPrintEvent(event));
         };
     }
@@ -2637,7 +2644,7 @@ class MediaMarshaller {
         const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
-            .pipe(filter(this.hook.interceptEvents(target)))
+            .pipe(tap(this.hook.interceptEvents(target)), filter(this.hook.blockPropagation()))
             .subscribe(this.onMediaChange.bind(this));
     }
 }

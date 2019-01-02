@@ -40,7 +40,9 @@ export declare class PrintHook {
      * Prepare RxJs filter operator with partial application
      * @return pipeable filter predicate
      */
-    interceptEvents(target: HookTarget): (event: MediaChange) => boolean;
+    interceptEvents(target: HookTarget): (event: MediaChange) => void;
+    /** Stop mediaChange event propagation in event streams */
+    blockPropagation(): (event: MediaChange) => boolean;
     /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
