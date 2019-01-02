@@ -31,7 +31,7 @@ export declare class MockMatchMedia extends MatchMedia {
     /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
     _validateQuery(queryOrAlias: string): string;
     /**
-     * Manually activate any overlapping mediaQueries to simulate
+     * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
      */
     private _activateWithOverlaps;
@@ -43,7 +43,7 @@ export declare class MockMatchMedia extends MatchMedia {
      *
      */
     private _activateByQuery;
-    /** Deactivate all current Mock MQLs */
+    /** Deactivate all current MQLs and reset the buffer */
     private _deactivateAll;
     /** Insure the mediaQuery is registered with MatchMedia */
     private _registerMediaQuery;

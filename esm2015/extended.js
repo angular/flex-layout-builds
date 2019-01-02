@@ -276,13 +276,7 @@ class ShowHideDirective extends BaseDirective2 {
      * @return {?}
      */
     ngAfterViewInit() {
-        this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
-        this.marshal.trackValue(this.nativeElement, 'layout')
-            .pipe(takeUntil(this.destroySubject))
-            .subscribe(this.triggerUpdate.bind(this));
-        this.marshal.trackValue(this.nativeElement, 'layout-align')
-            .pipe(takeUntil(this.destroySubject))
-            .subscribe(this.triggerUpdate.bind(this));
+        this.trackExtraTriggers();
         /** @type {?} */
         const children = Array.from(this.nativeElement.children);
         for (let i = 0; i < children.length; i++) {
@@ -336,6 +330,19 @@ class ShowHideDirective extends BaseDirective2 {
         });
     }
     /**
+     *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @return {?}
+     */
+    trackExtraTriggers() {
+        this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
+        ['layout', 'layout-align'].forEach(key => {
+            this.marshal
+                .trackValue(this.nativeElement, key)
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.triggerUpdate.bind(this));
+        });
+    }
+    /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
      * unless it was already explicitly specified inline or in a CSS stylesheet.
@@ -374,22 +381,22 @@ ShowHideDirective.ctorParameters = () => [
 const DISPLAY_MAP = new WeakMap();
 /** @type {?} */
 const inputs$2 = [
-    'fxShow',
+    'fxShow', 'fxShow.print',
     'fxShow.xs', 'fxShow.sm', 'fxShow.md', 'fxShow.lg', 'fxShow.xl',
     'fxShow.lt-sm', 'fxShow.lt-md', 'fxShow.lt-lg', 'fxShow.lt-xl',
     'fxShow.gt-xs', 'fxShow.gt-sm', 'fxShow.gt-md', 'fxShow.gt-lg',
-    'fxHide',
+    'fxHide', 'fxHide.print',
     'fxHide.xs', 'fxHide.sm', 'fxHide.md', 'fxHide.lg', 'fxHide.xl',
     'fxHide.lt-sm', 'fxHide.lt-md', 'fxHide.lt-lg', 'fxHide.lt-xl',
     'fxHide.gt-xs', 'fxHide.gt-sm', 'fxHide.gt-md', 'fxHide.gt-lg'
 ];
 /** @type {?} */
 const selector$2 = `
-  [fxShow],
+  [fxShow], [fxShow.print],
   [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],
   [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],
   [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],
-  [fxHide],
+  [fxHide], [fxHide.print],
   [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],
   [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],
   [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]

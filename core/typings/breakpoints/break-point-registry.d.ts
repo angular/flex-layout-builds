@@ -1,5 +1,5 @@
 import { BreakPoint } from './break-point';
-declare type OptionalBreakPoint = BreakPoint | null;
+export declare type OptionalBreakPoint = BreakPoint | null;
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overridden from custom, application-specific ranges
@@ -37,4 +37,3 @@ export declare class BreakPointRegistry {
      */
     private readonly findByMap;
 }
-export {};

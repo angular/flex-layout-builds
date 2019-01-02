@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+import { OptionalBreakPoint } from './break-point-registry';
 import { BreakPoint } from './break-point';
 /**
  * For each breakpoint, ensure that a Suffix is defined;
@@ -18,5 +19,5 @@ export declare function validateSuffixes(list: BreakPoint[]): BreakPoint[];
  */
 export declare function mergeByAlias(defaults: BreakPoint[], custom?: BreakPoint[]): BreakPoint[];
 /** HOF to sort the breakpoints by priority */
-export declare function sortDescendingPriority(a: BreakPoint, b: BreakPoint): number;
+export declare function sortDescendingPriority(a: OptionalBreakPoint, b: OptionalBreakPoint): number;
 export declare function sortAscendingPriority(a: BreakPoint, b: BreakPoint): number;
