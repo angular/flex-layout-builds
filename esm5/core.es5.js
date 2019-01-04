@@ -9,7 +9,7 @@ import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionTok
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { __assign, __extends } from 'tslib';
 import { Subject, BehaviorSubject, Observable, merge } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 /**
  * @fileoverview added by tsickle
@@ -1377,7 +1377,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
                     this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
                     break;
             }
-            // Simulate onMediaChange of overlapping gt-<xxxx> mediaQuery ranges
+            // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
                     this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
@@ -2123,7 +2123,20 @@ var PrintHook = /** @class */ (function () {
             else {
                 _this.collectActivations(event);
             }
-            // Stop event propagation ?
+        };
+    };
+    /** Stop mediaChange event propagation in event streams */
+    /**
+     * Stop mediaChange event propagation in event streams
+     * @return {?}
+     */
+    PrintHook.prototype.blockPropagation = /**
+     * Stop mediaChange event propagation in event streams
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        return function (event) {
             return !(_this.isPrinting || _this.isPrintEvent(event));
         };
     };
@@ -3044,16 +3057,16 @@ var MediaMarshaller = /** @class */ (function () {
         configurable: true
     });
     /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param mc
      */
     /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param {?} mc
      * @return {?}
      */
     MediaMarshaller.prototype.onMediaChange = /**
-     * onMediaChange or deactivate a given breakpoint
+     * Update styles on breakpoint activates or deactivates
      * @param {?} mc
      * @return {?}
      */
@@ -3065,7 +3078,6 @@ var MediaMarshaller = /** @class */ (function () {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
-                // logActivations(this.activatedBreakpoints)
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
@@ -3473,7 +3485,7 @@ var MediaMarshaller = /** @class */ (function () {
         var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
-            .pipe(filter(this.hook.interceptEvents(target)))
+            .pipe(tap(this.hook.interceptEvents(target)), filter(this.hook.blockPropagation()))
             .subscribe(this.onMediaChange.bind(this));
     };
     MediaMarshaller.decorators = [
@@ -3506,17 +3518,6 @@ function initBuilderMap(map$$1, element, key, input) {
         oldMap.set(key, input);
     }
 }
-/**
- * @param {?} list
- * @return {?}
- */
-function logActivations(list) {
-    /** @type {?} */
-    var aliases = list.reduce(function (seed, it) {
-        return seed ? seed + ", " + it.alias : it.alias;
-    }, '');
-    console.log("Update styles with: (" + aliases + ")");
-}
 
 /**
  * @fileoverview added by tsickle
@@ -3528,5 +3529,5 @@ function logActivations(list) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, logActivations, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
+export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
 //# sourceMappingURL=core.es5.js.map
