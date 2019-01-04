@@ -1300,7 +1300,7 @@ class MockMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1425,7 +1425,7 @@ class ServerMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1474,7 +1474,7 @@ class ServerMediaQueryList {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to activate and deactivate breakpoints
+ * Also contains methods to onMediaChange and deactivate breakpoints
  */
 class ServerMatchMedia extends MatchMedia {
     /**
@@ -1819,7 +1819,7 @@ function isPrintBreakPoint(bp) {
  *
  * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.media$.map(....).
+ * `.media$` with syntax like mediaObserver.asObservable().map(....).
  *
  * \@usage
  *
@@ -1831,15 +1831,15 @@ function isPrintBreakPoint(bp) {
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(mediaObserver: MediaObserver) {
+ *    constructor(media: MediaObserver) {
  *      const onChange = (change: MediaChange) => {
  *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. mediaObserver.media$.subscribe(onChange);
+ *      // e.g. media.asObservable().subscribe(onChange);
  *
- *      mediaObserver.media$()
+ *      media.asObservable()
  *        .pipe(
  *          filter((change: MediaChange) => true)   // silly noop filter
  *        ).subscribe(onChange);
@@ -1860,7 +1860,22 @@ class MediaObserver {
          * Whether to announce gt-<xxx> breakpoint activations
          */
         this.filterOverlaps = true;
-        this.media$ = this.watchActivations();
+        this._media$ = this.watchActivations();
+    }
+    /**
+     * @deprecated Use `asObservable()` instead.
+     * \@deletion-target v7.0.0-beta.23
+     * \@breaking-change 7.0.0-beta.23
+     * @return {?}
+     */
+    get media$() {
+        return this._media$;
+    }
+    /**
+     * @return {?}
+     */
+    asObservable() {
+        return this._media$;
     }
     /**
      * Test if specified query/alias is active.
