@@ -25,7 +25,7 @@ export declare class ServerMediaQueryList implements MediaQueryList {
     /** Add a listener to our internal list to activate later */
     addListener(listener: MediaQueryListListener): void;
     /** Don't need to remove listeners in the server environment */
-    removeListener(_: EventListenerOrEventListenerObject | null): void;
+    removeListener(_: MediaQueryListListener | null): void;
     addEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | AddEventListenerOptions): void;
     removeEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | EventListenerOptions): void;
     dispatchEvent(_: Event): boolean;
