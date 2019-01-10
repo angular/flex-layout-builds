@@ -2387,14 +2387,14 @@ class MediaMarshaller {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
-                logBreakpoint(mc, bp);
+                // logBreakpoint(mc, bp);
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
                 // Remove the breakpoint when it's deactivated
                 this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
-                logBreakpoint(mc, bp);
+                // logBreakpoint(mc, bp);
                 this.updateStyles();
             }
         }
@@ -2693,16 +2693,10 @@ function initBuilderMap(map$$1, element, key, input) {
         oldMap.set(key, input);
     }
 }
-/**
- * @param {?} mc
- * @param {?} bp
- * @return {?}
- */
-function logBreakpoint(mc, bp) {
-    /** @type {?} */
-    const state = mc.matches ? 'Activating' : "Deactivating";
-    console.log(`${state}: ${bp.alias}`);
-}
+// function logBreakpoint(mc: MediaChange, bp: BreakPoint) {
+//   const state = mc.matches ? 'Activating' : 'Deactivating';
+//   console.log(`${state}: ${bp.alias}`);
+// }
 
 /**
  * @fileoverview added by tsickle

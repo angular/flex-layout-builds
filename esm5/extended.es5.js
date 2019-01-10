@@ -387,7 +387,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
                 if (inputKey[0] === 'fxHide') {
                     shouldShow = !shouldShow;
                 }
-                console.log("ShowHideDirective::setValue(" + shouldShow + ", " + bp + ")");
+                // console.log(`ShowHideDirective::setValue(${shouldShow}, ${bp})`);
                 _this.setValue(shouldShow, bp);
             }
         });
