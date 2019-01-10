@@ -9,5 +9,4 @@ export * from './typings/index';
 export * from './core';
 export * from './flex';
 export * from './grid';
-export * from './server';
 export * from './extended';

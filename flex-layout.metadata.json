@@ -13,9 +13,6 @@
       "from": "./grid"
     },
     {
-      "from": "./server"
-    },
-    {
       "from": "./extended"
     },
     {
