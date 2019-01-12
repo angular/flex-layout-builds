@@ -22,7 +22,7 @@ export declare class ServerMediaQueryList implements MediaQueryList {
     activate(): ServerMediaQueryList;
     /** Notify all listeners that 'matches === false' */
     deactivate(): ServerMediaQueryList;
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     addListener(listener: MediaQueryListListener): void;
     /** Don't need to remove listeners in the server environment */
     removeListener(_: MediaQueryListListener | null): void;
@@ -35,7 +35,7 @@ export declare class ServerMediaQueryList implements MediaQueryList {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to activate and deactivate breakpoints
+ * Also contains methods to onMediaChange and deactivate breakpoints
  */
 export declare class ServerMatchMedia extends MatchMedia {
     protected _zone: NgZone;

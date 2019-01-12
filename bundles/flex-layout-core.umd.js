@@ -8,7 +8,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs'), require('rxjs/operators')) :
 	typeof define === 'function' && define.amd ? define('@angular/flex-layout/core', ['exports', '@angular/core', '@angular/common', 'rxjs', 'rxjs/operators'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}, global.ng.flexLayout.core = {}),global.ng.core,global.ng.common,global.rxjs,global.rxjs.operators));
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].core = {}),global.ng.core,global.ng.common,global.rxjs,global.rxjs.operators));
 }(this, (function (exports,core,common,rxjs,operators) { 'use strict';
 
 /*! *****************************************************************************
@@ -126,15 +126,17 @@ MediaChange = /** @class */ (function () {
      * @param mqAlias e.g. gt-sm, md, gt-lg
      * @param suffix e.g. GtSM, Md, GtLg
      */
-    function MediaChange(matches, mediaQuery, mqAlias, suffix) {
+    function MediaChange(matches, mediaQuery, mqAlias, suffix, priority) {
         if (matches === void 0) { matches = false; }
         if (mediaQuery === void 0) { mediaQuery = 'all'; }
         if (mqAlias === void 0) { mqAlias = ''; }
         if (suffix === void 0) { suffix = ''; }
+        if (priority === void 0) { priority = 0; }
         this.matches = matches;
         this.mediaQuery = mediaQuery;
         this.mqAlias = mqAlias;
         this.suffix = suffix;
+        this.priority = priority;
         this.property = '';
     }
     /** Create an exact copy of the MediaChange */
@@ -297,6 +299,28 @@ var BREAKPOINT = new core.InjectionToken('Flex Layout token, collect all breakpo
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * For the specified MediaChange, make sure it contains the breakpoint alias
+ * and suffix (if available).
+ * @param {?} dest
+ * @param {?} source
+ * @return {?}
+ */
+function mergeAlias(dest, source) {
+    dest = dest ? dest.clone() : new MediaChange();
+    if (source) {
+        dest.mqAlias = source.alias;
+        dest.mediaQuery = source.mediaQuery;
+        dest.suffix = /** @type {?} */ (source.suffix);
+        dest.priority = /** @type {?} */ (source.priority);
+    }
+    return dest;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -1095,6 +1119,27 @@ var MatchMedia = /** @class */ (function () {
         this._registry = new Map();
         this._observable$ = this._source.asObservable();
     }
+    Object.defineProperty(MatchMedia.prototype, "activations", {
+        /**
+         * Publish list of all current activations
+         */
+        get: /**
+         * Publish list of all current activations
+         * @return {?}
+         */
+        function () {
+            /** @type {?} */
+            var results = [];
+            this._registry.forEach(function (mql, key) {
+                if (mql.matches) {
+                    results.push(key);
+                }
+            });
+            return results;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * For the specified mediaQuery?
      */
@@ -1643,14 +1688,14 @@ MockMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
     MockMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1828,14 +1873,14 @@ ServerMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to activate later */
+    /** Add a listener to our internal list to onMediaChange later */
     /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
     ServerMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
+     * Add a listener to our internal list to onMediaChange later
      * @param {?} listener
      * @return {?}
      */
@@ -1907,7 +1952,7 @@ ServerMediaQueryList = /** @class */ (function () {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to activate and deactivate breakpoints
+ * Also contains methods to onMediaChange and deactivate breakpoints
  */
 var ServerMatchMedia = /** @class */ (function (_super) {
     __extends(ServerMatchMedia, _super);
@@ -1990,24 +2035,6 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * For the specified MediaChange, make sure it contains the breakpoint alias
- * and suffix (if available).
- * @param {?} dest
- * @param {?} source
- * @return {?}
- */
-function mergeAlias(dest, source) {
-    return extendObject(dest || {}, source ? {
-        mqAlias: source.alias,
-        suffix: source.suffix
-    } : {});
-}
 
 /**
  * @fileoverview added by tsickle
@@ -2394,7 +2421,7 @@ function isPrintBreakPoint(bp) {
  *
  * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.media$.map(....).
+ * `.media$` with syntax like mediaObserver.asObservable().map(....).
  *
  * \@usage
  *
@@ -2406,15 +2433,15 @@ function isPrintBreakPoint(bp) {
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(mediaObserver: MediaObserver) {
+ *    constructor(media: MediaObserver) {
  *      const onChange = (change: MediaChange) => {
  *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. mediaObserver.media$.subscribe(onChange);
+ *      // e.g. media.asObservable().subscribe(onChange);
  *
- *      mediaObserver.media$()
+ *      media.asObservable()
  *        .pipe(
  *          filter((change: MediaChange) => true)   // silly noop filter
  *        ).subscribe(onChange);
@@ -2422,31 +2449,67 @@ function isPrintBreakPoint(bp) {
  *  }
  */
 var MediaObserver = /** @class */ (function () {
-    function MediaObserver(breakpoints, mediaWatcher, hook) {
+    function MediaObserver(breakpoints, matchMedia, hook) {
         this.breakpoints = breakpoints;
-        this.mediaWatcher = mediaWatcher;
+        this.matchMedia = matchMedia;
         this.hook = hook;
-        /**
-         * Whether to announce gt-<xxx> breakpoint activations
-         */
-        this.filterOverlaps = true;
-        this.media$ = this.watchActivations();
+        this._media$ = this.watchActivations();
     }
+    // ************************************************
+    // Public Methods
+    // ************************************************
     /**
-     * Test if specified query/alias is active.
+     * Observe changes to current activation 'list'
      */
     /**
-     * Test if specified query/alias is active.
+     * Observe changes to current activation 'list'
+     * @return {?}
+     */
+    MediaObserver.prototype.asObservable = /**
+     * Observe changes to current activation 'list'
+     * @return {?}
+     */
+    function () {
+        return this._media$;
+    };
+    /**
+     * Allow programmatic query to determine if specified query/alias is active.
+     */
+    /**
+     * Allow programmatic query to determine if specified query/alias is active.
      * @param {?} alias
      * @return {?}
      */
     MediaObserver.prototype.isActive = /**
-     * Test if specified query/alias is active.
+     * Allow programmatic query to determine if specified query/alias is active.
      * @param {?} alias
      * @return {?}
      */
     function (alias) {
-        return this.mediaWatcher.isActive(this.toMediaQuery(alias));
+        /** @type {?} */
+        var query = toMediaQuery(alias, this.breakpoints);
+        return this.matchMedia.isActive(query);
+    };
+    /**
+     * Subscribers to activation list can use this function to easily exclude overlaps
+     */
+    /**
+     * Subscribers to activation list can use this function to easily exclude overlaps
+     * @param {?} changes
+     * @return {?}
+     */
+    MediaObserver.prototype.excludeOverlaps = /**
+     * Subscribers to activation list can use this function to easily exclude overlaps
+     * @param {?} changes
+     * @return {?}
+     */
+    function (changes) {
+        var _this = this;
+        return changes.filter(function (change) {
+            /** @type {?} */
+            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
+            return !bp ? true : !bp.overlapping;
+        });
     };
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
@@ -2466,7 +2529,14 @@ var MediaObserver = /** @class */ (function () {
         return this.buildObservable(queries);
     };
     /**
-     * Prepare internal observable
+     * Only pass/announce activations (not de-activations)
+     *
+     * Since multiple-mediaQueries can be activation in a cycle,
+     * gather all current activations into a single list of changes to observers
+     *
+     * Inject associated (if any) alias information into the MediaChange event
+     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude print activations that do not have an associated mediaQuery
      *
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
@@ -2475,7 +2545,14 @@ var MediaObserver = /** @class */ (function () {
      * @return {?}
      */
     MediaObserver.prototype.buildObservable = /**
-     * Prepare internal observable
+     * Only pass/announce activations (not de-activations)
+     *
+     * Since multiple-mediaQueries can be activation in a cycle,
+     * gather all current activations into a single list of changes to observers
+     *
+     * Inject associated (if any) alias information into the MediaChange event
+     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude print activations that do not have an associated mediaQuery
      *
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
@@ -2485,56 +2562,40 @@ var MediaObserver = /** @class */ (function () {
      */
     function (mqList) {
         var _this = this;
+        /**
+             */
+        return this.matchMedia
+            .observe(this.hook.withPrintQuery(mqList))
+            .pipe(operators.filter(function (change) { return change.matches; }), operators.debounceTime(10), operators.switchMap(function (_) { return rxjs.of(_this.findAllActivations()); }));
+    };
+    /**
+     * Find all current activations and prepare single list of activations
+     * sorted by descending priority.
+     * @return {?}
+     */
+    MediaObserver.prototype.findAllActivations = /**
+     * Find all current activations and prepare single list of activations
+     * sorted by descending priority.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
         /** @type {?} */
-        var locator = this.breakpoints;
-        /** @type {?} */
-        var onlyActivations = function (change) { return change.matches; };
-        /** @type {?} */
-        var excludeUnknown = function (change) { return change.mediaQuery !== ''; };
-        /** @type {?} */
-        var excludeCustomPrints = function (change) { return !change.mediaQuery.startsWith('print'); };
-        /** @type {?} */
-        var excludeOverlaps = function (change) {
+        var mergeMQAlias = function (change) {
             /** @type {?} */
-            var bp = locator.findByQuery(change.mediaQuery);
-            return !bp ? true : !(_this.filterOverlaps && bp.overlapping);
+            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
+            return mergeAlias(change, bp);
         };
         /** @type {?} */
         var replaceWithPrintAlias = function (change) {
-            if (_this.hook.isPrintEvent(change)) {
-                // replace with aliased substitute (if configured)
-                return _this.hook.updateEvent(change);
-            }
-            /** @type {?} */
-            var bp = locator.findByQuery(change.mediaQuery);
-            return mergeAlias(change, bp);
+            return _this.hook.isPrintEvent(change) ? _this.hook.updateEvent(change) : change;
         };
-        /**
-             * Only pass/announce activations (not de-activations)
-             *
-             * Inject associated (if any) alias information into the MediaChange event
-             * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
-             * - Exclude print activations that do not have an associated mediaQuery
-             */
-        return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
-            .pipe(operators.filter(onlyActivations), operators.filter(excludeOverlaps), operators.map(replaceWithPrintAlias), operators.filter(excludeCustomPrints), operators.filter(excludeUnknown));
-    };
-    /**
-     * Find associated breakpoint (if any)
-     * @param {?} query
-     * @return {?}
-     */
-    MediaObserver.prototype.toMediaQuery = /**
-     * Find associated breakpoint (if any)
-     * @param {?} query
-     * @return {?}
-     */
-    function (query) {
-        /** @type {?} */
-        var locator = this.breakpoints;
-        /** @type {?} */
-        var bp = locator.findByAlias(query) || locator.findByQuery(query);
-        return bp ? bp.mediaQuery : query;
+        return this.matchMedia
+            .activations
+            .map(function (query) { return new MediaChange(true, query); })
+            .map(replaceWithPrintAlias)
+            .map(mergeMQAlias)
+            .sort(sortChangesByPriority);
     };
     MediaObserver.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -2548,6 +2609,30 @@ var MediaObserver = /** @class */ (function () {
     /** @nocollapse */ MediaObserver.ngInjectableDef = core.defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
+/**
+ * Find associated breakpoint (if any)
+ * @param {?} query
+ * @param {?} locator
+ * @return {?}
+ */
+function toMediaQuery(query, locator) {
+    /** @type {?} */
+    var bp = locator.findByAlias(query) || locator.findByQuery(query);
+    return bp ? bp.mediaQuery : query;
+}
+/**
+ * HOF to sort the breakpoints by priority
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortChangesByPriority(a, b) {
+    /** @type {?} */
+    var priorityA = a ? a.priority || 0 : 0;
+    /** @type {?} */
+    var priorityB = b ? b.priority || 0 : 0;
+    return priorityB - priorityA;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -3520,28 +3605,29 @@ var MediaMarshaller = /** @class */ (function () {
  * @param {?=} input
  * @return {?}
  */
-function initBuilderMap(map$$1, element, key, input) {
+function initBuilderMap(map, element, key, input) {
     if (input !== undefined) {
         /** @type {?} */
-        var oldMap = map$$1.get(element);
+        var oldMap = map.get(element);
         if (!oldMap) {
             oldMap = new Map();
-            map$$1.set(element, oldMap);
+            map.set(element, oldMap);
         }
         oldMap.set(key, input);
     }
 }
 
+exports.CoreModule = CoreModule;
 exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
 exports.CLASS_NAME = CLASS_NAME;
-exports.CoreModule = CoreModule;
 exports.MediaChange = MediaChange;
 exports.StylesheetMap = StylesheetMap;
 exports.DEFAULT_CONFIG = DEFAULT_CONFIG;
 exports.LAYOUT_CONFIG = LAYOUT_CONFIG;
 exports.SERVER_TOKEN = SERVER_TOKEN;
 exports.BREAKPOINT = BREAKPOINT;
+exports.mergeAlias = mergeAlias;
 exports.BaseDirective2 = BaseDirective2;
 exports.sortDescendingPriority = sortDescendingPriority;
 exports.sortAscendingPriority = sortAscendingPriority;
@@ -3556,6 +3642,7 @@ exports.MockMediaQueryList = MockMediaQueryList;
 exports.MockMatchMediaProvider = MockMatchMediaProvider;
 exports.ServerMediaQueryList = ServerMediaQueryList;
 exports.ServerMatchMedia = ServerMatchMedia;
+exports.sortChangesByPriority = sortChangesByPriority;
 exports.MediaObserver = MediaObserver;
 exports.StyleUtils = StyleUtils;
 exports.StyleBuilder = StyleBuilder;

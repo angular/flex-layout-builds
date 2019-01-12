@@ -8,7 +8,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/flex-layout/core'), require('@angular/cdk/coercion')) :
 	typeof define === 'function' && define.amd ? define('@angular/flex-layout/grid', ['exports', '@angular/core', '@angular/flex-layout/core', '@angular/cdk/coercion'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}, global.ng.flexLayout.grid = {}),global.ng.core,global.ng.flexLayout.core,global.ng.cdk.coercion));
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].grid = {}),global.ng.core,global.ng.flexLayout.core,global.ng.cdk.coercion));
 }(this, (function (exports,core,core$1,coercion) { 'use strict';
 
 /*! *****************************************************************************
@@ -1441,39 +1441,39 @@ var GridModule = /** @class */ (function () {
 }());
 
 exports.GridModule = GridModule;
-exports.ɵf2 = DefaultGridAlignColumnsDirective;
-exports.ɵe2 = GridAlignColumnsDirective;
-exports.ɵd2 = GridAlignColumnsStyleBuilder;
-exports.ɵi2 = DefaultGridAlignRowsDirective;
-exports.ɵh2 = GridAlignRowsDirective;
-exports.ɵg2 = GridAlignRowsStyleBuilder;
-exports.ɵl2 = DefaultGridAreaDirective;
-exports.ɵk2 = GridAreaDirective;
-exports.ɵj2 = GridAreaStyleBuilder;
-exports.ɵo2 = DefaultGridAreasDirective;
-exports.ɵn2 = GridAreasDirective;
-exports.ɵm2 = GridAreasStyleBuiler;
-exports.ɵr2 = DefaultGridAutoDirective;
-exports.ɵq2 = GridAutoDirective;
-exports.ɵp2 = GridAutoStyleBuilder;
-exports.ɵu2 = DefaultGridColumnDirective;
-exports.ɵt2 = GridColumnDirective;
-exports.ɵs2 = GridColumnStyleBuilder;
-exports.ɵx2 = DefaultGridColumnsDirective;
-exports.ɵw2 = GridColumnsDirective;
-exports.ɵv2 = GridColumnsStyleBuilder;
-exports.ɵba2 = DefaultGridGapDirective;
-exports.ɵz2 = GridGapDirective;
-exports.ɵy2 = GridGapStyleBuilder;
-exports.ɵc2 = DefaultGridAlignDirective;
-exports.ɵb2 = GridAlignDirective;
-exports.ɵa2 = GridAlignStyleBuilder;
-exports.ɵbd2 = DefaultGridRowDirective;
-exports.ɵbc2 = GridRowDirective;
-exports.ɵbb2 = GridRowStyleBuilder;
-exports.ɵbg2 = DefaultGridRowsDirective;
-exports.ɵbf2 = GridRowsDirective;
-exports.ɵbe2 = GridRowsStyleBuilder;
+exports.ɵf = DefaultGridAlignColumnsDirective;
+exports.ɵe = GridAlignColumnsDirective;
+exports.ɵd = GridAlignColumnsStyleBuilder;
+exports.ɵi = DefaultGridAlignRowsDirective;
+exports.ɵh = GridAlignRowsDirective;
+exports.ɵg = GridAlignRowsStyleBuilder;
+exports.ɵl = DefaultGridAreaDirective;
+exports.ɵk = GridAreaDirective;
+exports.ɵj = GridAreaStyleBuilder;
+exports.ɵo = DefaultGridAreasDirective;
+exports.ɵn = GridAreasDirective;
+exports.ɵm = GridAreasStyleBuiler;
+exports.ɵr = DefaultGridAutoDirective;
+exports.ɵq = GridAutoDirective;
+exports.ɵp = GridAutoStyleBuilder;
+exports.ɵu = DefaultGridColumnDirective;
+exports.ɵt = GridColumnDirective;
+exports.ɵs = GridColumnStyleBuilder;
+exports.ɵx = DefaultGridColumnsDirective;
+exports.ɵw = GridColumnsDirective;
+exports.ɵv = GridColumnsStyleBuilder;
+exports.ɵba = DefaultGridGapDirective;
+exports.ɵz = GridGapDirective;
+exports.ɵy = GridGapStyleBuilder;
+exports.ɵc = DefaultGridAlignDirective;
+exports.ɵb = GridAlignDirective;
+exports.ɵa = GridAlignStyleBuilder;
+exports.ɵbd = DefaultGridRowDirective;
+exports.ɵbc = GridRowDirective;
+exports.ɵbb = GridRowStyleBuilder;
+exports.ɵbg = DefaultGridRowsDirective;
+exports.ɵbf = GridRowsDirective;
+exports.ɵbe = GridRowsStyleBuilder;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

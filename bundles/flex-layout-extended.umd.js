@@ -8,7 +8,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/flex-layout/core'), require('@angular/cdk/coercion'), require('rxjs/operators'), require('@angular/platform-browser')) :
 	typeof define === 'function' && define.amd ? define('@angular/flex-layout/extended', ['exports', '@angular/core', '@angular/common', '@angular/flex-layout/core', '@angular/cdk/coercion', 'rxjs/operators', '@angular/platform-browser'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}, global.ng.flexLayout.extended = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.cdk.coercion,global.rxjs.operators,global.ng.platformBrowser));
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].extended = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.cdk.coercion,global.rxjs.operators,global.ng.platformBrowser));
 }(this, (function (exports,core,common,core$1,coercion,operators,platformBrowser) { 'use strict';
 
 /*! *****************************************************************************
