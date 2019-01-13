@@ -3340,6 +3340,35 @@ var MediaMarshaller = /** @class */ (function () {
         }
     };
     /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param element
+     * @param key
+     */
+    /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    MediaMarshaller.prototype.triggerUpdate = /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    function (element, key) {
+        var _this = this;
+        /** @type {?} */
+        var bpMap = this.elementMap.get(element);
+        if (bpMap) {
+            /** @type {?} */
+            var valueMap = this.getActivatedValues(bpMap, key);
+            if (valueMap) {
+                valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
+            }
+        }
+    };
+    /**
      * Cross-reference for HTMLElement with directive key
      * @param {?} element
      * @param {?} key
