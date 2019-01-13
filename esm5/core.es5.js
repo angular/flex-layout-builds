@@ -2354,7 +2354,7 @@ function isPrintBreakPoint(bp) {
  *
  * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.asObservable().map(....).
+ * `.media$` with syntax like mediaObserver.media$.map(....).
  *
  * \@usage
  *
@@ -2366,15 +2366,15 @@ function isPrintBreakPoint(bp) {
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(media: MediaObserver) {
+ *    constructor(mediaObserver: MediaObserver) {
  *      const onChange = (change: MediaChange) => {
  *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. media.asObservable().subscribe(onChange);
+ *      // e.g. mediaObserver.media$.subscribe(onChange);
  *
- *      media.asObservable()
+ *      mediaObserver.media$()
  *        .pipe(
  *          filter((change: MediaChange) => true)   // silly noop filter
  *        ).subscribe(onChange);
@@ -2390,35 +2390,8 @@ var MediaObserver = /** @class */ (function () {
          * Whether to announce gt-<xxx> breakpoint activations
          */
         this.filterOverlaps = true;
-        this._media$ = this.watchActivations();
+        this.media$ = this.watchActivations();
     }
-    Object.defineProperty(MediaObserver.prototype, "media$", {
-        /**
-         * @deprecated Use `asObservable()` instead.
-         * @deletion-target v7.0.0-beta.23
-         * @breaking-change 7.0.0-beta.23
-         */
-        get: /**
-         * @deprecated Use `asObservable()` instead.
-         * \@deletion-target v7.0.0-beta.23
-         * \@breaking-change 7.0.0-beta.23
-         * @return {?}
-         */
-        function () {
-            return this._media$;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @return {?}
-     */
-    MediaObserver.prototype.asObservable = /**
-     * @return {?}
-     */
-    function () {
-        return this._media$;
-    };
     /**
      * Test if specified query/alias is active.
      */

@@ -8,7 +8,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('rxjs'), require('rxjs/operators')) :
 	typeof define === 'function' && define.amd ? define('@angular/flex-layout/core', ['exports', '@angular/core', '@angular/common', 'rxjs', 'rxjs/operators'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}, global.ng['flex-layout'].core = {}),global.ng.core,global.ng.common,global.rxjs,global.rxjs.operators));
+	(factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}, global.ng.flexLayout.core = {}),global.ng.core,global.ng.common,global.rxjs,global.rxjs.operators));
 }(this, (function (exports,core,common,rxjs,operators) { 'use strict';
 
 /*! *****************************************************************************
@@ -2394,7 +2394,7 @@ function isPrintBreakPoint(bp) {
  *
  * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.asObservable().map(....).
+ * `.media$` with syntax like mediaObserver.media$.map(....).
  *
  * \@usage
  *
@@ -2406,15 +2406,15 @@ function isPrintBreakPoint(bp) {
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(media: MediaObserver) {
+ *    constructor(mediaObserver: MediaObserver) {
  *      const onChange = (change: MediaChange) => {
  *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. media.asObservable().subscribe(onChange);
+ *      // e.g. mediaObserver.media$.subscribe(onChange);
  *
- *      media.asObservable()
+ *      mediaObserver.media$()
  *        .pipe(
  *          filter((change: MediaChange) => true)   // silly noop filter
  *        ).subscribe(onChange);
@@ -2430,35 +2430,8 @@ var MediaObserver = /** @class */ (function () {
          * Whether to announce gt-<xxx> breakpoint activations
          */
         this.filterOverlaps = true;
-        this._media$ = this.watchActivations();
+        this.media$ = this.watchActivations();
     }
-    Object.defineProperty(MediaObserver.prototype, "media$", {
-        /**
-         * @deprecated Use `asObservable()` instead.
-         * @deletion-target v7.0.0-beta.23
-         * @breaking-change 7.0.0-beta.23
-         */
-        get: /**
-         * @deprecated Use `asObservable()` instead.
-         * \@deletion-target v7.0.0-beta.23
-         * \@breaking-change 7.0.0-beta.23
-         * @return {?}
-         */
-        function () {
-            return this._media$;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * @return {?}
-     */
-    MediaObserver.prototype.asObservable = /**
-     * @return {?}
-     */
-    function () {
-        return this._media$;
-    };
     /**
      * Test if specified query/alias is active.
      */
