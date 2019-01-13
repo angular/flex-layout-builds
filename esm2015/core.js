@@ -911,7 +911,7 @@ class MatchMedia {
     observe(mqList, filterOthers = false) {
         if (mqList) {
             /** @type {?} */
-            const matchMedia$ = this._observable$.pipe(filter((change) => {
+            const mediaController$ = this._observable$.pipe(filter((change) => {
                 return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
             }));
             /** @type {?} */
@@ -928,7 +928,7 @@ class MatchMedia {
                 }
                 observer.complete();
             });
-            return merge(registration$, matchMedia$);
+            return merge(registration$, mediaController$);
         }
         return this._observable$;
     }

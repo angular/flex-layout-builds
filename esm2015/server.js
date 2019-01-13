@@ -19,11 +19,11 @@ import { NgModule } from '@angular/core';
  * retrieve the associated stylings from the virtual stylesheet
  * @param {?} serverSheet the virtual stylesheet that stores styles for each
  *        element
- * @param {?} matchMedia the service to activate/deactivate breakpoints
+ * @param {?} mediaController the service to activate/deactivate breakpoints
  * @param {?} breakpoints the registered breakpoints to activate/deactivate
  * @return {?}
  */
-function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
+function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints) {
     /** @type {?} */
     const classMap = new Map();
     /** @type {?} */
@@ -32,13 +32,13 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
     let styleText = generateCss(defaultStyles, 'all', classMap);
     [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
         serverSheet.clearStyles();
-        (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
+        (/** @type {?} */ (mediaController)).activateBreakpoint(bp);
         /** @type {?} */
         const stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
-        (/** @type {?} */ (matchMedia)).deactivateBreakpoint(breakpoints[i]);
+        (/** @type {?} */ (mediaController)).deactivateBreakpoint(breakpoints[i]);
     });
     return styleText;
 }
@@ -46,17 +46,17 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  * @param {?} serverSheet
- * @param {?} matchMedia
+ * @param {?} mediaController
  * @param {?} _document
  * @param {?} breakpoints
  * @return {?}
  */
-function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints) {
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints) {
     return () => {
         /** @type {?} */
         const styleTag = _document.createElement('style');
         /** @type {?} */
-        const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+        const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints);
         styleTag.classList.add(`${CLASS_NAME}ssr`);
         styleTag.textContent = styleText; /** @type {?} */
         ((_document.head)).appendChild(styleTag);

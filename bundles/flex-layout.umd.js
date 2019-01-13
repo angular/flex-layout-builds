@@ -1151,7 +1151,7 @@ var MatchMedia = /** @class */ (function () {
         if (filterOthers === void 0) { filterOthers = false; }
         if (mqList) {
             /** @type {?} */
-            var matchMedia$ = this._observable$.pipe(operators.filter(function (change) {
+            var mediaController$ = this._observable$.pipe(operators.filter(function (change) {
                 return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
             }));
             /** @type {?} */
@@ -1168,7 +1168,7 @@ var MatchMedia = /** @class */ (function () {
                 }
                 observer.complete();
             });
-            return rxjs.merge(registration$, matchMedia$);
+            return rxjs.merge(registration$, mediaController$);
         }
         return this._observable$;
     };
@@ -7340,7 +7340,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-f4eb901');
+var VERSION = new core.Version('7.0.0-beta.23-464a43c');
 
 /**
  * @fileoverview added by tsickle

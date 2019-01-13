@@ -1151,7 +1151,7 @@ var MatchMedia = /** @class */ (function () {
         if (filterOthers === void 0) { filterOthers = false; }
         if (mqList) {
             /** @type {?} */
-            var matchMedia$ = this._observable$.pipe(operators.filter(function (change) {
+            var mediaController$ = this._observable$.pipe(operators.filter(function (change) {
                 return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
             }));
             /** @type {?} */
@@ -1168,7 +1168,7 @@ var MatchMedia = /** @class */ (function () {
                 }
                 observer.complete();
             });
-            return rxjs.merge(registration$, matchMedia$);
+            return rxjs.merge(registration$, mediaController$);
         }
         return this._observable$;
     };
