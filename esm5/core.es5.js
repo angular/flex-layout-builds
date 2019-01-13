@@ -527,11 +527,7 @@ BaseDirective2 = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        /** @type {?} */
-        var val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        if (val !== undefined) {
-            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
-        }
+        this.marshal.triggerUpdate(this.nativeElement, this.DIRECTIVE_KEY);
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -3364,7 +3360,12 @@ var MediaMarshaller = /** @class */ (function () {
             /** @type {?} */
             var valueMap = this.getActivatedValues(bpMap, key);
             if (valueMap) {
-                valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
+                if (key) {
+                    this.updateElement(element, key, valueMap.get(key));
+                }
+                else {
+                    valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
+                }
             }
         }
     };
