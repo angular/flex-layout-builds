@@ -1648,14 +1648,14 @@ MockMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to onMediaChange later */
+    /** Add a listener to our internal list to activate later */
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
     MockMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1833,14 +1833,14 @@ ServerMediaQueryList = /** @class */ (function () {
         }
         return this;
     };
-    /** Add a listener to our internal list to onMediaChange later */
+    /** Add a listener to our internal list to activate later */
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
     ServerMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1912,7 +1912,7 @@ ServerMediaQueryList = /** @class */ (function () {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to onMediaChange and deactivate breakpoints
+ * Also contains methods to activate and deactivate breakpoints
  */
 var ServerMatchMedia = /** @class */ (function (_super) {
     __extends(ServerMatchMedia, _super);

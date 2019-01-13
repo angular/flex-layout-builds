@@ -1338,7 +1338,7 @@ class MockMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1463,7 +1463,7 @@ class ServerMediaQueryList {
         return this;
     }
     /**
-     * Add a listener to our internal list to onMediaChange later
+     * Add a listener to our internal list to activate later
      * @param {?} listener
      * @return {?}
      */
@@ -1512,7 +1512,7 @@ class ServerMediaQueryList {
  * Special server-only implementation of MatchMedia that uses the above
  * ServerMediaQueryList as its internal representation
  *
- * Also contains methods to onMediaChange and deactivate breakpoints
+ * Also contains methods to activate and deactivate breakpoints
  */
 class ServerMatchMedia extends MatchMedia {
     /**
