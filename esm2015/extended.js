@@ -50,7 +50,7 @@ class ImgSrcDirective extends BaseDirective2 {
         this.defaultSrc = '';
         this.styleCache = imgSrcCache;
         this.init();
-        this.setValue(this.nativeElement.getAttribute('src') || '', '');
+        this.setValue('', this.nativeElement.getAttribute('src') || '');
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.setAttribute('src', '');
         }
@@ -61,7 +61,7 @@ class ImgSrcDirective extends BaseDirective2 {
      */
     set src(val) {
         this.defaultSrc = val;
-        this.setValue(this.defaultSrc, '');
+        this.setValue('', this.defaultSrc);
     }
     /**
      * Use the [responsively] activated input value to update
@@ -70,17 +70,16 @@ class ImgSrcDirective extends BaseDirective2 {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
-     * @param {?=} value
      * @return {?}
      */
-    updateWithValue(value) {
+    updateWithValue() {
         /** @type {?} */
-        const url = value || this.defaultSrc;
+        let url = this.activatedValue || this.defaultSrc;
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.addStyles(url);
         }
         else {
-            this.nativeElement.setAttribute('src', url);
+            this.nativeElement.setAttribute('src', String(url));
         }
     }
 }
@@ -366,7 +365,6 @@ class ShowHideDirective extends BaseDirective2 {
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
-        this.marshal.triggerUpdate(/** @type {?} */ ((this.parentElement)), 'layout-gap');
     }
 }
 /** @nocollapse */

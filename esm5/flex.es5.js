@@ -257,12 +257,12 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
         }
         else {
             /** @type {?} */
-            var lastItem = /** @type {?} */ ((items.pop()));
+            var lastItem = items.pop();
             /** @type {?} */
             var gapCss = buildGapCSS(gapValue, parent);
             this._styler.applyStyleToElements(gapCss, items);
             // Clear all gaps for all visible elements
-            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
+            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [/** @type {?} */ ((lastItem))]);
         }
     };
     LayoutGapStyleBuilder.decorators = [

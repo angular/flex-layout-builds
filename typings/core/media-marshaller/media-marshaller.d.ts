@@ -84,12 +84,6 @@ export declare class MediaMarshaller {
      * @param element
      */
     releaseElement(element: HTMLElement): void;
-    /**
-     * trigger an update for a given element and key (e.g. layout)
-     * @param element
-     * @param key
-     */
-    triggerUpdate(element: HTMLElement, key?: string): void;
     /** Cross-reference for HTMLElement with directive key */
     private buildElementKeyMap;
     /**

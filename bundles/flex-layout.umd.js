@@ -567,7 +567,11 @@ BaseDirective2 = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        this.marshal.triggerUpdate(this.nativeElement, this.DIRECTIVE_KEY);
+        /** @type {?} */
+        var val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
+        if (val !== undefined) {
+            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+        }
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -3376,40 +3380,6 @@ var MediaMarshaller = /** @class */ (function () {
         }
     };
     /**
-     * trigger an update for a given element and key (e.g. layout)
-     * @param element
-     * @param key
-     */
-    /**
-     * trigger an update for a given element and key (e.g. layout)
-     * @param {?} element
-     * @param {?=} key
-     * @return {?}
-     */
-    MediaMarshaller.prototype.triggerUpdate = /**
-     * trigger an update for a given element and key (e.g. layout)
-     * @param {?} element
-     * @param {?=} key
-     * @return {?}
-     */
-    function (element, key) {
-        var _this = this;
-        /** @type {?} */
-        var bpMap = this.elementMap.get(element);
-        if (bpMap) {
-            /** @type {?} */
-            var valueMap = this.getActivatedValues(bpMap, key);
-            if (valueMap) {
-                if (key) {
-                    this.updateElement(element, key, valueMap.get(key));
-                }
-                else {
-                    valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
-                }
-            }
-        }
-    };
-    /**
      * Cross-reference for HTMLElement with directive key
      * @param {?} element
      * @param {?} key
@@ -3602,7 +3572,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         _this.defaultSrc = '';
         _this.styleCache = imgSrcCache;
         _this.init();
-        _this.setValue(_this.nativeElement.getAttribute('src') || '', '');
+        _this.setValue('', _this.nativeElement.getAttribute('src') || '');
         if (common.isPlatformServer(_this.platformId) && _this.serverModuleLoaded) {
             _this.nativeElement.setAttribute('src', '');
         }
@@ -3615,7 +3585,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
          */
         function (val) {
             this.defaultSrc = val;
-            this.setValue(this.defaultSrc, '');
+            this.setValue('', this.defaultSrc);
         },
         enumerable: true,
         configurable: true
@@ -3635,7 +3605,6 @@ var ImgSrcDirective = /** @class */ (function (_super) {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
-     * @param {?=} value
      * @return {?}
      */
     ImgSrcDirective.prototype.updateWithValue = /**
@@ -3645,17 +3614,16 @@ var ImgSrcDirective = /** @class */ (function (_super) {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
-     * @param {?=} value
      * @return {?}
      */
-    function (value) {
+    function () {
         /** @type {?} */
-        var url = value || this.defaultSrc;
+        var url = this.activatedValue || this.defaultSrc;
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.addStyles(url);
         }
         else {
-            this.nativeElement.setAttribute('src', url);
+            this.nativeElement.setAttribute('src', String(url));
         }
     };
     /** @nocollapse */
@@ -4007,7 +3975,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
-        this.marshal.triggerUpdate(/** @type {?} */ ((this.parentElement)), 'layout-gap');
     };
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
@@ -4610,12 +4577,12 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
         }
         else {
             /** @type {?} */
-            var lastItem = /** @type {?} */ ((items.pop()));
+            var lastItem = items.pop();
             /** @type {?} */
             var gapCss = buildGapCSS(gapValue, parent);
             this._styler.applyStyleToElements(gapCss, items);
             // Clear all gaps for all visible elements
-            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
+            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [/** @type {?} */ ((lastItem))]);
         }
     };
     LayoutGapStyleBuilder.decorators = [
@@ -7373,7 +7340,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-002eb66');
+var VERSION = new core.Version('7.0.0-beta.23-001fc91');
 
 /**
  * @fileoverview added by tsickle
