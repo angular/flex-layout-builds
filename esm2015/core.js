@@ -434,11 +434,7 @@ class BaseDirective2 {
      * @return {?}
      */
     triggerUpdate() {
-        /** @type {?} */
-        const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        if (val !== undefined) {
-            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
-        }
+        this.marshal.triggerUpdate(this.nativeElement, this.DIRECTIVE_KEY);
     }
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -2555,6 +2551,28 @@ class MediaMarshaller {
         if (elementMap) {
             elementMap.forEach((_, s) => elementMap.delete(s));
             this.elementMap.delete(element);
+        }
+    }
+    /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    triggerUpdate(element, key) {
+        /** @type {?} */
+        const bpMap = this.elementMap.get(element);
+        if (bpMap) {
+            /** @type {?} */
+            const valueMap = this.getActivatedValues(bpMap, key);
+            if (valueMap) {
+                if (key) {
+                    this.updateElement(element, key, valueMap.get(key));
+                }
+                else {
+                    valueMap.forEach((v, k) => this.updateElement(element, k, v));
+                }
+            }
         }
     }
     /**

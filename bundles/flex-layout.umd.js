@@ -567,11 +567,7 @@ BaseDirective2 = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        /** @type {?} */
-        var val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        if (val !== undefined) {
-            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
-        }
+        this.marshal.triggerUpdate(this.nativeElement, this.DIRECTIVE_KEY);
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -3380,6 +3376,40 @@ var MediaMarshaller = /** @class */ (function () {
         }
     };
     /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param element
+     * @param key
+     */
+    /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    MediaMarshaller.prototype.triggerUpdate = /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    function (element, key) {
+        var _this = this;
+        /** @type {?} */
+        var bpMap = this.elementMap.get(element);
+        if (bpMap) {
+            /** @type {?} */
+            var valueMap = this.getActivatedValues(bpMap, key);
+            if (valueMap) {
+                if (key) {
+                    this.updateElement(element, key, valueMap.get(key));
+                }
+                else {
+                    valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
+                }
+            }
+        }
+    };
+    /**
      * Cross-reference for HTMLElement with directive key
      * @param {?} element
      * @param {?} key
@@ -3975,6 +4005,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
+        this.marshal.triggerUpdate(/** @type {?} */ ((this.parentElement)), 'layout-gap');
     };
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
@@ -4577,12 +4608,12 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
         }
         else {
             /** @type {?} */
-            var lastItem = items.pop();
+            var lastItem = /** @type {?} */ ((items.pop()));
             /** @type {?} */
             var gapCss = buildGapCSS(gapValue, parent);
             this._styler.applyStyleToElements(gapCss, items);
             // Clear all gaps for all visible elements
-            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [/** @type {?} */ ((lastItem))]);
+            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
         }
     };
     LayoutGapStyleBuilder.decorators = [
@@ -7340,7 +7371,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-f4eb901');
+var VERSION = new core.Version('7.0.0-beta.23-0eccec4');
 
 /**
  * @fileoverview added by tsickle

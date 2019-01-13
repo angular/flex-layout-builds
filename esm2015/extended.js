@@ -365,6 +365,7 @@ class ShowHideDirective extends BaseDirective2 {
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
+        this.marshal.triggerUpdate(/** @type {?} */ ((this.parentElement)), 'layout-gap');
     }
 }
 /** @nocollapse */

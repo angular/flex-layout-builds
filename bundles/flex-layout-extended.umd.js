@@ -494,6 +494,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
+        this.marshal.triggerUpdate(/** @type {?} */ ((this.parentElement)), 'layout-gap');
     };
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
