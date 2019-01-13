@@ -3091,14 +3091,12 @@ var MediaMarshaller = /** @class */ (function () {
             if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
-                // logBreakpoint(mc, bp);
                 this.updateStyles();
             }
             else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
                 // Remove the breakpoint when it's deactivated
                 this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
-                // logBreakpoint(mc, bp);
                 this.updateStyles();
             }
         }
@@ -3908,7 +3906,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
                 if (inputKey[0] === 'fxHide') {
                     shouldShow = !shouldShow;
                 }
-                // console.log(`ShowHideDirective::setValue(${shouldShow}, ${bp})`);
                 _this.setValue(shouldShow, bp);
             }
         });
@@ -7343,7 +7340,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-1e704eb');
+var VERSION = new core.Version('7.0.0-beta.23-e0b3abf');
 
 /**
  * @fileoverview added by tsickle

@@ -325,7 +325,6 @@ class ShowHideDirective extends BaseDirective2 {
                 if (inputKey[0] === 'fxHide') {
                     shouldShow = !shouldShow;
                 }
-                // console.log(`ShowHideDirective::setValue(${shouldShow}, ${bp})`);
                 this.setValue(shouldShow, bp);
             }
         });
