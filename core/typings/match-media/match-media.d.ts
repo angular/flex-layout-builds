@@ -25,6 +25,10 @@ export declare class MatchMedia {
     protected _observable$: Observable<MediaChange>;
     constructor(_zone: NgZone, _platformId: Object, _document: any);
     /**
+     * Publish list of all current activations
+     */
+    readonly activations: string[];
+    /**
      * For the specified mediaQuery?
      */
     isActive(mediaQuery: string): boolean;

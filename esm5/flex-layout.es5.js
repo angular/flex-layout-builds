@@ -9,7 +9,7 @@ import { Version, Inject, NgModule, Optional, PLATFORM_ID } from '@angular/core'
 import { __assign } from 'tslib';
 import { isPlatformServer } from '@angular/common';
 import { SERVER_TOKEN, LAYOUT_CONFIG, DEFAULT_CONFIG, BREAKPOINT } from '@angular/flex-layout/core';
-export { removeStyles, BROWSER_PROVIDER, CLASS_NAME, CoreModule, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook } from '@angular/flex-layout/core';
+export { CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, sortChangesByPriority, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook } from '@angular/flex-layout/core';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, DefaultStyleDirective } from '@angular/flex-layout/extended';
 import { FlexModule } from '@angular/flex-layout/flex';
@@ -24,7 +24,7 @@ export { ɵf2, ɵe2, ɵd2, ɵi2, ɵh2, ɵg2, ɵl2, ɵk2, ɵj2, ɵo2, ɵn2, ɵm2,
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new Version('7.0.0-beta.23-ca4c03c');
+var VERSION = new Version('7.0.0-beta.23-8757805');
 
 /**
  * @fileoverview added by tsickle

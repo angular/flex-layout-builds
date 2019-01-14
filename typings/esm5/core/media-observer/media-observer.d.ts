@@ -4,21 +4,19 @@ import { MatchMedia } from '../match-media/match-media';
 import { PrintHook } from '../media-marshaller/print-hook';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 /**
- * Class internalizes a MatchMedia service and exposes an Observable interface.
-
- * This exposes an Observable with a feature to subscribe to mediaQuery
- * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
- * currently active.
+ * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
+ * if a mediaQuery is currently activated.
  *
- * !! Only mediaChange activations (not de-activations) are announced by the MediaObserver
+ * Since a breakpoint change will first deactivate 1...n mediaQueries and then possibly activate
+ * 1..n mediaQueries, the MediaObserver will debounce notifications and report ALL *activations*
+ * in 1 event notification. The reported activations will be sorted in descending priority order.
  *
  * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
  * notification. For custom mediaQuery notifications, alias information will not be injected and
  * those fields will be ''.
  *
- * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
- * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.media$.map(....).
+ * Note: Developers should note that only mediaChange activations (not de-activations)
+ *       are announced by the MediaObserver.
  *
  *  @usage
  *
@@ -31,34 +29,39 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
  *    status: string = '';
  *
  *    constructor(mediaObserver: MediaObserver) {
- *      const onChange = (change: MediaChange) => {
- *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
- *      };
+ *      const media$ = mediaObserver.asObservable().pipe(
+ *        filter((changes: MediaChange[]) => true)   // silly noop filter
+ *      );
  *
- *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. mediaObserver.media$.subscribe(onChange);
+ *      media$.subscribe((changes: MediaChange[]) => {
+ *        let status = '';
+ *        changes.forEach( change => {
+ *          status += `'${change.mqAlias}' = (${change.mediaQuery}) <br/>` ;
+ *        });
+ *        this.status = status;
+ *     });
  *
- *      mediaObserver.media$()
- *        .pipe(
- *          filter((change: MediaChange) => true)   // silly noop filter
- *        ).subscribe(onChange);
  *    }
  *  }
  */
 export declare class MediaObserver {
     protected breakpoints: BreakPointRegistry;
-    protected mediaWatcher: MatchMedia;
+    protected matchMedia: MatchMedia;
     protected hook: PrintHook;
-    /**
-     * Whether to announce gt-<xxx> breakpoint activations
-     */
+    /** Filter MediaChange notifications for overlapping breakpoints */
     filterOverlaps: boolean;
-    readonly media$: Observable<MediaChange>;
-    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia, hook: PrintHook);
+    constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);
     /**
-     * Test if specified query/alias is active.
+     * Observe changes to current activation 'list'
+     */
+    asObservable(): Observable<MediaChange[]>;
+    /**
+     * Allow programmatic query to determine if specified query/alias is active.
      */
     isActive(alias: string): boolean;
+    /**
+     * Subscribers to activation list can use this function to easily exclude overlaps
+     */
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
      * This is needed so subscribers can be auto-notified of all standard, registered
@@ -66,7 +69,14 @@ export declare class MediaObserver {
      */
     private watchActivations;
     /**
-     * Prepare internal observable
+     * Only pass/announce activations (not de-activations)
+     *
+     * Since multiple-mediaQueries can be activation in a cycle,
+     * gather all current activations into a single list of changes to observers
+     *
+     * Inject associated (if any) alias information into the MediaChange event
+     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude print activations that do not have an associated mediaQuery
      *
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
@@ -74,7 +84,11 @@ export declare class MediaObserver {
      */
     private buildObservable;
     /**
-     * Find associated breakpoint (if any)
+     * Find all current activations and prepare single list of activations
+     * sorted by descending priority.
      */
-    private toMediaQuery;
+    private findAllActivations;
+    private _media$;
 }
+/** HOF to sort the breakpoints by priority */
+export declare function sortChangesByPriority(a: MediaChange, b: MediaChange): number;
