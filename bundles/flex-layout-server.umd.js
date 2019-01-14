@@ -20,11 +20,11 @@
  * retrieve the associated stylings from the virtual stylesheet
  * @param {?} serverSheet the virtual stylesheet that stores styles for each
  *        element
- * @param {?} matchMedia the service to activate/deactivate breakpoints
+ * @param {?} mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param {?} breakpoints the registered breakpoints to activate/deactivate
  * @return {?}
  */
-function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
+function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints) {
     /** @type {?} */
     var classMap = new Map();
     /** @type {?} */
@@ -33,13 +33,13 @@ function generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints) {
     var styleText = generateCss(defaultStyles, 'all', classMap);
     breakpoints.slice().sort(core.sortAscendingPriority).forEach(function (bp, i) {
         serverSheet.clearStyles();
-        (/** @type {?} */ (matchMedia)).activateBreakpoint(bp);
+        (/** @type {?} */ (mediaController)).activateBreakpoint(bp);
         /** @type {?} */
         var stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
-        (/** @type {?} */ (matchMedia)).deactivateBreakpoint(breakpoints[i]);
+        (/** @type {?} */ (mediaController)).deactivateBreakpoint(breakpoints[i]);
     });
     return styleText;
 }
