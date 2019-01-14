@@ -48,6 +48,12 @@ export declare class MediaObserver {
     protected breakpoints: BreakPointRegistry;
     protected matchMedia: MatchMedia;
     protected hook: PrintHook;
+    /**
+     * @deprecated Use `asObservable()` instead.
+     * @deletion-target v7.0.0-beta.24
+     * @breaking-change 7.0.0-beta.24
+     */
+    readonly media$: Observable<MediaChange[]>;
     /** Filter MediaChange notifications for overlapping breakpoints */
     filterOverlaps: boolean;
     constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);

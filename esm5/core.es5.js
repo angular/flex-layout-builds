@@ -2415,6 +2415,24 @@ var MediaObserver = /** @class */ (function () {
         this.filterOverlaps = false;
         this._media$ = this.watchActivations();
     }
+    Object.defineProperty(MediaObserver.prototype, "media$", {
+        /**
+         * @deprecated Use `asObservable()` instead.
+         * @deletion-target v7.0.0-beta.24
+         * @breaking-change 7.0.0-beta.24
+         */
+        get: /**
+         * @deprecated Use `asObservable()` instead.
+         * \@deletion-target v7.0.0-beta.24
+         * \@breaking-change 7.0.0-beta.24
+         * @return {?}
+         */
+        function () {
+            return this._media$;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // ************************************************
     // Public Methods
     // ************************************************

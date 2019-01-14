@@ -2455,6 +2455,24 @@ var MediaObserver = /** @class */ (function () {
         this.filterOverlaps = false;
         this._media$ = this.watchActivations();
     }
+    Object.defineProperty(MediaObserver.prototype, "media$", {
+        /**
+         * @deprecated Use `asObservable()` instead.
+         * @deletion-target v7.0.0-beta.24
+         * @breaking-change 7.0.0-beta.24
+         */
+        get: /**
+         * @deprecated Use `asObservable()` instead.
+         * \@deletion-target v7.0.0-beta.24
+         * \@breaking-change 7.0.0-beta.24
+         * @return {?}
+         */
+        function () {
+            return this._media$;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // ************************************************
     // Public Methods
     // ************************************************
@@ -7455,7 +7473,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-8757805');
+var VERSION = new core.Version('7.0.0-beta.23-a8edda0');
 
 /**
  * @fileoverview added by tsickle

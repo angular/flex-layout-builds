@@ -1879,6 +1879,15 @@ class MediaObserver {
         this._media$ = this.watchActivations();
     }
     /**
+     * @deprecated Use `asObservable()` instead.
+     * \@deletion-target v7.0.0-beta.24
+     * \@breaking-change 7.0.0-beta.24
+     * @return {?}
+     */
+    get media$() {
+        return this._media$;
+    }
+    /**
      * Observe changes to current activation 'list'
      * @return {?}
      */
