@@ -49,6 +49,8 @@ export declare class MediaObserver {
     protected breakpoints: BreakPointRegistry;
     protected matchMedia: MatchMedia;
     protected hook: PrintHook;
+    /** Filter MediaChange notifications for overlapping breakpoints */
+    filterOverlaps: boolean;
     constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);
     /**
      * Observe changes to current activation 'list'
@@ -61,7 +63,6 @@ export declare class MediaObserver {
     /**
      * Subscribers to activation list can use this function to easily exclude overlaps
      */
-    excludeOverlaps(changes: MediaChange[]): MediaChange[];
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
      * This is needed so subscribers can be auto-notified of all standard, registered

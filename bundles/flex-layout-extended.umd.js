@@ -91,7 +91,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         _this.defaultSrc = '';
         _this.styleCache = imgSrcCache;
         _this.init();
-        _this.setValue('', _this.nativeElement.getAttribute('src') || '');
+        _this.setValue(_this.nativeElement.getAttribute('src') || '', '');
         if (common.isPlatformServer(_this.platformId) && _this.serverModuleLoaded) {
             _this.nativeElement.setAttribute('src', '');
         }
@@ -104,7 +104,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
          */
         function (val) {
             this.defaultSrc = val;
-            this.setValue('', this.defaultSrc);
+            this.setValue(this.defaultSrc, '');
         },
         enumerable: true,
         configurable: true
@@ -124,6 +124,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
+     * @param {?=} value
      * @return {?}
      */
     ImgSrcDirective.prototype.updateWithValue = /**
@@ -133,16 +134,17 @@ var ImgSrcDirective = /** @class */ (function (_super) {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
+     * @param {?=} value
      * @return {?}
      */
-    function () {
+    function (value) {
         /** @type {?} */
-        var url = this.activatedValue || this.defaultSrc;
+        var url = value || this.defaultSrc;
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.addStyles(url);
         }
         else {
-            this.nativeElement.setAttribute('src', String(url));
+            this.nativeElement.setAttribute('src', url);
         }
     };
     /** @nocollapse */
@@ -494,6 +496,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
+        this.marshal.triggerUpdate(/** @type {?} */ ((this.parentElement)), 'layout-gap');
     };
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [

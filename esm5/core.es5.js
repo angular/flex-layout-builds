@@ -9,7 +9,7 @@ import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionTok
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { __assign, __extends } from 'tslib';
 import { Subject, BehaviorSubject, Observable, merge, of } from 'rxjs';
-import { filter, debounceTime, switchMap, tap } from 'rxjs/operators';
+import { filter, debounceTime, map, switchMap, tap } from 'rxjs/operators';
 
 /**
  * @fileoverview added by tsickle
@@ -551,11 +551,7 @@ BaseDirective2 = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        /** @type {?} */
-        var val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        if (val !== undefined) {
-            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
-        }
+        this.marshal.triggerUpdate(this.nativeElement, this.DIRECTIVE_KEY);
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -1154,7 +1150,7 @@ var MatchMedia = /** @class */ (function () {
     function (mqList, filterOthers) {
         var _this = this;
         if (filterOthers === void 0) { filterOthers = false; }
-        if (mqList) {
+        if (mqList && mqList.length) {
             /** @type {?} */
             var matchMedia$ = this._observable$.pipe(filter(function (change) {
                 return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
@@ -2413,6 +2409,10 @@ var MediaObserver = /** @class */ (function () {
         this.breakpoints = breakpoints;
         this.matchMedia = matchMedia;
         this.hook = hook;
+        /**
+         * Filter MediaChange notifications for overlapping breakpoints
+         */
+        this.filterOverlaps = false;
         this._media$ = this.watchActivations();
     }
     // ************************************************
@@ -2449,27 +2449,6 @@ var MediaObserver = /** @class */ (function () {
         /** @type {?} */
         var query = toMediaQuery(alias, this.breakpoints);
         return this.matchMedia.isActive(query);
-    };
-    /**
-     * Subscribers to activation list can use this function to easily exclude overlaps
-     */
-    /**
-     * Subscribers to activation list can use this function to easily exclude overlaps
-     * @param {?} changes
-     * @return {?}
-     */
-    MediaObserver.prototype.excludeOverlaps = /**
-     * Subscribers to activation list can use this function to easily exclude overlaps
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) {
-        var _this = this;
-        return changes.filter(function (change) {
-            /** @type {?} */
-            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !bp.overlapping;
-        });
     };
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
@@ -2522,11 +2501,25 @@ var MediaObserver = /** @class */ (function () {
      */
     function (mqList) {
         var _this = this;
+        /** @type {?} */
+        var hasChanges = function (changes) {
+            /** @type {?} */
+            var isValidQuery = function (change) { return (change.mediaQuery.length > 0); };
+            return (changes.filter(isValidQuery).length > 0);
+        };
+        /** @type {?} */
+        var excludeOverlaps = function (changes) {
+            return !_this.filterOverlaps ? changes : changes.filter(function (change) {
+                /** @type {?} */
+                var bp = _this.breakpoints.findByQuery(change.mediaQuery);
+                return !bp ? true : !bp.overlapping;
+            });
+        };
         /**
              */
         return this.matchMedia
             .observe(this.hook.withPrintQuery(mqList))
-            .pipe(filter(function (change) { return change.matches; }), debounceTime(10), switchMap(function (_) { return of(_this.findAllActivations()); }));
+            .pipe(filter(function (change) { return change.matches; }), debounceTime(10), switchMap(function (_) { return of(_this.findAllActivations()); }), map(excludeOverlaps), filter(hasChanges));
     };
     /**
      * Find all current activations and prepare single list of activations
@@ -3425,6 +3418,40 @@ var MediaMarshaller = /** @class */ (function () {
         }
     };
     /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param element
+     * @param key
+     */
+    /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    MediaMarshaller.prototype.triggerUpdate = /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    function (element, key) {
+        var _this = this;
+        /** @type {?} */
+        var bpMap = this.elementMap.get(element);
+        if (bpMap) {
+            /** @type {?} */
+            var valueMap = this.getActivatedValues(bpMap, key);
+            if (valueMap) {
+                if (key) {
+                    this.updateElement(element, key, valueMap.get(key));
+                }
+                else {
+                    valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
+                }
+            }
+        }
+    };
+    /**
      * Cross-reference for HTMLElement with directive key
      * @param {?} element
      * @param {?} key
@@ -3565,13 +3592,13 @@ var MediaMarshaller = /** @class */ (function () {
  * @param {?=} input
  * @return {?}
  */
-function initBuilderMap(map, element, key, input) {
+function initBuilderMap(map$$1, element, key, input) {
     if (input !== undefined) {
         /** @type {?} */
-        var oldMap = map.get(element);
+        var oldMap = map$$1.get(element);
         if (!oldMap) {
             oldMap = new Map();
-            map.set(element, oldMap);
+            map$$1.set(element, oldMap);
         }
         oldMap.set(key, input);
     }

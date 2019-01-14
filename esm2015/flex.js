@@ -240,12 +240,12 @@ class LayoutGapStyleBuilder extends StyleBuilder {
         }
         else {
             /** @type {?} */
-            const lastItem = items.pop();
+            const lastItem = /** @type {?} */ ((items.pop()));
             /** @type {?} */
             const gapCss = buildGapCSS(gapValue, parent);
             this._styler.applyStyleToElements(gapCss, items);
             // Clear all gaps for all visible elements
-            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [/** @type {?} */ ((lastItem))]);
+            this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
         }
     }
 }

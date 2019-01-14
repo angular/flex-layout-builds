@@ -8,7 +8,7 @@
 import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, defineInjectable } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Subject, BehaviorSubject, Observable, merge, of } from 'rxjs';
-import { filter, debounceTime, switchMap, tap } from 'rxjs/operators';
+import { filter, debounceTime, map, switchMap, tap } from 'rxjs/operators';
 
 /**
  * @fileoverview added by tsickle
@@ -458,11 +458,7 @@ class BaseDirective2 {
      * @return {?}
      */
     triggerUpdate() {
-        /** @type {?} */
-        const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-        if (val !== undefined) {
-            this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
-        }
+        this.marshal.triggerUpdate(this.nativeElement, this.DIRECTIVE_KEY);
     }
     /**
      * Determine the DOM element's Flexbox flow (flex-direction).
@@ -947,7 +943,7 @@ class MatchMedia {
      * @return {?}
      */
     observe(mqList, filterOthers = false) {
-        if (mqList) {
+        if (mqList && mqList.length) {
             /** @type {?} */
             const matchMedia$ = this._observable$.pipe(filter((change) => {
                 return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
@@ -1876,6 +1872,10 @@ class MediaObserver {
         this.breakpoints = breakpoints;
         this.matchMedia = matchMedia;
         this.hook = hook;
+        /**
+         * Filter MediaChange notifications for overlapping breakpoints
+         */
+        this.filterOverlaps = false;
         this._media$ = this.watchActivations();
     }
     /**
@@ -1894,18 +1894,6 @@ class MediaObserver {
         /** @type {?} */
         const query = toMediaQuery(alias, this.breakpoints);
         return this.matchMedia.isActive(query);
-    }
-    /**
-     * Subscribers to activation list can use this function to easily exclude overlaps
-     * @param {?} changes
-     * @return {?}
-     */
-    excludeOverlaps(changes) {
-        return changes.filter(change => {
-            /** @type {?} */
-            const bp = this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !bp.overlapping;
-        });
     }
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
@@ -1935,11 +1923,25 @@ class MediaObserver {
      * @return {?}
      */
     buildObservable(mqList) {
+        /** @type {?} */
+        const hasChanges = (changes) => {
+            /** @type {?} */
+            const isValidQuery = (change) => (change.mediaQuery.length > 0);
+            return (changes.filter(isValidQuery).length > 0);
+        };
+        /** @type {?} */
+        const excludeOverlaps = (changes) => {
+            return !this.filterOverlaps ? changes : changes.filter(change => {
+                /** @type {?} */
+                const bp = this.breakpoints.findByQuery(change.mediaQuery);
+                return !bp ? true : !bp.overlapping;
+            });
+        };
         /**
              */
         return this.matchMedia
             .observe(this.hook.withPrintQuery(mqList))
-            .pipe(filter((change) => change.matches), debounceTime(10), switchMap(_ => of(this.findAllActivations())));
+            .pipe(filter((change) => change.matches), debounceTime(10), switchMap(_ => of(this.findAllActivations())), map(excludeOverlaps), filter(hasChanges));
     }
     /**
      * Find all current activations and prepare single list of activations
@@ -2609,6 +2611,28 @@ class MediaMarshaller {
         }
     }
     /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    triggerUpdate(element, key) {
+        /** @type {?} */
+        const bpMap = this.elementMap.get(element);
+        if (bpMap) {
+            /** @type {?} */
+            const valueMap = this.getActivatedValues(bpMap, key);
+            if (valueMap) {
+                if (key) {
+                    this.updateElement(element, key, valueMap.get(key));
+                }
+                else {
+                    valueMap.forEach((v, k) => this.updateElement(element, k, v));
+                }
+            }
+        }
+    }
+    /**
      * Cross-reference for HTMLElement with directive key
      * @param {?} element
      * @param {?} key
@@ -2716,13 +2740,13 @@ MediaMarshaller.ctorParameters = () => [
  * @param {?=} input
  * @return {?}
  */
-function initBuilderMap(map, element, key, input) {
+function initBuilderMap(map$$1, element, key, input) {
     if (input !== undefined) {
         /** @type {?} */
-        let oldMap = map.get(element);
+        let oldMap = map$$1.get(element);
         if (!oldMap) {
             oldMap = new Map();
-            map.set(element, oldMap);
+            map$$1.set(element, oldMap);
         }
         oldMap.set(key, input);
     }
