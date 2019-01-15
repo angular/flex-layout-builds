@@ -125,6 +125,7 @@ MediaChange = /** @class */ (function () {
      * @param mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
      * @param mqAlias e.g. gt-sm, md, gt-lg
      * @param suffix e.g. GtSM, Md, GtLg
+     * @param priority the priority of activation for the given breakpoint
      */
     function MediaChange(matches, mediaQuery, mqAlias, suffix, priority) {
         if (matches === void 0) { matches = false; }
@@ -912,31 +913,6 @@ function mergeByAlias(defaults, custom) {
     });
     return validateSuffixes(Object.keys(dict).map(function (k) { return dict[k]; }));
 }
-/**
- * HOF to sort the breakpoints by priority
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortDescendingPriority(a, b) {
-    /** @type {?} */
-    var priorityA = a ? a.priority || 0 : 0;
-    /** @type {?} */
-    var priorityB = b ? b.priority || 0 : 0;
-    return priorityB - priorityA;
-}
-/**
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortAscendingPriority(a, b) {
-    /** @type {?} */
-    var pA = a.priority || 0;
-    /** @type {?} */
-    var pB = b.priority || 0;
-    return pA - pB;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -962,6 +938,39 @@ var BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoi
         return mergeByAlias(builtIns, bpFlattenArray);
     }
 });
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * HOF to sort the breakpoints by descending priority
+ * @template T
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortDescendingPriority(a, b) {
+    /** @type {?} */
+    var priorityA = a ? a.priority || 0 : 0;
+    /** @type {?} */
+    var priorityB = b ? b.priority || 0 : 0;
+    return priorityB - priorityA;
+}
+/**
+ * HOF to sort the breakpoints by ascending priority
+ * @template T
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortAscendingPriority(a, b) {
+    /** @type {?} */
+    var pA = a.priority || 0;
+    /** @type {?} */
+    var pB = b.priority || 0;
+    return pA - pB;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -2454,25 +2463,8 @@ var MediaObserver = /** @class */ (function () {
          */
         this.filterOverlaps = false;
         this._media$ = this.watchActivations();
+        this.media$ = this._media$.pipe(operators.filter(function (changes) { return changes.length > 0; }), operators.map(function (changes) { return changes[0]; }));
     }
-    Object.defineProperty(MediaObserver.prototype, "media$", {
-        /**
-         * @deprecated Use `asObservable()` instead.
-         * @breaking-change 7.0.0-beta.24
-         * @deletion-target v7.0.0-beta.25
-         */
-        get: /**
-         * @deprecated Use `asObservable()` instead.
-         * \@breaking-change 7.0.0-beta.24
-         * \@deletion-target v7.0.0-beta.25
-         * @return {?}
-         */
-        function () {
-            return this._media$.pipe(operators.filter(function (changes) { return changes.length > 0; }), operators.map(function (changes) { return changes[0]; }));
-        },
-        enumerable: true,
-        configurable: true
-    });
     // ************************************************
     // Public Methods
     // ************************************************
@@ -2606,7 +2598,7 @@ var MediaObserver = /** @class */ (function () {
             .map(function (query) { return new MediaChange(true, query); })
             .map(replaceWithPrintAlias)
             .map(mergeMQAlias)
-            .sort(sortChangesByPriority);
+            .sort(sortDescendingPriority);
     };
     MediaObserver.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -2631,19 +2623,11 @@ function toMediaQuery(query, locator) {
     var bp = locator.findByAlias(query) || locator.findByQuery(query);
     return bp ? bp.mediaQuery : query;
 }
+
 /**
- * HOF to sort the breakpoints by priority
- * @param {?} a
- * @param {?} b
- * @return {?}
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-function sortChangesByPriority(a, b) {
-    /** @type {?} */
-    var priorityA = a ? a.priority || 0 : 0;
-    /** @type {?} */
-    var priorityB = b ? b.priority || 0 : 0;
-    return priorityB - priorityA;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -7474,7 +7458,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-47248b1');
+var VERSION = new core.Version('7.0.0-beta.23-c45f2ae');
 
 /**
  * @fileoverview added by tsickle
@@ -7553,8 +7537,6 @@ exports.SERVER_TOKEN = SERVER_TOKEN;
 exports.BREAKPOINT = BREAKPOINT;
 exports.mergeAlias = mergeAlias;
 exports.BaseDirective2 = BaseDirective2;
-exports.sortDescendingPriority = sortDescendingPriority;
-exports.sortAscendingPriority = sortAscendingPriority;
 exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;
@@ -7566,8 +7548,9 @@ exports.MockMediaQueryList = MockMediaQueryList;
 exports.MockMatchMediaProvider = MockMatchMediaProvider;
 exports.ServerMediaQueryList = ServerMediaQueryList;
 exports.ServerMatchMedia = ServerMatchMedia;
-exports.sortChangesByPriority = sortChangesByPriority;
 exports.MediaObserver = MediaObserver;
+exports.sortDescendingPriority = sortDescendingPriority;
+exports.sortAscendingPriority = sortAscendingPriority;
 exports.StyleUtils = StyleUtils;
 exports.StyleBuilder = StyleBuilder;
 exports.validateBasis = validateBasis;

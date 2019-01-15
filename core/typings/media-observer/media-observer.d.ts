@@ -94,7 +94,5 @@ export declare class MediaObserver {
      * sorted by descending priority.
      */
     private findAllActivations;
-    private _media$;
+    private readonly _media$;
 }
-/** HOF to sort the breakpoints by priority */
-export declare function sortChangesByPriority(a: MediaChange, b: MediaChange): number;

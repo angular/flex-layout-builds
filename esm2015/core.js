@@ -78,7 +78,7 @@ class MediaChange {
      * @param {?=} mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
      * @param {?=} mqAlias e.g. gt-sm, md, gt-lg
      * @param {?=} suffix e.g. GtSM, Md, GtLg
-     * @param {?=} priority
+     * @param {?=} priority the priority of activation for the given breakpoint
      */
     constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '', priority = 0) {
         this.matches = matches;
@@ -738,31 +738,6 @@ function mergeByAlias(defaults, custom = []) {
     });
     return validateSuffixes(Object.keys(dict).map(k => dict[k]));
 }
-/**
- * HOF to sort the breakpoints by priority
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortDescendingPriority(a, b) {
-    /** @type {?} */
-    const priorityA = a ? a.priority || 0 : 0;
-    /** @type {?} */
-    const priorityB = b ? b.priority || 0 : 0;
-    return priorityB - priorityA;
-}
-/**
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortAscendingPriority(a, b) {
-    /** @type {?} */
-    const pA = a.priority || 0;
-    /** @type {?} */
-    const pB = b.priority || 0;
-    return pA - pB;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -788,6 +763,39 @@ const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints
         return mergeByAlias(builtIns, bpFlattenArray);
     }
 });
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * HOF to sort the breakpoints by descending priority
+ * @template T
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortDescendingPriority(a, b) {
+    /** @type {?} */
+    const priorityA = a ? a.priority || 0 : 0;
+    /** @type {?} */
+    const priorityB = b ? b.priority || 0 : 0;
+    return priorityB - priorityA;
+}
+/**
+ * HOF to sort the breakpoints by ascending priority
+ * @template T
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortAscendingPriority(a, b) {
+    /** @type {?} */
+    const pA = a.priority || 0;
+    /** @type {?} */
+    const pB = b.priority || 0;
+    return pA - pB;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -1877,15 +1885,7 @@ class MediaObserver {
          */
         this.filterOverlaps = false;
         this._media$ = this.watchActivations();
-    }
-    /**
-     * @deprecated Use `asObservable()` instead.
-     * \@breaking-change 7.0.0-beta.24
-     * \@deletion-target v7.0.0-beta.25
-     * @return {?}
-     */
-    get media$() {
-        return this._media$.pipe(filter((changes) => changes.length > 0), map((changes) => changes[0]));
+        this.media$ = this._media$.pipe(filter((changes) => changes.length > 0), map((changes) => changes[0]));
     }
     /**
      * Observe changes to current activation 'list'
@@ -1973,7 +1973,7 @@ class MediaObserver {
             .map(query => new MediaChange(true, query))
             .map(replaceWithPrintAlias)
             .map(mergeMQAlias)
-            .sort(sortChangesByPriority);
+            .sort(sortDescendingPriority);
     }
 }
 MediaObserver.decorators = [
@@ -1997,19 +1997,11 @@ function toMediaQuery(query, locator) {
     const bp = locator.findByAlias(query) || locator.findByQuery(query);
     return bp ? bp.mediaQuery : query;
 }
+
 /**
- * HOF to sort the breakpoints by priority
- * @param {?} a
- * @param {?} b
- * @return {?}
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-function sortChangesByPriority(a, b) {
-    /** @type {?} */
-    const priorityA = a ? a.priority || 0 : 0;
-    /** @type {?} */
-    const priorityB = b ? b.priority || 0 : 0;
-    return priorityB - priorityA;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -2771,5 +2763,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, sortDescendingPriority, sortAscendingPriority, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, sortChangesByPriority, MediaObserver, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
+export { CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MatchMedia, MockMatchMedia, MockMediaQueryList, MockMatchMediaProvider, ServerMediaQueryList, ServerMatchMedia, MediaObserver, sortDescendingPriority, sortAscendingPriority, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
 //# sourceMappingURL=core.js.map
