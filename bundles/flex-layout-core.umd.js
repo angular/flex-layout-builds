@@ -2468,7 +2468,7 @@ var MediaObserver = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this._media$;
+            return this._media$.pipe(operators.filter(function (changes) { return changes.length > 0; }), operators.map(function (changes) { return changes[0]; }));
         },
         enumerable: true,
         configurable: true

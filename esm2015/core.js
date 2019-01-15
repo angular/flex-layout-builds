@@ -1885,7 +1885,7 @@ class MediaObserver {
      * @return {?}
      */
     get media$() {
-        return this._media$;
+        return this._media$.pipe(filter((changes) => changes.length > 0), map((changes) => changes[0]));
     }
     /**
      * Observe changes to current activation 'list'

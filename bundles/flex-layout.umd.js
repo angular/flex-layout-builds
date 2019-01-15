@@ -2468,7 +2468,7 @@ var MediaObserver = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this._media$;
+            return this._media$.pipe(operators.filter(function (changes) { return changes.length > 0; }), operators.map(function (changes) { return changes[0]; }));
         },
         enumerable: true,
         configurable: true
@@ -7473,7 +7473,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-476521f');
+var VERSION = new core.Version('7.0.0-beta.23-ac975b8');
 
 /**
  * @fileoverview added by tsickle

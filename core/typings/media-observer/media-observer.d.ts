@@ -53,7 +53,7 @@ export declare class MediaObserver {
      * @deletion-target v7.0.0-beta.24
      * @breaking-change 7.0.0-beta.24
      */
-    readonly media$: Observable<MediaChange[]>;
+    readonly media$: Observable<MediaChange>;
     /** Filter MediaChange notifications for overlapping breakpoints */
     filterOverlaps: boolean;
     constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);
