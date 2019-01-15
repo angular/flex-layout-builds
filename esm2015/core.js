@@ -1835,9 +1835,9 @@ class MediaTrigger {
         this.layoutConfig = layoutConfig;
         this._platformId = _platformId;
         this._document = _document;
-        this.hasCachedOriginals = false;
+        this.hasCachedRegistryMatches = false;
         this.originalActivations = [];
-        this.originalRegistry = null;
+        this.originalRegistry = new Map();
     }
     /**
      * Manually activate range of breakpoints
@@ -1857,7 +1857,7 @@ class MediaTrigger {
      * @return {?}
      */
     restore() {
-        if (this.hasCachedOriginals) {
+        if (this.hasCachedRegistryMatches) {
             /** @type {?} */
             const extractQuery = (change) => change.mediaQuery;
             /** @type {?} */
@@ -1868,12 +1868,10 @@ class MediaTrigger {
                 this.setActivations(list);
             }
             finally {
+                this.originalActivations = [];
                 if (this.resizeSubscription) {
                     this.resizeSubscription.unsubscribe();
                 }
-                this.hasCachedOriginals = false;
-                this.originalRegistry = null;
-                this.originalActivations = [];
             }
         }
     }
@@ -1911,7 +1909,7 @@ class MediaTrigger {
      * @return {?}
      */
     saveActivations() {
-        if (!this.hasCachedOriginals) {
+        if (!this.hasCachedRegistryMatches) {
             /** @type {?} */
             const toMediaChange = (query) => new MediaChange(true, query);
             /** @type {?} */
@@ -1920,12 +1918,11 @@ class MediaTrigger {
                 let bp = this.breakpoints.findByQuery(change.mediaQuery);
                 return mergeAlias(change, bp);
             };
-            this.originalRegistry = /** @type {?} */ (this.matchMedia['registry']);
             this.originalActivations = this.currentActivations
                 .map(toMediaChange)
                 .map(mergeMQAlias)
                 .sort(sortDescendingPriority);
-            this.hasCachedOriginals = true;
+            this.cacheRegistryMatches();
         }
     }
     /**
@@ -1962,24 +1959,43 @@ class MediaTrigger {
      * Replace current registry with simulated registry...
      * Note: this is required since MediaQueryList::matches is 'readOnly'
      * @param {?} queries
-     * @param {?} match
+     * @param {?} matches
      * @return {?}
      */
-    forceRegistryMatches(queries, match) {
+    forceRegistryMatches(queries, matches) {
         /** @type {?} */
         const registry = new Map();
         queries.forEach(query => {
-            registry.set(query, /** @type {?} */ ({ matches: match }));
+            registry.set(query, /** @type {?} */ ({ matches: matches }));
         });
         this.matchMedia.registry = registry;
+    }
+    /**
+     * Save current MatchMedia::registry items.
+     * @return {?}
+     */
+    cacheRegistryMatches() {
+        /** @type {?} */
+        const target = this.originalRegistry;
+        target.clear();
+        this.matchMedia.registry.forEach((value, key) => {
+            target.set(key, value);
+        });
+        this.hasCachedRegistryMatches = true;
     }
     /**
      * Restore original, 'true' registry
      * @return {?}
      */
     restoreRegistryMatches() {
-        this.matchMedia.registry = /** @type {?} */ (this.originalRegistry);
-        this.originalRegistry = null;
+        /** @type {?} */
+        const target = this.matchMedia.registry;
+        target.clear();
+        this.originalRegistry.forEach((value, key) => {
+            target.set(key, value);
+        });
+        this.originalRegistry.clear();
+        this.hasCachedRegistryMatches = false;
     }
     /**
      * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver

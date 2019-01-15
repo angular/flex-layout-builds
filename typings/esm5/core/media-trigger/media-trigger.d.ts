@@ -51,6 +51,10 @@ export declare class MediaTrigger {
      */
     private forceRegistryMatches;
     /**
+     * Save current MatchMedia::registry items.
+     */
+    private cacheRegistryMatches;
+    /**
      * Restore original, 'true' registry
      */
     private restoreRegistryMatches;
@@ -59,7 +63,7 @@ export declare class MediaTrigger {
      */
     private emitChangeEvent;
     private readonly currentActivations;
-    private hasCachedOriginals;
+    private hasCachedRegistryMatches;
     private originalActivations;
     private originalRegistry;
     private resizeSubscription;
