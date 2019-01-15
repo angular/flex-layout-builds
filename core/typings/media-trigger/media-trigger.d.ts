@@ -47,15 +47,15 @@ export declare class MediaTrigger {
      * Replace current registry with simulated registry...
      * Note: this is required since MediaQueryList::matches is 'readOnly'
      */
-    forceRegistryMatches(queries: string[], match: boolean): void;
+    private forceRegistryMatches;
     /**
      * Restore original, 'true' registry
      */
-    restoreRegistryMatches(): void;
+    private restoreRegistryMatches;
     /**
      * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
      */
-    emitChangeEvent(matches: boolean, query: string): void;
+    private emitChangeEvent;
     private readonly currentActivations;
     private hasCachedOriginals;
     private originalActivations;

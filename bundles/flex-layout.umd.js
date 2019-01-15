@@ -1118,11 +1118,11 @@ var MatchMedia = /** @class */ (function () {
         this._platformId = _platformId;
         this._document = _document;
         /**
-         * Initialize with 'all' so all non-responsive APIs trigger style updates
+         * Initialize source with 'all' so all non-responsive APIs trigger style updates
          */
-        this._source = new rxjs.BehaviorSubject(new MediaChange(true));
-        this._registry = new Map();
-        this._observable$ = this._source.asObservable();
+        this.source = new rxjs.BehaviorSubject(new MediaChange(true));
+        this.registry = new Map();
+        this._observable$ = this.source.asObservable();
     }
     Object.defineProperty(MatchMedia.prototype, "activations", {
         /**
@@ -1135,7 +1135,7 @@ var MatchMedia = /** @class */ (function () {
         function () {
             /** @type {?} */
             var results = [];
-            this._registry.forEach(function (mql, key) {
+            this.registry.forEach(function (mql, key) {
                 if (mql.matches) {
                     results.push(key);
                 }
@@ -1160,7 +1160,7 @@ var MatchMedia = /** @class */ (function () {
      */
     function (mediaQuery) {
         /** @type {?} */
-        var mql = this._registry.get(mediaQuery);
+        var mql = this.registry.get(mediaQuery);
         return !!mql ? mql.matches : false;
     };
     /**
@@ -1214,7 +1214,7 @@ var MatchMedia = /** @class */ (function () {
                     matches.forEach(function (e) {
                         observer.next(e);
                     });
-                    _this._source.next(lastChange); // last match is cached
+                    _this.source.next(lastChange); // last match is cached
                 }
                 observer.complete();
             });
@@ -1248,14 +1248,14 @@ var MatchMedia = /** @class */ (function () {
         list.forEach(function (query) {
             /** @type {?} */
             var onMQLEvent = function (e) {
-                _this._zone.run(function () { return _this._source.next(new MediaChange(e.matches, query)); });
+                _this._zone.run(function () { return _this.source.next(new MediaChange(e.matches, query)); });
             };
             /** @type {?} */
-            var mql = _this._registry.get(query);
+            var mql = _this.registry.get(query);
             if (!mql) {
                 mql = _this.buildMQL(query);
                 mql.addListener(onMQLEvent);
-                _this._registry.set(query, mql);
+                _this.registry.set(query, mql);
             }
             if (mql.matches) {
                 matches.push(new MediaChange(true, query));
@@ -1363,17 +1363,8 @@ var MockMatchMedia = /** @class */ (function (_super) {
     function MockMatchMedia(_zone, _platformId, _document, _breakpoints) {
         var _this = _super.call(this, _zone, _platformId, _document) || this;
         _this._breakpoints = _breakpoints;
-        /**
-         * Special flag used to test BreakPoint registrations with MatchMedia
-         */
-        _this.autoRegisterQueries = true;
-        /**
-         * Allow fallback to overlapping mediaQueries to determine
-         * activatedInput(s).
-         */
+        _this.autoRegisterQueries = true; // Used for testing BreakPoint registrations
         _this.useOverlaps = false;
-        _this._registry = new Map();
-        _this._actives = [];
         return _this;
     }
     /** Easy method to clear all listeners for all mediaQueries */
@@ -1386,10 +1377,10 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._registry.forEach(function (mql) {
-            mql.destroy();
+        this.registry.forEach(function (mql) {
+            (/** @type {?} */ (mql)).destroy();
         });
-        this._registry.clear();
+        this.registry.clear();
         this.useOverlaps = false;
     };
     /** Feature to support manual, simulated activation of a mediaQuery. */
@@ -1518,12 +1509,9 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function (mediaQuery) {
         /** @type {?} */
-        var mql = this._registry.get(mediaQuery);
-        /** @type {?} */
-        var alreadyAdded = this._actives
-            .reduce(function (found, it) { return (found || (mql ? (it.media === mql.media) : false)); }, false);
-        if (mql && !alreadyAdded) {
-            this._actives.push(mql.activate());
+        var mql = /** @type {?} */ (this.registry.get(mediaQuery));
+        if (mql && !this.isActive(mediaQuery)) {
+            this.registry.set(mediaQuery, mql.activate());
         }
         return this.hasActivated;
     };
@@ -1536,8 +1524,9 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this._actives.forEach(function (it) { return it.deactivate(); });
-        this._actives = [];
+        this.registry.forEach(function (it) {
+            (/** @type {?} */ (it)).deactivate();
+        });
         return this;
     };
     /**
@@ -1551,7 +1540,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (mediaQuery) {
-        if (!this._registry.has(mediaQuery) && this.autoRegisterQueries) {
+        if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
             this.registerQuery(mediaQuery);
         }
     };
@@ -1579,7 +1568,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
          * @return {?}
          */
         function () {
-            return this._actives.length > 0;
+            return this.activations.length > 0;
         },
         enumerable: true,
         configurable: true
@@ -1601,7 +1590,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
  */
-var   /**
+var /**
  * Special internal class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
@@ -1776,265 +1765,6 @@ var MockMatchMediaProvider = {
     provide: MatchMedia,
     useClass: MockMatchMedia
 };
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
- */
-/**
- * Special server-only class to simulate a MediaQueryList and
- * - supports manual activation to simulate mediaQuery matching
- * - manages listeners
- */
-var   /**
- * Special server-only class to simulate a MediaQueryList and
- * - supports manual activation to simulate mediaQuery matching
- * - manages listeners
- */
-ServerMediaQueryList = /** @class */ (function () {
-    function ServerMediaQueryList(_mediaQuery) {
-        this._mediaQuery = _mediaQuery;
-        this._isActive = false;
-        this._listeners = [];
-        this.onchange = null;
-    }
-    Object.defineProperty(ServerMediaQueryList.prototype, "matches", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._isActive;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ServerMediaQueryList.prototype, "media", {
-        get: /**
-         * @return {?}
-         */
-        function () {
-            return this._mediaQuery;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Destroy the current list by deactivating the
-     * listeners and clearing the internal list
-     */
-    /**
-     * Destroy the current list by deactivating the
-     * listeners and clearing the internal list
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.destroy = /**
-     * Destroy the current list by deactivating the
-     * listeners and clearing the internal list
-     * @return {?}
-     */
-    function () {
-        this.deactivate();
-        this._listeners = [];
-    };
-    /** Notify all listeners that 'matches === TRUE' */
-    /**
-     * Notify all listeners that 'matches === TRUE'
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.activate = /**
-     * Notify all listeners that 'matches === TRUE'
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        if (!this._isActive) {
-            this._isActive = true;
-            this._listeners.forEach(function (callback) {
-                /** @type {?} */
-                var cb = /** @type {?} */ ((callback));
-                cb.call(null, _this);
-            });
-        }
-        return this;
-    };
-    /** Notify all listeners that 'matches === false' */
-    /**
-     * Notify all listeners that 'matches === false'
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.deactivate = /**
-     * Notify all listeners that 'matches === false'
-     * @return {?}
-     */
-    function () {
-        var _this = this;
-        if (this._isActive) {
-            this._isActive = false;
-            this._listeners.forEach(function (callback) {
-                /** @type {?} */
-                var cb = /** @type {?} */ ((callback));
-                cb.call(null, _this);
-            });
-        }
-        return this;
-    };
-    /** Add a listener to our internal list to activate later */
-    /**
-     * Add a listener to our internal list to activate later
-     * @param {?} listener
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.addListener = /**
-     * Add a listener to our internal list to activate later
-     * @param {?} listener
-     * @return {?}
-     */
-    function (listener) {
-        if (this._listeners.indexOf(listener) === -1) {
-            this._listeners.push(listener);
-        }
-        if (this._isActive) {
-            /** @type {?} */
-            var cb = /** @type {?} */ ((listener));
-            cb.call(null, this);
-        }
-    };
-    /** Don't need to remove listeners in the server environment */
-    /**
-     * Don't need to remove listeners in the server environment
-     * @param {?} _
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.removeListener = /**
-     * Don't need to remove listeners in the server environment
-     * @param {?} _
-     * @return {?}
-     */
-    function (_) {
-    };
-    /**
-     * @param {?} _
-     * @param {?} __
-     * @param {?=} ___
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.addEventListener = /**
-     * @param {?} _
-     * @param {?} __
-     * @param {?=} ___
-     * @return {?}
-     */
-    function (_, __, ___) {
-    };
-    /**
-     * @param {?} _
-     * @param {?} __
-     * @param {?=} ___
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.removeEventListener = /**
-     * @param {?} _
-     * @param {?} __
-     * @param {?=} ___
-     * @return {?}
-     */
-    function (_, __, ___) {
-    };
-    /**
-     * @param {?} _
-     * @return {?}
-     */
-    ServerMediaQueryList.prototype.dispatchEvent = /**
-     * @param {?} _
-     * @return {?}
-     */
-    function (_) {
-        return false;
-    };
-    return ServerMediaQueryList;
-}());
-/**
- * Special server-only implementation of MatchMedia that uses the above
- * ServerMediaQueryList as its internal representation
- *
- * Also contains methods to activate and deactivate breakpoints
- */
-var ServerMatchMedia = /** @class */ (function (_super) {
-    __extends(ServerMatchMedia, _super);
-    function ServerMatchMedia(_zone, _platformId, _document) {
-        var _this = _super.call(this, _zone, _platformId, _document) || this;
-        _this._zone = _zone;
-        _this._platformId = _platformId;
-        _this._document = _document;
-        _this._registry = new Map();
-        return _this;
-    }
-    /** Activate the specified breakpoint if we're on the server, no-op otherwise */
-    /**
-     * Activate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    ServerMatchMedia.prototype.activateBreakpoint = /**
-     * Activate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    function (bp) {
-        /** @type {?} */
-        var lookupBreakpoint = this._registry.get(bp.mediaQuery);
-        if (lookupBreakpoint) {
-            lookupBreakpoint.activate();
-        }
-    };
-    /** Deactivate the specified breakpoint if we're on the server, no-op otherwise */
-    /**
-     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    ServerMatchMedia.prototype.deactivateBreakpoint = /**
-     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    function (bp) {
-        /** @type {?} */
-        var lookupBreakpoint = this._registry.get(bp.mediaQuery);
-        if (lookupBreakpoint) {
-            lookupBreakpoint.deactivate();
-        }
-    };
-    /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     */
-    /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     * @param {?} query
-     * @return {?}
-     */
-    ServerMatchMedia.prototype.buildMQL = /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     * @param {?} query
-     * @return {?}
-     */
-    function (query) {
-        return new ServerMediaQueryList(query);
-    };
-    ServerMatchMedia.decorators = [
-        { type: core.Injectable },
-    ];
-    /** @nocollapse */
-    ServerMatchMedia.ctorParameters = function () { return [
-        { type: core.NgZone },
-        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
-    ]; };
-    return ServerMatchMedia;
-}(MatchMedia));
 
 /**
  * @fileoverview added by tsickle
@@ -2758,7 +2488,7 @@ var MediaTrigger = /** @class */ (function () {
                 var bp = _this.breakpoints.findByQuery(change.mediaQuery);
                 return mergeAlias(change, bp);
             };
-            this.originalRegistry = /** @type {?} */ (this.matchMedia['_registry']);
+            this.originalRegistry = /** @type {?} */ (this.matchMedia['registry']);
             this.originalActivations = this.currentActivations
                 .map(toMediaChange)
                 .map(mergeMQAlias)
@@ -2809,13 +2539,6 @@ var MediaTrigger = /** @class */ (function () {
         var emitChangeEvent = function (query) { return _this.emitChangeEvent(matches, query); };
         queries.map(toMediaQuery).forEach(emitChangeEvent);
     };
-    // ****************************************************************
-    // 'Pierce-the-veil' to get access to special, read-only artifacts
-    // ****************************************************************
-    /**
-     * Replace current registry with simulated registry...
-     * Note: this is required since MediaQueryList::matches is 'readOnly'
-     */
     /**
      * Replace current registry with simulated registry...
      * Note: this is required since MediaQueryList::matches is 'readOnly'
@@ -2836,11 +2559,8 @@ var MediaTrigger = /** @class */ (function () {
         queries.forEach(function (query) {
             registry.set(query, /** @type {?} */ ({ matches: match }));
         });
-        this.matchMedia['_registry'] = registry;
+        this.matchMedia.registry = registry;
     };
-    /**
-     * Restore original, 'true' registry
-     */
     /**
      * Restore original, 'true' registry
      * @return {?}
@@ -2850,12 +2570,9 @@ var MediaTrigger = /** @class */ (function () {
      * @return {?}
      */
     function () {
-        this.matchMedia['_registry'] = /** @type {?} */ (this.originalRegistry);
+        this.matchMedia.registry = /** @type {?} */ (this.originalRegistry);
         this.originalRegistry = null;
     };
-    /**
-     * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
-     */
     /**
      * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
      * @param {?} matches
@@ -2869,9 +2586,7 @@ var MediaTrigger = /** @class */ (function () {
      * @return {?}
      */
     function (matches, query) {
-        /** @type {?} */
-        var source = /** @type {?} */ (this.matchMedia['_source']);
-        source.next(new MediaChange(matches, query));
+        this.matchMedia.source.next(new MediaChange(matches, query));
     };
     Object.defineProperty(MediaTrigger.prototype, "currentActivations", {
         get: /**
@@ -7731,7 +7446,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-03a184c');
+var VERSION = new core.Version('7.0.0-beta.23-088af1e');
 
 /**
  * @fileoverview added by tsickle
@@ -7798,6 +7513,9 @@ var FlexLayoutModule = /** @class */ (function () {
 
 exports.VERSION = VERSION;
 exports.FlexLayoutModule = FlexLayoutModule;
+exports.ɵMatchMedia = MatchMedia;
+exports.ɵMockMatchMedia = MockMatchMedia;
+exports.ɵMockMatchMediaProvider = MockMatchMediaProvider;
 exports.CoreModule = CoreModule;
 exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
@@ -7815,12 +7533,6 @@ exports.ScreenTypes = ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;
 exports.BreakPointRegistry = BreakPointRegistry;
 exports.BREAKPOINTS = BREAKPOINTS;
-exports.MatchMedia = MatchMedia;
-exports.MockMatchMedia = MockMatchMedia;
-exports.MockMediaQueryList = MockMediaQueryList;
-exports.MockMatchMediaProvider = MockMatchMediaProvider;
-exports.ServerMediaQueryList = ServerMediaQueryList;
-exports.ServerMatchMedia = ServerMatchMedia;
 exports.MediaObserver = MediaObserver;
 exports.MediaTrigger = MediaTrigger;
 exports.sortDescendingPriority = sortDescendingPriority;

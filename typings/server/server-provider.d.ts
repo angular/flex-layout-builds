@@ -6,7 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { InjectionToken } from '@angular/core';
-import { BreakPoint, MatchMedia, StylesheetMap, ServerMatchMedia } from '@angular/flex-layout/core';
+import { BreakPoint, ɵMatchMedia as MatchMedia, StylesheetMap } from '@angular/flex-layout/core';
+import { ServerMatchMedia } from './server-match-media';
 /**
  * Activate all of the registered breakpoints in sequence, and then
  * retrieve the associated stylings from the virtual stylesheet
@@ -27,7 +28,7 @@ export declare function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap, 
 export declare const SERVER_PROVIDERS: ({
     provide: InjectionToken<() => void>;
     useFactory: typeof FLEX_SSR_SERIALIZER_FACTORY;
-    deps: (typeof StylesheetMap | typeof MatchMedia | InjectionToken<Document>)[];
+    deps: (typeof MatchMedia | InjectionToken<Document> | typeof StylesheetMap)[];
     multi: boolean;
     useValue?: undefined;
     useClass?: undefined;
