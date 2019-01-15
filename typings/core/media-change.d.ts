@@ -14,6 +14,7 @@ export declare class MediaChange {
     mediaQuery: string;
     mqAlias: string;
     suffix: string;
+    priority: number;
     property: string;
     value: any;
     /**
@@ -22,7 +23,7 @@ export declare class MediaChange {
      * @param mqAlias e.g. gt-sm, md, gt-lg
      * @param suffix e.g. GtSM, Md, GtLg
      */
-    constructor(matches?: boolean, mediaQuery?: string, mqAlias?: string, suffix?: string);
+    constructor(matches?: boolean, mediaQuery?: string, mqAlias?: string, suffix?: string, priority?: number);
     /** Create an exact copy of the MediaChange */
     clone(): MediaChange;
 }
