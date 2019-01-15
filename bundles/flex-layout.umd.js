@@ -3826,6 +3826,7 @@ var ClassDirective = /** @class */ (function (_super) {
             _this.ngClassInstance = new common.NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
         _this.init();
+        _this.setValue('', '');
         return _this;
     }
     Object.defineProperty(ClassDirective.prototype, "klass", {
@@ -7473,7 +7474,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-8307655');
+var VERSION = new core.Version('7.0.0-beta.23-47248b1');
 
 /**
  * @fileoverview added by tsickle

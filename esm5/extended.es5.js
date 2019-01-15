@@ -177,6 +177,7 @@ var ClassDirective = /** @class */ (function (_super) {
             _this.ngClassInstance = new NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
         _this.init();
+        _this.setValue('', '');
         return _this;
     }
     Object.defineProperty(ClassDirective.prototype, "klass", {
