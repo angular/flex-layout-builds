@@ -2404,20 +2404,19 @@ function isPrintBreakPoint(bp) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 /**
- * Class internalizes a MatchMedia service and exposes an Observable interface.
- * This exposes an Observable with a feature to subscribe to mediaQuery
- * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
- * currently active.
+ * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
+ * if a mediaQuery is currently activated.
  *
- * !! Only mediaChange activations (not de-activations) are announced by the MediaObserver
+ * Since a breakpoint change will first deactivate 1...n mediaQueries and then possibly activate
+ * 1..n mediaQueries, the MediaObserver will debounce notifications and report ALL *activations*
+ * in 1 event notification. The reported activations will be sorted in descending priority order.
  *
  * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
  * notification. For custom mediaQuery notifications, alias information will not be injected and
  * those fields will be ''.
  *
- * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
- * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.asObservable().map(....).
+ * Note: Developers should note that only mediaChange activations (not de-activations)
+ *       are announced by the MediaObserver.
  *
  * \@usage
  *
@@ -2429,18 +2428,19 @@ function isPrintBreakPoint(bp) {
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(media: MediaObserver) {
- *      const onChange = (change: MediaChange) => {
- *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
- *      };
+ *    constructor(mediaObserver: MediaObserver) {
+ *      const media$ = mediaObserver.asObservable().pipe(
+ *        filter((changes: MediaChange[]) => true)   // silly noop filter
+ *      );
  *
- *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. media.asObservable().subscribe(onChange);
+ *      media$.subscribe((changes: MediaChange[]) => {
+ *        let status = '';
+ *        changes.forEach( change => {
+ *          status += `'${change.mqAlias}' = (${change.mediaQuery}) <br/>` ;
+ *        });
+ *        this.status = status;
+ *     });
  *
- *      media.asObservable()
- *        .pipe(
- *          filter((change: MediaChange) => true)   // silly noop filter
- *        ).subscribe(onChange);
  *    }
  *  }
  */
@@ -2455,6 +2455,24 @@ var MediaObserver = /** @class */ (function () {
         this.filterOverlaps = false;
         this._media$ = this.watchActivations();
     }
+    Object.defineProperty(MediaObserver.prototype, "media$", {
+        /**
+         * @deprecated Use `asObservable()` instead.
+         * @deletion-target v7.0.0-beta.24
+         * @breaking-change 7.0.0-beta.24
+         */
+        get: /**
+         * @deprecated Use `asObservable()` instead.
+         * \@deletion-target v7.0.0-beta.24
+         * \@breaking-change 7.0.0-beta.24
+         * @return {?}
+         */
+        function () {
+            return this._media$;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // ************************************************
     // Public Methods
     // ************************************************
