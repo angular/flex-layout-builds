@@ -20,7 +20,7 @@ export declare class MatchMedia {
     protected _platformId: Object;
     protected _document: any;
     /** Initialize source with 'all' so all non-responsive APIs trigger style updates */
-    source: BehaviorSubject<MediaChange>;
+    readonly source: BehaviorSubject<MediaChange>;
     registry: Map<string, MediaQueryList>;
     constructor(_zone: NgZone, _platformId: Object, _document: any);
     /**
