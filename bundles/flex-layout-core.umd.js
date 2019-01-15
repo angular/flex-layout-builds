@@ -3648,8 +3648,8 @@ function initBuilderMap(map$$1, element, key, input) {
 
 exports.ɵMatchMedia = MatchMedia;
 exports.ɵServerMatchMedia = ServerMatchMedia;
-exports.MockMatchMedia = MockMatchMedia;
-exports.MockMatchMediaProvider = MockMatchMediaProvider;
+exports.ɵMockMatchMedia = MockMatchMedia;
+exports.ɵMockMatchMediaProvider = MockMatchMediaProvider;
 exports.CoreModule = CoreModule;
 exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;

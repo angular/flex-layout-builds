@@ -7458,7 +7458,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-9ac281a');
+var VERSION = new core.Version('7.0.0-beta.23-63349fa');
 
 /**
  * @fileoverview added by tsickle
@@ -7527,8 +7527,8 @@ exports.VERSION = VERSION;
 exports.FlexLayoutModule = FlexLayoutModule;
 exports.ɵMatchMedia = MatchMedia;
 exports.ɵServerMatchMedia = ServerMatchMedia;
-exports.MockMatchMedia = MockMatchMedia;
-exports.MockMatchMediaProvider = MockMatchMediaProvider;
+exports.ɵMockMatchMedia = MockMatchMedia;
+exports.ɵMockMatchMediaProvider = MockMatchMediaProvider;
 exports.CoreModule = CoreModule;
 exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
