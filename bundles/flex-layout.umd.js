@@ -1601,7 +1601,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
  */
-var   /**
+var /**
  * Special internal class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
@@ -1786,7 +1786,7 @@ var MockMatchMediaProvider = {
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
  */
-var   /**
+var /**
  * Special server-only class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
@@ -7458,7 +7458,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-c45f2ae');
+var VERSION = new core.Version('7.0.0-beta.23-9ac281a');
 
 /**
  * @fileoverview added by tsickle
@@ -7525,6 +7525,10 @@ var FlexLayoutModule = /** @class */ (function () {
 
 exports.VERSION = VERSION;
 exports.FlexLayoutModule = FlexLayoutModule;
+exports.ɵMatchMedia = MatchMedia;
+exports.ɵServerMatchMedia = ServerMatchMedia;
+exports.MockMatchMedia = MockMatchMedia;
+exports.MockMatchMediaProvider = MockMatchMediaProvider;
 exports.CoreModule = CoreModule;
 exports.removeStyles = removeStyles;
 exports.BROWSER_PROVIDER = BROWSER_PROVIDER;
@@ -7542,12 +7546,6 @@ exports.ScreenTypes = ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;
 exports.BreakPointRegistry = BreakPointRegistry;
 exports.BREAKPOINTS = BREAKPOINTS;
-exports.MatchMedia = MatchMedia;
-exports.MockMatchMedia = MockMatchMedia;
-exports.MockMediaQueryList = MockMediaQueryList;
-exports.MockMatchMediaProvider = MockMatchMediaProvider;
-exports.ServerMediaQueryList = ServerMediaQueryList;
-exports.ServerMatchMedia = ServerMatchMedia;
 exports.MediaObserver = MediaObserver;
 exports.sortDescendingPriority = sortDescendingPriority;
 exports.sortAscendingPriority = sortAscendingPriority;

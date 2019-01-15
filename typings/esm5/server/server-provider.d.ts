@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { InjectionToken } from '@angular/core';
-import { BreakPoint, MatchMedia, StylesheetMap, ServerMatchMedia } from '@angular/flex-layout/core';
+import { BreakPoint, ɵMatchMedia as MatchMedia, StylesheetMap, ɵServerMatchMedia as ServerMatchMedia } from '@angular/flex-layout/core';
 /**
  * Activate all of the registered breakpoints in sequence, and then
  * retrieve the associated stylings from the virtual stylesheet

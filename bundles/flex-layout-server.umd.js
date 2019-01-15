@@ -72,7 +72,7 @@ var SERVER_PROVIDERS = [
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
             core.StylesheetMap,
-            core.MatchMedia,
+            core.ɵMatchMedia,
             common.DOCUMENT,
             core.BREAKPOINTS,
         ],
@@ -83,8 +83,8 @@ var SERVER_PROVIDERS = [
         useValue: true
     },
     {
-        provide: core.MatchMedia,
-        useClass: core.ServerMatchMedia
+        provide: core.ɵMatchMedia,
+        useClass: core.ɵServerMatchMedia
     }
 ];
 /** @type {?} */
