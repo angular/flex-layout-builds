@@ -1,6 +1,5 @@
 import { NgZone } from '@angular/core';
-import { BreakPoint } from '../breakpoints/break-point';
-import { MatchMedia } from './match-media';
+import { BreakPoint, ɵMatchMedia as MatchMedia } from '@angular/flex-layout/core';
 /**
  * Special server-only class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching

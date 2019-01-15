@@ -6,9 +6,188 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, NgZone, PLATFORM_ID, NgModule } from '@angular/core';
+import { ɵMatchMedia, BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, StylesheetMap, sortAscendingPriority } from '@angular/flex-layout/core';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
-import { BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, MatchMedia, StylesheetMap, ServerMatchMedia, sortAscendingPriority } from '@angular/flex-layout/core';
-import { NgModule } from '@angular/core';
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Special server-only class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
+ */
+class ServerMediaQueryList {
+    /**
+     * @param {?} _mediaQuery
+     */
+    constructor(_mediaQuery) {
+        this._mediaQuery = _mediaQuery;
+        this._isActive = false;
+        this._listeners = [];
+        this.onchange = null;
+    }
+    /**
+     * @return {?}
+     */
+    get matches() {
+        return this._isActive;
+    }
+    /**
+     * @return {?}
+     */
+    get media() {
+        return this._mediaQuery;
+    }
+    /**
+     * Destroy the current list by deactivating the
+     * listeners and clearing the internal list
+     * @return {?}
+     */
+    destroy() {
+        this.deactivate();
+        this._listeners = [];
+    }
+    /**
+     * Notify all listeners that 'matches === TRUE'
+     * @return {?}
+     */
+    activate() {
+        if (!this._isActive) {
+            this._isActive = true;
+            this._listeners.forEach((callback) => {
+                /** @type {?} */
+                const cb = /** @type {?} */ ((callback));
+                cb.call(null, this);
+            });
+        }
+        return this;
+    }
+    /**
+     * Notify all listeners that 'matches === false'
+     * @return {?}
+     */
+    deactivate() {
+        if (this._isActive) {
+            this._isActive = false;
+            this._listeners.forEach((callback) => {
+                /** @type {?} */
+                const cb = /** @type {?} */ ((callback));
+                cb.call(null, this);
+            });
+        }
+        return this;
+    }
+    /**
+     * Add a listener to our internal list to activate later
+     * @param {?} listener
+     * @return {?}
+     */
+    addListener(listener) {
+        if (this._listeners.indexOf(listener) === -1) {
+            this._listeners.push(listener);
+        }
+        if (this._isActive) {
+            /** @type {?} */
+            const cb = /** @type {?} */ ((listener));
+            cb.call(null, this);
+        }
+    }
+    /**
+     * Don't need to remove listeners in the server environment
+     * @param {?} _
+     * @return {?}
+     */
+    removeListener(_) {
+    }
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    addEventListener(_, __, ___) {
+    }
+    /**
+     * @param {?} _
+     * @param {?} __
+     * @param {?=} ___
+     * @return {?}
+     */
+    removeEventListener(_, __, ___) {
+    }
+    /**
+     * @param {?} _
+     * @return {?}
+     */
+    dispatchEvent(_) {
+        return false;
+    }
+}
+/**
+ * Special server-only implementation of MatchMedia that uses the above
+ * ServerMediaQueryList as its internal representation
+ *
+ * Also contains methods to activate and deactivate breakpoints
+ */
+class ServerMatchMedia extends ɵMatchMedia {
+    /**
+     * @param {?} _zone
+     * @param {?} _platformId
+     * @param {?} _document
+     */
+    constructor(_zone, _platformId, _document) {
+        super(_zone, _platformId, _document);
+        this._zone = _zone;
+        this._platformId = _platformId;
+        this._document = _document;
+        this._registry = new Map();
+    }
+    /**
+     * Activate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    activateBreakpoint(bp) {
+        /** @type {?} */
+        const lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        if (lookupBreakpoint) {
+            lookupBreakpoint.activate();
+        }
+    }
+    /**
+     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
+     * @param {?} bp
+     * @return {?}
+     */
+    deactivateBreakpoint(bp) {
+        /** @type {?} */
+        const lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        if (lookupBreakpoint) {
+            lookupBreakpoint.deactivate();
+        }
+    }
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @param {?} query
+     * @return {?}
+     */
+    buildMQL(query) {
+        return new ServerMediaQueryList(query);
+    }
+}
+ServerMatchMedia.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ServerMatchMedia.ctorParameters = () => [
+    { type: NgZone },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
 
 /**
  * @fileoverview added by tsickle
@@ -71,7 +250,7 @@ const SERVER_PROVIDERS = [
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
             StylesheetMap,
-            MatchMedia,
+            ɵMatchMedia,
             DOCUMENT,
             BREAKPOINTS,
         ],
@@ -82,7 +261,7 @@ const SERVER_PROVIDERS = [
         useValue: true
     },
     {
-        provide: MatchMedia,
+        provide: ɵMatchMedia,
         useClass: ServerMatchMedia
     }
 ];
@@ -180,5 +359,5 @@ FlexLayoutServerModule.decorators = [
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS };
+export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵa1 };
 //# sourceMappingURL=server.js.map
