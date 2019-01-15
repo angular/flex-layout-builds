@@ -178,7 +178,8 @@ const DEFAULT_CONFIG = {
     disableVendorPrefixes: false,
     serverLoaded: false,
     useColumnBasisZero: true,
-    printWithBreakpoints: []
+    printWithBreakpoints: [],
+    mediaTriggerAutoRestore: true
 };
 /** @type {?} */
 const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
@@ -1824,12 +1825,14 @@ class MediaTrigger {
     /**
      * @param {?} breakpoints
      * @param {?} matchMedia
+     * @param {?} layoutConfig
      * @param {?} _platformId
      * @param {?} _document
      */
-    constructor(breakpoints, matchMedia, _platformId, _document) {
+    constructor(breakpoints, matchMedia, layoutConfig, _platformId, _document) {
         this.breakpoints = breakpoints;
         this.matchMedia = matchMedia;
+        this.layoutConfig = layoutConfig;
         this._platformId = _platformId;
         this._document = _document;
         this.hasCachedOriginals = false;
@@ -1865,12 +1868,12 @@ class MediaTrigger {
                 this.setActivations(list);
             }
             finally {
-                this.hasCachedOriginals = false;
-                this.originalRegistry = null;
-                this.originalActivations = [];
                 if (this.resizeSubscription) {
                     this.resizeSubscription.unsubscribe();
                 }
+                this.hasCachedOriginals = false;
+                this.originalRegistry = null;
+                this.originalActivations = [];
             }
         }
     }
@@ -1880,7 +1883,11 @@ class MediaTrigger {
      * @return {?}
      */
     prepareAutoRestore() {
-        if (isPlatformBrowser(this._platformId) && this._document) {
+        /** @type {?} */
+        const isBrowser = isPlatformBrowser(this._platformId) && this._document;
+        /** @type {?} */
+        const enableAutoRestore = isBrowser && this.layoutConfig.mediaTriggerAutoRestore;
+        if (enableAutoRestore) {
             /** @type {?} */
             const resize$ = fromEvent(window, 'resize').pipe(take(1));
             this.resizeSubscription = resize$.subscribe(this.restore.bind(this));
@@ -1997,10 +2004,11 @@ MediaTrigger.decorators = [
 MediaTrigger.ctorParameters = () => [
     { type: BreakPointRegistry },
     { type: MatchMedia },
+    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ MediaTrigger.ngInjectableDef = defineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(inject(BreakPointRegistry), inject(MatchMedia), inject(PLATFORM_ID), inject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+/** @nocollapse */ MediaTrigger.ngInjectableDef = defineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(inject(BreakPointRegistry), inject(MatchMedia), inject(LAYOUT_CONFIG), inject(PLATFORM_ID), inject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle

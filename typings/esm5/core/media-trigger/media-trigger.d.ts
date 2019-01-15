@@ -1,14 +1,16 @@
 import { MatchMedia } from '../match-media/match-media';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
+import { LayoutConfigOptions } from '../tokens/library-config';
 /**
  * Class
  */
 export declare class MediaTrigger {
     protected breakpoints: BreakPointRegistry;
     protected matchMedia: MatchMedia;
+    protected layoutConfig: LayoutConfigOptions;
     protected _platformId: Object;
     protected _document: any;
-    constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, _platformId: Object, _document: any);
+    constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, layoutConfig: LayoutConfigOptions, _platformId: Object, _document: any);
     /**
      * Manually activate range of breakpoints
      * @param list array of mediaQuery or alias strings

@@ -6,6 +6,9 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { InjectionToken } from '@angular/core';
+export interface MediaTriggerOptions {
+    disableAutoRestore?: boolean;
+}
 /** a set of configuration options for FlexLayoutModule */
 export interface LayoutConfigOptions {
     addFlexToParent?: boolean;
@@ -15,6 +18,7 @@ export interface LayoutConfigOptions {
     serverLoaded?: boolean;
     useColumnBasisZero?: boolean;
     printWithBreakpoints?: string[];
+    mediaTriggerAutoRestore?: boolean;
 }
 export declare const DEFAULT_CONFIG: LayoutConfigOptions;
 export declare const LAYOUT_CONFIG: InjectionToken<LayoutConfigOptions>;
