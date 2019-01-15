@@ -2458,13 +2458,13 @@ var MediaObserver = /** @class */ (function () {
     Object.defineProperty(MediaObserver.prototype, "media$", {
         /**
          * @deprecated Use `asObservable()` instead.
-         * @deletion-target v7.0.0-beta.24
          * @breaking-change 7.0.0-beta.24
+         * @deletion-target v7.0.0-beta.25
          */
         get: /**
          * @deprecated Use `asObservable()` instead.
-         * \@deletion-target v7.0.0-beta.24
          * \@breaking-change 7.0.0-beta.24
+         * \@deletion-target v7.0.0-beta.25
          * @return {?}
          */
         function () {
@@ -7473,7 +7473,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-34df933');
+var VERSION = new core.Version('7.0.0-beta.23-341d13b');
 
 /**
  * @fileoverview added by tsickle

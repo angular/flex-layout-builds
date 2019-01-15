@@ -50,8 +50,8 @@ export declare class MediaObserver {
     protected hook: PrintHook;
     /**
      * @deprecated Use `asObservable()` instead.
-     * @deletion-target v7.0.0-beta.24
      * @breaking-change 7.0.0-beta.24
+     * @deletion-target v7.0.0-beta.25
      */
     readonly media$: Observable<MediaChange>;
     /** Filter MediaChange notifications for overlapping breakpoints */

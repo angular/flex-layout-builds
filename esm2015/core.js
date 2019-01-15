@@ -1880,8 +1880,8 @@ class MediaObserver {
     }
     /**
      * @deprecated Use `asObservable()` instead.
-     * \@deletion-target v7.0.0-beta.24
      * \@breaking-change 7.0.0-beta.24
+     * \@deletion-target v7.0.0-beta.25
      * @return {?}
      */
     get media$() {
