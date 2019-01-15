@@ -309,9 +309,10 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  *        element
  * @param {?} mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param {?} breakpoints the registered breakpoints to activate/deactivate
+ * @param {?} layoutConfig the library config, and specifically the breakpoints to activate
  * @return {?}
  */
-function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints) {
+function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig) {
     /** @type {?} */
     var classMap = new Map();
     /** @type {?} */
@@ -328,6 +329,13 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
         }
         (/** @type {?} */ (mediaController)).deactivateBreakpoint(breakpoints[i]);
     });
+    /** @type {?} */
+    var serverBps = layoutConfig.serverBreakpoints;
+    if (serverBps) {
+        breakpoints
+            .filter(function (bp) { return serverBps.find(function (serverBp) { return serverBp === bp.alias; }); })
+            .forEach(mediaController.activateBreakpoint);
+    }
     return styleText;
 }
 /**
@@ -337,14 +345,15 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
  * @param {?} matchMedia
  * @param {?} _document
  * @param {?} breakpoints
+ * @param {?} layoutConfig
  * @return {?}
  */
-function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints) {
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints, layoutConfig) {
     return function () {
         /** @type {?} */
         var styleTag = _document.createElement('style');
         /** @type {?} */
-        var styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+        var styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints, layoutConfig);
         styleTag.classList.add(core$1.CLASS_NAME + "ssr");
         styleTag.textContent = styleText; /** @type {?} */
         ((_document.head)).appendChild(styleTag);
@@ -362,6 +371,7 @@ var SERVER_PROVIDERS = [
             core$1.ɵMatchMedia,
             common.DOCUMENT,
             core$1.BREAKPOINTS,
+            core$1.LAYOUT_CONFIG,
         ],
         multi: true
     },
