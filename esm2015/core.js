@@ -1915,7 +1915,7 @@ class MediaTrigger {
             /** @type {?} */
             const mergeMQAlias = (change) => {
                 /** @type {?} */
-                let bp = this.breakpoints.findByQuery(change.mediaQuery);
+                const bp = this.breakpoints.findByQuery(change.mediaQuery);
                 return mergeAlias(change, bp);
             };
             this.originalActivations = this.currentActivations
