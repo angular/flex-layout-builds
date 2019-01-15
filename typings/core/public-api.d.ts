@@ -15,6 +15,7 @@ export * from './base/index';
 export * from './breakpoints/index';
 export { MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider, } from './match-media/index';
 export * from './media-observer/index';
+export * from './media-trigger/index';
 export * from './utils/index';
 export * from './style-utils/style-utils';
 export * from './style-builder/style-builder';

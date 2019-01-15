@@ -200,7 +200,6 @@ var ServerMatchMedia = /** @class */ (function (_super) {
         _this._zone = _zone;
         _this._platformId = _platformId;
         _this._document = _document;
-        _this._registry = new Map();
         return _this;
     }
     /** Activate the specified breakpoint if we're on the server, no-op otherwise */
@@ -216,7 +215,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
      */
     function (bp) {
         /** @type {?} */
-        var lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        var lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
         if (lookupBreakpoint) {
             lookupBreakpoint.activate();
         }
@@ -234,7 +233,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
      */
     function (bp) {
         /** @type {?} */
-        var lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        var lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
         if (lookupBreakpoint) {
             lookupBreakpoint.deactivate();
         }

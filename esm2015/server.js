@@ -143,7 +143,6 @@ class ServerMatchMedia extends ɵMatchMedia {
         this._zone = _zone;
         this._platformId = _platformId;
         this._document = _document;
-        this._registry = new Map();
     }
     /**
      * Activate the specified breakpoint if we're on the server, no-op otherwise
@@ -152,7 +151,7 @@ class ServerMatchMedia extends ɵMatchMedia {
      */
     activateBreakpoint(bp) {
         /** @type {?} */
-        const lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        const lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
         if (lookupBreakpoint) {
             lookupBreakpoint.activate();
         }
@@ -164,7 +163,7 @@ class ServerMatchMedia extends ɵMatchMedia {
      */
     deactivateBreakpoint(bp) {
         /** @type {?} */
-        const lookupBreakpoint = this._registry.get(bp.mediaQuery);
+        const lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
         if (lookupBreakpoint) {
             lookupBreakpoint.deactivate();
         }
