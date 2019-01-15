@@ -211,13 +211,13 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     let styleText = generateCss(defaultStyles, 'all', classMap);
     [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
         serverSheet.clearStyles();
-        (/** @type {?} */ (mediaController)).activateBreakpoint(bp);
+        mediaController.activateBreakpoint(bp);
         /** @type {?} */
         const stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
-        (/** @type {?} */ (mediaController)).deactivateBreakpoint(breakpoints[i]);
+        mediaController.deactivateBreakpoint(breakpoints[i]);
     });
     /** @type {?} */
     const serverBps = layoutConfig.serverBreakpoints;
@@ -232,18 +232,18 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  * @param {?} serverSheet
- * @param {?} matchMedia
+ * @param {?} mediaController
  * @param {?} _document
  * @param {?} breakpoints
  * @param {?} layoutConfig
  * @return {?}
  */
-function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints, layoutConfig) {
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints, layoutConfig) {
     return () => {
         /** @type {?} */
         const styleTag = _document.createElement('style');
         /** @type {?} */
-        const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints, layoutConfig);
+        const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig);
         styleTag.classList.add(`${CLASS_NAME}ssr`);
         styleTag.textContent = styleText; /** @type {?} */
         ((_document.head)).appendChild(styleTag);
@@ -315,7 +315,7 @@ function format(...list) {
     /** @type {?} */
     let result = '';
     list.forEach((css, i) => {
-        result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
+        result += IS_DEBUG_MODE ? formatSegment(css, i !== 0) : css;
     });
     return result;
 }
@@ -325,7 +325,7 @@ function format(...list) {
  * @return {?}
  */
 function formatSegment(css, asPrefix = true) {
-    return asPrefix ? '\n' + css : css + '\n';
+    return asPrefix ? `\n${css}` : `${css}\n`;
 }
 /**
  * Get className associated with CSS styling

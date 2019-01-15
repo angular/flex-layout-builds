@@ -321,13 +321,13 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     var styleText = generateCss(defaultStyles, 'all', classMap);
     breakpoints.slice().sort(core$1.sortAscendingPriority).forEach(function (bp, i) {
         serverSheet.clearStyles();
-        (/** @type {?} */ (mediaController)).activateBreakpoint(bp);
+        mediaController.activateBreakpoint(bp);
         /** @type {?} */
         var stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
-        (/** @type {?} */ (mediaController)).deactivateBreakpoint(breakpoints[i]);
+        mediaController.deactivateBreakpoint(breakpoints[i]);
     });
     /** @type {?} */
     var serverBps = layoutConfig.serverBreakpoints;
@@ -342,18 +342,18 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  * @param {?} serverSheet
- * @param {?} matchMedia
+ * @param {?} mediaController
  * @param {?} _document
  * @param {?} breakpoints
  * @param {?} layoutConfig
  * @return {?}
  */
-function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints, layoutConfig) {
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints, layoutConfig) {
     return function () {
         /** @type {?} */
         var styleTag = _document.createElement('style');
         /** @type {?} */
-        var styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints, layoutConfig);
+        var styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig);
         styleTag.classList.add(core$1.CLASS_NAME + "ssr");
         styleTag.textContent = styleText; /** @type {?} */
         ((_document.head)).appendChild(styleTag);
@@ -429,7 +429,7 @@ function format() {
     /** @type {?} */
     var result = '';
     list.forEach(function (css, i) {
-        result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
+        result += IS_DEBUG_MODE ? formatSegment(css, i !== 0) : css;
     });
     return result;
 }
@@ -440,7 +440,7 @@ function format() {
  */
 function formatSegment(css, asPrefix) {
     if (asPrefix === void 0) { asPrefix = true; }
-    return asPrefix ? '\n' + css : css + '\n';
+    return asPrefix ? "\n" + css : css + "\n";
 }
 /**
  * Get className associated with CSS styling

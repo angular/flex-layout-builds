@@ -22,7 +22,7 @@ export declare function generateStaticFlexLayoutStyles(serverSheet: StylesheetMa
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  */
-export declare function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap, matchMedia: ServerMatchMedia, _document: Document, breakpoints: BreakPoint[], layoutConfig: LayoutConfigOptions): () => void;
+export declare function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap, mediaController: ServerMatchMedia, _document: Document, breakpoints: BreakPoint[], layoutConfig: LayoutConfigOptions): () => void;
 /**
  *  Provider to set static styles on the server
  */
