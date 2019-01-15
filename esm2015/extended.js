@@ -159,6 +159,7 @@ class ClassDirective extends BaseDirective2 {
             this.ngClassInstance = new NgClass(this.iterableDiffers, this.keyValueDiffers, this.elementRef, this.renderer);
         }
         this.init();
+        this.setValue('', '');
     }
     /**
      * Capture class assignments so we cache the default classes

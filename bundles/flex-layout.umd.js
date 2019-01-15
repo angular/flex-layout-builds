@@ -125,6 +125,7 @@ MediaChange = /** @class */ (function () {
      * @param mediaQuery e.g. (min-width: 600px) and (max-width: 959px)
      * @param mqAlias e.g. gt-sm, md, gt-lg
      * @param suffix e.g. GtSM, Md, GtLg
+     * @param priority the priority of activation for the given breakpoint
      */
     function MediaChange(matches, mediaQuery, mqAlias, suffix, priority) {
         if (matches === void 0) { matches = false; }
@@ -912,31 +913,6 @@ function mergeByAlias(defaults, custom) {
     });
     return validateSuffixes(Object.keys(dict).map(function (k) { return dict[k]; }));
 }
-/**
- * HOF to sort the breakpoints by priority
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortDescendingPriority(a, b) {
-    /** @type {?} */
-    var priorityA = a ? a.priority || 0 : 0;
-    /** @type {?} */
-    var priorityB = b ? b.priority || 0 : 0;
-    return priorityB - priorityA;
-}
-/**
- * @param {?} a
- * @param {?} b
- * @return {?}
- */
-function sortAscendingPriority(a, b) {
-    /** @type {?} */
-    var pA = a.priority || 0;
-    /** @type {?} */
-    var pB = b.priority || 0;
-    return pA - pB;
-}
 
 /**
  * @fileoverview added by tsickle
@@ -962,6 +938,39 @@ var BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoi
         return mergeByAlias(builtIns, bpFlattenArray);
     }
 });
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * HOF to sort the breakpoints by descending priority
+ * @template T
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortDescendingPriority(a, b) {
+    /** @type {?} */
+    var priorityA = a ? a.priority || 0 : 0;
+    /** @type {?} */
+    var priorityB = b ? b.priority || 0 : 0;
+    return priorityB - priorityA;
+}
+/**
+ * HOF to sort the breakpoints by ascending priority
+ * @template T
+ * @param {?} a
+ * @param {?} b
+ * @return {?}
+ */
+function sortAscendingPriority(a, b) {
+    /** @type {?} */
+    var pA = a.priority || 0;
+    /** @type {?} */
+    var pB = b.priority || 0;
+    return pA - pB;
+}
 
 /**
  * @fileoverview added by tsickle
@@ -2454,25 +2463,8 @@ var MediaObserver = /** @class */ (function () {
          */
         this.filterOverlaps = false;
         this._media$ = this.watchActivations();
+        this.media$ = this._media$.pipe(operators.filter(function (changes) { return changes.length > 0; }), operators.map(function (changes) { return changes[0]; }));
     }
-    Object.defineProperty(MediaObserver.prototype, "media$", {
-        /**
-         * @deprecated Use `asObservable()` instead.
-         * @deletion-target v7.0.0-beta.24
-         * @breaking-change 7.0.0-beta.24
-         */
-        get: /**
-         * @deprecated Use `asObservable()` instead.
-         * \@deletion-target v7.0.0-beta.24
-         * \@breaking-change 7.0.0-beta.24
-         * @return {?}
-         */
-        function () {
-            return this._media$;
-        },
-        enumerable: true,
-        configurable: true
-    });
     // ************************************************
     // Public Methods
     // ************************************************
@@ -2606,7 +2598,7 @@ var MediaObserver = /** @class */ (function () {
             .map(function (query) { return new MediaChange(true, query); })
             .map(replaceWithPrintAlias)
             .map(mergeMQAlias)
-            .sort(sortChangesByPriority);
+            .sort(sortDescendingPriority);
     };
     MediaObserver.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -2631,19 +2623,284 @@ function toMediaQuery(query, locator) {
     var bp = locator.findByAlias(query) || locator.findByQuery(query);
     return bp ? bp.mediaQuery : query;
 }
+
 /**
- * HOF to sort the breakpoints by priority
- * @param {?} a
- * @param {?} b
- * @return {?}
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
-function sortChangesByPriority(a, b) {
-    /** @type {?} */
-    var priorityA = a ? a.priority || 0 : 0;
-    /** @type {?} */
-    var priorityB = b ? b.priority || 0 : 0;
-    return priorityB - priorityA;
-}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
+/**
+ * Class
+ */
+var MediaTrigger = /** @class */ (function () {
+    function MediaTrigger(breakpoints, matchMedia, _platformId, _document) {
+        this.breakpoints = breakpoints;
+        this.matchMedia = matchMedia;
+        this._platformId = _platformId;
+        this._document = _document;
+        this.hasCachedOriginals = false;
+        this.originalActivations = [];
+        this.originalRegistry = null;
+    }
+    /**
+     * Manually activate range of breakpoints
+     * @param list array of mediaQuery or alias strings
+     */
+    /**
+     * Manually activate range of breakpoints
+     * @param {?} list array of mediaQuery or alias strings
+     * @return {?}
+     */
+    MediaTrigger.prototype.activate = /**
+     * Manually activate range of breakpoints
+     * @param {?} list array of mediaQuery or alias strings
+     * @return {?}
+     */
+    function (list) {
+        list = list.map(function (it) { return it.trim(); }); // trim queries
+        this.saveActivations();
+        this.deactivateAll();
+        this.setActivations(list);
+        this.prepareAutoRestore();
+    };
+    /**
+     * Restore original, 'real' breakpoints and emit events
+     * to trigger stream notification
+     */
+    /**
+     * Restore original, 'real' breakpoints and emit events
+     * to trigger stream notification
+     * @return {?}
+     */
+    MediaTrigger.prototype.restore = /**
+     * Restore original, 'real' breakpoints and emit events
+     * to trigger stream notification
+     * @return {?}
+     */
+    function () {
+        if (this.hasCachedOriginals) {
+            /** @type {?} */
+            var extractQuery = function (change) { return change.mediaQuery; };
+            /** @type {?} */
+            var list = this.originalActivations.map(extractQuery);
+            try {
+                this.deactivateAll();
+                this.restoreRegistryMatches();
+                this.setActivations(list);
+            }
+            finally {
+                this.hasCachedOriginals = false;
+                this.originalRegistry = null;
+                this.originalActivations = [];
+                if (this.resizeSubscription) {
+                    this.resizeSubscription.unsubscribe();
+                }
+            }
+        }
+    };
+    /**
+     * Whenever window resizes, immediately auto-restore original
+     * activations (if we are simulating activations)
+     * @return {?}
+     */
+    MediaTrigger.prototype.prepareAutoRestore = /**
+     * Whenever window resizes, immediately auto-restore original
+     * activations (if we are simulating activations)
+     * @return {?}
+     */
+    function () {
+        if (common.isPlatformBrowser(this._platformId) && this._document) {
+            /** @type {?} */
+            var resize$ = rxjs.fromEvent(window, 'resize').pipe(operators.take(1));
+            this.resizeSubscription = resize$.subscribe(this.restore.bind(this));
+        }
+    };
+    /**
+     * Notify all matchMedia subscribers of de-activations
+     *
+     * Note: we must force 'matches' updates for
+     *       future matchMedia::activation lookups
+     * @return {?}
+     */
+    MediaTrigger.prototype.deactivateAll = /**
+     * Notify all matchMedia subscribers of de-activations
+     *
+     * Note: we must force 'matches' updates for
+     *       future matchMedia::activation lookups
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var list = this.currentActivations;
+        this.forceRegistryMatches(list, false);
+        this.simulateMediaChanges(list, false);
+    };
+    /**
+     * Cache current activations as sorted, prioritized list of MediaChanges
+     * @return {?}
+     */
+    MediaTrigger.prototype.saveActivations = /**
+     * Cache current activations as sorted, prioritized list of MediaChanges
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        if (!this.hasCachedOriginals) {
+            /** @type {?} */
+            var toMediaChange = function (query) { return new MediaChange(true, query); };
+            /** @type {?} */
+            var mergeMQAlias = function (change) {
+                /** @type {?} */
+                var bp = _this.breakpoints.findByQuery(change.mediaQuery);
+                return mergeAlias(change, bp);
+            };
+            this.originalRegistry = /** @type {?} */ (this.matchMedia['_registry']);
+            this.originalActivations = this.currentActivations
+                .map(toMediaChange)
+                .map(mergeMQAlias)
+                .sort(sortDescendingPriority);
+            this.hasCachedOriginals = true;
+        }
+    };
+    /**
+     * Force set manual activations for specified mediaQuery list
+     * @param {?} list
+     * @return {?}
+     */
+    MediaTrigger.prototype.setActivations = /**
+     * Force set manual activations for specified mediaQuery list
+     * @param {?} list
+     * @return {?}
+     */
+    function (list) {
+        if (!!this.originalRegistry) {
+            this.forceRegistryMatches(list, true);
+        }
+        this.simulateMediaChanges(list);
+    };
+    /**
+     * For specified mediaQuery list manually simulate activations or deactivations
+     * @param {?} queries
+     * @param {?=} matches
+     * @return {?}
+     */
+    MediaTrigger.prototype.simulateMediaChanges = /**
+     * For specified mediaQuery list manually simulate activations or deactivations
+     * @param {?} queries
+     * @param {?=} matches
+     * @return {?}
+     */
+    function (queries, matches) {
+        var _this = this;
+        if (matches === void 0) { matches = true; }
+        /** @type {?} */
+        var toMediaQuery = function (query) {
+            /** @type {?} */
+            var locator = _this.breakpoints;
+            /** @type {?} */
+            var bp = locator.findByAlias(query) || locator.findByQuery(query);
+            return bp ? bp.mediaQuery : query;
+        };
+        /** @type {?} */
+        var emitChangeEvent = function (query) { return _this.emitChangeEvent(matches, query); };
+        queries.map(toMediaQuery).forEach(emitChangeEvent);
+    };
+    // ****************************************************************
+    // 'Pierce-the-veil' to get access to special, read-only artifacts
+    // ****************************************************************
+    /**
+     * Replace current registry with simulated registry...
+     * Note: this is required since MediaQueryList::matches is 'readOnly'
+     */
+    /**
+     * Replace current registry with simulated registry...
+     * Note: this is required since MediaQueryList::matches is 'readOnly'
+     * @param {?} queries
+     * @param {?} match
+     * @return {?}
+     */
+    MediaTrigger.prototype.forceRegistryMatches = /**
+     * Replace current registry with simulated registry...
+     * Note: this is required since MediaQueryList::matches is 'readOnly'
+     * @param {?} queries
+     * @param {?} match
+     * @return {?}
+     */
+    function (queries, match) {
+        /** @type {?} */
+        var registry = new Map();
+        queries.forEach(function (query) {
+            registry.set(query, /** @type {?} */ ({ matches: match }));
+        });
+        this.matchMedia['_registry'] = registry;
+    };
+    /**
+     * Restore original, 'true' registry
+     */
+    /**
+     * Restore original, 'true' registry
+     * @return {?}
+     */
+    MediaTrigger.prototype.restoreRegistryMatches = /**
+     * Restore original, 'true' registry
+     * @return {?}
+     */
+    function () {
+        this.matchMedia['_registry'] = /** @type {?} */ (this.originalRegistry);
+        this.originalRegistry = null;
+    };
+    /**
+     * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     */
+    /**
+     * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     * @param {?} matches
+     * @param {?} query
+     * @return {?}
+     */
+    MediaTrigger.prototype.emitChangeEvent = /**
+     * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     * @param {?} matches
+     * @param {?} query
+     * @return {?}
+     */
+    function (matches, query) {
+        /** @type {?} */
+        var source = /** @type {?} */ (this.matchMedia['_source']);
+        source.next(new MediaChange(matches, query));
+    };
+    Object.defineProperty(MediaTrigger.prototype, "currentActivations", {
+        get: /**
+         * @return {?}
+         */
+        function () {
+            return this.matchMedia.activations;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MediaTrigger.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+    ];
+    /** @nocollapse */
+    MediaTrigger.ctorParameters = function () { return [
+        { type: BreakPointRegistry },
+        { type: MatchMedia },
+        { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
+    ]; };
+    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.defineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+    return MediaTrigger;
+}());
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 
 /**
  * @fileoverview added by tsickle
@@ -3826,6 +4083,7 @@ var ClassDirective = /** @class */ (function (_super) {
             _this.ngClassInstance = new common.NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
         }
         _this.init();
+        _this.setValue('', '');
         return _this;
     }
     Object.defineProperty(ClassDirective.prototype, "klass", {
@@ -7473,7 +7731,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-8d6d3db');
+var VERSION = new core.Version('7.0.0-beta.23-03a184c');
 
 /**
  * @fileoverview added by tsickle
@@ -7552,8 +7810,6 @@ exports.SERVER_TOKEN = SERVER_TOKEN;
 exports.BREAKPOINT = BREAKPOINT;
 exports.mergeAlias = mergeAlias;
 exports.BaseDirective2 = BaseDirective2;
-exports.sortDescendingPriority = sortDescendingPriority;
-exports.sortAscendingPriority = sortAscendingPriority;
 exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;
@@ -7565,8 +7821,10 @@ exports.MockMediaQueryList = MockMediaQueryList;
 exports.MockMatchMediaProvider = MockMatchMediaProvider;
 exports.ServerMediaQueryList = ServerMediaQueryList;
 exports.ServerMatchMedia = ServerMatchMedia;
-exports.sortChangesByPriority = sortChangesByPriority;
 exports.MediaObserver = MediaObserver;
+exports.MediaTrigger = MediaTrigger;
+exports.sortDescendingPriority = sortDescendingPriority;
+exports.sortAscendingPriority = sortAscendingPriority;
 exports.StyleUtils = StyleUtils;
 exports.StyleBuilder = StyleBuilder;
 exports.validateBasis = validateBasis;

@@ -50,10 +50,10 @@ export declare class MediaObserver {
     protected hook: PrintHook;
     /**
      * @deprecated Use `asObservable()` instead.
-     * @deletion-target v7.0.0-beta.24
      * @breaking-change 7.0.0-beta.24
+     * @deletion-target v7.0.0-beta.25
      */
-    readonly media$: Observable<MediaChange[]>;
+    readonly media$: Observable<MediaChange>;
     /** Filter MediaChange notifications for overlapping breakpoints */
     filterOverlaps: boolean;
     constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);
@@ -94,7 +94,5 @@ export declare class MediaObserver {
      * sorted by descending priority.
      */
     private findAllActivations;
-    private _media$;
+    private readonly _media$;
 }
-/** HOF to sort the breakpoints by priority */
-export declare function sortChangesByPriority(a: MediaChange, b: MediaChange): number;
