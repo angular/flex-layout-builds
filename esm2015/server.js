@@ -222,8 +222,18 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     /** @type {?} */
     const serverBps = layoutConfig.serverBreakpoints;
     if (serverBps) {
-        breakpoints
-            .filter(bp => serverBps.find(serverBp => serverBp === bp.alias))
+        serverBps
+            .reduce((acc, serverBp) => {
+            /** @type {?} */
+            const foundBp = breakpoints.find(bp => serverBp === bp.alias);
+            if (!foundBp) {
+                console.warn(`FlexLayoutServerModule: breakpoint with alias "${serverBp}`);
+            }
+            else {
+                acc.push(foundBp);
+            }
+            return acc;
+        }, [])
             .forEach(mediaController.activateBreakpoint);
     }
     return styleText;

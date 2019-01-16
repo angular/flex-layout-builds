@@ -303,8 +303,18 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     /** @type {?} */
     var serverBps = layoutConfig.serverBreakpoints;
     if (serverBps) {
-        breakpoints
-            .filter(function (bp) { return serverBps.find(function (serverBp) { return serverBp === bp.alias; }); })
+        serverBps
+            .reduce(function (acc, serverBp) {
+            /** @type {?} */
+            var foundBp = breakpoints.find(function (bp) { return serverBp === bp.alias; });
+            if (!foundBp) {
+                console.warn("FlexLayoutServerModule: breakpoint with alias \"" + serverBp);
+            }
+            else {
+                acc.push(foundBp);
+            }
+            return acc;
+        }, [])
             .forEach(mediaController.activateBreakpoint);
     }
     return styleText;
