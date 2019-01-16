@@ -308,7 +308,7 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
             /** @type {?} */
             var foundBp = breakpoints.find(function (bp) { return serverBp === bp.alias; });
             if (!foundBp) {
-                console.warn("FlexLayoutServerModule: breakpoint with alias \"" + serverBp);
+                console.warn("FlexLayoutServerModule: unknown breakpoint alias \"" + serverBp + "\"");
             }
             else {
                 acc.push(foundBp);

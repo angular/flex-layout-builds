@@ -7474,7 +7474,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-dde2cb1');
+var VERSION = new core.Version('7.0.0-beta.23-ad39beb');
 
 /**
  * @fileoverview added by tsickle
