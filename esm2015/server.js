@@ -7,7 +7,7 @@
  */
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, PLATFORM_ID, NgModule } from '@angular/core';
-import { ɵMatchMedia, BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, StylesheetMap, sortAscendingPriority } from '@angular/flex-layout/core';
+import { ɵMatchMedia, BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, StylesheetMap, sortAscendingPriority, LAYOUT_CONFIG } from '@angular/flex-layout/core';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
 
 /**
@@ -199,9 +199,10 @@ ServerMatchMedia.ctorParameters = () => [
  *        element
  * @param {?} mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param {?} breakpoints the registered breakpoints to activate/deactivate
+ * @param {?} layoutConfig the library config, and specifically the breakpoints to activate
  * @return {?}
  */
-function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints) {
+function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig) {
     /** @type {?} */
     const classMap = new Map();
     /** @type {?} */
@@ -210,31 +211,49 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     let styleText = generateCss(defaultStyles, 'all', classMap);
     [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
         serverSheet.clearStyles();
-        (/** @type {?} */ (mediaController)).activateBreakpoint(bp);
+        mediaController.activateBreakpoint(bp);
         /** @type {?} */
         const stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
-        (/** @type {?} */ (mediaController)).deactivateBreakpoint(breakpoints[i]);
+        mediaController.deactivateBreakpoint(breakpoints[i]);
     });
+    /** @type {?} */
+    const serverBps = layoutConfig.ssrObserveBreakpoints;
+    if (serverBps) {
+        serverBps
+            .reduce((acc, serverBp) => {
+            /** @type {?} */
+            const foundBp = breakpoints.find(bp => serverBp === bp.alias);
+            if (!foundBp) {
+                console.warn(`FlexLayoutServerModule: unknown breakpoint alias "${serverBp}"`);
+            }
+            else {
+                acc.push(foundBp);
+            }
+            return acc;
+        }, [])
+            .forEach(mediaController.activateBreakpoint);
+    }
     return styleText;
 }
 /**
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  * @param {?} serverSheet
- * @param {?} matchMedia
+ * @param {?} mediaController
  * @param {?} _document
  * @param {?} breakpoints
+ * @param {?} layoutConfig
  * @return {?}
  */
-function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, matchMedia, _document, breakpoints) {
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints, layoutConfig) {
     return () => {
         /** @type {?} */
         const styleTag = _document.createElement('style');
         /** @type {?} */
-        const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+        const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig);
         styleTag.classList.add(`${CLASS_NAME}ssr`);
         styleTag.textContent = styleText; /** @type {?} */
         ((_document.head)).appendChild(styleTag);
@@ -252,6 +271,7 @@ const SERVER_PROVIDERS = [
             ɵMatchMedia,
             DOCUMENT,
             BREAKPOINTS,
+            LAYOUT_CONFIG,
         ],
         multi: true
     },
@@ -305,7 +325,7 @@ function format(...list) {
     /** @type {?} */
     let result = '';
     list.forEach((css, i) => {
-        result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
+        result += IS_DEBUG_MODE ? formatSegment(css, i !== 0) : css;
     });
     return result;
 }
@@ -315,7 +335,7 @@ function format(...list) {
  * @return {?}
  */
 function formatSegment(css, asPrefix = true) {
-    return asPrefix ? '\n' + css : css + '\n';
+    return asPrefix ? `\n${css}` : `${css}\n`;
 }
 /**
  * Get className associated with CSS styling

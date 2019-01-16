@@ -179,7 +179,8 @@ const DEFAULT_CONFIG = {
     serverLoaded: false,
     useColumnBasisZero: true,
     printWithBreakpoints: [],
-    mediaTriggerAutoRestore: true
+    mediaTriggerAutoRestore: true,
+    ssrObserveBreakpoints: [],
 };
 /** @type {?} */
 const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
