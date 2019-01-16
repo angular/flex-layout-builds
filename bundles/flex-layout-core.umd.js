@@ -265,7 +265,7 @@ var DEFAULT_CONFIG = {
     useColumnBasisZero: true,
     printWithBreakpoints: [],
     mediaTriggerAutoRestore: true,
-    serverBreakpoints: [],
+    ssrObserveBreakpoints: [],
 };
 /** @type {?} */
 var LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options for the library', {

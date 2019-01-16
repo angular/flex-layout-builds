@@ -265,7 +265,7 @@ var DEFAULT_CONFIG = {
     useColumnBasisZero: true,
     printWithBreakpoints: [],
     mediaTriggerAutoRestore: true,
-    serverBreakpoints: [],
+    ssrObserveBreakpoints: [],
 };
 /** @type {?} */
 var LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options for the library', {
@@ -7474,7 +7474,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-ad39beb');
+var VERSION = new core.Version('7.0.0-beta.23-d557263');
 
 /**
  * @fileoverview added by tsickle

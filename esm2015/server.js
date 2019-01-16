@@ -220,7 +220,7 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
         mediaController.deactivateBreakpoint(breakpoints[i]);
     });
     /** @type {?} */
-    const serverBps = layoutConfig.serverBreakpoints;
+    const serverBps = layoutConfig.ssrObserveBreakpoints;
     if (serverBps) {
         serverBps
             .reduce((acc, serverBp) => {

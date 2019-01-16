@@ -330,7 +330,7 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
         mediaController.deactivateBreakpoint(breakpoints[i]);
     });
     /** @type {?} */
-    var serverBps = layoutConfig.serverBreakpoints;
+    var serverBps = layoutConfig.ssrObserveBreakpoints;
     if (serverBps) {
         serverBps
             .reduce(function (acc, serverBp) {
