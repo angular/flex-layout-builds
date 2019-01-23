@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MediaChange } from '../media-change';
 import { MatchMedia } from '../match-media/match-media';
@@ -44,7 +52,7 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
  *    }
  *  }
  */
-export declare class MediaObserver {
+export declare class MediaObserver implements OnDestroy {
     protected breakpoints: BreakPointRegistry;
     protected matchMedia: MatchMedia;
     protected hook: PrintHook;
@@ -58,16 +66,21 @@ export declare class MediaObserver {
     filterOverlaps: boolean;
     constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);
     /**
+     * Completes the active subject, signalling to all complete for all
+     * MediaObserver subscribers
+     */
+    ngOnDestroy(): void;
+    /**
      * Observe changes to current activation 'list'
      */
     asObservable(): Observable<MediaChange[]>;
     /**
-     * Allow programmatic query to determine if specified query/alias is active.
+     * Allow programmatic query to determine if one or more media query/alias match
+     * the current viewport size.
+     * @param value One or more media queries (or aliases) to check.
+     * @returns Whether any of the media queries match.
      */
-    isActive(alias: string): boolean;
-    /**
-     * Subscribers to activation list can use this function to easily exclude overlaps
-     */
+    isActive(value: string | string[]): boolean;
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
      * This is needed so subscribers can be auto-notified of all standard, registered
@@ -95,4 +108,5 @@ export declare class MediaObserver {
      */
     private findAllActivations;
     private readonly _media$;
+    private readonly destroyed$;
 }

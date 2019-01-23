@@ -7,8 +7,8 @@
  */
 import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, defineInjectable } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { Subject, BehaviorSubject, Observable, merge, of, fromEvent } from 'rxjs';
-import { filter, debounceTime, map, switchMap, take, tap } from 'rxjs/operators';
+import { Subject, BehaviorSubject, Observable, merge, asapScheduler, of, fromEvent } from 'rxjs';
+import { filter, debounceTime, map, switchMap, takeUntil, take, tap } from 'rxjs/operators';
 
 /**
  * @fileoverview added by tsickle
@@ -527,52 +527,52 @@ class BaseDirective2 {
 const DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
-        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.9999px)',
+        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.99px)',
         priority: 1000,
     },
     {
         alias: 'sm',
-        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.9999px)',
+        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.99px)',
         priority: 900,
     },
     {
         alias: 'md',
-        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.9999px)',
+        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.99px)',
         priority: 800,
     },
     {
         alias: 'lg',
-        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.9999px)',
+        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.99px)',
         priority: 700,
     },
     {
         alias: 'xl',
-        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.9999px)',
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.99px)',
         priority: 600,
     },
     {
         alias: 'lt-sm',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 599.9999px)',
+        mediaQuery: 'screen and (max-width: 599.99px)',
         priority: 950,
     },
     {
         alias: 'lt-md',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 959.9999px)',
+        mediaQuery: 'screen and (max-width: 959.99px)',
         priority: 850,
     },
     {
         alias: 'lt-lg',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 1279.9999px)',
+        mediaQuery: 'screen and (max-width: 1279.99px)',
         priority: 750,
     },
     {
         alias: 'lt-xl',
         overlapping: true,
         priority: 650,
-        mediaQuery: 'screen and (max-width: 1919.9999px)',
+        mediaQuery: 'screen and (max-width: 1919.99px)',
     },
     {
         alias: 'gt-xs',
@@ -605,13 +605,13 @@ const DEFAULT_BREAKPOINTS = [
  */
 
 /** @type {?} */
-const HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599px)';
+const HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599.99px)';
 /** @type {?} */
-const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
+const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.99px)';
 /** @type {?} */
-const TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
+const TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.99px)';
 /** @type {?} */
-const TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
+const TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.99px)';
 /** @type {?} */
 const WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
 /** @type {?} */
@@ -1641,6 +1641,21 @@ function isPrintBreakPoint(bp) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
+
+/**
+ * Wraps the provided value in an array, unless the provided value is an array.
+ * @template T
+ * @param {?} value
+ * @return {?}
+ */
+function coerceArray(value) {
+    return Array.isArray(value) ? value : [value];
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ */
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
  * if a mediaQuery is currently activated.
@@ -1696,8 +1711,18 @@ class MediaObserver {
          * Filter MediaChange notifications for overlapping breakpoints
          */
         this.filterOverlaps = false;
+        this.destroyed$ = new Subject();
         this._media$ = this.watchActivations();
         this.media$ = this._media$.pipe(filter((changes) => changes.length > 0), map((changes) => changes[0]));
+    }
+    /**
+     * Completes the active subject, signalling to all complete for all
+     * MediaObserver subscribers
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.destroyed$.next();
+        this.destroyed$.complete();
     }
     /**
      * Observe changes to current activation 'list'
@@ -1707,14 +1732,19 @@ class MediaObserver {
         return this._media$;
     }
     /**
-     * Allow programmatic query to determine if specified query/alias is active.
-     * @param {?} alias
-     * @return {?}
+     * Allow programmatic query to determine if one or more media query/alias match
+     * the current viewport size.
+     * @param {?} value One or more media queries (or aliases) to check.
+     * @return {?} Whether any of the media queries match.
      */
-    isActive(alias) {
+    isActive(value) {
         /** @type {?} */
-        const query = toMediaQuery(alias, this.breakpoints);
-        return this.matchMedia.isActive(query);
+        const aliases = splitQueries(coerceArray(value));
+        return aliases.some(alias => {
+            /** @type {?} */
+            const query = toMediaQuery(alias, this.breakpoints);
+            return this.matchMedia.isActive(query);
+        });
     }
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
@@ -1762,7 +1792,7 @@ class MediaObserver {
              */
         return this.matchMedia
             .observe(this.hook.withPrintQuery(mqList))
-            .pipe(filter((change) => change.matches), debounceTime(10), switchMap(_ => of(this.findAllActivations())), map(excludeOverlaps), filter(hasChanges));
+            .pipe(filter((change) => change.matches), debounceTime(0, asapScheduler), switchMap(_ => of(this.findAllActivations())), map(excludeOverlaps), filter(hasChanges), takeUntil(this.destroyed$));
     }
     /**
      * Find all current activations and prepare single list of activations
@@ -1808,6 +1838,17 @@ function toMediaQuery(query, locator) {
     /** @type {?} */
     const bp = locator.findByAlias(query) || locator.findByQuery(query);
     return bp ? bp.mediaQuery : query;
+}
+/**
+ * Split each query string into separate query strings if two queries are provided as comma
+ * separated.
+ * @param {?} queries
+ * @return {?}
+ */
+function splitQueries(queries) {
+    return queries.map((query) => query.split(','))
+        .reduce((a1, a2) => a1.concat(a2))
+        .map(query => query.trim());
 }
 
 /**
@@ -2792,5 +2833,5 @@ function initBuilderMap(map$$1, element, key, input) {
  * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
  */
 
-export { MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider, CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MediaObserver, MediaTrigger, sortDescendingPriority, sortAscendingPriority, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
+export { MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider, CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MediaObserver, MediaTrigger, sortDescendingPriority, sortAscendingPriority, coerceArray, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
 //# sourceMappingURL=core.js.map
