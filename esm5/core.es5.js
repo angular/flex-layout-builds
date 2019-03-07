@@ -2901,7 +2901,7 @@ var StyleUtils = /** @class */ (function () {
         }
         // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
         //       in which case getComputedStyle() should determine a valid value.
-        return value.trim();
+        return value ? value.trim() : '';
     };
     /**
      * Applies the styles to the element. The styles object map may contain an array of values

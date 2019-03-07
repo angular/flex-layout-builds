@@ -2941,7 +2941,7 @@ var StyleUtils = /** @class */ (function () {
         }
         // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
         //       in which case getComputedStyle() should determine a valid value.
-        return value.trim();
+        return value ? value.trim() : '';
     };
     /**
      * Applies the styles to the element. The styles object map may contain an array of values
@@ -7529,7 +7529,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-af15a61');
+var VERSION = new core.Version('7.0.0-beta.23-5112a47');
 
 /**
  * @fileoverview added by tsickle
