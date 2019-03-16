@@ -1481,7 +1481,7 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 break;
         }
         return /** @type {?} */ (extendObject(css, {
-            'display': 'flex',
+            'display': parent.inline ? 'inline-flex' : 'flex',
             'flex-direction': parent.layout,
             'box-sizing': 'border-box',
             'max-width': crossAxis === 'stretch' ?
@@ -1526,7 +1526,8 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         _this.styleBuilder = styleBuilder;
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout-align';
-        _this.layout = 'row';
+        _this.layout = 'row'; // default flex-direction
+        _this.inline = false;
         _this.init();
         _this.marshal.trackValue(_this.nativeElement, 'layout')
             .pipe(operators.takeUntil(_this.destroySubject))
@@ -1552,19 +1553,33 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     function (value) {
         /** @type {?} */
         var layout = this.layout || 'row';
-        if (layout === 'row') {
+        /** @type {?} */
+        var inline = this.inline;
+        if (layout === 'row' && inline) {
+            this.styleCache = layoutAlignHorizontalInlineCache;
+        }
+        else if (layout === 'row' && !inline) {
             this.styleCache = layoutAlignHorizontalCache;
         }
-        else if (layout === 'row-reverse') {
+        else if (layout === 'row-reverse' && inline) {
+            this.styleCache = layoutAlignHorizontalRevInlineCache;
+        }
+        else if (layout === 'row-reverse' && !inline) {
             this.styleCache = layoutAlignHorizontalRevCache;
         }
-        else if (layout === 'column') {
+        else if (layout === 'column' && inline) {
+            this.styleCache = layoutAlignVerticalInlineCache;
+        }
+        else if (layout === 'column' && !inline) {
             this.styleCache = layoutAlignVerticalCache;
         }
-        else if (layout === 'column-reverse') {
+        else if (layout === 'column-reverse' && inline) {
+            this.styleCache = layoutAlignVerticalRevInlineCache;
+        }
+        else if (layout === 'column-reverse' && !inline) {
             this.styleCache = layoutAlignVerticalRevCache;
         }
-        this.addStyles(value, { layout: layout });
+        this.addStyles(value, { layout: layout, inline: inline });
     };
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
@@ -1582,8 +1597,9 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     function (matcher) {
         var _this = this;
         /** @type {?} */
-        var layout = matcher.value;
-        this.layout = layout.split(' ')[0];
+        var layoutKeys = matcher.value.split(' ');
+        this.layout = layoutKeys[0];
+        this.inline = matcher.value.includes('inline');
         if (!LAYOUT_VALUES.find(function (x) { return x === _this.layout; })) {
             this.layout = 'row';
         }
@@ -1618,6 +1634,14 @@ var layoutAlignVerticalCache = new Map();
 var layoutAlignHorizontalRevCache = new Map();
 /** @type {?} */
 var layoutAlignVerticalRevCache = new Map();
+/** @type {?} */
+var layoutAlignHorizontalInlineCache = new Map();
+/** @type {?} */
+var layoutAlignVerticalInlineCache = new Map();
+/** @type {?} */
+var layoutAlignHorizontalRevInlineCache = new Map();
+/** @type {?} */
+var layoutAlignVerticalRevInlineCache = new Map();
 
 /**
  * @fileoverview added by tsickle
