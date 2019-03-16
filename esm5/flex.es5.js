@@ -1442,7 +1442,7 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 break;
         }
         return /** @type {?} */ (extendObject(css, {
-            'display': 'flex',
+            'display': parent.inline ? 'inline-flex' : 'flex',
             'flex-direction': parent.layout,
             'box-sizing': 'border-box',
             'max-width': crossAxis === 'stretch' ?
@@ -1487,7 +1487,8 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         _this.styleBuilder = styleBuilder;
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout-align';
-        _this.layout = 'row';
+        _this.layout = 'row'; // default flex-direction
+        _this.inline = false;
         _this.init();
         _this.marshal.trackValue(_this.nativeElement, 'layout')
             .pipe(takeUntil(_this.destroySubject))
@@ -1513,6 +1514,8 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     function (value) {
         /** @type {?} */
         var layout = this.layout || 'row';
+        /** @type {?} */
+        var inline = this.inline;
         if (layout === 'row') {
             this.styleCache = layoutAlignHorizontalCache;
         }
@@ -1525,7 +1528,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         else if (layout === 'column-reverse') {
             this.styleCache = layoutAlignVerticalRevCache;
         }
-        this.addStyles(value, { layout: layout });
+        this.addStyles(value, { layout: layout, inline: inline });
     };
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
@@ -1543,8 +1546,9 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     function (matcher) {
         var _this = this;
         /** @type {?} */
-        var layout = matcher.value;
-        this.layout = layout.split(' ')[0];
+        var layoutKeys = matcher.value.split(' ');
+        this.layout = layoutKeys[0];
+        this.inline = matcher.value.includes('inline');
         if (!LAYOUT_VALUES.find(function (x) { return x === _this.layout; })) {
             this.layout = 'row';
         }

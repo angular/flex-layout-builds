@@ -9,6 +9,7 @@ import { ElementRef } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
 export interface LayoutAlignParent {
     layout: string;
+    inline: boolean;
 }
 export declare class LayoutAlignStyleBuilder extends StyleBuilder {
     buildStyles(align: string, parent: LayoutAlignParent): StyleDefinition;
@@ -29,6 +30,7 @@ export declare class LayoutAlignDirective extends BaseDirective2 {
     protected marshal: MediaMarshaller;
     protected DIRECTIVE_KEY: string;
     protected layout: string;
+    protected inline: boolean;
     constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: LayoutAlignStyleBuilder, marshal: MediaMarshaller);
     /**
      *
