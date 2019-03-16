@@ -6068,7 +6068,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         var _this = this;
         /** @type {?} */
         var layoutKeys = matcher.value.split(' ');
-        console.log({ v: matcher.value });
         this.layout = layoutKeys[0];
         this.inline = matcher.value.includes('inline');
         if (!LAYOUT_VALUES$1.find(function (x) { return x === _this.layout; })) {
@@ -7554,7 +7553,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-b2cc2e8');
+var VERSION = new core.Version('7.0.0-beta.23-d778b51');
 
 /**
  * @fileoverview added by tsickle

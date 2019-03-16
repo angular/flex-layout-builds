@@ -1415,7 +1415,6 @@ class LayoutAlignDirective extends BaseDirective2 {
     onLayoutChange(matcher) {
         /** @type {?} */
         const layoutKeys = matcher.value.split(' ');
-        console.log({ v: matcher.value });
         this.layout = layoutKeys[0];
         this.inline = matcher.value.includes('inline');
         if (!LAYOUT_VALUES.find(x => x === this.layout)) {

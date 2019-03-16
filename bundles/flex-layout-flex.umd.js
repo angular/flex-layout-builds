@@ -1598,7 +1598,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         var _this = this;
         /** @type {?} */
         var layoutKeys = matcher.value.split(' ');
-        console.log({ v: matcher.value });
         this.layout = layoutKeys[0];
         this.inline = matcher.value.includes('inline');
         if (!LAYOUT_VALUES.find(function (x) { return x === _this.layout; })) {
