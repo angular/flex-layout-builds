@@ -1555,16 +1555,28 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         var layout = this.layout || 'row';
         /** @type {?} */
         var inline = this.inline;
-        if (layout === 'row') {
+        if (layout === 'row' && inline) {
+            this.styleCache = layoutAlignHorizontalInlineCache;
+        }
+        else if (layout === 'row' && !inline) {
             this.styleCache = layoutAlignHorizontalCache;
         }
-        else if (layout === 'row-reverse') {
+        else if (layout === 'row-reverse' && inline) {
+            this.styleCache = layoutAlignHorizontalRevInlineCache;
+        }
+        else if (layout === 'row-reverse' && !inline) {
             this.styleCache = layoutAlignHorizontalRevCache;
         }
-        else if (layout === 'column') {
+        else if (layout === 'column' && inline) {
+            this.styleCache = layoutAlignVerticalInlineCache;
+        }
+        else if (layout === 'column' && !inline) {
             this.styleCache = layoutAlignVerticalCache;
         }
-        else if (layout === 'column-reverse') {
+        else if (layout === 'column-reverse' && inline) {
+            this.styleCache = layoutAlignVerticalRevInlineCache;
+        }
+        else if (layout === 'column-reverse' && !inline) {
             this.styleCache = layoutAlignVerticalRevCache;
         }
         this.addStyles(value, { layout: layout, inline: inline });
@@ -1586,6 +1598,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         var _this = this;
         /** @type {?} */
         var layoutKeys = matcher.value.split(' ');
+        console.log({ v: matcher.value });
         this.layout = layoutKeys[0];
         this.inline = matcher.value.includes('inline');
         if (!LAYOUT_VALUES.find(function (x) { return x === _this.layout; })) {
@@ -1622,6 +1635,14 @@ var layoutAlignVerticalCache = new Map();
 var layoutAlignHorizontalRevCache = new Map();
 /** @type {?} */
 var layoutAlignVerticalRevCache = new Map();
+/** @type {?} */
+var layoutAlignHorizontalInlineCache = new Map();
+/** @type {?} */
+var layoutAlignVerticalInlineCache = new Map();
+/** @type {?} */
+var layoutAlignHorizontalRevInlineCache = new Map();
+/** @type {?} */
+var layoutAlignVerticalRevInlineCache = new Map();
 
 /**
  * @fileoverview added by tsickle
