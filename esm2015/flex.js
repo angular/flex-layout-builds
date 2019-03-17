@@ -395,6 +395,23 @@ class LayoutGapDirective extends BaseDirective2 {
         }
     }
     /**
+     * We need to override clearStyles because in most cases mru isn't populated
+     * @return {?}
+     */
+    clearStyles() {
+        /** @type {?} */
+        const gridMode = Object.keys(this.mru).length > 0;
+        /** @type {?} */
+        const childrenStyle = gridMode ? 'padding' :
+            getMarginType(this.directionality.value, this.layout);
+        // If there are styles on the parent remove them
+        if (gridMode) {
+            super.clearStyles();
+        }
+        // Then remove the children styles too
+        this.styleUtils.applyStyleToElements({ [childrenStyle]: '' }, this.childrenNodes);
+    }
+    /**
      * Determine if an element will show or hide based on current activation
      * @param {?} source
      * @return {?}
@@ -500,32 +517,34 @@ function buildGridMargin(value, directionality) {
     return { 'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}` };
 }
 /**
+ * @param {?} directionality
+ * @param {?} layout
+ * @return {?}
+ */
+function getMarginType(directionality, layout) {
+    switch (layout) {
+        case 'column':
+            return 'margin-bottom';
+        case 'column-reverse':
+            return 'margin-top';
+        case 'row':
+            return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+        case 'row-reverse':
+            return directionality === 'rtl' ? 'margin-right' : 'margin-left';
+        default:
+            return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+    }
+}
+/**
  * @param {?} gapValue
  * @param {?} parent
  * @return {?}
  */
 function buildGapCSS(gapValue, parent) {
     /** @type {?} */
-    let key;
+    const key = getMarginType(parent.directionality, parent.layout);
     /** @type {?} */
-    let margins = Object.assign({}, CLEAR_MARGIN_CSS);
-    switch (parent.layout) {
-        case 'column':
-            key = 'margin-bottom';
-            break;
-        case 'column-reverse':
-            key = 'margin-top';
-            break;
-        case 'row':
-            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-            break;
-        case 'row-reverse':
-            key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
-            break;
-        default:
-            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-            break;
-    }
+    const margins = Object.assign({}, CLEAR_MARGIN_CSS);
     margins[key] = gapValue;
     return margins;
 }

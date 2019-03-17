@@ -475,6 +475,29 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             this.addStyles(value, { directionality: directionality, items: items, layout: layout });
         }
     };
+    /** We need to override clearStyles because in most cases mru isn't populated */
+    /**
+     * We need to override clearStyles because in most cases mru isn't populated
+     * @return {?}
+     */
+    LayoutGapDirective.prototype.clearStyles = /**
+     * We need to override clearStyles because in most cases mru isn't populated
+     * @return {?}
+     */
+    function () {
+        var _a;
+        /** @type {?} */
+        var gridMode = Object.keys(this.mru).length > 0;
+        /** @type {?} */
+        var childrenStyle = gridMode ? 'padding' :
+            getMarginType(this.directionality.value, this.layout);
+        // If there are styles on the parent remove them
+        if (gridMode) {
+            _super.prototype.clearStyles.call(this);
+        }
+        // Then remove the children styles too
+        this.styleUtils.applyStyleToElements((_a = {}, _a[childrenStyle] = '', _a), this.childrenNodes);
+    };
     /** Determine if an element will show or hide based on current activation */
     /**
      * Determine if an element will show or hide based on current activation
@@ -595,32 +618,34 @@ function buildGridMargin(value, directionality) {
     return { 'margin': marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft };
 }
 /**
+ * @param {?} directionality
+ * @param {?} layout
+ * @return {?}
+ */
+function getMarginType(directionality, layout) {
+    switch (layout) {
+        case 'column':
+            return 'margin-bottom';
+        case 'column-reverse':
+            return 'margin-top';
+        case 'row':
+            return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+        case 'row-reverse':
+            return directionality === 'rtl' ? 'margin-right' : 'margin-left';
+        default:
+            return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+    }
+}
+/**
  * @param {?} gapValue
  * @param {?} parent
  * @return {?}
  */
 function buildGapCSS(gapValue, parent) {
     /** @type {?} */
-    var key;
+    var key = getMarginType(parent.directionality, parent.layout);
     /** @type {?} */
     var margins = __assign({}, CLEAR_MARGIN_CSS);
-    switch (parent.layout) {
-        case 'column':
-            key = 'margin-bottom';
-            break;
-        case 'column-reverse':
-            key = 'margin-top';
-            break;
-        case 'row':
-            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-            break;
-        case 'row-reverse':
-            key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
-            break;
-        default:
-            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-            break;
-    }
     margins[key] = gapValue;
     return margins;
 }

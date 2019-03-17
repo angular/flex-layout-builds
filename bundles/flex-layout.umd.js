@@ -4945,6 +4945,29 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             this.addStyles(value, { directionality: directionality, items: items, layout: layout });
         }
     };
+    /** We need to override clearStyles because in most cases mru isn't populated */
+    /**
+     * We need to override clearStyles because in most cases mru isn't populated
+     * @return {?}
+     */
+    LayoutGapDirective.prototype.clearStyles = /**
+     * We need to override clearStyles because in most cases mru isn't populated
+     * @return {?}
+     */
+    function () {
+        var _a;
+        /** @type {?} */
+        var gridMode = Object.keys(this.mru).length > 0;
+        /** @type {?} */
+        var childrenStyle = gridMode ? 'padding' :
+            getMarginType(this.directionality.value, this.layout);
+        // If there are styles on the parent remove them
+        if (gridMode) {
+            _super.prototype.clearStyles.call(this);
+        }
+        // Then remove the children styles too
+        this.styleUtils.applyStyleToElements((_a = {}, _a[childrenStyle] = '', _a), this.childrenNodes);
+    };
     /** Determine if an element will show or hide based on current activation */
     /**
      * Determine if an element will show or hide based on current activation
@@ -5065,32 +5088,34 @@ function buildGridMargin(value, directionality) {
     return { 'margin': marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft };
 }
 /**
+ * @param {?} directionality
+ * @param {?} layout
+ * @return {?}
+ */
+function getMarginType(directionality, layout) {
+    switch (layout) {
+        case 'column':
+            return 'margin-bottom';
+        case 'column-reverse':
+            return 'margin-top';
+        case 'row':
+            return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+        case 'row-reverse':
+            return directionality === 'rtl' ? 'margin-right' : 'margin-left';
+        default:
+            return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+    }
+}
+/**
  * @param {?} gapValue
  * @param {?} parent
  * @return {?}
  */
 function buildGapCSS(gapValue, parent) {
     /** @type {?} */
-    var key;
+    var key = getMarginType(parent.directionality, parent.layout);
     /** @type {?} */
     var margins = __assign({}, CLEAR_MARGIN_CSS);
-    switch (parent.layout) {
-        case 'column':
-            key = 'margin-bottom';
-            break;
-        case 'column-reverse':
-            key = 'margin-top';
-            break;
-        case 'row':
-            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-            break;
-        case 'row-reverse':
-            key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
-            break;
-        default:
-            key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-            break;
-    }
     margins[key] = gapValue;
     return margins;
 }
@@ -7553,7 +7578,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.23-5f11293');
+var VERSION = new core.Version('7.0.0-beta.23-a6b3b1c');
 
 /**
  * @fileoverview added by tsickle
@@ -7686,39 +7711,39 @@ exports.DefaultLayoutAlignDirective = DefaultLayoutAlignDirective;
 exports.LayoutGapStyleBuilder = LayoutGapStyleBuilder;
 exports.LayoutGapDirective = LayoutGapDirective;
 exports.DefaultLayoutGapDirective = DefaultLayoutGapDirective;
-exports.ɵf1 = DefaultGridAlignColumnsDirective;
-exports.ɵe1 = GridAlignColumnsDirective;
-exports.ɵd1 = GridAlignColumnsStyleBuilder;
-exports.ɵi1 = DefaultGridAlignRowsDirective;
-exports.ɵh1 = GridAlignRowsDirective;
-exports.ɵg1 = GridAlignRowsStyleBuilder;
-exports.ɵl1 = DefaultGridAreaDirective;
-exports.ɵk1 = GridAreaDirective;
-exports.ɵj1 = GridAreaStyleBuilder;
-exports.ɵo1 = DefaultGridAreasDirective;
-exports.ɵn1 = GridAreasDirective;
-exports.ɵm1 = GridAreasStyleBuiler;
-exports.ɵr1 = DefaultGridAutoDirective;
-exports.ɵq1 = GridAutoDirective;
-exports.ɵp1 = GridAutoStyleBuilder;
-exports.ɵu1 = DefaultGridColumnDirective;
-exports.ɵt1 = GridColumnDirective;
-exports.ɵs1 = GridColumnStyleBuilder;
-exports.ɵx1 = DefaultGridColumnsDirective;
-exports.ɵw1 = GridColumnsDirective;
-exports.ɵv1 = GridColumnsStyleBuilder;
-exports.ɵba1 = DefaultGridGapDirective;
-exports.ɵz1 = GridGapDirective;
-exports.ɵy1 = GridGapStyleBuilder;
-exports.ɵc1 = DefaultGridAlignDirective;
-exports.ɵb1 = GridAlignDirective;
-exports.ɵa1 = GridAlignStyleBuilder;
-exports.ɵbd1 = DefaultGridRowDirective;
-exports.ɵbc1 = GridRowDirective;
-exports.ɵbb1 = GridRowStyleBuilder;
-exports.ɵbg1 = DefaultGridRowsDirective;
-exports.ɵbf1 = GridRowsDirective;
-exports.ɵbe1 = GridRowsStyleBuilder;
+exports.ɵf2 = DefaultGridAlignColumnsDirective;
+exports.ɵe2 = GridAlignColumnsDirective;
+exports.ɵd2 = GridAlignColumnsStyleBuilder;
+exports.ɵi2 = DefaultGridAlignRowsDirective;
+exports.ɵh2 = GridAlignRowsDirective;
+exports.ɵg2 = GridAlignRowsStyleBuilder;
+exports.ɵl2 = DefaultGridAreaDirective;
+exports.ɵk2 = GridAreaDirective;
+exports.ɵj2 = GridAreaStyleBuilder;
+exports.ɵo2 = DefaultGridAreasDirective;
+exports.ɵn2 = GridAreasDirective;
+exports.ɵm2 = GridAreasStyleBuiler;
+exports.ɵr2 = DefaultGridAutoDirective;
+exports.ɵq2 = GridAutoDirective;
+exports.ɵp2 = GridAutoStyleBuilder;
+exports.ɵu2 = DefaultGridColumnDirective;
+exports.ɵt2 = GridColumnDirective;
+exports.ɵs2 = GridColumnStyleBuilder;
+exports.ɵx2 = DefaultGridColumnsDirective;
+exports.ɵw2 = GridColumnsDirective;
+exports.ɵv2 = GridColumnsStyleBuilder;
+exports.ɵba2 = DefaultGridGapDirective;
+exports.ɵz2 = GridGapDirective;
+exports.ɵy2 = GridGapStyleBuilder;
+exports.ɵc2 = DefaultGridAlignDirective;
+exports.ɵb2 = GridAlignDirective;
+exports.ɵa2 = GridAlignStyleBuilder;
+exports.ɵbd2 = DefaultGridRowDirective;
+exports.ɵbc2 = GridRowDirective;
+exports.ɵbb2 = GridRowStyleBuilder;
+exports.ɵbg2 = DefaultGridRowsDirective;
+exports.ɵbf2 = GridRowsDirective;
+exports.ɵbe2 = GridRowsStyleBuilder;
 exports.GridModule = GridModule;
 
 Object.defineProperty(exports, '__esModule', { value: true });
