@@ -47,6 +47,8 @@ export declare class LayoutGapDirective extends BaseDirective2 implements AfterC
      *
      */
     protected updateWithValue(value: string): void;
+    /** We need to override clearStyles because in most cases mru isn't populated */
+    protected clearStyles(): void;
     /** Determine if an element will show or hide based on current activation */
     protected willDisplay(source: HTMLElement): boolean;
     protected buildChildObservable(): void;
