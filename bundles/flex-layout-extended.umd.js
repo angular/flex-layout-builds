@@ -74,7 +74,7 @@ var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     ImgSrcStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = core.ɵɵdefine4Injectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
     return ImgSrcStyleBuilder;
 }(core$1.StyleBuilder));
 var ImgSrcDirective = /** @class */ (function (_super) {
@@ -199,20 +199,18 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
-    function ClassDirective(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer, ngClassInstance) {
+    function ClassDirective(elementRef, styler, marshal, delegate, ngClassInstance) {
         var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
         _this.marshal = marshal;
-        _this.iterableDiffers = iterableDiffers;
-        _this.keyValueDiffers = keyValueDiffers;
-        _this.renderer = renderer;
+        _this.delegate = delegate;
         _this.ngClassInstance = ngClassInstance;
         _this.DIRECTIVE_KEY = 'ngClass';
         if (!_this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            _this.ngClassInstance = new common.NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
+            _this.ngClassInstance = new common.NgClass(_this.delegate);
         }
         _this.init();
         _this.setValue('', '');
@@ -270,9 +268,7 @@ var ClassDirective = /** @class */ (function (_super) {
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
         { type: core$1.MediaMarshaller },
-        { type: core.IterableDiffers },
-        { type: core.KeyValueDiffers },
-        { type: core.Renderer2 },
+        { type: common.ɵNgClassImpl },
         { type: common.NgClass, decorators: [{ type: core.Optional }, { type: core.Self }] }
     ]; };
     ClassDirective.propDecorators = {
@@ -288,6 +284,11 @@ var inputs$1 = [
 ];
 /** @type {?} */
 var selector$1 = "\n  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n";
+/** @type {?} */
+var LayoutNgClassImplProvider = {
+    provide: common.ɵNgClassImpl,
+    useClass: common.ɵNgClassR2Impl
+};
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
@@ -301,7 +302,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultClassDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1, providers: [LayoutNgClassImplProvider] },] },
     ];
     return DefaultClassDirective;
 }(ClassDirective));
@@ -333,7 +334,7 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     ShowHideStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = core.ɵɵdefine4Injectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
     return ShowHideStyleBuilder;
 }(core$1.StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
@@ -370,7 +371,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {
-            if (this.marshal.hasValue(/** @type {?} */ (children[i]), 'flex')) {
+            if (this.marshal.hasValue(children[i], 'flex')) {
                 this.hasFlexChild = true;
                 break;
             }
@@ -609,7 +610,7 @@ function buildMapFromList(styles, sanitize) {
         .map(stringToKeyValue)
         .filter(function (entry) { return !!entry; })
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, {});
 }
 /**
  * Convert Set<string> or raw Object to an iterable NgStyleMap
@@ -621,11 +622,11 @@ function buildMapFromSet(source, sanitize) {
     /** @type {?} */
     var list = [];
     if (getType(source) === 'set') {
-        (/** @type {?} */ (source)).forEach(function (entry) { return list.push(entry); });
+        source.forEach(function (entry) { return list.push(entry); });
     }
     else {
         Object.keys(source).forEach(function (key) {
-            list.push(key + ":" + ((/** @type {?} */ (source)))[key]);
+            list.push(key + ":" + source[key]);
         });
     }
     return buildMapFromList(list, sanitize);
@@ -658,20 +659,19 @@ function keyValuesToMap(map, entry) {
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance, serverLoaded, platformId) {
+    function StyleDirective(elementRef, styler, marshal, delegate, sanitizer, ngStyleInstance, serverLoaded, platformId) {
         var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
         _this.marshal = marshal;
-        _this.keyValueDiffers = keyValueDiffers;
-        _this.renderer = renderer;
+        _this.delegate = delegate;
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            _this.ngStyleInstance = new common.NgStyle(_this.keyValueDiffers, _this.elementRef, _this.renderer);
+            _this.ngStyleInstance = new common.NgStyle(_this.delegate);
         }
         _this.init();
         /** @type {?} */
@@ -744,7 +744,7 @@ var StyleDirective = /** @class */ (function (_super) {
         if (styles) {
             switch (getType(styles)) {
                 case 'string': return buildMapFromList$1(buildRawList(styles), sanitizer);
-                case 'array': return buildMapFromList$1(/** @type {?} */ (styles), sanitizer);
+                case 'array': return buildMapFromList$1(styles, sanitizer);
                 case 'set': return buildMapFromSet(styles, sanitizer);
                 default: return buildMapFromSet(styles, sanitizer);
             }
@@ -771,8 +771,7 @@ var StyleDirective = /** @class */ (function (_super) {
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
         { type: core$1.MediaMarshaller },
-        { type: core.KeyValueDiffers },
-        { type: core.Renderer2 },
+        { type: common.ɵNgStyleImpl },
         { type: platformBrowser.DomSanitizer },
         { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] },
         { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] }] },
@@ -789,6 +788,11 @@ var inputs$3 = [
 ];
 /** @type {?} */
 var selector$3 = "\n  [ngStyle],\n  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n";
+/** @type {?} */
+var LayoutNgStyleImplProvider = {
+    provide: common.ɵNgStyleImpl,
+    useClass: common.ɵNgStyleR2Impl
+};
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -801,7 +805,7 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultStyleDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3, providers: [LayoutNgStyleImplProvider] },] },
     ];
     return DefaultStyleDirective;
 }(StyleDirective));
@@ -823,7 +827,7 @@ function buildMapFromList$1(styles, sanitize) {
         .map(stringToKeyValue)
         .filter(function (entry) { return !!entry; })
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, {});
 }
 
 /**
@@ -857,6 +861,7 @@ var ExtendedModule = /** @class */ (function () {
 
 exports.ExtendedModule = ExtendedModule;
 exports.ClassDirective = ClassDirective;
+exports.LayoutNgClassImplProvider = LayoutNgClassImplProvider;
 exports.DefaultClassDirective = DefaultClassDirective;
 exports.ImgSrcStyleBuilder = ImgSrcStyleBuilder;
 exports.ImgSrcDirective = ImgSrcDirective;
@@ -865,6 +870,7 @@ exports.ShowHideStyleBuilder = ShowHideStyleBuilder;
 exports.ShowHideDirective = ShowHideDirective;
 exports.DefaultShowHideDirective = DefaultShowHideDirective;
 exports.StyleDirective = StyleDirective;
+exports.LayoutNgStyleImplProvider = LayoutNgStyleImplProvider;
 exports.DefaultStyleDirective = DefaultStyleDirective;
 
 Object.defineProperty(exports, '__esModule', { value: true });

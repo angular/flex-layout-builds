@@ -151,7 +151,7 @@ class ServerMatchMedia extends ɵMatchMedia {
      */
     activateBreakpoint(bp) {
         /** @type {?} */
-        const lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
+        const lookupBreakpoint = this.registry.get(bp.mediaQuery);
         if (lookupBreakpoint) {
             lookupBreakpoint.activate();
         }
@@ -163,7 +163,7 @@ class ServerMatchMedia extends ɵMatchMedia {
      */
     deactivateBreakpoint(bp) {
         /** @type {?} */
-        const lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
+        const lookupBreakpoint = this.registry.get(bp.mediaQuery);
         if (lookupBreakpoint) {
             lookupBreakpoint.deactivate();
         }
@@ -264,7 +264,7 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, br
   @type {?} */
 const SERVER_PROVIDERS = [
     {
-        provide: /** @type {?} */ (BEFORE_APP_SERIALIZED),
+        provide: BEFORE_APP_SERIALIZED,
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
             StylesheetMap,
