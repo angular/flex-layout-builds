@@ -58,7 +58,7 @@ export declare class MediaObserver implements OnDestroy {
     protected hook: PrintHook;
     /**
      * @deprecated Use `asObservable()` instead.
-     * @breaking-change 7.0.0-beta.24-9ce364a
+     * @breaking-change 7.0.0-beta.24-538d052
      * @deletion-target v7.0.0-beta.25
      */
     readonly media$: Observable<MediaChange>;

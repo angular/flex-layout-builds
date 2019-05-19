@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { __extends, __assign } from 'tslib';
-import { Directive, ElementRef, Injectable, Optional, NgModule, NgZone, Inject, Input, ɵɵdefine3Injectable, ɵɵinject3 } from '@angular/core';
+import { Directive, ElementRef, Injectable, Optional, NgModule, NgZone, Inject, Input, ΔdefineInjectable, Δinject } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleUtils, MediaMarshaller, CoreModule, LAYOUT_CONFIG, validateBasis } from '@angular/flex-layout/core';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { Subject } from 'rxjs';
@@ -137,7 +137,7 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     LayoutStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -272,7 +272,7 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject3(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(Δinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -803,7 +803,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject3(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(Δinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1020,7 +1020,7 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     FlexOrderStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1117,7 +1117,7 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     FlexOffsetStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1267,7 +1267,7 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     FlexAlignStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1355,7 +1355,7 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     FlexFillStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     return FlexFillStyleBuilder;
 }(StyleBuilder));
 /**
@@ -1482,7 +1482,7 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
     LayoutAlignStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = ɵɵdefine3Injectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */

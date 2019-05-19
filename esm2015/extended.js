@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, Optional, Self, SecurityContext, ɵɵdefine4Injectable } from '@angular/core';
+import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, Optional, Self, SecurityContext, ΔdefineInjectable } from '@angular/core';
 import { isPlatformServer, NgClass, ɵNgClassImpl, ɵNgClassR2Impl, NgStyle, ɵNgStyleImpl, ɵNgStyleR2Impl } from '@angular/common';
 import { MediaMarshaller, BaseDirective2, SERVER_TOKEN, StyleBuilder, StyleUtils, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -28,7 +28,7 @@ class ImgSrcStyleBuilder extends StyleBuilder {
 ImgSrcStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = ɵɵdefine4Injectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+/** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
 class ImgSrcDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -245,7 +245,7 @@ class ShowHideStyleBuilder extends StyleBuilder {
 ShowHideStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = ɵɵdefine4Injectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+/** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
 class ShowHideDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef

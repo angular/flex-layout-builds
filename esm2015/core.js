@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, ɵɵdefine0Injectable, ɵɵinject0 } from '@angular/core';
+import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, ΔdefineInjectable, Δinject } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Subject, BehaviorSubject, Observable, merge, asapScheduler, of, fromEvent } from 'rxjs';
 import { filter, debounceTime, map, switchMap, takeUntil, take, tap } from 'rxjs/operators';
@@ -159,7 +159,7 @@ class StylesheetMap {
 StylesheetMap.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ StylesheetMap.ngInjectableDef = ɵɵdefine0Injectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+/** @nocollapse */ StylesheetMap.ngInjectableDef = ΔdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -881,7 +881,7 @@ BreakPointRegistry.decorators = [
 BreakPointRegistry.ctorParameters = () => [
     { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
 ];
-/** @nocollapse */ BreakPointRegistry.ngInjectableDef = ɵɵdefine0Injectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(ɵɵinject0(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+/** @nocollapse */ BreakPointRegistry.ngInjectableDef = ΔdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(Δinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -1025,7 +1025,7 @@ MatchMedia.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ MatchMedia.ngInjectableDef = ɵɵdefine0Injectable({ factory: function MatchMedia_Factory() { return new MatchMedia(ɵɵinject0(NgZone), ɵɵinject0(PLATFORM_ID), ɵɵinject0(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+/** @nocollapse */ MatchMedia.ngInjectableDef = ΔdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(Δinject(NgZone), Δinject(PLATFORM_ID), Δinject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
 /** *
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
@@ -1581,7 +1581,7 @@ PrintHook.ctorParameters = () => [
     { type: BreakPointRegistry },
     { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
 ];
-/** @nocollapse */ PrintHook.ngInjectableDef = ɵɵdefine0Injectable({ factory: function PrintHook_Factory() { return new PrintHook(ɵɵinject0(BreakPointRegistry), ɵɵinject0(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+/** @nocollapse */ PrintHook.ngInjectableDef = ΔdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(Δinject(BreakPointRegistry), Δinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
 /**
  * Utility class to manage print breakpoints + activatedBreakpoints
  * with correct sorting WHILE printing
@@ -1827,7 +1827,7 @@ MediaObserver.ctorParameters = () => [
     { type: MatchMedia },
     { type: PrintHook }
 ];
-/** @nocollapse */ MediaObserver.ngInjectableDef = ɵɵdefine0Injectable({ factory: function MediaObserver_Factory() { return new MediaObserver(ɵɵinject0(BreakPointRegistry), ɵɵinject0(MatchMedia), ɵɵinject0(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+/** @nocollapse */ MediaObserver.ngInjectableDef = ΔdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(Δinject(BreakPointRegistry), Δinject(MatchMedia), Δinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
 /**
  * Find associated breakpoint (if any)
  * @param {?} query
@@ -2066,7 +2066,7 @@ MediaTrigger.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ MediaTrigger.ngInjectableDef = ɵɵdefine0Injectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(ɵɵinject0(BreakPointRegistry), ɵɵinject0(MatchMedia), ɵɵinject0(LAYOUT_CONFIG), ɵɵinject0(PLATFORM_ID), ɵɵinject0(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+/** @nocollapse */ MediaTrigger.ngInjectableDef = ΔdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(Δinject(BreakPointRegistry), Δinject(MatchMedia), Δinject(LAYOUT_CONFIG), Δinject(PLATFORM_ID), Δinject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -2364,7 +2364,7 @@ StyleUtils.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
 ];
-/** @nocollapse */ StyleUtils.ngInjectableDef = ɵɵdefine0Injectable({ factory: function StyleUtils_Factory() { return new StyleUtils(ɵɵinject0(StylesheetMap, 8), ɵɵinject0(SERVER_TOKEN, 8), ɵɵinject0(PLATFORM_ID), ɵɵinject0(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+/** @nocollapse */ StyleUtils.ngInjectableDef = ΔdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(Δinject(StylesheetMap, 8), Δinject(SERVER_TOKEN, 8), Δinject(PLATFORM_ID), Δinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -2803,7 +2803,7 @@ MediaMarshaller.ctorParameters = () => [
     { type: BreakPointRegistry },
     { type: PrintHook }
 ];
-/** @nocollapse */ MediaMarshaller.ngInjectableDef = ɵɵdefine0Injectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(ɵɵinject0(MatchMedia), ɵɵinject0(BreakPointRegistry), ɵɵinject0(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+/** @nocollapse */ MediaMarshaller.ngInjectableDef = ΔdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(Δinject(MatchMedia), Δinject(BreakPointRegistry), Δinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
 /**
  * @param {?} map
  * @param {?} element

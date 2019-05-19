@@ -242,7 +242,7 @@ var StylesheetMap = /** @class */ (function () {
     StylesheetMap.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.ΔdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
@@ -1094,7 +1094,7 @@ var BreakPointRegistry = /** @class */ (function () {
     BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] }] }
     ]; };
-    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.ɵɵinject0(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.ΔdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.Δinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
 
@@ -1293,7 +1293,7 @@ var MatchMedia = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MatchMedia.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.ɵɵinject0(core.NgZone), core.ɵɵinject0(core.PLATFORM_ID), core.ɵɵinject0(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+    /** @nocollapse */ MatchMedia.ngInjectableDef = core.ΔdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.Δinject(core.NgZone), core.Δinject(core.PLATFORM_ID), core.Δinject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
 /** *
@@ -2062,7 +2062,7 @@ var PrintHook = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject0(BreakPointRegistry), core.ɵɵinject0(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ngInjectableDef = core.ΔdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.Δinject(BreakPointRegistry), core.Δinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
 /**
@@ -2385,7 +2385,7 @@ var MediaObserver = /** @class */ (function () {
         { type: MatchMedia },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.ɵɵinject0(BreakPointRegistry), core.ɵɵinject0(MatchMedia), core.ɵɵinject0(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.Δinject(BreakPointRegistry), core.Δinject(MatchMedia), core.Δinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 /**
@@ -2691,7 +2691,7 @@ var MediaTrigger = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.ɵɵinject0(BreakPointRegistry), core.ɵɵinject0(MatchMedia), core.ɵɵinject0(LAYOUT_CONFIG), core.ɵɵinject0(core.PLATFORM_ID), core.ɵɵinject0(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.Δinject(BreakPointRegistry), core.Δinject(MatchMedia), core.Δinject(LAYOUT_CONFIG), core.Δinject(core.PLATFORM_ID), core.Δinject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     return MediaTrigger;
 }());
 
@@ -3079,7 +3079,7 @@ var StyleUtils = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject0(StylesheetMap, 8), core.ɵɵinject0(SERVER_TOKEN, 8), core.ɵɵinject0(core.PLATFORM_ID), core.ɵɵinject0(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ngInjectableDef = core.ΔdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.Δinject(StylesheetMap, 8), core.Δinject(SERVER_TOKEN, 8), core.Δinject(core.PLATFORM_ID), core.Δinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
@@ -3695,7 +3695,7 @@ var MediaMarshaller = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.ɵɵdefine0Injectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.ɵɵinject0(MatchMedia), core.ɵɵinject0(BreakPointRegistry), core.ɵɵinject0(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.Δinject(MatchMedia), core.Δinject(BreakPointRegistry), core.Δinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**

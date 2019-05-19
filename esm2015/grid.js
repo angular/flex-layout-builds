@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Injectable, Optional, NgModule, Input, ɵɵdefine2Injectable } from '@angular/core';
+import { Directive, ElementRef, Injectable, Optional, NgModule, Input, ΔdefineInjectable } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleUtils, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
@@ -29,7 +29,7 @@ class GridAlignStyleBuilder extends StyleBuilder {
 GridAlignStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
 class GridAlignDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -159,7 +159,7 @@ class GridAlignColumnsStyleBuilder extends StyleBuilder {
 GridAlignColumnsStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
 class GridAlignColumnsDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -325,7 +325,7 @@ class GridAlignRowsStyleBuilder extends StyleBuilder {
 GridAlignRowsStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
 class GridAlignRowsDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -470,7 +470,7 @@ class GridAreaStyleBuilder extends StyleBuilder {
 GridAreaStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
 class GridAreaDirective extends BaseDirective2 {
     /**
      * @param {?} elRef
@@ -556,7 +556,7 @@ class GridAreasStyleBuiler extends StyleBuilder {
 GridAreasStyleBuiler.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+/** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = ΔdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
 class GridAreasDirective extends BaseDirective2 {
     /**
      * @param {?} elRef
@@ -665,7 +665,7 @@ class GridAutoStyleBuilder extends StyleBuilder {
 GridAutoStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
 class GridAutoDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -765,7 +765,7 @@ class GridColumnStyleBuilder extends StyleBuilder {
 GridColumnStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
 class GridColumnDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -862,7 +862,7 @@ class GridColumnsStyleBuilder extends StyleBuilder {
 GridColumnsStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
 class GridColumnsDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -967,7 +967,7 @@ class GridGapStyleBuilder extends StyleBuilder {
 GridGapStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
 class GridGapDirective extends BaseDirective2 {
     /**
      * @param {?} elRef
@@ -1068,7 +1068,7 @@ class GridRowStyleBuilder extends StyleBuilder {
 GridRowStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
 class GridRowDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -1165,7 +1165,7 @@ class GridRowsStyleBuilder extends StyleBuilder {
 GridRowsStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = ɵɵdefine2Injectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+/** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
 class GridRowsDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef

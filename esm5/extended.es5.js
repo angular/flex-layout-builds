@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { __extends, __assign } from 'tslib';
-import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, Optional, Self, SecurityContext, ɵɵdefine4Injectable } from '@angular/core';
+import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, Optional, Self, SecurityContext, ΔdefineInjectable } from '@angular/core';
 import { isPlatformServer, NgClass, ɵNgClassImpl, ɵNgClassR2Impl, NgStyle, ɵNgStyleImpl, ɵNgStyleR2Impl } from '@angular/common';
 import { MediaMarshaller, BaseDirective2, SERVER_TOKEN, StyleBuilder, StyleUtils, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -36,7 +36,7 @@ var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     ImgSrcStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = ɵɵdefine4Injectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
     return ImgSrcStyleBuilder;
 }(StyleBuilder));
 var ImgSrcDirective = /** @class */ (function (_super) {
@@ -296,7 +296,7 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     ShowHideStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = ɵɵdefine4Injectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = ΔdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
     return ShowHideStyleBuilder;
 }(StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
