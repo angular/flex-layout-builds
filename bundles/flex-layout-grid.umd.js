@@ -67,7 +67,7 @@ var GridAlignStyleBuilder = /** @class */ (function (_super) {
     GridAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
     return GridAlignStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAlignDirective = /** @class */ (function (_super) {
@@ -203,7 +203,7 @@ var GridAlignColumnsStyleBuilder = /** @class */ (function (_super) {
     GridAlignColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
     return GridAlignColumnsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAlignColumnsDirective = /** @class */ (function (_super) {
@@ -383,7 +383,7 @@ var GridAlignRowsStyleBuilder = /** @class */ (function (_super) {
     GridAlignRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
     return GridAlignRowsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAlignRowsDirective = /** @class */ (function (_super) {
@@ -541,7 +541,7 @@ var GridAreaStyleBuilder = /** @class */ (function (_super) {
     GridAreaStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
     return GridAreaStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAreaDirective = /** @class */ (function (_super) {
@@ -632,7 +632,7 @@ var GridAreasStyleBuiler = /** @class */ (function (_super) {
     GridAreasStyleBuiler.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = core.defineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+    /** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
     return GridAreasStyleBuiler;
 }(core$1.StyleBuilder));
 var GridAreasDirective = /** @class */ (function (_super) {
@@ -757,7 +757,7 @@ var GridAutoStyleBuilder = /** @class */ (function (_super) {
     GridAutoStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
     return GridAutoStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAutoDirective = /** @class */ (function (_super) {
@@ -872,7 +872,7 @@ var GridColumnStyleBuilder = /** @class */ (function (_super) {
     GridColumnStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
     return GridColumnStyleBuilder;
 }(core$1.StyleBuilder));
 var GridColumnDirective = /** @class */ (function (_super) {
@@ -974,7 +974,7 @@ var GridColumnsStyleBuilder = /** @class */ (function (_super) {
     GridColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
     return GridColumnsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridColumnsDirective = /** @class */ (function (_super) {
@@ -1095,7 +1095,7 @@ var GridGapStyleBuilder = /** @class */ (function (_super) {
     GridGapStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
     return GridGapStyleBuilder;
 }(core$1.StyleBuilder));
 var GridGapDirective = /** @class */ (function (_super) {
@@ -1211,7 +1211,7 @@ var GridRowStyleBuilder = /** @class */ (function (_super) {
     GridRowStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
     return GridRowStyleBuilder;
 }(core$1.StyleBuilder));
 var GridRowDirective = /** @class */ (function (_super) {
@@ -1313,7 +1313,7 @@ var GridRowsStyleBuilder = /** @class */ (function (_super) {
     GridRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
     return GridRowsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridRowsDirective = /** @class */ (function (_super) {

@@ -215,7 +215,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
      */
     function (bp) {
         /** @type {?} */
-        var lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
+        var lookupBreakpoint = this.registry.get(bp.mediaQuery);
         if (lookupBreakpoint) {
             lookupBreakpoint.activate();
         }
@@ -233,7 +233,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
      */
     function (bp) {
         /** @type {?} */
-        var lookupBreakpoint = /** @type {?} */ (this.registry.get(bp.mediaQuery));
+        var lookupBreakpoint = this.registry.get(bp.mediaQuery);
         if (lookupBreakpoint) {
             lookupBreakpoint.deactivate();
         }
@@ -345,7 +345,7 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, br
   @type {?} */
 var SERVER_PROVIDERS = [
     {
-        provide: /** @type {?} */ (BEFORE_APP_SERIALIZED),
+        provide: BEFORE_APP_SERIALIZED,
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
             StylesheetMap,

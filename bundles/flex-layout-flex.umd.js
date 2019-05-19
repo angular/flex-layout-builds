@@ -176,7 +176,7 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     LayoutStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -311,7 +311,7 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: core$1.StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.inject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.Δinject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -766,7 +766,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
                 break;
             default:
                 // Defaults to percentage sizing unless `px` is explicitly set
-                if (!isValue && !isPercent && !isNaN(/** @type {?} */ (basis))) {
+                if (!isValue && !isPercent && !isNaN(basis)) {
                     basis = basis + '%';
                 }
                 // Fix for issue 280
@@ -833,7 +833,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
                     (hasCalc ? css[min] : grow + " " + shrink + " " + css[min]);
             }
         }
-        return /** @type {?} */ (extendObject(css, { 'box-sizing': 'border-box' }));
+        return extendObject(css, { 'box-sizing': 'border-box' });
     };
     FlexStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -842,7 +842,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.inject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.Δinject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1059,7 +1059,7 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     FlexOrderStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1156,7 +1156,7 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     FlexOffsetStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1306,7 +1306,7 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     FlexAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1394,7 +1394,7 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     FlexFillStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     return FlexFillStyleBuilder;
 }(core$1.StyleBuilder));
 /**
@@ -1508,7 +1508,7 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
                 break;
         }
-        return /** @type {?} */ (extendObject(css, {
+        return extendObject(css, {
             'display': parent.inline ? 'inline-flex' : 'flex',
             'flex-direction': parent.layout,
             'box-sizing': 'border-box',
@@ -1516,12 +1516,12 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 !isFlowHorizontal(parent.layout) ? '100%' : null : null,
             'max-height': crossAxis === 'stretch' ?
                 isFlowHorizontal(parent.layout) ? '100%' : null : null,
-        }));
+        });
     };
     LayoutAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */

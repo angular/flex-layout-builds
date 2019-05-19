@@ -81,7 +81,7 @@ function removeStyles(_document, platformId) {
  *  Provider to remove SSR styles on the browser
   @type {?} */
 var BROWSER_PROVIDER = {
-    provide: /** @type {?} */ (core.APP_BOOTSTRAP_LISTENER),
+    provide: core.APP_BOOTSTRAP_LISTENER,
     useFactory: removeStyles,
     deps: [common.DOCUMENT, core.PLATFORM_ID],
     multi: true
@@ -242,7 +242,7 @@ var StylesheetMap = /** @class */ (function () {
     StylesheetMap.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.ΔdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
@@ -319,8 +319,8 @@ function mergeAlias(dest, source) {
     if (source) {
         dest.mqAlias = source.alias;
         dest.mediaQuery = source.mediaQuery;
-        dest.suffix = /** @type {?} */ (source.suffix);
-        dest.priority = /** @type {?} */ (source.priority);
+        dest.suffix = source.suffix;
+        dest.priority = source.priority;
     }
     return dest;
 }
@@ -1094,7 +1094,7 @@ var BreakPointRegistry = /** @class */ (function () {
     BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] }] }
     ]; };
-    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.ΔdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.Δinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
 
@@ -1293,7 +1293,7 @@ var MatchMedia = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MatchMedia.ngInjectableDef = core.defineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.inject(core.NgZone), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+    /** @nocollapse */ MatchMedia.ngInjectableDef = core.ΔdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.Δinject(core.NgZone), core.Δinject(core.PLATFORM_ID), core.Δinject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
 /** *
@@ -1319,7 +1319,7 @@ function buildQueryCss(mediaQueries, _document) {
             /** @type {?} */
             var styleEl_1 = _document.createElement('style');
             styleEl_1.setAttribute('type', 'text/css');
-            if (!(/** @type {?} */ (styleEl_1)).styleSheet) {
+            if (!styleEl_1.styleSheet) {
                 /** @type {?} */
                 var cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
                 styleEl_1.appendChild(_document.createTextNode(cssText));
@@ -1340,15 +1340,15 @@ function buildQueryCss(mediaQueries, _document) {
  */
 function constructMql(query, isBrowser) {
     /** @type {?} */
-    var canListen = isBrowser && !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-    return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
+    var canListen = isBrowser && !!window.matchMedia('all').addListener;
+    return canListen ? window.matchMedia(query) : /** @type {?} */ {
         matches: query === 'all' || query === '',
         media: query,
         addListener: function () {
         },
         removeListener: function () {
         }
-    }));
+    };
 }
 
 /**
@@ -1380,7 +1380,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function () {
         this.registry.forEach(function (mql) {
-            (/** @type {?} */ (mql)).destroy();
+            mql.destroy();
         });
         this.registry.clear();
         this.useOverlaps = false;
@@ -1511,7 +1511,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function (mediaQuery) {
         /** @type {?} */
-        var mql = /** @type {?} */ (this.registry.get(mediaQuery));
+        var mql = this.registry.get(mediaQuery);
         if (mql && !this.isActive(mediaQuery)) {
             this.registry.set(mediaQuery, mql.activate());
         }
@@ -1527,7 +1527,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function () {
         this.registry.forEach(function (it) {
-            (/** @type {?} */ (it)).deactivate();
+            it.deactivate();
         });
         return this;
     };
@@ -1850,9 +1850,9 @@ var PrintHook = /** @class */ (function () {
          */
         function () {
             var _this = this;
-            return /** @type {?} */ (this.printAlias
+            return this.printAlias
                 .map(function (alias) { return _this.breakpoints.findByAlias(alias); })
-                .filter(function (bp) { return bp !== null; }));
+                .filter(function (bp) { return bp !== null; });
         },
         enumerable: true,
         configurable: true
@@ -2062,7 +2062,7 @@ var PrintHook = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ngInjectableDef = core.defineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.inject(BreakPointRegistry), core.inject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ngInjectableDef = core.ΔdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.Δinject(BreakPointRegistry), core.Δinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
 /**
@@ -2385,7 +2385,7 @@ var MediaObserver = /** @class */ (function () {
         { type: MatchMedia },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ngInjectableDef = core.defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.Δinject(BreakPointRegistry), core.Δinject(MatchMedia), core.Δinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 /**
@@ -2616,7 +2616,7 @@ var MediaTrigger = /** @class */ (function () {
         /** @type {?} */
         var registry = new Map();
         queries.forEach(function (query) {
-            registry.set(query, /** @type {?} */ ({ matches: matches }));
+            registry.set(query, { matches: matches });
         });
         this.matchMedia.registry = registry;
     };
@@ -2691,7 +2691,7 @@ var MediaTrigger = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.defineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(LAYOUT_CONFIG), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.Δinject(BreakPointRegistry), core.Δinject(MatchMedia), core.Δinject(LAYOUT_CONFIG), core.Δinject(core.PLATFORM_ID), core.Δinject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     return MediaTrigger;
 }());
 
@@ -3079,7 +3079,7 @@ var StyleUtils = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ngInjectableDef = core.defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.inject(StylesheetMap, 8), core.inject(SERVER_TOKEN, 8), core.inject(core.PLATFORM_ID), core.inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ngInjectableDef = core.ΔdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.Δinject(StylesheetMap, 8), core.Δinject(SERVER_TOKEN, 8), core.Δinject(core.PLATFORM_ID), core.Δinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
@@ -3463,7 +3463,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.clearMap.get(element);
         if (builders) {
             /** @type {?} */
-            var clearFn = /** @type {?} */ (builders.get(key));
+            var clearFn = builders.get(key);
             if (!!clearFn) {
                 clearFn();
                 this.subject.next({ element: element, key: key, value: '' });
@@ -3495,7 +3495,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.updateMap.get(element);
         if (builders) {
             /** @type {?} */
-            var updateFn = /** @type {?} */ (builders.get(key));
+            var updateFn = builders.get(key);
             if (!!updateFn) {
                 updateFn(value);
                 this.subject.next({ element: element, key: key, value: value });
@@ -3678,7 +3678,7 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function () {
         /** @type {?} */
-        var target = /** @type {?} */ ((this));
+        var target = this;
         /** @type {?} */
         var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
@@ -3695,7 +3695,7 @@ var MediaMarshaller = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.inject(MatchMedia), core.inject(BreakPointRegistry), core.inject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.Δinject(MatchMedia), core.Δinject(BreakPointRegistry), core.Δinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**

@@ -81,7 +81,7 @@ function removeStyles(_document, platformId) {
  *  Provider to remove SSR styles on the browser
   @type {?} */
 var BROWSER_PROVIDER = {
-    provide: /** @type {?} */ (core.APP_BOOTSTRAP_LISTENER),
+    provide: core.APP_BOOTSTRAP_LISTENER,
     useFactory: removeStyles,
     deps: [common.DOCUMENT, core.PLATFORM_ID],
     multi: true
@@ -242,7 +242,7 @@ var StylesheetMap = /** @class */ (function () {
     StylesheetMap.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.ΔdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
@@ -319,8 +319,8 @@ function mergeAlias(dest, source) {
     if (source) {
         dest.mqAlias = source.alias;
         dest.mediaQuery = source.mediaQuery;
-        dest.suffix = /** @type {?} */ (source.suffix);
-        dest.priority = /** @type {?} */ (source.priority);
+        dest.suffix = source.suffix;
+        dest.priority = source.priority;
     }
     return dest;
 }
@@ -1094,7 +1094,7 @@ var BreakPointRegistry = /** @class */ (function () {
     BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] }] }
     ]; };
-    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.ΔdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.Δinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
 
@@ -1293,7 +1293,7 @@ var MatchMedia = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MatchMedia.ngInjectableDef = core.defineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.inject(core.NgZone), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+    /** @nocollapse */ MatchMedia.ngInjectableDef = core.ΔdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.Δinject(core.NgZone), core.Δinject(core.PLATFORM_ID), core.Δinject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
 /** *
@@ -1319,7 +1319,7 @@ function buildQueryCss(mediaQueries, _document) {
             /** @type {?} */
             var styleEl_1 = _document.createElement('style');
             styleEl_1.setAttribute('type', 'text/css');
-            if (!(/** @type {?} */ (styleEl_1)).styleSheet) {
+            if (!styleEl_1.styleSheet) {
                 /** @type {?} */
                 var cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
                 styleEl_1.appendChild(_document.createTextNode(cssText));
@@ -1340,15 +1340,15 @@ function buildQueryCss(mediaQueries, _document) {
  */
 function constructMql(query, isBrowser) {
     /** @type {?} */
-    var canListen = isBrowser && !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-    return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
+    var canListen = isBrowser && !!window.matchMedia('all').addListener;
+    return canListen ? window.matchMedia(query) : /** @type {?} */ {
         matches: query === 'all' || query === '',
         media: query,
         addListener: function () {
         },
         removeListener: function () {
         }
-    }));
+    };
 }
 
 /**
@@ -1380,7 +1380,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function () {
         this.registry.forEach(function (mql) {
-            (/** @type {?} */ (mql)).destroy();
+            mql.destroy();
         });
         this.registry.clear();
         this.useOverlaps = false;
@@ -1511,7 +1511,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function (mediaQuery) {
         /** @type {?} */
-        var mql = /** @type {?} */ (this.registry.get(mediaQuery));
+        var mql = this.registry.get(mediaQuery);
         if (mql && !this.isActive(mediaQuery)) {
             this.registry.set(mediaQuery, mql.activate());
         }
@@ -1527,7 +1527,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
      */
     function () {
         this.registry.forEach(function (it) {
-            (/** @type {?} */ (it)).deactivate();
+            it.deactivate();
         });
         return this;
     };
@@ -1850,9 +1850,9 @@ var PrintHook = /** @class */ (function () {
          */
         function () {
             var _this = this;
-            return /** @type {?} */ (this.printAlias
+            return this.printAlias
                 .map(function (alias) { return _this.breakpoints.findByAlias(alias); })
-                .filter(function (bp) { return bp !== null; }));
+                .filter(function (bp) { return bp !== null; });
         },
         enumerable: true,
         configurable: true
@@ -2062,7 +2062,7 @@ var PrintHook = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ngInjectableDef = core.defineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.inject(BreakPointRegistry), core.inject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ngInjectableDef = core.ΔdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.Δinject(BreakPointRegistry), core.Δinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
 /**
@@ -2385,7 +2385,7 @@ var MediaObserver = /** @class */ (function () {
         { type: MatchMedia },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ngInjectableDef = core.defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.Δinject(BreakPointRegistry), core.Δinject(MatchMedia), core.Δinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 /**
@@ -2616,7 +2616,7 @@ var MediaTrigger = /** @class */ (function () {
         /** @type {?} */
         var registry = new Map();
         queries.forEach(function (query) {
-            registry.set(query, /** @type {?} */ ({ matches: matches }));
+            registry.set(query, { matches: matches });
         });
         this.matchMedia.registry = registry;
     };
@@ -2691,7 +2691,7 @@ var MediaTrigger = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.defineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(LAYOUT_CONFIG), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.Δinject(BreakPointRegistry), core.Δinject(MatchMedia), core.Δinject(LAYOUT_CONFIG), core.Δinject(core.PLATFORM_ID), core.Δinject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     return MediaTrigger;
 }());
 
@@ -3079,7 +3079,7 @@ var StyleUtils = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ngInjectableDef = core.defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.inject(StylesheetMap, 8), core.inject(SERVER_TOKEN, 8), core.inject(core.PLATFORM_ID), core.inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ngInjectableDef = core.ΔdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.Δinject(StylesheetMap, 8), core.Δinject(SERVER_TOKEN, 8), core.Δinject(core.PLATFORM_ID), core.Δinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
@@ -3463,7 +3463,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.clearMap.get(element);
         if (builders) {
             /** @type {?} */
-            var clearFn = /** @type {?} */ (builders.get(key));
+            var clearFn = builders.get(key);
             if (!!clearFn) {
                 clearFn();
                 this.subject.next({ element: element, key: key, value: '' });
@@ -3495,7 +3495,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.updateMap.get(element);
         if (builders) {
             /** @type {?} */
-            var updateFn = /** @type {?} */ (builders.get(key));
+            var updateFn = builders.get(key);
             if (!!updateFn) {
                 updateFn(value);
                 this.subject.next({ element: element, key: key, value: value });
@@ -3678,7 +3678,7 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function () {
         /** @type {?} */
-        var target = /** @type {?} */ ((this));
+        var target = this;
         /** @type {?} */
         var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
         this.matchMedia
@@ -3695,7 +3695,7 @@ var MediaMarshaller = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.inject(MatchMedia), core.inject(BreakPointRegistry), core.inject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.ΔdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.Δinject(MatchMedia), core.Δinject(BreakPointRegistry), core.Δinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**
@@ -3740,7 +3740,7 @@ var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     ImgSrcStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
     return ImgSrcStyleBuilder;
 }(StyleBuilder));
 var ImgSrcDirective = /** @class */ (function (_super) {
@@ -3865,20 +3865,18 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
-    function ClassDirective(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer, ngClassInstance) {
+    function ClassDirective(elementRef, styler, marshal, delegate, ngClassInstance) {
         var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
         _this.marshal = marshal;
-        _this.iterableDiffers = iterableDiffers;
-        _this.keyValueDiffers = keyValueDiffers;
-        _this.renderer = renderer;
+        _this.delegate = delegate;
         _this.ngClassInstance = ngClassInstance;
         _this.DIRECTIVE_KEY = 'ngClass';
         if (!_this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            _this.ngClassInstance = new common.NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
+            _this.ngClassInstance = new common.NgClass(_this.delegate);
         }
         _this.init();
         _this.setValue('', '');
@@ -3936,9 +3934,7 @@ var ClassDirective = /** @class */ (function (_super) {
         { type: core.ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: core.IterableDiffers },
-        { type: core.KeyValueDiffers },
-        { type: core.Renderer2 },
+        { type: common.ɵNgClassImpl },
         { type: common.NgClass, decorators: [{ type: core.Optional }, { type: core.Self }] }
     ]; };
     ClassDirective.propDecorators = {
@@ -3954,6 +3950,11 @@ var inputs$1 = [
 ];
 /** @type {?} */
 var selector$1 = "\n  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n";
+/** @type {?} */
+var LayoutNgClassImplProvider = {
+    provide: common.ɵNgClassImpl,
+    useClass: common.ɵNgClassR2Impl
+};
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
@@ -3967,7 +3968,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultClassDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1, providers: [LayoutNgClassImplProvider] },] },
     ];
     return DefaultClassDirective;
 }(ClassDirective));
@@ -3999,7 +4000,7 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     ShowHideStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
     return ShowHideStyleBuilder;
 }(StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
@@ -4036,7 +4037,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {
-            if (this.marshal.hasValue(/** @type {?} */ (children[i]), 'flex')) {
+            if (this.marshal.hasValue(children[i], 'flex')) {
                 this.hasFlexChild = true;
                 break;
             }
@@ -4275,7 +4276,7 @@ function buildMapFromList(styles, sanitize) {
         .map(stringToKeyValue)
         .filter(function (entry) { return !!entry; })
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, {});
 }
 /**
  * Convert Set<string> or raw Object to an iterable NgStyleMap
@@ -4287,11 +4288,11 @@ function buildMapFromSet(source, sanitize) {
     /** @type {?} */
     var list = [];
     if (getType(source) === 'set') {
-        (/** @type {?} */ (source)).forEach(function (entry) { return list.push(entry); });
+        source.forEach(function (entry) { return list.push(entry); });
     }
     else {
         Object.keys(source).forEach(function (key) {
-            list.push(key + ":" + ((/** @type {?} */ (source)))[key]);
+            list.push(key + ":" + source[key]);
         });
     }
     return buildMapFromList(list, sanitize);
@@ -4324,20 +4325,19 @@ function keyValuesToMap(map, entry) {
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance, serverLoaded, platformId) {
+    function StyleDirective(elementRef, styler, marshal, delegate, sanitizer, ngStyleInstance, serverLoaded, platformId) {
         var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
         _this.marshal = marshal;
-        _this.keyValueDiffers = keyValueDiffers;
-        _this.renderer = renderer;
+        _this.delegate = delegate;
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            _this.ngStyleInstance = new common.NgStyle(_this.keyValueDiffers, _this.elementRef, _this.renderer);
+            _this.ngStyleInstance = new common.NgStyle(_this.delegate);
         }
         _this.init();
         /** @type {?} */
@@ -4410,7 +4410,7 @@ var StyleDirective = /** @class */ (function (_super) {
         if (styles) {
             switch (getType(styles)) {
                 case 'string': return buildMapFromList$1(buildRawList(styles), sanitizer);
-                case 'array': return buildMapFromList$1(/** @type {?} */ (styles), sanitizer);
+                case 'array': return buildMapFromList$1(styles, sanitizer);
                 case 'set': return buildMapFromSet(styles, sanitizer);
                 default: return buildMapFromSet(styles, sanitizer);
             }
@@ -4437,8 +4437,7 @@ var StyleDirective = /** @class */ (function (_super) {
         { type: core.ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: core.KeyValueDiffers },
-        { type: core.Renderer2 },
+        { type: common.ɵNgStyleImpl },
         { type: platformBrowser.DomSanitizer },
         { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] },
         { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
@@ -4455,6 +4454,11 @@ var inputs$3 = [
 ];
 /** @type {?} */
 var selector$3 = "\n  [ngStyle],\n  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n";
+/** @type {?} */
+var LayoutNgStyleImplProvider = {
+    provide: common.ɵNgStyleImpl,
+    useClass: common.ɵNgStyleR2Impl
+};
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -4467,7 +4471,7 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultStyleDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3, providers: [LayoutNgStyleImplProvider] },] },
     ];
     return DefaultStyleDirective;
 }(StyleDirective));
@@ -4489,7 +4493,7 @@ function buildMapFromList$1(styles, sanitize) {
         .map(stringToKeyValue)
         .filter(function (entry) { return !!entry; })
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, {});
 }
 
 /**
@@ -4646,7 +4650,7 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     LayoutStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -4781,7 +4785,7 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.inject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.Δinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5236,7 +5240,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
                 break;
             default:
                 // Defaults to percentage sizing unless `px` is explicitly set
-                if (!isValue && !isPercent && !isNaN(/** @type {?} */ (basis))) {
+                if (!isValue && !isPercent && !isNaN(basis)) {
                     basis = basis + '%';
                 }
                 // Fix for issue 280
@@ -5303,7 +5307,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
                     (hasCalc ? css[min] : grow + " " + shrink + " " + css[min]);
             }
         }
-        return /** @type {?} */ (extendObject$1(css, { 'box-sizing': 'border-box' }));
+        return extendObject$1(css, { 'box-sizing': 'border-box' });
     };
     FlexStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -5312,7 +5316,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.inject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.Δinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5529,7 +5533,7 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     FlexOrderStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5626,7 +5630,7 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     FlexOffsetStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5776,7 +5780,7 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     FlexAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5864,7 +5868,7 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     FlexFillStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     return FlexFillStyleBuilder;
 }(StyleBuilder));
 /**
@@ -5978,7 +5982,7 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
                 break;
         }
-        return /** @type {?} */ (extendObject$1(css, {
+        return extendObject$1(css, {
             'display': parent.inline ? 'inline-flex' : 'flex',
             'flex-direction': parent.layout,
             'box-sizing': 'border-box',
@@ -5986,12 +5990,12 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 !isFlowHorizontal(parent.layout) ? '100%' : null : null,
             'max-height': crossAxis === 'stretch' ?
                 isFlowHorizontal(parent.layout) ? '100%' : null : null,
-        }));
+        });
     };
     LayoutAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -6201,7 +6205,7 @@ var GridAlignStyleBuilder = /** @class */ (function (_super) {
     GridAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
     return GridAlignStyleBuilder;
 }(StyleBuilder));
 var GridAlignDirective = /** @class */ (function (_super) {
@@ -6337,7 +6341,7 @@ var GridAlignColumnsStyleBuilder = /** @class */ (function (_super) {
     GridAlignColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
     return GridAlignColumnsStyleBuilder;
 }(StyleBuilder));
 var GridAlignColumnsDirective = /** @class */ (function (_super) {
@@ -6517,7 +6521,7 @@ var GridAlignRowsStyleBuilder = /** @class */ (function (_super) {
     GridAlignRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
     return GridAlignRowsStyleBuilder;
 }(StyleBuilder));
 var GridAlignRowsDirective = /** @class */ (function (_super) {
@@ -6675,7 +6679,7 @@ var GridAreaStyleBuilder = /** @class */ (function (_super) {
     GridAreaStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
     return GridAreaStyleBuilder;
 }(StyleBuilder));
 var GridAreaDirective = /** @class */ (function (_super) {
@@ -6766,7 +6770,7 @@ var GridAreasStyleBuiler = /** @class */ (function (_super) {
     GridAreasStyleBuiler.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = core.defineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+    /** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
     return GridAreasStyleBuiler;
 }(StyleBuilder));
 var GridAreasDirective = /** @class */ (function (_super) {
@@ -6891,7 +6895,7 @@ var GridAutoStyleBuilder = /** @class */ (function (_super) {
     GridAutoStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
     return GridAutoStyleBuilder;
 }(StyleBuilder));
 var GridAutoDirective = /** @class */ (function (_super) {
@@ -7006,7 +7010,7 @@ var GridColumnStyleBuilder = /** @class */ (function (_super) {
     GridColumnStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
     return GridColumnStyleBuilder;
 }(StyleBuilder));
 var GridColumnDirective = /** @class */ (function (_super) {
@@ -7108,7 +7112,7 @@ var GridColumnsStyleBuilder = /** @class */ (function (_super) {
     GridColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
     return GridColumnsStyleBuilder;
 }(StyleBuilder));
 var GridColumnsDirective = /** @class */ (function (_super) {
@@ -7229,7 +7233,7 @@ var GridGapStyleBuilder = /** @class */ (function (_super) {
     GridGapStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
     return GridGapStyleBuilder;
 }(StyleBuilder));
 var GridGapDirective = /** @class */ (function (_super) {
@@ -7345,7 +7349,7 @@ var GridRowStyleBuilder = /** @class */ (function (_super) {
     GridRowStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
     return GridRowStyleBuilder;
 }(StyleBuilder));
 var GridRowDirective = /** @class */ (function (_super) {
@@ -7447,7 +7451,7 @@ var GridRowsStyleBuilder = /** @class */ (function (_super) {
     GridRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = core.ΔdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
     return GridRowsStyleBuilder;
 }(StyleBuilder));
 var GridRowsDirective = /** @class */ (function (_super) {
@@ -7581,7 +7585,7 @@ var GridModule = /** @class */ (function () {
 /** *
  * Current version of Angular Flex-Layout.
   @type {?} */
-var VERSION = new core.Version('7.0.0-beta.24-e297426');
+var VERSION = new core.Version('7.0.0-beta.24-e49eb39');
 
 /**
  * @fileoverview added by tsickle
@@ -7681,6 +7685,7 @@ exports.BREAKPOINT_PRINT = BREAKPOINT_PRINT;
 exports.PrintHook = PrintHook;
 exports.ExtendedModule = ExtendedModule;
 exports.ClassDirective = ClassDirective;
+exports.LayoutNgClassImplProvider = LayoutNgClassImplProvider;
 exports.DefaultClassDirective = DefaultClassDirective;
 exports.ImgSrcStyleBuilder = ImgSrcStyleBuilder;
 exports.ImgSrcDirective = ImgSrcDirective;
@@ -7689,6 +7694,7 @@ exports.ShowHideStyleBuilder = ShowHideStyleBuilder;
 exports.ShowHideDirective = ShowHideDirective;
 exports.DefaultShowHideDirective = DefaultShowHideDirective;
 exports.StyleDirective = StyleDirective;
+exports.LayoutNgStyleImplProvider = LayoutNgStyleImplProvider;
 exports.DefaultStyleDirective = DefaultStyleDirective;
 exports.FlexModule = FlexModule;
 exports.FlexStyleBuilder = FlexStyleBuilder;
