@@ -12,7 +12,7 @@ import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Special server-only class to simulate a MediaQueryList and
@@ -57,11 +57,15 @@ class ServerMediaQueryList {
     activate() {
         if (!this._isActive) {
             this._isActive = true;
-            this._listeners.forEach((callback) => {
+            this._listeners.forEach((/**
+             * @param {?} callback
+             * @return {?}
+             */
+            (callback) => {
                 /** @type {?} */
-                const cb = /** @type {?} */ ((callback));
+                const cb = (/** @type {?} */ (callback));
                 cb.call(null, this);
-            });
+            }));
         }
         return this;
     }
@@ -72,11 +76,15 @@ class ServerMediaQueryList {
     deactivate() {
         if (this._isActive) {
             this._isActive = false;
-            this._listeners.forEach((callback) => {
+            this._listeners.forEach((/**
+             * @param {?} callback
+             * @return {?}
+             */
+            (callback) => {
                 /** @type {?} */
-                const cb = /** @type {?} */ ((callback));
+                const cb = (/** @type {?} */ (callback));
                 cb.call(null, this);
-            });
+            }));
         }
         return this;
     }
@@ -91,7 +99,7 @@ class ServerMediaQueryList {
         }
         if (this._isActive) {
             /** @type {?} */
-            const cb = /** @type {?} */ ((listener));
+            const cb = (/** @type {?} */ (listener));
             cb.call(null, this);
         }
     }
@@ -151,7 +159,7 @@ class ServerMatchMedia extends ɵMatchMedia {
      */
     activateBreakpoint(bp) {
         /** @type {?} */
-        const lookupBreakpoint = this.registry.get(bp.mediaQuery);
+        const lookupBreakpoint = (/** @type {?} */ (this.registry.get(bp.mediaQuery)));
         if (lookupBreakpoint) {
             lookupBreakpoint.activate();
         }
@@ -163,7 +171,7 @@ class ServerMatchMedia extends ɵMatchMedia {
      */
     deactivateBreakpoint(bp) {
         /** @type {?} */
-        const lookupBreakpoint = this.registry.get(bp.mediaQuery);
+        const lookupBreakpoint = (/** @type {?} */ (this.registry.get(bp.mediaQuery)));
         if (lookupBreakpoint) {
             lookupBreakpoint.deactivate();
         }
@@ -171,6 +179,7 @@ class ServerMatchMedia extends ɵMatchMedia {
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
@@ -190,7 +199,7 @@ ServerMatchMedia.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Activate all of the registered breakpoints in sequence, and then
@@ -203,13 +212,23 @@ ServerMatchMedia.ctorParameters = () => [
  * @return {?}
  */
 function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig) {
+    // Store the custom classes in the following map, that way only
+    // one class gets allocated per HTMLElement, and each class can
+    // be referenced in the static media queries
     /** @type {?} */
     const classMap = new Map();
+    // Get the initial stylings for all of the directives,
+    // and initialize the fallback block of stylings
     /** @type {?} */
     const defaultStyles = new Map(serverSheet.stylesheet);
     /** @type {?} */
     let styleText = generateCss(defaultStyles, 'all', classMap);
-    [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
+    [...breakpoints].sort(sortAscendingPriority).forEach((/**
+     * @param {?} bp
+     * @param {?} i
+     * @return {?}
+     */
+    (bp, i) => {
         serverSheet.clearStyles();
         mediaController.activateBreakpoint(bp);
         /** @type {?} */
@@ -218,14 +237,23 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
         mediaController.deactivateBreakpoint(breakpoints[i]);
-    });
+    }));
     /** @type {?} */
     const serverBps = layoutConfig.ssrObserveBreakpoints;
     if (serverBps) {
         serverBps
-            .reduce((acc, serverBp) => {
+            .reduce((/**
+         * @param {?} acc
+         * @param {?} serverBp
+         * @return {?}
+         */
+        (acc, serverBp) => {
             /** @type {?} */
-            const foundBp = breakpoints.find(bp => serverBp === bp.alias);
+            const foundBp = breakpoints.find((/**
+             * @param {?} bp
+             * @return {?}
+             */
+            bp => serverBp === bp.alias));
             if (!foundBp) {
                 console.warn(`FlexLayoutServerModule: unknown breakpoint alias "${serverBp}"`);
             }
@@ -233,7 +261,7 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
                 acc.push(foundBp);
             }
             return acc;
-        }, [])
+        }), [])
             .forEach(mediaController.activateBreakpoint);
     }
     return styleText;
@@ -249,22 +277,28 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
  * @return {?}
  */
 function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints, layoutConfig) {
-    return () => {
+    return (/**
+     * @return {?}
+     */
+    () => {
+        // This is the style tag that gets inserted into the head of the DOM,
+        // populated with the manual media queries
         /** @type {?} */
         const styleTag = _document.createElement('style');
         /** @type {?} */
         const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig);
         styleTag.classList.add(`${CLASS_NAME}ssr`);
-        styleTag.textContent = styleText; /** @type {?} */
-        ((_document.head)).appendChild(styleTag);
-    };
+        styleTag.textContent = styleText;
+        (/** @type {?} */ (_document.head)).appendChild(styleTag);
+    });
 }
-/** *
+/**
  *  Provider to set static styles on the server
-  @type {?} */
+ * @type {?}
+ */
 const SERVER_PROVIDERS = [
     {
-        provide: BEFORE_APP_SERIALIZED,
+        provide: (/** @type {?} */ (BEFORE_APP_SERIALIZED)),
         useFactory: FLEX_SSR_SERIALIZER_FACTORY,
         deps: [
             StylesheetMap,
@@ -301,17 +335,27 @@ const IS_DEBUG_MODE = false;
 function generateCss(stylesheet, mediaQuery, classMap) {
     /** @type {?} */
     let css = '';
-    stylesheet.forEach((styles, el) => {
+    stylesheet.forEach((/**
+     * @param {?} styles
+     * @param {?} el
+     * @return {?}
+     */
+    (styles, el) => {
         /** @type {?} */
         let keyVals = '';
         /** @type {?} */
         let className = getClassName(el, classMap);
-        styles.forEach((v, k) => {
+        styles.forEach((/**
+         * @param {?} v
+         * @param {?} k
+         * @return {?}
+         */
+        (v, k) => {
             keyVals += v ? format(`${k}:${v};`) : '';
-        });
+        }));
         // Build list of CSS styles; each with a className
         css += format(`.${className} {`, keyVals, '}');
-    });
+    }));
     // Group 1 or more styles (each with className) in a specific mediaQuery
     return format(`@media ${mediaQuery} {`, css, '}');
 }
@@ -324,9 +368,14 @@ function generateCss(stylesheet, mediaQuery, classMap) {
 function format(...list) {
     /** @type {?} */
     let result = '';
-    list.forEach((css, i) => {
+    list.forEach((/**
+     * @param {?} css
+     * @param {?} i
+     * @return {?}
+     */
+    (css, i) => {
         result += IS_DEBUG_MODE ? formatSegment(css, i !== 0) : css;
-    });
+    }));
     return result;
 }
 /**
@@ -358,7 +407,7 @@ function getClassName(element, classMap) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexLayoutServerModule {
 }
@@ -370,12 +419,12 @@ FlexLayoutServerModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵa1 };
