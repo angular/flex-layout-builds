@@ -1,5 +1,5 @@
 import { NgZone } from '@angular/core';
-import { BreakPoint, ɵMatchMedia as MatchMedia } from '@angular/flex-layout/core';
+import { BreakPoint, ɵMatchMedia as MatchMedia, LayoutConfigOptions } from '@angular/flex-layout/core';
 /**
  * Special server-only class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
@@ -11,7 +11,7 @@ export declare class ServerMediaQueryList implements MediaQueryList {
     private _listeners;
     readonly matches: boolean;
     readonly media: string;
-    constructor(_mediaQuery: string);
+    constructor(_mediaQuery: string, _isActive?: boolean);
     /**
      * Destroy the current list by deactivating the
      * listeners and clearing the internal list
@@ -40,7 +40,10 @@ export declare class ServerMatchMedia extends MatchMedia {
     protected _zone: NgZone;
     protected _platformId: Object;
     protected _document: any;
-    constructor(_zone: NgZone, _platformId: Object, _document: any);
+    protected breakpoints: BreakPoint[];
+    protected layoutConfig: LayoutConfigOptions;
+    private _activeBreakpoints;
+    constructor(_zone: NgZone, _platformId: Object, _document: any, breakpoints: BreakPoint[], layoutConfig: LayoutConfigOptions);
     /** Activate the specified breakpoint if we're on the server, no-op otherwise */
     activateBreakpoint(bp: BreakPoint): void;
     /** Deactivate the specified breakpoint if we're on the server, no-op otherwise */

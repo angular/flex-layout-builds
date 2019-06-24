@@ -8,7 +8,7 @@
 import { __extends } from 'tslib';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, PLATFORM_ID, NgModule } from '@angular/core';
-import { ɵMatchMedia, BREAKPOINTS, CLASS_NAME, SERVER_TOKEN, StylesheetMap, sortAscendingPriority, LAYOUT_CONFIG } from '@angular/flex-layout/core';
+import { ɵMatchMedia, BREAKPOINTS, LAYOUT_CONFIG, CLASS_NAME, SERVER_TOKEN, StylesheetMap, sortAscendingPriority } from '@angular/flex-layout/core';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
 
 /**
@@ -26,9 +26,10 @@ var /**
  * - manages listeners
  */
 ServerMediaQueryList = /** @class */ (function () {
-    function ServerMediaQueryList(_mediaQuery) {
+    function ServerMediaQueryList(_mediaQuery, _isActive) {
+        if (_isActive === void 0) { _isActive = false; }
         this._mediaQuery = _mediaQuery;
-        this._isActive = false;
+        this._isActive = _isActive;
         this._listeners = [];
         this.onchange = null;
     }
@@ -203,11 +204,39 @@ ServerMediaQueryList = /** @class */ (function () {
  */
 var ServerMatchMedia = /** @class */ (function (_super) {
     __extends(ServerMatchMedia, _super);
-    function ServerMatchMedia(_zone, _platformId, _document) {
+    function ServerMatchMedia(_zone, _platformId, _document, breakpoints, layoutConfig) {
         var _this = _super.call(this, _zone, _platformId, _document) || this;
         _this._zone = _zone;
         _this._platformId = _platformId;
         _this._document = _document;
+        _this.breakpoints = breakpoints;
+        _this.layoutConfig = layoutConfig;
+        _this._activeBreakpoints = [];
+        /** @type {?} */
+        var serverBps = layoutConfig.ssrObserveBreakpoints;
+        if (serverBps) {
+            _this._activeBreakpoints = serverBps
+                .reduce((/**
+             * @param {?} acc
+             * @param {?} serverBp
+             * @return {?}
+             */
+            function (acc, serverBp) {
+                /** @type {?} */
+                var foundBp = breakpoints.find((/**
+                 * @param {?} bp
+                 * @return {?}
+                 */
+                function (bp) { return serverBp === bp.alias; }));
+                if (!foundBp) {
+                    console.warn("FlexLayoutServerModule: unknown breakpoint alias \"" + serverBp + "\"");
+                }
+                else {
+                    acc.push(foundBp);
+                }
+                return acc;
+            }), []);
+        }
         return _this;
     }
     /** Activate the specified breakpoint if we're on the server, no-op otherwise */
@@ -265,7 +294,13 @@ var ServerMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (query) {
-        return new ServerMediaQueryList(query);
+        /** @type {?} */
+        var isActive = this._activeBreakpoints.some((/**
+         * @param {?} ab
+         * @return {?}
+         */
+        function (ab) { return ab.mediaQuery === query; }));
+        return new ServerMediaQueryList(query, isActive);
     };
     ServerMatchMedia.decorators = [
         { type: Injectable },
@@ -274,7 +309,9 @@ var ServerMatchMedia = /** @class */ (function (_super) {
     ServerMatchMedia.ctorParameters = function () { return [
         { type: NgZone },
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
+        { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] },
+        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
     return ServerMatchMedia;
 }(ɵMatchMedia));
@@ -290,10 +327,9 @@ var ServerMatchMedia = /** @class */ (function (_super) {
  *        element
  * @param {?} mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param {?} breakpoints the registered breakpoints to activate/deactivate
- * @param {?} layoutConfig the library config, and specifically the breakpoints to activate
  * @return {?}
  */
-function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig) {
+function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints) {
     // Store the custom classes in the following map, that way only
     // one class gets allocated per HTMLElement, and each class can
     // be referenced in the static media queries
@@ -320,32 +356,6 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
         }
         mediaController.deactivateBreakpoint(breakpoints[i]);
     }));
-    /** @type {?} */
-    var serverBps = layoutConfig.ssrObserveBreakpoints;
-    if (serverBps) {
-        serverBps
-            .reduce((/**
-         * @param {?} acc
-         * @param {?} serverBp
-         * @return {?}
-         */
-        function (acc, serverBp) {
-            /** @type {?} */
-            var foundBp = breakpoints.find((/**
-             * @param {?} bp
-             * @return {?}
-             */
-            function (bp) { return serverBp === bp.alias; }));
-            if (!foundBp) {
-                console.warn("FlexLayoutServerModule: unknown breakpoint alias \"" + serverBp + "\"");
-            }
-            else {
-                acc.push(foundBp);
-            }
-            return acc;
-        }), [])
-            .forEach(mediaController.activateBreakpoint);
-    }
     return styleText;
 }
 /**
@@ -355,10 +365,9 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
  * @param {?} mediaController
  * @param {?} _document
  * @param {?} breakpoints
- * @param {?} layoutConfig
  * @return {?}
  */
-function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints, layoutConfig) {
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints) {
     return (/**
      * @return {?}
      */
@@ -368,7 +377,7 @@ function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, br
         /** @type {?} */
         var styleTag = _document.createElement('style');
         /** @type {?} */
-        var styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, layoutConfig);
+        var styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints);
         styleTag.classList.add(CLASS_NAME + "ssr");
         styleTag.textContent = styleText;
         (/** @type {?} */ (_document.head)).appendChild(styleTag);
@@ -386,8 +395,7 @@ var SERVER_PROVIDERS = [
             StylesheetMap,
             ɵMatchMedia,
             DOCUMENT,
-            BREAKPOINTS,
-            LAYOUT_CONFIG,
+            BREAKPOINTS
         ],
         multi: true
     },
@@ -517,5 +525,5 @@ var FlexLayoutServerModule = /** @class */ (function () {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵa1 };
+export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵa2 };
 //# sourceMappingURL=server.es5.js.map
