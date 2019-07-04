@@ -59,7 +59,7 @@ export declare class MediaObserver implements OnDestroy {
     /**
      * @deprecated Use `asObservable()` instead.
      * @breaking-change 8.0.0-beta.25
-     * @deletion-target v8.0.0-beta.26-6bbfe23
+     * @deletion-target v8.0.0-beta.26-bcd618b
      */
     readonly media$: Observable<MediaChange>;
     /** Filter MediaChange notifications for overlapping breakpoints */

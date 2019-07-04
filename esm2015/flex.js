@@ -927,7 +927,7 @@ class FlexDirective extends BaseDirective2 {
         const activatedValue = this.activatedValue;
         if (activatedValue !== undefined) {
             /** @type {?} */
-            const parts = validateBasis(activatedValue, this.flexGrow, this.flexShrink);
+            const parts = validateBasis(activatedValue + '', this.flexGrow, this.flexShrink);
             this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
         }
     }

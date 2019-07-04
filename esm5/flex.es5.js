@@ -1034,7 +1034,7 @@ var FlexDirective = /** @class */ (function (_super) {
         var activatedValue = this.activatedValue;
         if (activatedValue !== undefined) {
             /** @type {?} */
-            var parts = validateBasis(activatedValue, this.flexGrow, this.flexShrink);
+            var parts = validateBasis(activatedValue + '', this.flexGrow, this.flexShrink);
             this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
         }
     };
