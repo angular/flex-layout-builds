@@ -213,6 +213,9 @@ var LayoutDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    LayoutDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'layout-directive' },] },
+    ];
     /** @nocollapse */
     LayoutDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -594,6 +597,9 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             }
         }));
     };
+    LayoutGapDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'layout-gap-directive' },] },
+    ];
     /** @nocollapse */
     LayoutGapDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -1077,6 +1083,9 @@ var FlexDirective = /** @class */ (function (_super) {
             this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
         }
     };
+    FlexDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-directive' },] },
+    ];
     /** @nocollapse */
     FlexDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -1165,6 +1174,9 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    FlexOrderDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-order-directive' },] },
+    ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -1317,6 +1329,9 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         }
         this.addStyles(value + '', { layout: layout, isRtl: isRtl });
     };
+    FlexOffsetDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-offset-directive' },] },
+    ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -1416,6 +1431,9 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    FlexAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-align-directive' },] },
+    ];
     /** @nocollapse */
     FlexAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -1722,6 +1740,9 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         }
         this.triggerUpdate();
     };
+    LayoutAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'layout-align-directive' },] },
+    ];
     /** @nocollapse */
     LayoutAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -1774,6 +1795,13 @@ var ALL_DIRECTIVES = [
     FlexFillDirective,
     DefaultFlexAlignDirective,
     DefaultFlexDirective,
+    FlexDirective,
+    FlexAlignDirective,
+    FlexOffsetDirective,
+    FlexOrderDirective,
+    LayoutDirective,
+    LayoutAlignDirective,
+    LayoutGapDirective,
 ];
 /**
  * *****************************************************************

@@ -172,6 +172,9 @@ class LayoutDirective extends BaseDirective2 {
         this.init();
     }
 }
+LayoutDirective.decorators = [
+    { type: Directive, args: [{ selector: 'layout-directive' },] },
+];
 /** @nocollapse */
 LayoutDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -485,6 +488,9 @@ class LayoutGapDirective extends BaseDirective2 {
         }));
     }
 }
+LayoutGapDirective.decorators = [
+    { type: Directive, args: [{ selector: 'layout-gap-directive' },] },
+];
 /** @nocollapse */
 LayoutGapDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -932,6 +938,9 @@ class FlexDirective extends BaseDirective2 {
         }
     }
 }
+FlexDirective.decorators = [
+    { type: Directive, args: [{ selector: 'flex-directive' },] },
+];
 /** @nocollapse */
 FlexDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1016,6 +1025,9 @@ class FlexOrderDirective extends BaseDirective2 {
         this.init();
     }
 }
+FlexOrderDirective.decorators = [
+    { type: Directive, args: [{ selector: 'flex-order-directive' },] },
+];
 /** @nocollapse */
 FlexOrderDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1143,6 +1155,9 @@ class FlexOffsetDirective extends BaseDirective2 {
         this.addStyles(value + '', { layout, isRtl });
     }
 }
+FlexOffsetDirective.decorators = [
+    { type: Directive, args: [{ selector: 'flex-offset-directive' },] },
+];
 /** @nocollapse */
 FlexOffsetDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1238,6 +1253,9 @@ class FlexAlignDirective extends BaseDirective2 {
         this.init();
     }
 }
+FlexAlignDirective.decorators = [
+    { type: Directive, args: [{ selector: 'flex-align-directive' },] },
+];
 /** @nocollapse */
 FlexAlignDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1508,6 +1526,9 @@ class LayoutAlignDirective extends BaseDirective2 {
         this.triggerUpdate();
     }
 }
+LayoutAlignDirective.decorators = [
+    { type: Directive, args: [{ selector: 'layout-align-directive' },] },
+];
 /** @nocollapse */
 LayoutAlignDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1555,6 +1576,13 @@ const ALL_DIRECTIVES = [
     FlexFillDirective,
     DefaultFlexAlignDirective,
     DefaultFlexDirective,
+    FlexDirective,
+    FlexAlignDirective,
+    FlexOffsetDirective,
+    FlexOrderDirective,
+    LayoutDirective,
+    LayoutAlignDirective,
+    LayoutGapDirective,
 ];
 /**
  * *****************************************************************

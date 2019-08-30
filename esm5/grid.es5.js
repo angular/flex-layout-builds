@@ -53,6 +53,9 @@ var GridAlignDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridAlignDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-align-directive' },] },
+    ];
     /** @nocollapse */
     GridAlignDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -223,6 +226,9 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? alignColumnsInlineCache : alignColumnsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAlignColumnsDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-align-columns-directive' },] },
+    ];
     /** @nocollapse */
     GridAlignColumnsDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -408,6 +414,9 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? alignRowsInlineCache : alignRowsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAlignRowsDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-align-rows-directive' },] },
+    ];
     /** @nocollapse */
     GridAlignRowsDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -534,6 +543,9 @@ var GridAreaDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridAreaDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-area-directive' },] },
+    ];
     /** @nocollapse */
     GridAreaDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -663,6 +675,9 @@ var GridAreasDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? areasInlineCache : areasCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAreasDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-areas-directive' },] },
+    ];
     /** @nocollapse */
     GridAreasDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -794,6 +809,9 @@ var GridAutoDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? autoInlineCache : autoCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAutoDirective.decorators = [
+        { type: Directive, args: [{ selector: "grid-auto-directive" },] },
+    ];
     /** @nocollapse */
     GridAutoDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -878,6 +896,9 @@ var GridColumnDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridColumnDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-column-directive' },] },
+    ];
     /** @nocollapse */
     GridColumnDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -1014,6 +1035,9 @@ var GridColumnsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? columnsInlineCache : columnsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridColumnsDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-columns-directive' },] },
+    ];
     /** @nocollapse */
     GridColumnsDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -1141,6 +1165,9 @@ var GridGapDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? gapInlineCache : gapCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridGapDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-gap-directive' },] },
+    ];
     /** @nocollapse */
     GridGapDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -1226,6 +1253,9 @@ var GridRowDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridRowDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-row-directive' },] },
+    ];
     /** @nocollapse */
     GridRowDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -1362,6 +1392,9 @@ var GridRowsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? rowsInlineCache : rowsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridRowsDirective.decorators = [
+        { type: Directive, args: [{ selector: 'grid-rows-directive' },] },
+    ];
     /** @nocollapse */
     GridRowsDirective.ctorParameters = function () { return [
         { type: ElementRef },
@@ -1423,6 +1456,17 @@ var ALL_DIRECTIVES = [
     DefaultGridGapDirective,
     DefaultGridRowDirective,
     DefaultGridRowsDirective,
+    GridAlignColumnsDirective,
+    GridAlignRowsDirective,
+    GridAreaDirective,
+    GridAreasDirective,
+    GridAutoDirective,
+    GridColumnDirective,
+    GridColumnsDirective,
+    GridGapDirective,
+    GridAlignDirective,
+    GridRowDirective,
+    GridRowsDirective,
 ];
 /**
  * *****************************************************************
