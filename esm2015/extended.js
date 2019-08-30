@@ -85,6 +85,9 @@ class ImgSrcDirective extends BaseDirective2 {
         }
     }
 }
+ImgSrcDirective.decorators = [
+    { type: Directive, args: [{ selector: 'img-src-directive' },] },
+];
 /** @nocollapse */
 ImgSrcDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -188,6 +191,9 @@ class ClassDirective extends BaseDirective2 {
         this.ngClassInstance.ngDoCheck();
     }
 }
+ClassDirective.decorators = [
+    { type: Directive, args: [{ selector: 'class-directive' },] },
+];
 /** @nocollapse */
 ClassDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -393,6 +399,9 @@ class ShowHideDirective extends BaseDirective2 {
         this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
     }
 }
+ShowHideDirective.decorators = [
+    { type: Directive, args: [{ selector: 'show-hide-directive' },] },
+];
 /** @nocollapse */
 ShowHideDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -671,6 +680,9 @@ class StyleDirective extends BaseDirective2 {
         this.ngStyleInstance.ngDoCheck();
     }
 }
+StyleDirective.decorators = [
+    { type: Directive, args: [{ selector: 'style-directive' },] },
+];
 /** @nocollapse */
 StyleDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -753,7 +765,11 @@ const ALL_DIRECTIVES = [
     DefaultShowHideDirective,
     DefaultClassDirective,
     DefaultStyleDirective,
-    DefaultImgSrcDirective
+    DefaultImgSrcDirective,
+    ClassDirective,
+    ImgSrcDirective,
+    ShowHideDirective,
+    StyleDirective,
 ];
 /**
  * *****************************************************************

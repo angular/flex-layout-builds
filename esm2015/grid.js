@@ -48,6 +48,9 @@ class GridAlignDirective extends BaseDirective2 {
         this.init();
     }
 }
+GridAlignDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-align-directive' },] },
+];
 /** @nocollapse */
 GridAlignDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -196,6 +199,9 @@ class GridAlignColumnsDirective extends BaseDirective2 {
         this.addStyles(value, { inline: this.inline });
     }
 }
+GridAlignColumnsDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-align-columns-directive' },] },
+];
 /** @nocollapse */
 GridAlignColumnsDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -362,6 +368,9 @@ class GridAlignRowsDirective extends BaseDirective2 {
         this.addStyles(value, { inline: this.inline });
     }
 }
+GridAlignRowsDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-align-rows-directive' },] },
+];
 /** @nocollapse */
 GridAlignRowsDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -486,6 +495,9 @@ class GridAreaDirective extends BaseDirective2 {
         this.init();
     }
 }
+GridAreaDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-area-directive' },] },
+];
 /** @nocollapse */
 GridAreaDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -594,6 +606,9 @@ class GridAreasDirective extends BaseDirective2 {
         this.addStyles(value, { inline: this.inline });
     }
 }
+GridAreasDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-areas-directive' },] },
+];
 /** @nocollapse */
 GridAreasDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -704,6 +719,9 @@ class GridAutoDirective extends BaseDirective2 {
         this.addStyles(value, { inline: this.inline });
     }
 }
+GridAutoDirective.decorators = [
+    { type: Directive, args: [{ selector: `grid-auto-directive` },] },
+];
 /** @nocollapse */
 GridAutoDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -784,6 +802,9 @@ class GridColumnDirective extends BaseDirective2 {
         this.init();
     }
 }
+GridColumnDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-column-directive' },] },
+];
 /** @nocollapse */
 GridColumnDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -899,6 +920,9 @@ class GridColumnsDirective extends BaseDirective2 {
         this.addStyles(value, { inline: this.inline });
     }
 }
+GridColumnsDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-columns-directive' },] },
+];
 /** @nocollapse */
 GridColumnsDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1005,6 +1029,9 @@ class GridGapDirective extends BaseDirective2 {
         this.addStyles(value, { inline: this.inline });
     }
 }
+GridGapDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-gap-directive' },] },
+];
 /** @nocollapse */
 GridGapDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1086,6 +1113,9 @@ class GridRowDirective extends BaseDirective2 {
         this.init();
     }
 }
+GridRowDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-row-directive' },] },
+];
 /** @nocollapse */
 GridRowDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1201,6 +1231,9 @@ class GridRowsDirective extends BaseDirective2 {
         this.addStyles(value, { inline: this.inline });
     }
 }
+GridRowsDirective.decorators = [
+    { type: Directive, args: [{ selector: 'grid-rows-directive' },] },
+];
 /** @nocollapse */
 GridRowsDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -1262,6 +1295,17 @@ const ALL_DIRECTIVES = [
     DefaultGridGapDirective,
     DefaultGridRowDirective,
     DefaultGridRowsDirective,
+    GridAlignColumnsDirective,
+    GridAlignRowsDirective,
+    GridAreaDirective,
+    GridAreasDirective,
+    GridAutoDirective,
+    GridColumnDirective,
+    GridColumnsDirective,
+    GridGapDirective,
+    GridAlignDirective,
+    GridRowDirective,
+    GridRowsDirective,
 ];
 /**
  * *****************************************************************
