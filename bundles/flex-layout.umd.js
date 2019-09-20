@@ -53,7 +53,7 @@ var __assign = function() {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Find all of the server-generated stylings, if any, and remove them
@@ -64,24 +64,36 @@ var __assign = function() {
  * @return {?}
  */
 function removeStyles(_document, platformId) {
-    return function () {
+    return (/**
+     * @return {?}
+     */
+    function () {
         if (common.isPlatformBrowser(platformId)) {
             /** @type {?} */
             var elements = Array.from(_document.querySelectorAll("[class*=" + CLASS_NAME + "]"));
+            // RegExp constructor should only be used if passing a variable to the constructor.
+            // When using static regular expression it is more performant to use reg exp literal.
+            // This is also needed to provide Safari 9 compatibility, please see
+            // https://stackoverflow.com/questions/37919802 for more discussion.
             /** @type {?} */
             var classRegex_1 = /\bflex-layout-.+?\b/g;
-            elements.forEach(function (el) {
+            elements.forEach((/**
+             * @param {?} el
+             * @return {?}
+             */
+            function (el) {
                 el.classList.contains(CLASS_NAME + "ssr") && el.parentNode ?
                     el.parentNode.removeChild(el) : el.className.replace(classRegex_1, '');
-            });
+            }));
         }
-    };
+    });
 }
-/** *
+/**
  *  Provider to remove SSR styles on the browser
-  @type {?} */
+ * @type {?}
+ */
 var BROWSER_PROVIDER = {
-    provide: /** @type {?} */ (core.APP_BOOTSTRAP_LISTENER),
+    provide: (/** @type {?} */ (core.APP_BOOTSTRAP_LISTENER)),
     useFactory: removeStyles,
     deps: [common.DOCUMENT, core.PLATFORM_ID],
     multi: true
@@ -91,7 +103,7 @@ var CLASS_NAME = 'flex-layout-';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * *****************************************************************
@@ -111,7 +123,7 @@ var CoreModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class instances emitted [to observers] for each mql notification
@@ -157,7 +169,7 @@ MediaChange = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Utility to emulate a CSS stylesheet
@@ -242,18 +254,18 @@ var StylesheetMap = /** @class */ (function () {
     StylesheetMap.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_CONFIG = {
@@ -270,42 +282,52 @@ var DEFAULT_CONFIG = {
 /** @type {?} */
 var LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options for the library', {
     providedIn: 'root',
-    factory: function () { return DEFAULT_CONFIG; }
+    factory: (/**
+     * @return {?}
+     */
+    function () { return DEFAULT_CONFIG; })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * Token that is provided to tell whether the FlexLayoutServerModule
  * has been included in the bundle
  *
  * NOTE: This can be manually provided to disable styles when using SSR
-  @type {?} */
+ * @type {?}
+ */
 var SERVER_TOKEN = new core.InjectionToken('FlexLayoutServerLoaded', {
     providedIn: 'root',
-    factory: function () { return false; }
+    factory: (/**
+     * @return {?}
+     */
+    function () { return false; })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var BREAKPOINT = new core.InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
     providedIn: 'root',
-    factory: function () { return null; }
+    factory: (/**
+     * @return {?}
+     */
+    function () { return null; })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * For the specified MediaChange, make sure it contains the breakpoint alias
@@ -319,23 +341,24 @@ function mergeAlias(dest, source) {
     if (source) {
         dest.mqAlias = source.alias;
         dest.mediaQuery = source.mediaQuery;
-        dest.suffix = /** @type {?} */ (source.suffix);
-        dest.priority = /** @type {?} */ (source.priority);
+        dest.suffix = (/** @type {?} */ (source.suffix));
+        dest.priority = (/** @type {?} */ (source.priority));
     }
     return dest;
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * @license
  * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
-  @type {?} */
+ * @type {?}
+ */
 var INLINE = 'inline';
 /** @type {?} */
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -358,7 +381,11 @@ function validateValue(value) {
     value = value ? value.toLowerCase() : '';
     var _a = value.split(' '), direction = _a[0], wrap = _a[1], inline = _a[2];
     // First value must be the `flex-direction`
-    if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
+    if (!LAYOUT_VALUES.find((/**
+     * @param {?} x
+     * @return {?}
+     */
+    function (x) { return x === direction; }))) {
         direction = LAYOUT_VALUES[0];
     }
     if (wrap === INLINE) {
@@ -419,7 +446,7 @@ function buildCSS(direction, wrap, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -449,6 +476,7 @@ BaseDirective2 = /** @class */ (function () {
         /** Access to host element's parent DOM node */
         get: /**
          * Access to host element's parent DOM node
+         * @protected
          * @return {?}
          */
         function () {
@@ -461,6 +489,7 @@ BaseDirective2 = /** @class */ (function () {
         /** Access to the HTMLElement for the directive */
         get: /**
          * Access to the HTMLElement for the directive
+         * @protected
          * @return {?}
          */
         function () {
@@ -501,7 +530,11 @@ BaseDirective2 = /** @class */ (function () {
      */
     function (changes) {
         var _this = this;
-        Object.keys(changes).forEach(function (key) {
+        Object.keys(changes).forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
             if (_this.inputs.indexOf(key) !== -1) {
                 /** @type {?} */
                 var bp = key.split('.').slice(1).join('.');
@@ -509,7 +542,7 @@ BaseDirective2 = /** @class */ (function () {
                 var val = changes[key].currentValue;
                 _this.setValue(val, bp);
             }
-        });
+        }));
     };
     /**
      * @return {?}
@@ -525,11 +558,13 @@ BaseDirective2 = /** @class */ (function () {
     /** Register with central marshaller service */
     /**
      * Register with central marshaller service
+     * @protected
      * @param {?=} extraTriggers
      * @return {?}
      */
     BaseDirective2.prototype.init = /**
      * Register with central marshaller service
+     * @protected
      * @param {?=} extraTriggers
      * @return {?}
      */
@@ -540,12 +575,14 @@ BaseDirective2 = /** @class */ (function () {
     /** Add styles to the element using predefined style builder */
     /**
      * Add styles to the element using predefined style builder
+     * @protected
      * @param {?} input
      * @param {?=} parent
      * @return {?}
      */
     BaseDirective2.prototype.addStyles = /**
      * Add styles to the element using predefined style builder
+     * @protected
      * @param {?} input
      * @param {?=} parent
      * @return {?}
@@ -570,27 +607,35 @@ BaseDirective2 = /** @class */ (function () {
     /** Remove generated styles from an element using predefined style builder */
     /**
      * Remove generated styles from an element using predefined style builder
+     * @protected
      * @return {?}
      */
     BaseDirective2.prototype.clearStyles = /**
      * Remove generated styles from an element using predefined style builder
+     * @protected
      * @return {?}
      */
     function () {
         var _this = this;
-        Object.keys(this.mru).forEach(function (k) {
+        Object.keys(this.mru).forEach((/**
+         * @param {?} k
+         * @return {?}
+         */
+        function (k) {
             _this.mru[k] = '';
-        });
+        }));
         this.applyStyleToElement(this.mru);
         this.mru = {};
     };
     /** Force trigger style updates on DOM element */
     /**
      * Force trigger style updates on DOM element
+     * @protected
      * @return {?}
      */
     BaseDirective2.prototype.triggerUpdate = /**
      * Force trigger style updates on DOM element
+     * @protected
      * @return {?}
      */
     function () {
@@ -607,6 +652,7 @@ BaseDirective2 = /** @class */ (function () {
      *
      * Check inline style first then check computed (stylesheet) style.
      * And optionally add the flow value to element's inline style.
+     * @protected
      * @param {?} target
      * @param {?=} addIfMissing
      * @return {?}
@@ -616,6 +662,7 @@ BaseDirective2 = /** @class */ (function () {
      *
      * Check inline style first then check computed (stylesheet) style.
      * And optionally add the flow value to element's inline style.
+     * @protected
      * @param {?} target
      * @param {?=} addIfMissing
      * @return {?}
@@ -638,6 +685,7 @@ BaseDirective2 = /** @class */ (function () {
     /** Applies styles given via string pair or object map to the directive element */
     /**
      * Applies styles given via string pair or object map to the directive element
+     * @protected
      * @param {?} style
      * @param {?=} value
      * @param {?=} element
@@ -645,6 +693,7 @@ BaseDirective2 = /** @class */ (function () {
      */
     BaseDirective2.prototype.applyStyleToElement = /**
      * Applies styles given via string pair or object map to the directive element
+     * @protected
      * @param {?} style
      * @param {?=} value
      * @param {?=} element
@@ -655,11 +704,13 @@ BaseDirective2 = /** @class */ (function () {
         this.styler.applyStyleToElement(element, style, value);
     };
     /**
+     * @protected
      * @param {?} val
      * @param {?} bp
      * @return {?}
      */
     BaseDirective2.prototype.setValue = /**
+     * @protected
      * @param {?} val
      * @param {?} bp
      * @return {?}
@@ -668,10 +719,12 @@ BaseDirective2 = /** @class */ (function () {
         this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, val, bp);
     };
     /**
+     * @protected
      * @param {?} input
      * @return {?}
      */
     BaseDirective2.prototype.updateWithValue = /**
+     * @protected
      * @param {?} input
      * @return {?}
      */
@@ -683,65 +736,66 @@ BaseDirective2 = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * NOTE: Smaller ranges have HIGHER priority since the match is more specific
-  @type {?} */
+ * @type {?}
+ */
 var DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
-        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.99px)',
+        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.9px)',
         priority: 1000,
     },
     {
         alias: 'sm',
-        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.99px)',
+        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.9px)',
         priority: 900,
     },
     {
         alias: 'md',
-        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.99px)',
+        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.9px)',
         priority: 800,
     },
     {
         alias: 'lg',
-        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.99px)',
+        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.9px)',
         priority: 700,
     },
     {
         alias: 'xl',
-        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.99px)',
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.9px)',
         priority: 600,
     },
     {
         alias: 'lt-sm',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 599.99px)',
+        mediaQuery: 'screen and (max-width: 599.9px)',
         priority: 950,
     },
     {
         alias: 'lt-md',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 959.99px)',
+        mediaQuery: 'screen and (max-width: 959.9px)',
         priority: 850,
     },
     {
         alias: 'lt-lg',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 1279.99px)',
+        mediaQuery: 'screen and (max-width: 1279.9px)',
         priority: 750,
     },
     {
         alias: 'lt-xl',
         overlapping: true,
         priority: 650,
-        mediaQuery: 'screen and (max-width: 1919.99px)',
+        mediaQuery: 'screen and (max-width: 1919.9px)',
     },
     {
         alias: 'gt-xs',
@@ -770,17 +824,18 @@ var DEFAULT_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
+/* tslint:disable */
 /** @type {?} */
-var HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599.99px)';
+var HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599.9px)';
 /** @type {?} */
-var HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.99px)';
+var HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.9px)';
 /** @type {?} */
-var TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.99px)';
+var TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.9px)';
 /** @type {?} */
-var TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.99px)';
+var TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.9px)';
 /** @type {?} */
 var WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
 /** @type {?} */
@@ -797,9 +852,10 @@ var ScreenTypes = {
     'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
     'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
 };
-/** *
+/**
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
-  @type {?} */
+ * @type {?}
+ */
 var ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET },
     { 'alias': 'handset.landscape', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
@@ -814,8 +870,14 @@ var ORIENTATION_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
  * similar to Object.assign.
@@ -847,7 +909,7 @@ function extendObject(dest) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALIAS_DELIMITERS = /(\.|-|_)/g;
@@ -881,12 +943,16 @@ function camelCase(name) {
  * @return {?}
  */
 function validateSuffixes(list) {
-    list.forEach(function (bp) {
+    list.forEach((/**
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
         if (!bp.suffix) {
             bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
             bp.overlapping = !!bp.overlapping; // ensure default value
         }
-    });
+    }));
     return list;
 }
 /**
@@ -901,49 +967,69 @@ function mergeByAlias(defaults, custom) {
     if (custom === void 0) { custom = []; }
     /** @type {?} */
     var dict = {};
-    defaults.forEach(function (bp) {
+    defaults.forEach((/**
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
         dict[bp.alias] = bp;
-    });
+    }));
     // Merge custom breakpoints
-    custom.forEach(function (bp) {
+    custom.forEach((/**
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
         if (dict[bp.alias]) {
             extendObject(dict[bp.alias], bp);
         }
         else {
             dict[bp.alias] = bp;
         }
-    });
-    return validateSuffixes(Object.keys(dict).map(function (k) { return dict[k]; }));
+    }));
+    return validateSuffixes(Object.keys(dict).map((/**
+     * @param {?} k
+     * @return {?}
+     */
+    function (k) { return dict[k]; })));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
-  @type {?} */
+ * @type {?}
+ */
 var BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoints', {
     providedIn: 'root',
-    factory: function () {
+    factory: (/**
+     * @return {?}
+     */
+    function () {
         /** @type {?} */
         var breakpoints = core.inject(BREAKPOINT);
         /** @type {?} */
         var layoutConfig = core.inject(LAYOUT_CONFIG);
         /** @type {?} */
         var bpFlattenArray = [].concat.apply([], (breakpoints || [])
-            .map(function (v) { return Array.isArray(v) ? v : [v]; }));
+            .map((/**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) { return Array.isArray(v) ? v : [v]; })));
         /** @type {?} */
         var builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
             .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
         return mergeByAlias(builtIns, bpFlattenArray);
-    }
+    })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * HOF to sort the breakpoints by descending priority
@@ -976,7 +1062,7 @@ function sortAscendingPriority(a, b) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
@@ -1005,7 +1091,11 @@ var BreakPointRegistry = /** @class */ (function () {
      * @return {?}
      */
     function (alias) {
-        return !alias ? null : this.findWithPredicate(alias, function (bp) { return bp.alias == alias; });
+        return !alias ? null : this.findWithPredicate(alias, (/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.alias == alias; }));
     };
     /**
      * @param {?} query
@@ -1016,7 +1106,11 @@ var BreakPointRegistry = /** @class */ (function () {
      * @return {?}
      */
     function (query) {
-        return this.findWithPredicate(query, function (bp) { return bp.mediaQuery == query; });
+        return this.findWithPredicate(query, (/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.mediaQuery == query; }));
     };
     Object.defineProperty(BreakPointRegistry.prototype, "overlappings", {
         /**
@@ -1029,7 +1123,11 @@ var BreakPointRegistry = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this.items.filter(function (it) { return it.overlapping == true; });
+            return this.items.filter((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return it.overlapping == true; }));
         },
         enumerable: true,
         configurable: true
@@ -1043,7 +1141,11 @@ var BreakPointRegistry = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this.items.map(function (it) { return it.alias; });
+            return this.items.map((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return it.alias; }));
         },
         enumerable: true,
         configurable: true
@@ -1061,19 +1163,28 @@ var BreakPointRegistry = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this.items.map(function (it) { return !!it.suffix ? it.suffix : ''; });
+            return this.items.map((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return !!it.suffix ? it.suffix : ''; }));
         },
         enumerable: true,
         configurable: true
     });
     /**
      * Memoized lookup using custom predicate function
+     */
+    /**
+     * Memoized lookup using custom predicate function
+     * @private
      * @param {?} key
      * @param {?} searchFn
      * @return {?}
      */
     BreakPointRegistry.prototype.findWithPredicate = /**
      * Memoized lookup using custom predicate function
+     * @private
      * @param {?} key
      * @param {?} searchFn
      * @return {?}
@@ -1094,18 +1205,18 @@ var BreakPointRegistry = /** @class */ (function () {
     BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] }] }
     ]; };
-    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -1137,11 +1248,16 @@ var MatchMedia = /** @class */ (function () {
         function () {
             /** @type {?} */
             var results = [];
-            this.registry.forEach(function (mql, key) {
+            this.registry.forEach((/**
+             * @param {?} mql
+             * @param {?} key
+             * @return {?}
+             */
+            function (mql, key) {
                 if (mql.matches) {
                     results.push(key);
                 }
-            });
+            }));
             return results;
         },
         enumerable: true,
@@ -1203,23 +1319,36 @@ var MatchMedia = /** @class */ (function () {
         if (filterOthers === void 0) { filterOthers = false; }
         if (mqList && mqList.length) {
             /** @type {?} */
-            var matchMedia$ = this._observable$.pipe(operators.filter(function (change) {
+            var matchMedia$ = this._observable$.pipe(operators.filter((/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) {
                 return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
-            }));
+            })));
             /** @type {?} */
-            var registration$ = new rxjs.Observable(function (observer) {
+            var registration$ = new rxjs.Observable((/**
+             * @param {?} observer
+             * @return {?}
+             */
+            function (observer) {
+                // tslint:disable-line:max-line-length
                 /** @type {?} */
                 var matches = _this.registerQuery(mqList);
                 if (matches.length) {
                     /** @type {?} */
-                    var lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach(function (e) {
+                    var lastChange = (/** @type {?} */ (matches.pop()));
+                    matches.forEach((/**
+                     * @param {?} e
+                     * @return {?}
+                     */
+                    function (e) {
                         observer.next(e);
-                    });
+                    }));
                     _this.source.next(lastChange); // last match is cached
                 }
                 observer.complete();
-            });
+            }));
             return rxjs.merge(registration$, matchMedia$);
         }
         return this._observable$;
@@ -1247,11 +1376,22 @@ var MatchMedia = /** @class */ (function () {
         /** @type {?} */
         var matches = [];
         buildQueryCss(list, this._document);
-        list.forEach(function (query) {
+        list.forEach((/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) {
             /** @type {?} */
-            var onMQLEvent = function (e) {
-                _this._zone.run(function () { return _this.source.next(new MediaChange(e.matches, query)); });
-            };
+            var onMQLEvent = (/**
+             * @param {?} e
+             * @return {?}
+             */
+            function (e) {
+                _this._zone.run((/**
+                 * @return {?}
+                 */
+                function () { return _this.source.next(new MediaChange(e.matches, query)); }));
+            });
             /** @type {?} */
             var mql = _this.registry.get(query);
             if (!mql) {
@@ -1262,7 +1402,7 @@ var MatchMedia = /** @class */ (function () {
             if (mql.matches) {
                 matches.push(new MediaChange(true, query));
             }
-        });
+        }));
         return matches;
     };
     /**
@@ -1272,12 +1412,14 @@ var MatchMedia = /** @class */ (function () {
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
     MatchMedia.prototype.buildMQL = /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
@@ -1293,13 +1435,14 @@ var MatchMedia = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MatchMedia.ngInjectableDef = core.defineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.inject(core.NgZone), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+    /** @nocollapse */ MatchMedia.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.ɵɵinject(core.NgZone), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
-/** *
+/**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
-  @type {?} */
+ * @type {?}
+ */
 var ALL_STYLES = {};
 /**
  * For Webkit engines that only trigger the MediaQueryList Listener
@@ -1311,7 +1454,11 @@ var ALL_STYLES = {};
  */
 function buildQueryCss(mediaQueries, _document) {
     /** @type {?} */
-    var list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
+    var list = mediaQueries.filter((/**
+     * @param {?} it
+     * @return {?}
+     */
+    function (it) { return !ALL_STYLES[it]; }));
     if (list.length > 0) {
         /** @type {?} */
         var query = list.join(', ');
@@ -1319,14 +1466,18 @@ function buildQueryCss(mediaQueries, _document) {
             /** @type {?} */
             var styleEl_1 = _document.createElement('style');
             styleEl_1.setAttribute('type', 'text/css');
-            if (!(/** @type {?} */ (styleEl_1)).styleSheet) {
+            if (!((/** @type {?} */ (styleEl_1))).styleSheet) {
                 /** @type {?} */
                 var cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
                 styleEl_1.appendChild(_document.createTextNode(cssText));
-            } /** @type {?} */
-            ((_document.head)).appendChild(styleEl_1);
+            }
+            (/** @type {?} */ (_document.head)).appendChild(styleEl_1);
             // Store in private global registry
-            list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
+            list.forEach((/**
+             * @param {?} mq
+             * @return {?}
+             */
+            function (mq) { return ALL_STYLES[mq] = styleEl_1; }));
         }
         catch (e) {
             console.error(e);
@@ -1340,20 +1491,26 @@ function buildQueryCss(mediaQueries, _document) {
  */
 function constructMql(query, isBrowser) {
     /** @type {?} */
-    var canListen = isBrowser && !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-    return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
+    var canListen = isBrowser && !!((/** @type {?} */ (window))).matchMedia('all').addListener;
+    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ((/** @type {?} */ ({
         matches: query === 'all' || query === '',
         media: query,
-        addListener: function () {
-        },
-        removeListener: function () {
-        }
-    }));
+        addListener: (/**
+         * @return {?}
+         */
+        function () {
+        }),
+        removeListener: (/**
+         * @return {?}
+         */
+        function () {
+        })
+    }))));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
@@ -1366,7 +1523,8 @@ var MockMatchMedia = /** @class */ (function (_super) {
         var _this = _super.call(this, _zone, _platformId, _document) || this;
         _this._breakpoints = _breakpoints;
         _this.autoRegisterQueries = true; // Used for testing BreakPoint registrations
-        _this.useOverlaps = false;
+        // Used for testing BreakPoint registrations
+        _this.useOverlaps = false; // Allow fallback to overlapping mediaQueries
         return _this;
     }
     /** Easy method to clear all listeners for all mediaQueries */
@@ -1379,9 +1537,13 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this.registry.forEach(function (mql) {
-            (/** @type {?} */ (mql)).destroy();
-        });
+        this.registry.forEach((/**
+         * @param {?} mql
+         * @return {?}
+         */
+        function (mql) {
+            ((/** @type {?} */ (mql))).destroy();
+        }));
         this.registry.clear();
         this.useOverlaps = false;
     };
@@ -1428,6 +1590,11 @@ var MockMatchMedia = /** @class */ (function (_super) {
     /**
      * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
+     */
+    /**
+     * Manually onMediaChange any overlapping mediaQueries to simulate
+     * similar functionality in the window.matchMedia()
+     * @private
      * @param {?} mediaQuery
      * @param {?} useOverlaps
      * @return {?}
@@ -1435,6 +1602,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
     MockMatchMedia.prototype._activateWithOverlaps = /**
      * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
+     * @private
      * @param {?} mediaQuery
      * @param {?} useOverlaps
      * @return {?}
@@ -1481,63 +1649,95 @@ var MockMatchMedia = /** @class */ (function (_super) {
     };
     /**
      *
+     */
+    /**
+     *
+     * @private
      * @param {?} aliases
      * @return {?}
      */
     MockMatchMedia.prototype._activateByAlias = /**
      *
+     * @private
      * @param {?} aliases
      * @return {?}
      */
     function (aliases) {
         var _this = this;
         /** @type {?} */
-        var activate = function (alias) {
+        var activate = (/**
+         * @param {?} alias
+         * @return {?}
+         */
+        function (alias) {
             /** @type {?} */
             var bp = _this._breakpoints.findByAlias(alias);
             _this._activateByQuery(bp ? bp.mediaQuery : alias);
-        };
-        aliases.split(',').forEach(function (alias) { return activate(alias.trim()); });
+        });
+        aliases.split(',').forEach((/**
+         * @param {?} alias
+         * @return {?}
+         */
+        function (alias) { return activate(alias.trim()); }));
     };
     /**
      *
+     */
+    /**
+     *
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
     MockMatchMedia.prototype._activateByQuery = /**
      *
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
     function (mediaQuery) {
         /** @type {?} */
-        var mql = /** @type {?} */ (this.registry.get(mediaQuery));
+        var mql = (/** @type {?} */ (this.registry.get(mediaQuery)));
         if (mql && !this.isActive(mediaQuery)) {
             this.registry.set(mediaQuery, mql.activate());
         }
         return this.hasActivated;
     };
+    /** Deactivate all current MQLs and reset the buffer */
     /**
      * Deactivate all current MQLs and reset the buffer
-     * @return {?}
+     * @private
+     * @template THIS
+     * @this {THIS}
+     * @return {THIS}
      */
     MockMatchMedia.prototype._deactivateAll = /**
      * Deactivate all current MQLs and reset the buffer
-     * @return {?}
+     * @private
+     * @template THIS
+     * @this {THIS}
+     * @return {THIS}
      */
     function () {
-        this.registry.forEach(function (it) {
-            (/** @type {?} */ (it)).deactivate();
-        });
-        return this;
+        (/** @type {?} */ (this)).registry.forEach((/**
+         * @param {?} it
+         * @return {?}
+         */
+        function (it) {
+            ((/** @type {?} */ (it))).deactivate();
+        }));
+        return (/** @type {?} */ (this));
     };
+    /** Insure the mediaQuery is registered with MatchMedia */
     /**
      * Insure the mediaQuery is registered with MatchMedia
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
     MockMatchMedia.prototype._registerMediaQuery = /**
      * Insure the mediaQuery is registered with MatchMedia
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
@@ -1553,12 +1753,14 @@ var MockMatchMedia = /** @class */ (function (_super) {
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
     MockMatchMedia.prototype.buildMQL = /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
@@ -1567,6 +1769,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
     };
     Object.defineProperty(MockMatchMedia.prototype, "hasActivated", {
         get: /**
+         * @protected
          * @return {?}
          */
         function () {
@@ -1655,11 +1858,15 @@ MockMediaQueryList = /** @class */ (function () {
         var _this = this;
         if (!this._isActive) {
             this._isActive = true;
-            this._listeners.forEach(function (callback) {
+            this._listeners.forEach((/**
+             * @param {?} callback
+             * @return {?}
+             */
+            function (callback) {
                 /** @type {?} */
-                var cb = /** @type {?} */ ((callback));
+                var cb = (/** @type {?} */ (callback));
                 cb.call(null, _this);
-            });
+            }));
         }
         return this;
     };
@@ -1676,11 +1883,15 @@ MockMediaQueryList = /** @class */ (function () {
         var _this = this;
         if (this._isActive) {
             this._isActive = false;
-            this._listeners.forEach(function (callback) {
+            this._listeners.forEach((/**
+             * @param {?} callback
+             * @return {?}
+             */
+            function (callback) {
                 /** @type {?} */
-                var cb = /** @type {?} */ ((callback));
+                var cb = (/** @type {?} */ (callback));
                 cb.call(null, _this);
-            });
+            }));
         }
         return this;
     };
@@ -1701,7 +1912,7 @@ MockMediaQueryList = /** @class */ (function () {
         }
         if (this._isActive) {
             /** @type {?} */
-            var cb = /** @type {?} */ ((listener));
+            var cb = (/** @type {?} */ (listener));
             cb.call(null, this);
         }
     };
@@ -1759,9 +1970,10 @@ MockMediaQueryList = /** @class */ (function () {
     };
     return MockMediaQueryList;
 }());
-/** *
+/**
  * Pre-configured provider for MockMatchMedia
-  @type {?} */
+ * @type {?}
+ */
 var MockMatchMediaProvider = {
     // tslint:disable-line:variable-name
     provide: MatchMedia,
@@ -1770,12 +1982,12 @@ var MockMatchMediaProvider = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var PRINT = 'print';
@@ -1850,9 +2062,17 @@ var PrintHook = /** @class */ (function () {
          */
         function () {
             var _this = this;
-            return /** @type {?} */ (this.printAlias
-                .map(function (alias) { return _this.breakpoints.findByAlias(alias); })
-                .filter(function (bp) { return bp !== null; }));
+            return (/** @type {?} */ (this.printAlias
+                .map((/**
+             * @param {?} alias
+             * @return {?}
+             */
+            function (alias) { return _this.breakpoints.findByAlias(alias); }))
+                .filter((/**
+             * @param {?} bp
+             * @return {?}
+             */
+            function (bp) { return bp !== null; }))));
         },
         enumerable: true,
         configurable: true
@@ -1913,7 +2133,11 @@ var PrintHook = /** @class */ (function () {
      */
     function (target) {
         var _this = this;
-        return function (event) {
+        return (/**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) {
             if (_this.isPrintEvent(event)) {
                 if (event.matches && !_this.isPrinting) {
                     _this.startPrinting(target, _this.getEventBreakpoints(event));
@@ -1927,7 +2151,7 @@ var PrintHook = /** @class */ (function () {
             else {
                 _this.collectActivations(event);
             }
-        };
+        });
     };
     /** Stop mediaChange event propagation in event streams */
     /**
@@ -1940,9 +2164,13 @@ var PrintHook = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        return function (event) {
+        return (/**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) {
             return !(_this.isPrinting || _this.isPrintEvent(event));
-        };
+        });
     };
     /**
      * Save current activateBreakpoints (for later restore)
@@ -1951,6 +2179,7 @@ var PrintHook = /** @class */ (function () {
     /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
+     * @protected
      * @param {?} target
      * @param {?} bpList
      * @return {?}
@@ -1958,6 +2187,7 @@ var PrintHook = /** @class */ (function () {
     PrintHook.prototype.startPrinting = /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
+     * @protected
      * @param {?} target
      * @param {?} bpList
      * @return {?}
@@ -1969,11 +2199,13 @@ var PrintHook = /** @class */ (function () {
     /** For any print de-activations, reset the entire print queue */
     /**
      * For any print de-activations, reset the entire print queue
+     * @protected
      * @param {?} target
      * @return {?}
      */
     PrintHook.prototype.stopPrinting = /**
      * For any print de-activations, reset the entire print queue
+     * @protected
      * @param {?} target
      * @return {?}
      */
@@ -2044,7 +2276,6 @@ var PrintHook = /** @class */ (function () {
                 /** @type {?} */
                 var bp = this.breakpoints.findByQuery(event.mediaQuery);
                 if (bp) { // Deactivating a breakpoint
-                    // Deactivating a breakpoint
                     this.deactivations.push(bp);
                     this.deactivations.sort(sortDescendingPriority);
                 }
@@ -2062,14 +2293,21 @@ var PrintHook = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ngInjectableDef = core.defineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.inject(BreakPointRegistry), core.inject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
+// ************************************************************************
+// Internal Utility class 'PrintQueue'
+// ************************************************************************
 /**
  * Utility class to manage print breakpoints + activatedBreakpoints
  * with correct sorting WHILE printing
  */
-var /**
+var 
+// ************************************************************************
+// Internal Utility class 'PrintQueue'
+// ************************************************************************
+/**
  * Utility class to manage print breakpoints + activatedBreakpoints
  * with correct sorting WHILE printing
  */
@@ -2092,7 +2330,11 @@ PrintQueue = /** @class */ (function () {
         var _this = this;
         bpList.push(BREAKPOINT_PRINT);
         bpList.sort(sortDescendingPriority);
-        bpList.forEach(function (bp) { return _this.addBreakpoint(bp); });
+        bpList.forEach((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return _this.addBreakpoint(bp); }));
         return this.printBreakpoints;
     };
     /** Add Print breakpoint to queue */
@@ -2109,7 +2351,11 @@ PrintQueue = /** @class */ (function () {
     function (bp) {
         if (!!bp) {
             /** @type {?} */
-            var bpInList = this.printBreakpoints.find(function (it) { return it.mediaQuery === bp.mediaQuery; });
+            var bpInList = this.printBreakpoints.find((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return it.mediaQuery === bp.mediaQuery; }));
             if (bpInList === undefined) {
                 // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
                 // register as highest priority in the queue
@@ -2131,6 +2377,9 @@ PrintQueue = /** @class */ (function () {
     };
     return PrintQueue;
 }());
+// ************************************************************************
+// Internal Utility methods
+// ************************************************************************
 /**
  * Only support intercept queueing if the Breakpoint is a print \@media query
  * @param {?} bp
@@ -2142,7 +2391,7 @@ function isPrintBreakPoint(bp) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -2157,7 +2406,7 @@ function coerceArray(value) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
@@ -2211,7 +2460,15 @@ var MediaObserver = /** @class */ (function () {
         this.filterOverlaps = false;
         this.destroyed$ = new rxjs.Subject();
         this._media$ = this.watchActivations();
-        this.media$ = this._media$.pipe(operators.filter(function (changes) { return changes.length > 0; }), operators.map(function (changes) { return changes[0]; }));
+        this.media$ = this._media$.pipe(operators.filter((/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) { return changes.length > 0; })), operators.map((/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) { return changes[0]; })));
     }
     /**
      * Completes the active subject, signalling to all complete for all
@@ -2237,11 +2494,18 @@ var MediaObserver = /** @class */ (function () {
     /**
      * Observe changes to current activation 'list'
      */
+    // ************************************************
+    // Public Methods
+    // ************************************************
     /**
      * Observe changes to current activation 'list'
      * @return {?}
      */
-    MediaObserver.prototype.asObservable = /**
+    MediaObserver.prototype.asObservable = 
+    // ************************************************
+    // Public Methods
+    // ************************************************
+    /**
      * Observe changes to current activation 'list'
      * @return {?}
      */
@@ -2270,27 +2534,52 @@ var MediaObserver = /** @class */ (function () {
         var _this = this;
         /** @type {?} */
         var aliases = splitQueries(coerceArray(value));
-        return aliases.some(function (alias) {
+        return aliases.some((/**
+         * @param {?} alias
+         * @return {?}
+         */
+        function (alias) {
             /** @type {?} */
             var query = toMediaQuery(alias, _this.breakpoints);
             return _this.matchMedia.isActive(query);
-        });
+        }));
     };
+    // ************************************************
+    // Internal Methods
+    // ************************************************
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
      * This is needed so subscribers can be auto-notified of all standard, registered
      * mediaQuery activations
-     * @return {?}
      */
-    MediaObserver.prototype.watchActivations = /**
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
      * Register all the mediaQueries registered in the BreakPointRegistry
      * This is needed so subscribers can be auto-notified of all standard, registered
      * mediaQuery activations
+     * @private
+     * @return {?}
+     */
+    MediaObserver.prototype.watchActivations = 
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
+     * Register all the mediaQueries registered in the BreakPointRegistry
+     * This is needed so subscribers can be auto-notified of all standard, registered
+     * mediaQuery activations
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
-        var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
+        var queries = this.breakpoints.items.map((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.mediaQuery; }));
         return this.buildObservable(queries);
     };
     /**
@@ -2306,6 +2595,21 @@ var MediaObserver = /** @class */ (function () {
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
+     */
+    /**
+     * Only pass/announce activations (not de-activations)
+     *
+     * Since multiple-mediaQueries can be activation in a cycle,
+     * gather all current activations into a single list of changes to observers
+     *
+     * Inject associated (if any) alias information into the MediaChange event
+     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude print activations that do not have an associated mediaQuery
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
+     * @private
      * @param {?} mqList
      * @return {?}
      */
@@ -2322,56 +2626,99 @@ var MediaObserver = /** @class */ (function () {
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
+     * @private
      * @param {?} mqList
      * @return {?}
      */
     function (mqList) {
         var _this = this;
         /** @type {?} */
-        var hasChanges = function (changes) {
+        var hasChanges = (/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) {
             /** @type {?} */
-            var isValidQuery = function (change) { return (change.mediaQuery.length > 0); };
+            var isValidQuery = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) { return (change.mediaQuery.length > 0); });
             return (changes.filter(isValidQuery).length > 0);
-        };
+        });
         /** @type {?} */
-        var excludeOverlaps = function (changes) {
-            return !_this.filterOverlaps ? changes : changes.filter(function (change) {
+        var excludeOverlaps = (/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) {
+            return !_this.filterOverlaps ? changes : changes.filter((/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) {
                 /** @type {?} */
                 var bp = _this.breakpoints.findByQuery(change.mediaQuery);
                 return !bp ? true : !bp.overlapping;
-            });
-        };
+            }));
+        });
         /**
-             */
+         */
         return this.matchMedia
             .observe(this.hook.withPrintQuery(mqList))
-            .pipe(operators.filter(function (change) { return change.matches; }), operators.debounceTime(0, rxjs.asapScheduler), operators.switchMap(function (_) { return rxjs.of(_this.findAllActivations()); }), operators.map(excludeOverlaps), operators.filter(hasChanges), operators.takeUntil(this.destroyed$));
+            .pipe(operators.filter((/**
+         * @param {?} change
+         * @return {?}
+         */
+        function (change) { return change.matches; })), operators.debounceTime(0, rxjs.asapScheduler), operators.switchMap((/**
+         * @param {?} _
+         * @return {?}
+         */
+        function (_) { return rxjs.of(_this.findAllActivations()); })), operators.map(excludeOverlaps), operators.filter(hasChanges), operators.takeUntil(this.destroyed$));
     };
     /**
      * Find all current activations and prepare single list of activations
      * sorted by descending priority.
+     */
+    /**
+     * Find all current activations and prepare single list of activations
+     * sorted by descending priority.
+     * @private
      * @return {?}
      */
     MediaObserver.prototype.findAllActivations = /**
      * Find all current activations and prepare single list of activations
      * sorted by descending priority.
+     * @private
      * @return {?}
      */
     function () {
         var _this = this;
         /** @type {?} */
-        var mergeMQAlias = function (change) {
+        var mergeMQAlias = (/**
+         * @param {?} change
+         * @return {?}
+         */
+        function (change) {
             /** @type {?} */
             var bp = _this.breakpoints.findByQuery(change.mediaQuery);
             return mergeAlias(change, bp);
-        };
+        });
         /** @type {?} */
-        var replaceWithPrintAlias = function (change) {
+        var replaceWithPrintAlias = (/**
+         * @param {?} change
+         * @return {?}
+         */
+        function (change) {
             return _this.hook.isPrintEvent(change) ? _this.hook.updateEvent(change) : change;
-        };
+        });
         return this.matchMedia
             .activations
-            .map(function (query) { return new MediaChange(true, query); })
+            .map((/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) { return new MediaChange(true, query); }))
             .map(replaceWithPrintAlias)
             .map(mergeMQAlias)
             .sort(sortDescendingPriority);
@@ -2385,7 +2732,7 @@ var MediaObserver = /** @class */ (function () {
         { type: MatchMedia },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ngInjectableDef = core.defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 /**
@@ -2406,19 +2753,32 @@ function toMediaQuery(query, locator) {
  * @return {?}
  */
 function splitQueries(queries) {
-    return queries.map(function (query) { return query.split(','); })
-        .reduce(function (a1, a2) { return a1.concat(a2); })
-        .map(function (query) { return query.trim(); });
+    return queries.map((/**
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) { return query.split(','); }))
+        .reduce((/**
+     * @param {?} a1
+     * @param {?} a2
+     * @return {?}
+     */
+    function (a1, a2) { return a1.concat(a2); }))
+        .map((/**
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) { return query.trim(); }));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class
@@ -2449,7 +2809,11 @@ var MediaTrigger = /** @class */ (function () {
      * @return {?}
      */
     function (list) {
-        list = list.map(function (it) { return it.trim(); }); // trim queries
+        list = list.map((/**
+         * @param {?} it
+         * @return {?}
+         */
+        function (it) { return it.trim(); })); // trim queries
         this.saveActivations();
         this.deactivateAll();
         this.setActivations(list);
@@ -2472,7 +2836,11 @@ var MediaTrigger = /** @class */ (function () {
     function () {
         if (this.hasCachedRegistryMatches) {
             /** @type {?} */
-            var extractQuery = function (change) { return change.mediaQuery; };
+            var extractQuery = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) { return change.mediaQuery; });
             /** @type {?} */
             var list = this.originalActivations.map(extractQuery);
             try {
@@ -2488,14 +2856,30 @@ var MediaTrigger = /** @class */ (function () {
             }
         }
     };
+    // ************************************************
+    // Internal Methods
+    // ************************************************
     /**
      * Whenever window resizes, immediately auto-restore original
      * activations (if we are simulating activations)
-     * @return {?}
      */
-    MediaTrigger.prototype.prepareAutoRestore = /**
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
      * Whenever window resizes, immediately auto-restore original
      * activations (if we are simulating activations)
+     * @private
+     * @return {?}
+     */
+    MediaTrigger.prototype.prepareAutoRestore = 
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
+     * Whenever window resizes, immediately auto-restore original
+     * activations (if we are simulating activations)
+     * @private
      * @return {?}
      */
     function () {
@@ -2514,6 +2898,13 @@ var MediaTrigger = /** @class */ (function () {
      *
      * Note: we must force 'matches' updates for
      *       future matchMedia::activation lookups
+     */
+    /**
+     * Notify all matchMedia subscribers of de-activations
+     *
+     * Note: we must force 'matches' updates for
+     *       future matchMedia::activation lookups
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.deactivateAll = /**
@@ -2521,6 +2912,7 @@ var MediaTrigger = /** @class */ (function () {
      *
      * Note: we must force 'matches' updates for
      *       future matchMedia::activation lookups
+     * @private
      * @return {?}
      */
     function () {
@@ -2531,23 +2923,36 @@ var MediaTrigger = /** @class */ (function () {
     };
     /**
      * Cache current activations as sorted, prioritized list of MediaChanges
+     */
+    /**
+     * Cache current activations as sorted, prioritized list of MediaChanges
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.saveActivations = /**
      * Cache current activations as sorted, prioritized list of MediaChanges
+     * @private
      * @return {?}
      */
     function () {
         var _this = this;
         if (!this.hasCachedRegistryMatches) {
             /** @type {?} */
-            var toMediaChange = function (query) { return new MediaChange(true, query); };
+            var toMediaChange = (/**
+             * @param {?} query
+             * @return {?}
+             */
+            function (query) { return new MediaChange(true, query); });
             /** @type {?} */
-            var mergeMQAlias = function (change) {
+            var mergeMQAlias = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) {
                 /** @type {?} */
                 var bp = _this.breakpoints.findByQuery(change.mediaQuery);
                 return mergeAlias(change, bp);
-            };
+            });
             this.originalActivations = this.currentActivations
                 .map(toMediaChange)
                 .map(mergeMQAlias)
@@ -2557,11 +2962,16 @@ var MediaTrigger = /** @class */ (function () {
     };
     /**
      * Force set manual activations for specified mediaQuery list
+     */
+    /**
+     * Force set manual activations for specified mediaQuery list
+     * @private
      * @param {?} list
      * @return {?}
      */
     MediaTrigger.prototype.setActivations = /**
      * Force set manual activations for specified mediaQuery list
+     * @private
      * @param {?} list
      * @return {?}
      */
@@ -2573,12 +2983,17 @@ var MediaTrigger = /** @class */ (function () {
     };
     /**
      * For specified mediaQuery list manually simulate activations or deactivations
+     */
+    /**
+     * For specified mediaQuery list manually simulate activations or deactivations
+     * @private
      * @param {?} queries
      * @param {?=} matches
      * @return {?}
      */
     MediaTrigger.prototype.simulateMediaChanges = /**
      * For specified mediaQuery list manually simulate activations or deactivations
+     * @private
      * @param {?} queries
      * @param {?=} matches
      * @return {?}
@@ -2587,20 +3002,33 @@ var MediaTrigger = /** @class */ (function () {
         var _this = this;
         if (matches === void 0) { matches = true; }
         /** @type {?} */
-        var toMediaQuery = function (query) {
+        var toMediaQuery = (/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) {
             /** @type {?} */
             var locator = _this.breakpoints;
             /** @type {?} */
             var bp = locator.findByAlias(query) || locator.findByQuery(query);
             return bp ? bp.mediaQuery : query;
-        };
+        });
         /** @type {?} */
-        var emitChangeEvent = function (query) { return _this.emitChangeEvent(matches, query); };
+        var emitChangeEvent = (/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) { return _this.emitChangeEvent(matches, query); });
         queries.map(toMediaQuery).forEach(emitChangeEvent);
     };
     /**
      * Replace current registry with simulated registry...
      * Note: this is required since MediaQueryList::matches is 'readOnly'
+     */
+    /**
+     * Replace current registry with simulated registry...
+     * Note: this is required since MediaQueryList::matches is 'readOnly'
+     * @private
      * @param {?} queries
      * @param {?} matches
      * @return {?}
@@ -2608,6 +3036,7 @@ var MediaTrigger = /** @class */ (function () {
     MediaTrigger.prototype.forceRegistryMatches = /**
      * Replace current registry with simulated registry...
      * Note: this is required since MediaQueryList::matches is 'readOnly'
+     * @private
      * @param {?} queries
      * @param {?} matches
      * @return {?}
@@ -2615,54 +3044,83 @@ var MediaTrigger = /** @class */ (function () {
     function (queries, matches) {
         /** @type {?} */
         var registry = new Map();
-        queries.forEach(function (query) {
-            registry.set(query, /** @type {?} */ ({ matches: matches }));
-        });
+        queries.forEach((/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) {
+            registry.set(query, (/** @type {?} */ ({ matches: matches })));
+        }));
         this.matchMedia.registry = registry;
     };
     /**
      * Save current MatchMedia::registry items.
+     */
+    /**
+     * Save current MatchMedia::registry items.
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.cacheRegistryMatches = /**
      * Save current MatchMedia::registry items.
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
         var target = this.originalRegistry;
         target.clear();
-        this.matchMedia.registry.forEach(function (value, key) {
+        this.matchMedia.registry.forEach((/**
+         * @param {?} value
+         * @param {?} key
+         * @return {?}
+         */
+        function (value, key) {
             target.set(key, value);
-        });
+        }));
         this.hasCachedRegistryMatches = true;
     };
     /**
      * Restore original, 'true' registry
+     */
+    /**
+     * Restore original, 'true' registry
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.restoreRegistryMatches = /**
      * Restore original, 'true' registry
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
         var target = this.matchMedia.registry;
         target.clear();
-        this.originalRegistry.forEach(function (value, key) {
+        this.originalRegistry.forEach((/**
+         * @param {?} value
+         * @param {?} key
+         * @return {?}
+         */
+        function (value, key) {
             target.set(key, value);
-        });
+        }));
         this.originalRegistry.clear();
         this.hasCachedRegistryMatches = false;
     };
     /**
      * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     */
+    /**
+     * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     * @private
      * @param {?} matches
      * @param {?} query
      * @return {?}
      */
     MediaTrigger.prototype.emitChangeEvent = /**
      * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     * @private
      * @param {?} matches
      * @param {?} query
      * @return {?}
@@ -2672,6 +3130,7 @@ var MediaTrigger = /** @class */ (function () {
     };
     Object.defineProperty(MediaTrigger.prototype, "currentActivations", {
         get: /**
+         * @private
          * @return {?}
          */
         function () {
@@ -2691,24 +3150,25 @@ var MediaTrigger = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.defineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(LAYOUT_CONFIG), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     return MediaTrigger;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+
 /**
  * Applies CSS prefixes to appropriate style keys.
  *
@@ -2772,7 +3232,7 @@ function applyCssPrefixes(target) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleUtils = /** @class */ (function () {
     function StyleUtils(_serverStylesheet, _serverModuleLoaded, _platformId, layoutConfig) {
@@ -2829,9 +3289,13 @@ var StyleUtils = /** @class */ (function () {
         if (elements === void 0) { elements = []; }
         /** @type {?} */
         var styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
-        elements.forEach(function (el) {
+        elements.forEach((/**
+         * @param {?} el
+         * @return {?}
+         */
+        function (el) {
             _this._applyMultiValueStyleToElement(styles, el);
-        });
+        }));
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction)
@@ -2947,6 +3411,12 @@ var StyleUtils = /** @class */ (function () {
      * Applies the styles to the element. The styles object map may contain an array of values
      * Each value will be added as element style
      * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     */
+    /**
+     * Applies the styles to the element. The styles object map may contain an array of values
+     * Each value will be added as element style
+     * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     * @private
      * @param {?} styles
      * @param {?} element
      * @return {?}
@@ -2955,13 +3425,18 @@ var StyleUtils = /** @class */ (function () {
      * Applies the styles to the element. The styles object map may contain an array of values
      * Each value will be added as element style
      * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     * @private
      * @param {?} styles
      * @param {?} element
      * @return {?}
      */
     function (styles, element) {
         var _this = this;
-        Object.keys(styles).sort().forEach(function (key) {
+        Object.keys(styles).sort().forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
             /** @type {?} */
             var el = styles[key];
             /** @type {?} */
@@ -2978,15 +3453,17 @@ var StyleUtils = /** @class */ (function () {
                     _this._serverStylesheet.addStyleToElement(element, key, value);
                 }
             }
-        });
+        }));
     };
     /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @param {?=} styleValue
      * @return {?}
      */
     StyleUtils.prototype._setServerStyle = /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @param {?=} styleValue
@@ -3000,11 +3477,13 @@ var StyleUtils = /** @class */ (function () {
         this._writeStyleAttribute(element, styleMap);
     };
     /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @return {?}
      */
     StyleUtils.prototype._getServerStyle = /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @return {?}
@@ -3015,10 +3494,12 @@ var StyleUtils = /** @class */ (function () {
         return styleMap[styleName] || '';
     };
     /**
+     * @private
      * @param {?} element
      * @return {?}
      */
     StyleUtils.prototype._readStyleAttribute = /**
+     * @private
      * @param {?} element
      * @return {?}
      */
@@ -3048,11 +3529,13 @@ var StyleUtils = /** @class */ (function () {
         return styleMap;
     };
     /**
+     * @private
      * @param {?} element
      * @param {?} styleMap
      * @return {?}
      */
     StyleUtils.prototype._writeStyleAttribute = /**
+     * @private
      * @param {?} element
      * @param {?} styleMap
      * @return {?}
@@ -3079,13 +3562,13 @@ var StyleUtils = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ngInjectableDef = core.defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.inject(StylesheetMap, 8), core.inject(SERVER_TOKEN, 8), core.inject(core.PLATFORM_ID), core.inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap, 8), core.ɵɵinject(SERVER_TOKEN, 8), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * A class that encapsulates CSS style generation for common directives
@@ -3132,7 +3615,7 @@ StyleBuilder = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -3190,7 +3673,7 @@ function _validateCalcValue(calc) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMarshaller - register responsive values from directives and
@@ -3204,9 +3687,12 @@ var MediaMarshaller = /** @class */ (function () {
         this.activatedBreakpoints = [];
         this.elementMap = new Map();
         this.elementKeyMap = new WeakMap();
-        this.watcherMap = new WeakMap();
-        this.updateMap = new WeakMap();
-        this.clearMap = new WeakMap();
+        this.watcherMap = new WeakMap(); // special triggers to update elements
+        // special triggers to update elements
+        this.updateMap = new WeakMap(); // callback functions to update styles
+        // callback functions to update styles
+        this.clearMap = new WeakMap(); // callback functions to clear styles
+        // callback functions to clear styles
         this.subject = new rxjs.Subject();
         this.observeActivations();
     }
@@ -3404,7 +3890,11 @@ var MediaMarshaller = /** @class */ (function () {
     function (element, key) {
         return this.subject
             .asObservable()
-            .pipe(operators.filter(function (v) { return v.element === element && v.key === key; }));
+            .pipe(operators.filter((/**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) { return v.element === element && v.key === key; })));
     };
     /** update all styles for all elements on the current breakpoint */
     /**
@@ -3417,18 +3907,32 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        this.elementMap.forEach(function (bpMap, el) {
+        this.elementMap.forEach((/**
+         * @param {?} bpMap
+         * @param {?} el
+         * @return {?}
+         */
+        function (bpMap, el) {
             /** @type {?} */
-            var keyMap = new Set(/** @type {?} */ ((_this.elementKeyMap.get(el))));
+            var keyMap = new Set((/** @type {?} */ (_this.elementKeyMap.get(el))));
             /** @type {?} */
             var valueMap = _this.getActivatedValues(bpMap);
             if (valueMap) {
-                valueMap.forEach(function (v, k) {
+                valueMap.forEach((/**
+                 * @param {?} v
+                 * @param {?} k
+                 * @return {?}
+                 */
+                function (v, k) {
                     _this.updateElement(el, k, v);
                     keyMap.delete(k);
-                });
+                }));
             }
-            keyMap.forEach(function (k) {
+            keyMap.forEach((/**
+             * @param {?} k
+             * @return {?}
+             */
+            function (k) {
                 valueMap = _this.getActivatedValues(bpMap, k);
                 if (valueMap) {
                     /** @type {?} */
@@ -3438,8 +3942,8 @@ var MediaMarshaller = /** @class */ (function () {
                 else {
                     _this.clearElement(el, k);
                 }
-            });
-        });
+            }));
+        }));
     };
     /**
      * clear the styles for a given element
@@ -3463,7 +3967,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.clearMap.get(element);
         if (builders) {
             /** @type {?} */
-            var clearFn = /** @type {?} */ (builders.get(key));
+            var clearFn = (/** @type {?} */ (builders.get(key)));
             if (!!clearFn) {
                 clearFn();
                 this.subject.next({ element: element, key: key, value: '' });
@@ -3495,7 +3999,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.updateMap.get(element);
         if (builders) {
             /** @type {?} */
-            var updateFn = /** @type {?} */ (builders.get(key));
+            var updateFn = (/** @type {?} */ (builders.get(key)));
             if (!!updateFn) {
                 updateFn(value);
                 this.subject.next({ element: element, key: key, value: value });
@@ -3520,13 +4024,22 @@ var MediaMarshaller = /** @class */ (function () {
         /** @type {?} */
         var watcherMap = this.watcherMap.get(element);
         if (watcherMap) {
-            watcherMap.forEach(function (s) { return s.unsubscribe(); });
+            watcherMap.forEach((/**
+             * @param {?} s
+             * @return {?}
+             */
+            function (s) { return s.unsubscribe(); }));
             this.watcherMap.delete(element);
         }
         /** @type {?} */
         var elementMap = this.elementMap.get(element);
         if (elementMap) {
-            elementMap.forEach(function (_, s) { return elementMap.delete(s); });
+            elementMap.forEach((/**
+             * @param {?} _
+             * @param {?} s
+             * @return {?}
+             */
+            function (_, s) { return elementMap.delete(s); }));
             this.elementMap.delete(element);
         }
     };
@@ -3559,19 +4072,27 @@ var MediaMarshaller = /** @class */ (function () {
                     this.updateElement(element, key, valueMap.get(key));
                 }
                 else {
-                    valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
+                    valueMap.forEach((/**
+                     * @param {?} v
+                     * @param {?} k
+                     * @return {?}
+                     */
+                    function (v, k) { return _this.updateElement(element, k, v); }));
                 }
             }
         }
     };
+    /** Cross-reference for HTMLElement with directive key */
     /**
      * Cross-reference for HTMLElement with directive key
+     * @private
      * @param {?} element
      * @param {?} key
      * @return {?}
      */
     MediaMarshaller.prototype.buildElementKeyMap = /**
      * Cross-reference for HTMLElement with directive key
+     * @private
      * @param {?} element
      * @param {?} key
      * @return {?}
@@ -3590,6 +4111,13 @@ var MediaMarshaller = /** @class */ (function () {
      * - directionality
      * - layout changes
      * - mutationobserver updates
+     */
+    /**
+     * Other triggers that should force style updates:
+     * - directionality
+     * - layout changes
+     * - mutationobserver updates
+     * @private
      * @param {?} element
      * @param {?} key
      * @param {?} triggers
@@ -3600,6 +4128,7 @@ var MediaMarshaller = /** @class */ (function () {
      * - directionality
      * - layout changes
      * - mutationobserver updates
+     * @private
      * @param {?} element
      * @param {?} key
      * @param {?} triggers
@@ -3618,22 +4147,28 @@ var MediaMarshaller = /** @class */ (function () {
             var subscription = watchers.get(key);
             if (!subscription) {
                 /** @type {?} */
-                var newSubscription = rxjs.merge.apply(void 0, triggers).subscribe(function () {
+                var newSubscription = rxjs.merge.apply(void 0, triggers).subscribe((/**
+                 * @return {?}
+                 */
+                function () {
                     /** @type {?} */
                     var currentValue = _this.getValue(element, key);
                     _this.updateElement(element, key, currentValue);
-                });
+                }));
                 watchers.set(key, newSubscription);
             }
         }
     };
+    /** Breakpoint locator by mediaQuery */
     /**
      * Breakpoint locator by mediaQuery
+     * @private
      * @param {?} query
      * @return {?}
      */
     MediaMarshaller.prototype.findByQuery = /**
      * Breakpoint locator by mediaQuery
+     * @private
      * @param {?} query
      * @return {?}
      */
@@ -3642,12 +4177,19 @@ var MediaMarshaller = /** @class */ (function () {
     };
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
+     * @param bpMap
+     * @param key
+     */
+    /**
+     * get the fallback breakpoint for a given element, starting with the current breakpoint
+     * @private
      * @param {?} bpMap
      * @param {?=} key
      * @return {?}
      */
     MediaMarshaller.prototype.getActivatedValues = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
+     * @private
      * @param {?} bpMap
      * @param {?=} key
      * @return {?}
@@ -3670,17 +4212,26 @@ var MediaMarshaller = /** @class */ (function () {
     };
     /**
      * Watch for mediaQuery breakpoint activations
+     */
+    /**
+     * Watch for mediaQuery breakpoint activations
+     * @private
      * @return {?}
      */
     MediaMarshaller.prototype.observeActivations = /**
      * Watch for mediaQuery breakpoint activations
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
-        var target = /** @type {?} */ ((this));
+        var target = (/** @type {?} */ ((/** @type {?} */ (this))));
         /** @type {?} */
-        var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
+        var queries = this.breakpoints.items.map((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.mediaQuery; }));
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
             .pipe(operators.tap(this.hook.interceptEvents(target)), operators.filter(this.hook.blockPropagation()))
@@ -3695,7 +4246,7 @@ var MediaMarshaller = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.inject(MatchMedia), core.inject(BreakPointRegistry), core.inject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.ɵɵinject(MatchMedia), core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**
@@ -3719,7 +4270,7 @@ function initBuilderMap(map$$1, element, key, input) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     __extends(ImgSrcStyleBuilder, _super);
@@ -3740,7 +4291,7 @@ var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     ImgSrcStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
     return ImgSrcStyleBuilder;
 }(StyleBuilder));
 var ImgSrcDirective = /** @class */ (function (_super) {
@@ -3790,6 +4341,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
+     * @protected
      * @param {?=} value
      * @return {?}
      */
@@ -3800,6 +4352,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
+     * @protected
      * @param {?=} value
      * @return {?}
      */
@@ -3813,6 +4366,9 @@ var ImgSrcDirective = /** @class */ (function (_super) {
             this.nativeElement.setAttribute('src', url);
         }
     };
+    ImgSrcDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'img-src-directive' },] },
+    ];
     /** @nocollapse */
     ImgSrcDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -3861,24 +4417,22 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
-    function ClassDirective(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer, ngClassInstance) {
-        var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
+    function ClassDirective(elementRef, styler, marshal, delegate, ngClassInstance) {
+        var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
         _this.marshal = marshal;
-        _this.iterableDiffers = iterableDiffers;
-        _this.keyValueDiffers = keyValueDiffers;
-        _this.renderer = renderer;
+        _this.delegate = delegate;
         _this.ngClassInstance = ngClassInstance;
         _this.DIRECTIVE_KEY = 'ngClass';
         if (!_this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            _this.ngClassInstance = new common.NgClass(_this.iterableDiffers, _this.keyValueDiffers, _this.elementRef, _this.renderer);
+            _this.ngClassInstance = new common.NgClass(_this.delegate);
         }
         _this.init();
         _this.setValue('', '');
@@ -3903,10 +4457,12 @@ var ClassDirective = /** @class */ (function (_super) {
         configurable: true
     });
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
     ClassDirective.prototype.updateWithValue = /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -3920,25 +4476,33 @@ var ClassDirective = /** @class */ (function (_super) {
     /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      */
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
     /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
      */
-    ClassDirective.prototype.ngDoCheck = /**
+    ClassDirective.prototype.ngDoCheck = 
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
+    /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
      */
     function () {
         this.ngClassInstance.ngDoCheck();
     };
+    ClassDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'class-directive' },] },
+    ];
     /** @nocollapse */
     ClassDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: core.IterableDiffers },
-        { type: core.KeyValueDiffers },
-        { type: core.Renderer2 },
+        { type: common.ɵNgClassImpl },
         { type: common.NgClass, decorators: [{ type: core.Optional }, { type: core.Self }] }
     ]; };
     ClassDirective.propDecorators = {
@@ -3954,6 +4518,12 @@ var inputs$1 = [
 ];
 /** @type {?} */
 var selector$1 = "\n  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n";
+// tslint:disable-next-line:variable-name
+/** @type {?} */
+var LayoutNgClassImplProvider = {
+    provide: common.ɵNgClassImpl,
+    useClass: common.ɵNgClassR2Impl
+};
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
@@ -3967,14 +4537,14 @@ var DefaultClassDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultClassDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1, providers: [LayoutNgClassImplProvider] },] },
     ];
     return DefaultClassDirective;
 }(ClassDirective));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ShowHideStyleBuilder = /** @class */ (function (_super) {
     __extends(ShowHideStyleBuilder, _super);
@@ -3999,7 +4569,7 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     ShowHideStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
     return ShowHideStyleBuilder;
 }(StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
@@ -4025,10 +4595,17 @@ var ShowHideDirective = /** @class */ (function (_super) {
     // *********************************************
     // Lifecycle Methods
     // *********************************************
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
     /**
      * @return {?}
      */
-    ShowHideDirective.prototype.ngAfterViewInit = /**
+    ShowHideDirective.prototype.ngAfterViewInit = 
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
+    /**
      * @return {?}
      */
     function () {
@@ -4036,19 +4613,20 @@ var ShowHideDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var children = Array.from(this.nativeElement.children);
         for (var i = 0; i < children.length; i++) {
-            if (this.marshal.hasValue(/** @type {?} */ (children[i]), 'flex')) {
+            if (this.marshal.hasValue((/** @type {?} */ (children[i])), 'flex')) {
                 this.hasFlexChild = true;
                 break;
             }
         }
         if (DISPLAY_MAP.has(this.nativeElement)) {
-            this.display = /** @type {?} */ ((DISPLAY_MAP.get(this.nativeElement)));
+            this.display = (/** @type {?} */ (DISPLAY_MAP.get(this.nativeElement)));
         }
         else {
             this.display = this.getDisplayStyle();
             DISPLAY_MAP.set(this.nativeElement, this.display);
         }
         this.init();
+        // set the default to show unless explicitly overridden
         /** @type {?} */
         var defaultValue = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
         if (defaultValue === undefined || defaultValue === '') {
@@ -4079,7 +4657,11 @@ var ShowHideDirective = /** @class */ (function (_super) {
      */
     function (changes) {
         var _this = this;
-        Object.keys(changes).forEach(function (key) {
+        Object.keys(changes).forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
             if (_this.inputs.indexOf(key) !== -1) {
                 /** @type {?} */
                 var inputKey = key.split('.');
@@ -4096,7 +4678,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
                 }
                 _this.setValue(shouldShow, bp);
             }
-        });
+        }));
     };
     // *********************************************
     // Protected methods
@@ -4104,23 +4686,36 @@ var ShowHideDirective = /** @class */ (function (_super) {
     /**
      *  Watch for these extra triggers to update fxShow, fxHide stylings
      */
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
      *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @protected
      * @return {?}
      */
-    ShowHideDirective.prototype.trackExtraTriggers = /**
+    ShowHideDirective.prototype.trackExtraTriggers = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
      *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @protected
      * @return {?}
      */
     function () {
         var _this = this;
         this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
-        ['layout', 'layout-align'].forEach(function (key) {
+        ['layout', 'layout-align'].forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
             _this.marshal
                 .trackValue(_this.nativeElement, key)
                 .pipe(operators.takeUntil(_this.destroySubject))
                 .subscribe(_this.triggerUpdate.bind(_this));
-        });
+        }));
     };
     /**
      * Override accessor to the current HTMLElement's `display` style
@@ -4131,12 +4726,14 @@ var ShowHideDirective = /** @class */ (function (_super) {
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
      * unless it was already explicitly specified inline or in a CSS stylesheet.
+     * @protected
      * @return {?}
      */
     ShowHideDirective.prototype.getDisplayStyle = /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
      * unless it was already explicitly specified inline or in a CSS stylesheet.
+     * @protected
      * @return {?}
      */
     function () {
@@ -4146,11 +4743,13 @@ var ShowHideDirective = /** @class */ (function (_super) {
     /** Validate the visibility value and then update the host's inline display style */
     /**
      * Validate the visibility value and then update the host's inline display style
+     * @protected
      * @param {?=} value
      * @return {?}
      */
     ShowHideDirective.prototype.updateWithValue = /**
      * Validate the visibility value and then update the host's inline display style
+     * @protected
      * @param {?=} value
      * @return {?}
      */
@@ -4163,8 +4762,11 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
-        this.marshal.triggerUpdate(/** @type {?} */ ((this.parentElement)), 'layout-gap');
+        this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
     };
+    ShowHideDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'show-hide-directive' },] },
+    ];
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -4210,8 +4812,9 @@ var DefaultShowHideDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+
 /**
  * NgStyle allowed inputs
  */
@@ -4254,8 +4857,16 @@ function buildRawList(source, delimiter) {
     return String(source)
         .trim()
         .split(delimiter)
-        .map(function (val) { return val.trim(); })
-        .filter(function (val) { return val !== ''; });
+        .map((/**
+     * @param {?} val
+     * @return {?}
+     */
+    function (val) { return val.trim(); }))
+        .filter((/**
+     * @param {?} val
+     * @return {?}
+     */
+    function (val) { return val !== ''; }));
 }
 /**
  * Convert array of key:value strings to a iterable map object
@@ -4265,17 +4876,25 @@ function buildRawList(source, delimiter) {
  */
 function buildMapFromList(styles, sanitize) {
     /** @type {?} */
-    var sanitizeValue = function (it) {
+    var sanitizeValue = (/**
+     * @param {?} it
+     * @return {?}
+     */
+    function (it) {
         if (sanitize) {
             it.value = sanitize(it.value);
         }
         return it;
-    };
+    });
     return styles
         .map(stringToKeyValue)
-        .filter(function (entry) { return !!entry; })
+        .filter((/**
+     * @param {?} entry
+     * @return {?}
+     */
+    function (entry) { return !!entry; }))
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, (/** @type {?} */ ({})));
 }
 /**
  * Convert Set<string> or raw Object to an iterable NgStyleMap
@@ -4287,12 +4906,20 @@ function buildMapFromSet(source, sanitize) {
     /** @type {?} */
     var list = [];
     if (getType(source) === 'set') {
-        (/** @type {?} */ (source)).forEach(function (entry) { return list.push(entry); });
+        ((/** @type {?} */ (source))).forEach((/**
+         * @param {?} entry
+         * @return {?}
+         */
+        function (entry) { return list.push(entry); }));
     }
     else {
-        Object.keys(source).forEach(function (key) {
+        Object.keys(source).forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
             list.push(key + ":" + ((/** @type {?} */ (source)))[key]);
-        });
+        }));
     }
     return buildMapFromList(list, sanitize);
 }
@@ -4320,24 +4947,23 @@ function keyValuesToMap(map, entry) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance, serverLoaded, platformId) {
-        var _this = _super.call(this, elementRef, /** @type {?} */ ((null)), styler, marshal) || this;
+    function StyleDirective(elementRef, styler, marshal, delegate, sanitizer, ngStyleInstance, serverLoaded, platformId) {
+        var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styler = styler;
         _this.marshal = marshal;
-        _this.keyValueDiffers = keyValueDiffers;
-        _this.renderer = renderer;
+        _this.delegate = delegate;
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            _this.ngStyleInstance = new common.NgStyle(_this.keyValueDiffers, _this.elementRef, _this.renderer);
+            _this.ngStyleInstance = new common.NgStyle(_this.delegate);
         }
         _this.init();
         /** @type {?} */
@@ -4349,11 +4975,13 @@ var StyleDirective = /** @class */ (function (_super) {
     /** Add generated styles */
     /**
      * Add generated styles
+     * @protected
      * @param {?} value
      * @return {?}
      */
     StyleDirective.prototype.updateWithValue = /**
      * Add generated styles
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -4369,10 +4997,12 @@ var StyleDirective = /** @class */ (function (_super) {
     /** Remove generated styles */
     /**
      * Remove generated styles
+     * @protected
      * @return {?}
      */
     StyleDirective.prototype.clearStyles = /**
      * Remove generated styles
+     * @protected
      * @return {?}
      */
     function () {
@@ -4390,6 +5020,7 @@ var StyleDirective = /** @class */ (function (_super) {
      * NOTE: Raw string key-value pairs MUST be delimited by `;`
      *       Comma-delimiters are not supported due to complexities of
      *       possible style values such as `rgba(x,x,x,x)` and others
+     * @protected
      * @param {?} styles
      * @return {?}
      */
@@ -4398,19 +5029,25 @@ var StyleDirective = /** @class */ (function (_super) {
      * NOTE: Raw string key-value pairs MUST be delimited by `;`
      *       Comma-delimiters are not supported due to complexities of
      *       possible style values such as `rgba(x,x,x,x)` and others
+     * @protected
      * @param {?} styles
      * @return {?}
      */
     function (styles) {
         var _this = this;
+        // Always safe-guard (aka sanitize) style property values
         /** @type {?} */
-        var sanitizer = function (val) {
+        var sanitizer = (/**
+         * @param {?} val
+         * @return {?}
+         */
+        function (val) {
             return _this.sanitizer.sanitize(core.SecurityContext.STYLE, val) || '';
-        };
+        });
         if (styles) {
             switch (getType(styles)) {
                 case 'string': return buildMapFromList$1(buildRawList(styles), sanitizer);
-                case 'array': return buildMapFromList$1(/** @type {?} */ (styles), sanitizer);
+                case 'array': return buildMapFromList$1((/** @type {?} */ (styles)), sanitizer);
                 case 'set': return buildMapFromSet(styles, sanitizer);
                 default: return buildMapFromSet(styles, sanitizer);
             }
@@ -4421,24 +5058,33 @@ var StyleDirective = /** @class */ (function (_super) {
     // Lifecycle Hooks
     // ******************************************************************
     /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
     /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
      */
-    StyleDirective.prototype.ngDoCheck = /**
+    StyleDirective.prototype.ngDoCheck = 
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
+    /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
      */
     function () {
         this.ngStyleInstance.ngDoCheck();
     };
+    StyleDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'style-directive' },] },
+    ];
     /** @nocollapse */
     StyleDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: core.KeyValueDiffers },
-        { type: core.Renderer2 },
+        { type: common.ɵNgStyleImpl },
         { type: platformBrowser.DomSanitizer },
         { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] },
         { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
@@ -4455,6 +5101,12 @@ var inputs$3 = [
 ];
 /** @type {?} */
 var selector$3 = "\n  [ngStyle],\n  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n";
+// tslint:disable-next-line:variable-name
+/** @type {?} */
+var LayoutNgStyleImplProvider = {
+    provide: common.ɵNgStyleImpl,
+    useClass: common.ɵNgStyleR2Impl
+};
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -4467,7 +5119,7 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultStyleDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3, providers: [LayoutNgStyleImplProvider] },] },
     ];
     return DefaultStyleDirective;
 }(StyleDirective));
@@ -4479,29 +5131,41 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
  */
 function buildMapFromList$1(styles, sanitize) {
     /** @type {?} */
-    var sanitizeValue = function (it) {
+    var sanitizeValue = (/**
+     * @param {?} it
+     * @return {?}
+     */
+    function (it) {
         if (sanitize) {
             it.value = sanitize(it.value);
         }
         return it;
-    };
+    });
     return styles
         .map(stringToKeyValue)
-        .filter(function (entry) { return !!entry; })
+        .filter((/**
+     * @param {?} entry
+     * @return {?}
+     */
+    function (entry) { return !!entry; }))
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, (/** @type {?} */ ({})));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
     DefaultShowHideDirective,
     DefaultClassDirective,
     DefaultStyleDirective,
-    DefaultImgSrcDirective
+    DefaultImgSrcDirective,
+    ClassDirective,
+    ImgSrcDirective,
+    ShowHideDirective,
+    StyleDirective,
 ];
 /**
  * *****************************************************************
@@ -4523,15 +5187,16 @@ var ExtendedModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * @license
  * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
-  @type {?} */
+ * @type {?}
+ */
 var INLINE$1 = 'inline';
 /** @type {?} */
 var LAYOUT_VALUES$1 = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -4554,7 +5219,11 @@ function validateValue$1(value) {
     value = value ? value.toLowerCase() : '';
     var _a = value.split(' '), direction = _a[0], wrap = _a[1], inline = _a[2];
     // First value must be the `flex-direction`
-    if (!LAYOUT_VALUES$1.find(function (x) { return x === direction; })) {
+    if (!LAYOUT_VALUES$1.find((/**
+     * @param {?} x
+     * @return {?}
+     */
+    function (x) { return x === direction; }))) {
         direction = LAYOUT_VALUES$1[0];
     }
     if (wrap === INLINE$1) {
@@ -4625,7 +5294,7 @@ function buildCSS$1(direction, wrap, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var LayoutStyleBuilder = /** @class */ (function (_super) {
     __extends(LayoutStyleBuilder, _super);
@@ -4646,7 +5315,7 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     LayoutStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -4667,10 +5336,7 @@ var selector$4 = "\n  [fxLayout], [fxLayout.xs], [fxLayout.sm], [fxLayout.md],\n
  */
 var LayoutDirective = /** @class */ (function (_super) {
     __extends(LayoutDirective, _super);
-    function LayoutDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function LayoutDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
@@ -4681,6 +5347,9 @@ var LayoutDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    LayoutDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'layout-directive' },] },
+    ];
     /** @nocollapse */
     LayoutDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -4707,7 +5376,7 @@ var layoutCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var CLEAR_MARGIN_CSS = {
@@ -4760,13 +5429,16 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
         var items = parent.items;
         if (gapValue.endsWith(GRID_SPECIFIER)) {
             gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
+            // For each `element` children, set the padding
             /** @type {?} */
             var paddingStyles = buildGridPadding(gapValue, parent.directionality);
             this._styler.applyStyleToElements(paddingStyles, parent.items);
         }
         else {
             /** @type {?} */
-            var lastItem = /** @type {?} */ ((items.pop()));
+            var lastItem = (/** @type {?} */ (items.pop()));
+            // For each `element` children EXCEPT the last,
+            // set the margin right/bottom styles...
             /** @type {?} */
             var gapCss = buildGapCSS(gapValue, parent);
             this._styler.applyStyleToElements(gapCss, items);
@@ -4781,7 +5453,7 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.inject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -4799,10 +5471,7 @@ var selector$1$1 = "\n  [fxLayoutGap], [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLa
  */
 var LayoutGapDirective = /** @class */ (function (_super) {
     __extends(LayoutGapDirective, _super);
-    function LayoutGapDirective(elRef, zone, directionality, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function LayoutGapDirective(elRef, zone, directionality, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.zone = zone;
@@ -4811,6 +5480,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         _this.styleBuilder = styleBuilder;
         _this.marshal = marshal;
         _this.layout = 'row'; // default flex-direction
+        // default flex-direction
         _this.DIRECTIVE_KEY = 'layout-gap';
         _this.observerSubject = new rxjs.Subject();
         /** @type {?} */
@@ -4826,6 +5496,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
         get: /**
          * Special accessor to query for all child 'element' nodes regardless of type, class, etc
+         * @protected
          * @return {?}
          */
         function () {
@@ -4845,10 +5516,17 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     // *********************************************
     // Lifecycle Methods
     // *********************************************
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
     /**
      * @return {?}
      */
-    LayoutGapDirective.prototype.ngAfterContentInit = /**
+    LayoutGapDirective.prototype.ngAfterContentInit = 
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
+    /**
      * @return {?}
      */
     function () {
@@ -4873,13 +5551,22 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
      */
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
+     * @protected
      * @param {?} matcher
      * @return {?}
      */
-    LayoutGapDirective.prototype.onLayoutChange = /**
+    LayoutGapDirective.prototype.onLayoutChange = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
+     * @protected
      * @param {?} matcher
      * @return {?}
      */
@@ -4887,10 +5574,15 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         var _this = this;
         /** @type {?} */
         var layout = matcher.value;
+        // Make sure to filter out 'wrap' option
         /** @type {?} */
         var direction = layout.split(' ');
         this.layout = direction[0];
-        if (!LAYOUT_VALUES$1.find(function (x) { return x === _this.layout; })) {
+        if (!LAYOUT_VALUES$1.find((/**
+         * @param {?} x
+         * @return {?}
+         */
+        function (x) { return x === _this.layout; }))) {
             this.layout = 'row';
         }
         this.triggerUpdate();
@@ -4900,20 +5592,32 @@ var LayoutGapDirective = /** @class */ (function (_super) {
      */
     /**
      *
+     * @protected
      * @param {?} value
      * @return {?}
      */
     LayoutGapDirective.prototype.updateWithValue = /**
      *
+     * @protected
      * @param {?} value
      * @return {?}
      */
     function (value) {
         var _this = this;
+        // Gather all non-hidden Element nodes
         /** @type {?} */
         var items = this.childrenNodes
-            .filter(function (el) { return el.nodeType === 1 && _this.willDisplay(el); })
-            .sort(function (a, b) {
+            .filter((/**
+         * @param {?} el
+         * @return {?}
+         */
+        function (el) { return el.nodeType === 1 && _this.willDisplay(el); }))
+            .sort((/**
+         * @param {?} a
+         * @param {?} b
+         * @return {?}
+         */
+        function (a, b) {
             /** @type {?} */
             var orderA = +_this.styler.lookupStyle(a, 'order');
             /** @type {?} */
@@ -4924,7 +5628,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             else {
                 return orderA > orderB ? 1 : -1;
             }
-        });
+        }));
         if (items.length > 0) {
             /** @type {?} */
             var directionality = this.directionality.value;
@@ -4948,10 +5652,12 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     /** We need to override clearStyles because in most cases mru isn't populated */
     /**
      * We need to override clearStyles because in most cases mru isn't populated
+     * @protected
      * @return {?}
      */
     LayoutGapDirective.prototype.clearStyles = /**
      * We need to override clearStyles because in most cases mru isn't populated
+     * @protected
      * @return {?}
      */
     function () {
@@ -4971,11 +5677,13 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     /** Determine if an element will show or hide based on current activation */
     /**
      * Determine if an element will show or hide based on current activation
+     * @protected
      * @param {?} source
      * @return {?}
      */
     LayoutGapDirective.prototype.willDisplay = /**
      * Determine if an element will show or hide based on current activation
+     * @protected
      * @param {?} source
      * @return {?}
      */
@@ -4986,30 +5694,46 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             (value === undefined && this.styleUtils.lookupStyle(source, 'display') !== 'none');
     };
     /**
+     * @protected
      * @return {?}
      */
     LayoutGapDirective.prototype.buildChildObservable = /**
+     * @protected
      * @return {?}
      */
     function () {
         var _this = this;
-        this.zone.runOutsideAngular(function () {
+        this.zone.runOutsideAngular((/**
+         * @return {?}
+         */
+        function () {
             if (typeof MutationObserver !== 'undefined') {
-                _this.observer = new MutationObserver(function (mutations) {
+                _this.observer = new MutationObserver((/**
+                 * @param {?} mutations
+                 * @return {?}
+                 */
+                function (mutations) {
                     /** @type {?} */
-                    var validatedChanges = function (it) {
+                    var validatedChanges = (/**
+                     * @param {?} it
+                     * @return {?}
+                     */
+                    function (it) {
                         return (it.addedNodes && it.addedNodes.length > 0) ||
                             (it.removedNodes && it.removedNodes.length > 0);
-                    };
+                    });
                     // update gap styles only for child 'added' or 'removed' events
                     if (mutations.some(validatedChanges)) {
                         _this.observerSubject.next();
                     }
-                });
+                }));
                 _this.observer.observe(_this.nativeElement, { childList: true });
             }
-        });
+        }));
     };
+    LayoutGapDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'layout-gap-directive' },] },
+    ];
     /** @nocollapse */
     LayoutGapDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -5122,8 +5846,9 @@ function buildGapCSS(gapValue, parent) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
  * similar to Object.assign.
@@ -5155,7 +5880,7 @@ function extendObject$1(dest) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexStyleBuilder, _super);
@@ -5178,6 +5903,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
         var _a = input.split(' '), grow = _a[0], shrink = _a[1], basisParts = _a.slice(2);
         /** @type {?} */
         var basis = basisParts.join(' ');
+        // The flex-direction of this element's flex container. Defaults to 'row'.
         /** @type {?} */
         var direction = (parent.direction.indexOf('column') > -1) ? 'column' : 'row';
         /** @type {?} */
@@ -5198,10 +5924,24 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
         var isValue = (hasCalc || hasUnits);
         grow = (grow == '0') ? 0 : grow;
         shrink = (shrink == '0') ? 0 : shrink;
+        // make box inflexible when shrink and grow are both zero
+        // should not set a min when the grow is zero
+        // should not set a max when the shrink is zero
         /** @type {?} */
         var isFixed = !grow && !shrink;
         /** @type {?} */
         var css = {};
+        // flex-basis allows you to specify the initial/starting main-axis size of the element,
+        // before anything else is computed. It can either be a percentage or an absolute value.
+        // It is, however, not the breaking point for flex-grow/shrink properties
+        //
+        // flex-grow can be seen as this:
+        //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
+        //   1: (Default value). Stretch; will be the same size to all other flex items on
+        //       the same row since they have a default value of 1.
+        //   ≥2 (integer n): Stretch. Will be n times the size of other elements
+        //      with 'flex-grow: 1' on the same row.
+        // Use `null` to clear existing styles.
         /** @type {?} */
         var clearStyles = {
             'max-width': null,
@@ -5236,7 +5976,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
                 break;
             default:
                 // Defaults to percentage sizing unless `px` is explicitly set
-                if (!isValue && !isPercent && !isNaN(/** @type {?} */ (basis))) {
+                if (!isValue && !isPercent && !isNaN((/** @type {?} */ (basis)))) {
                     basis = basis + '%';
                 }
                 // Fix for issue 280
@@ -5303,7 +6043,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
                     (hasCalc ? css[min] : grow + " " + shrink + " " + css[min]);
             }
         }
-        return /** @type {?} */ (extendObject$1(css, { 'box-sizing': 'border-box' }));
+        return (/** @type {?} */ (extendObject$1(css, { 'box-sizing': 'border-box' })));
     };
     FlexStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -5312,7 +6052,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.inject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5394,12 +6134,14 @@ var FlexDirective = /** @class */ (function (_super) {
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
+     * @protected
      * @param {?} matcher
      * @return {?}
      */
     FlexDirective.prototype.onLayoutChange = /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
+     * @protected
      * @param {?} matcher
      * @return {?}
      */
@@ -5415,11 +6157,13 @@ var FlexDirective = /** @class */ (function (_super) {
     /** Input to this is exclusively the basis input value */
     /**
      * Input to this is exclusively the basis input value
+     * @protected
      * @param {?} value
      * @return {?}
      */
     FlexDirective.prototype.updateWithValue = /**
      * Input to this is exclusively the basis input value
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -5427,7 +6171,7 @@ var FlexDirective = /** @class */ (function (_super) {
         /** @type {?} */
         var addFlexToParent = this.layoutConfig.addFlexToParent !== false;
         if (!this.direction) {
-            this.direction = this.getFlexFlowDirection(/** @type {?} */ ((this.parentElement)), addFlexToParent);
+            this.direction = this.getFlexFlowDirection((/** @type {?} */ (this.parentElement)), addFlexToParent);
         }
         /** @type {?} */
         var direction = this.direction;
@@ -5456,10 +6200,12 @@ var FlexDirective = /** @class */ (function (_super) {
     /** Trigger a style reflow, usually based on a shrink/grow input event */
     /**
      * Trigger a style reflow, usually based on a shrink/grow input event
+     * @protected
      * @return {?}
      */
     FlexDirective.prototype.triggerReflow = /**
      * Trigger a style reflow, usually based on a shrink/grow input event
+     * @protected
      * @return {?}
      */
     function () {
@@ -5467,10 +6213,13 @@ var FlexDirective = /** @class */ (function (_super) {
         var activatedValue = this.activatedValue;
         if (activatedValue !== undefined) {
             /** @type {?} */
-            var parts = validateBasis(activatedValue, this.flexGrow, this.flexShrink);
+            var parts = validateBasis(activatedValue + '', this.flexGrow, this.flexShrink);
             this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
         }
     };
+    FlexDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-directive' },] },
+    ];
     /** @nocollapse */
     FlexDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -5508,7 +6257,7 @@ var flexColumnWrapCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexOrderStyleBuilder, _super);
@@ -5529,7 +6278,7 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     FlexOrderStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5548,10 +6297,7 @@ var selector$3$1 = "\n  [fxFlexOrder], [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFl
  */
 var FlexOrderDirective = /** @class */ (function (_super) {
     __extends(FlexOrderDirective, _super);
-    function FlexOrderDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function FlexOrderDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
@@ -5562,6 +6308,9 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    FlexOrderDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-order-directive' },] },
+    ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -5588,7 +6337,7 @@ var DefaultFlexOrderDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexOffsetStyleBuilder, _super);
@@ -5626,7 +6375,7 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     FlexOffsetStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5644,10 +6393,7 @@ var selector$4$1 = "\n  [fxFlexOffset], [fxFlexOffset.xs], [fxFlexOffset.sm], [f
  */
 var FlexOffsetDirective = /** @class */ (function (_super) {
     __extends(FlexOffsetDirective, _super);
-    function FlexOffsetDirective(elRef, directionality, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal, styler) {
+    function FlexOffsetDirective(elRef, directionality, styleBuilder, marshal, styler) {
         var _this = _super.call(this, elRef, styleBuilder, styler, marshal) || this;
         _this.elRef = elRef;
         _this.directionality = directionality;
@@ -5673,24 +6419,34 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
      * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
      *       otherwise `margin-top` is used for the offset.
      */
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
      * Using the current fxFlexOffset value, update the inline CSS
      * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
      *       otherwise `margin-top` is used for the offset.
+     * @protected
      * @param {?=} value
      * @return {?}
      */
-    FlexOffsetDirective.prototype.updateWithValue = /**
+    FlexOffsetDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
      * Using the current fxFlexOffset value, update the inline CSS
      * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
      *       otherwise `margin-top` is used for the offset.
+     * @protected
      * @param {?=} value
      * @return {?}
      */
     function (value) {
         if (value === void 0) { value = ''; }
+        // The flex-direction of this element's flex container. Defaults to 'row'.
         /** @type {?} */
-        var layout = this.getFlexFlowDirection(/** @type {?} */ ((this.parentElement)), true);
+        var layout = this.getFlexFlowDirection((/** @type {?} */ (this.parentElement)), true);
         /** @type {?} */
         var isRtl = this.directionality.value === 'rtl';
         if (layout === 'row' && isRtl) {
@@ -5707,6 +6463,9 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         }
         this.addStyles(value + '', { layout: layout, isRtl: isRtl });
     };
+    FlexOffsetDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-offset-directive' },] },
+    ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -5740,7 +6499,7 @@ var flexOffsetCacheColumnLtr = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexAlignStyleBuilder, _super);
@@ -5776,7 +6535,7 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     FlexAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -5795,10 +6554,7 @@ var selector$5 = "\n  [fxFlexAlign], [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlex
  */
 var FlexAlignDirective = /** @class */ (function (_super) {
     __extends(FlexAlignDirective, _super);
-    function FlexAlignDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function FlexAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
@@ -5809,6 +6565,9 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    FlexAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'flex-align-directive' },] },
+    ];
     /** @nocollapse */
     FlexAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -5835,7 +6594,7 @@ var DefaultFlexAlignDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var FLEX_FILL_CSS = {
@@ -5864,7 +6623,7 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     FlexFillStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     return FlexFillStyleBuilder;
 }(StyleBuilder));
 /**
@@ -5902,7 +6661,7 @@ var flexFillCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
     __extends(LayoutAlignStyleBuilder, _super);
@@ -5974,11 +6733,10 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 break;
             case 'stretch':
             default: // 'stretch'
-                // 'stretch'
                 css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
                 break;
         }
-        return /** @type {?} */ (extendObject$1(css, {
+        return (/** @type {?} */ (extendObject$1(css, {
             'display': parent.inline ? 'inline-flex' : 'flex',
             'flex-direction': parent.layout,
             'box-sizing': 'border-box',
@@ -5986,12 +6744,12 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 !isFlowHorizontal(parent.layout) ? '100%' : null : null,
             'max-height': crossAxis === 'stretch' ?
                 isFlowHorizontal(parent.layout) ? '100%' : null : null,
-        }));
+        })));
     };
     LayoutAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -6014,10 +6772,7 @@ var selector$6 = "\n  [fxLayoutAlign], [fxLayoutAlign.xs], [fxLayoutAlign.sm], [
  */
 var LayoutAlignDirective = /** @class */ (function (_super) {
     __extends(LayoutAlignDirective, _super);
-    function LayoutAlignDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function LayoutAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
@@ -6025,7 +6780,8 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout-align';
         _this.layout = 'row'; // default flex-direction
-        _this.inline = false;
+        // default flex-direction
+        _this.inline = false; // default inline value
         _this.init();
         _this.marshal.trackValue(_this.nativeElement, 'layout')
             .pipe(operators.takeUntil(_this.destroySubject))
@@ -6038,13 +6794,22 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     /**
      *
      */
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
      *
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    LayoutAlignDirective.prototype.updateWithValue = /**
+    LayoutAlignDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
      *
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -6084,11 +6849,13 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
      */
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
+     * @protected
      * @param {?} matcher
      * @return {?}
      */
     LayoutAlignDirective.prototype.onLayoutChange = /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
+     * @protected
      * @param {?} matcher
      * @return {?}
      */
@@ -6098,11 +6865,18 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         var layoutKeys = matcher.value.split(' ');
         this.layout = layoutKeys[0];
         this.inline = matcher.value.includes('inline');
-        if (!LAYOUT_VALUES$1.find(function (x) { return x === _this.layout; })) {
+        if (!LAYOUT_VALUES$1.find((/**
+         * @param {?} x
+         * @return {?}
+         */
+        function (x) { return x === _this.layout; }))) {
             this.layout = 'row';
         }
         this.triggerUpdate();
     };
+    LayoutAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'layout-align-directive' },] },
+    ];
     /** @nocollapse */
     LayoutAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -6143,7 +6917,7 @@ var layoutAlignVerticalRevInlineCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES$1 = [
@@ -6155,6 +6929,13 @@ var ALL_DIRECTIVES$1 = [
     FlexFillDirective,
     DefaultFlexAlignDirective,
     DefaultFlexDirective,
+    FlexDirective,
+    FlexAlignDirective,
+    FlexOffsetDirective,
+    FlexOrderDirective,
+    LayoutDirective,
+    LayoutAlignDirective,
+    LayoutGapDirective,
 ];
 /**
  * *****************************************************************
@@ -6176,7 +6957,7 @@ var FlexModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ROW_DEFAULT = 'stretch';
@@ -6201,15 +6982,12 @@ var GridAlignStyleBuilder = /** @class */ (function (_super) {
     GridAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
     return GridAlignStyleBuilder;
 }(StyleBuilder));
 var GridAlignDirective = /** @class */ (function (_super) {
     __extends(GridAlignDirective, _super);
-    function GridAlignDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAlignDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -6220,6 +6998,9 @@ var GridAlignDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridAlignDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-align-directive' },] },
+    ];
     /** @nocollapse */
     GridAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -6310,7 +7091,7 @@ function buildCss(align) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_MAIN = 'start';
@@ -6337,15 +7118,12 @@ var GridAlignColumnsStyleBuilder = /** @class */ (function (_super) {
     GridAlignColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
     return GridAlignColumnsStyleBuilder;
 }(StyleBuilder));
 var GridAlignColumnsDirective = /** @class */ (function (_super) {
     __extends(GridAlignColumnsDirective, _super);
-    function GridAlignColumnsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAlignColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -6372,11 +7150,20 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAlignColumnsDirective.prototype.updateWithValue = /**
+    GridAlignColumnsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -6384,6 +7171,9 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? alignColumnsInlineCache : alignColumnsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAlignColumnsDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-align-columns-directive' },] },
+    ];
     /** @nocollapse */
     GridAlignColumnsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -6480,7 +7270,6 @@ function buildCss$1(align, inline) {
             css['align-items'] = 'stretch';
             break;
         default: // 'stretch'
-            // 'stretch'
             css['align-items'] = DEFAULT_CROSS; // default cross axis
             break;
     }
@@ -6490,7 +7279,7 @@ function buildCss$1(align, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_MAIN$1 = 'start';
@@ -6517,15 +7306,12 @@ var GridAlignRowsStyleBuilder = /** @class */ (function (_super) {
     GridAlignRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
     return GridAlignRowsStyleBuilder;
 }(StyleBuilder));
 var GridAlignRowsDirective = /** @class */ (function (_super) {
     __extends(GridAlignRowsDirective, _super);
-    function GridAlignRowsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAlignRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -6552,11 +7338,20 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAlignRowsDirective.prototype.updateWithValue = /**
+    GridAlignRowsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -6564,6 +7359,9 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? alignRowsInlineCache : alignRowsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAlignRowsDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-align-rows-directive' },] },
+    ];
     /** @nocollapse */
     GridAlignRowsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -6642,7 +7440,6 @@ function buildCss$2(align, inline) {
             css['justify-items'] = crossAxis;
             break;
         default: // 'stretch'
-            // 'stretch'
             css['justify-items'] = DEFAULT_CROSS$1; // default cross axis
             break;
     }
@@ -6652,7 +7449,7 @@ function buildCss$2(align, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE = 'auto';
@@ -6675,15 +7472,12 @@ var GridAreaStyleBuilder = /** @class */ (function (_super) {
     GridAreaStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
     return GridAreaStyleBuilder;
 }(StyleBuilder));
 var GridAreaDirective = /** @class */ (function (_super) {
     __extends(GridAreaDirective, _super);
-    function GridAreaDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function GridAreaDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
@@ -6694,6 +7488,9 @@ var GridAreaDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridAreaDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-area-directive' },] },
+    ];
     /** @nocollapse */
     GridAreaDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -6734,7 +7531,7 @@ var DefaultGridAreaDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$1 = 'none';
@@ -6757,7 +7554,11 @@ var GridAreasStyleBuiler = /** @class */ (function (_super) {
      */
     function (input, parent) {
         /** @type {?} */
-        var areas = (input || DEFAULT_VALUE$1).split(DELIMETER).map(function (v) { return "\"" + v.trim() + "\""; });
+        var areas = (input || DEFAULT_VALUE$1).split(DELIMETER).map((/**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) { return "\"" + v.trim() + "\""; }));
         return {
             'display': parent.inline ? 'inline-grid' : 'grid',
             'grid-template-areas': areas.join(' ')
@@ -6766,15 +7567,12 @@ var GridAreasStyleBuiler = /** @class */ (function (_super) {
     GridAreasStyleBuiler.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = core.defineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+    /** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
     return GridAreasStyleBuiler;
 }(StyleBuilder));
 var GridAreasDirective = /** @class */ (function (_super) {
     __extends(GridAreasDirective, _super);
-    function GridAreasDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function GridAreasDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
@@ -6801,11 +7599,20 @@ var GridAreasDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAreasDirective.prototype.updateWithValue = /**
+    GridAreasDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -6813,6 +7620,9 @@ var GridAreasDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? areasInlineCache : areasCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAreasDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-areas-directive' },] },
+    ];
     /** @nocollapse */
     GridAreasDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -6858,7 +7668,7 @@ var DefaultGridAreasDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$2 = 'initial';
@@ -6891,15 +7701,12 @@ var GridAutoStyleBuilder = /** @class */ (function (_super) {
     GridAutoStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
     return GridAutoStyleBuilder;
 }(StyleBuilder));
 var GridAutoDirective = /** @class */ (function (_super) {
     __extends(GridAutoDirective, _super);
-    function GridAutoDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAutoDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -6926,11 +7733,20 @@ var GridAutoDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAutoDirective.prototype.updateWithValue = /**
+    GridAutoDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -6938,6 +7754,9 @@ var GridAutoDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? autoInlineCache : autoCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAutoDirective.decorators = [
+        { type: core.Directive, args: [{ selector: "grid-auto-directive" },] },
+    ];
     /** @nocollapse */
     GridAutoDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -6983,7 +7802,7 @@ var DefaultGridAutoDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$3 = 'auto';
@@ -7006,15 +7825,12 @@ var GridColumnStyleBuilder = /** @class */ (function (_super) {
     GridColumnStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
     return GridColumnStyleBuilder;
 }(StyleBuilder));
 var GridColumnDirective = /** @class */ (function (_super) {
     __extends(GridColumnDirective, _super);
-    function GridColumnDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridColumnDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -7025,6 +7841,9 @@ var GridColumnDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridColumnDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-column-directive' },] },
+    ];
     /** @nocollapse */
     GridColumnDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -7065,7 +7884,7 @@ var DefaultGridColumnDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$4 = 'none';
@@ -7108,15 +7927,12 @@ var GridColumnsStyleBuilder = /** @class */ (function (_super) {
     GridColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
     return GridColumnsStyleBuilder;
 }(StyleBuilder));
 var GridColumnsDirective = /** @class */ (function (_super) {
     __extends(GridColumnsDirective, _super);
-    function GridColumnsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -7143,11 +7959,20 @@ var GridColumnsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridColumnsDirective.prototype.updateWithValue = /**
+    GridColumnsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -7155,6 +7980,9 @@ var GridColumnsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? columnsInlineCache : columnsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridColumnsDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-columns-directive' },] },
+    ];
     /** @nocollapse */
     GridColumnsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -7201,7 +8029,7 @@ var DefaultGridColumnsDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$5 = '0';
@@ -7229,15 +8057,12 @@ var GridGapStyleBuilder = /** @class */ (function (_super) {
     GridGapStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
     return GridGapStyleBuilder;
 }(StyleBuilder));
 var GridGapDirective = /** @class */ (function (_super) {
     __extends(GridGapDirective, _super);
-    function GridGapDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function GridGapDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.elRef = elRef;
         _this.styleUtils = styleUtils;
@@ -7264,11 +8089,20 @@ var GridGapDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridGapDirective.prototype.updateWithValue = /**
+    GridGapDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -7276,6 +8110,9 @@ var GridGapDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? gapInlineCache : gapCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridGapDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-gap-directive' },] },
+    ];
     /** @nocollapse */
     GridGapDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -7322,7 +8159,7 @@ var DefaultGridGapDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$6 = 'auto';
@@ -7345,15 +8182,12 @@ var GridRowStyleBuilder = /** @class */ (function (_super) {
     GridRowStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
     return GridRowStyleBuilder;
 }(StyleBuilder));
 var GridRowDirective = /** @class */ (function (_super) {
     __extends(GridRowDirective, _super);
-    function GridRowDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridRowDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -7364,6 +8198,9 @@ var GridRowDirective = /** @class */ (function (_super) {
         _this.init();
         return _this;
     }
+    GridRowDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-row-directive' },] },
+    ];
     /** @nocollapse */
     GridRowDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -7404,7 +8241,7 @@ var DefaultGridRowDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$7 = 'none';
@@ -7447,15 +8284,12 @@ var GridRowsStyleBuilder = /** @class */ (function (_super) {
     GridRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = core.defineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
     return GridRowsStyleBuilder;
 }(StyleBuilder));
 var GridRowsDirective = /** @class */ (function (_super) {
     __extends(GridRowsDirective, _super);
-    function GridRowsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
         _this.elementRef = elementRef;
         _this.styleBuilder = styleBuilder;
@@ -7482,11 +8316,20 @@ var GridRowsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridRowsDirective.prototype.updateWithValue = /**
+    GridRowsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -7494,6 +8337,9 @@ var GridRowsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? rowsInlineCache : rowsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridRowsDirective.decorators = [
+        { type: core.Directive, args: [{ selector: 'grid-rows-directive' },] },
+    ];
     /** @nocollapse */
     GridRowsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
@@ -7540,7 +8386,7 @@ var DefaultGridRowsDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES$2 = [
@@ -7555,6 +8401,17 @@ var ALL_DIRECTIVES$2 = [
     DefaultGridGapDirective,
     DefaultGridRowDirective,
     DefaultGridRowsDirective,
+    GridAlignColumnsDirective,
+    GridAlignRowsDirective,
+    GridAreaDirective,
+    GridAreasDirective,
+    GridAutoDirective,
+    GridColumnDirective,
+    GridColumnsDirective,
+    GridGapDirective,
+    GridAlignDirective,
+    GridRowDirective,
+    GridRowsDirective,
 ];
 /**
  * *****************************************************************
@@ -7576,16 +8433,17 @@ var GridModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * Current version of Angular Flex-Layout.
-  @type {?} */
-var VERSION = new core.Version('7.0.0-beta.24-7772069');
+ * @type {?}
+ */
+var VERSION = new core.Version('8.0.0-beta.27-570935b');
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -7681,6 +8539,7 @@ exports.BREAKPOINT_PRINT = BREAKPOINT_PRINT;
 exports.PrintHook = PrintHook;
 exports.ExtendedModule = ExtendedModule;
 exports.ClassDirective = ClassDirective;
+exports.LayoutNgClassImplProvider = LayoutNgClassImplProvider;
 exports.DefaultClassDirective = DefaultClassDirective;
 exports.ImgSrcStyleBuilder = ImgSrcStyleBuilder;
 exports.ImgSrcDirective = ImgSrcDirective;
@@ -7689,6 +8548,7 @@ exports.ShowHideStyleBuilder = ShowHideStyleBuilder;
 exports.ShowHideDirective = ShowHideDirective;
 exports.DefaultShowHideDirective = DefaultShowHideDirective;
 exports.StyleDirective = StyleDirective;
+exports.LayoutNgStyleImplProvider = LayoutNgStyleImplProvider;
 exports.DefaultStyleDirective = DefaultStyleDirective;
 exports.FlexModule = FlexModule;
 exports.FlexStyleBuilder = FlexStyleBuilder;

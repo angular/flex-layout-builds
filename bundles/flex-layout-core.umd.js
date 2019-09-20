@@ -53,7 +53,7 @@ var __assign = function() {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Find all of the server-generated stylings, if any, and remove them
@@ -64,24 +64,36 @@ var __assign = function() {
  * @return {?}
  */
 function removeStyles(_document, platformId) {
-    return function () {
+    return (/**
+     * @return {?}
+     */
+    function () {
         if (common.isPlatformBrowser(platformId)) {
             /** @type {?} */
             var elements = Array.from(_document.querySelectorAll("[class*=" + CLASS_NAME + "]"));
+            // RegExp constructor should only be used if passing a variable to the constructor.
+            // When using static regular expression it is more performant to use reg exp literal.
+            // This is also needed to provide Safari 9 compatibility, please see
+            // https://stackoverflow.com/questions/37919802 for more discussion.
             /** @type {?} */
             var classRegex_1 = /\bflex-layout-.+?\b/g;
-            elements.forEach(function (el) {
+            elements.forEach((/**
+             * @param {?} el
+             * @return {?}
+             */
+            function (el) {
                 el.classList.contains(CLASS_NAME + "ssr") && el.parentNode ?
                     el.parentNode.removeChild(el) : el.className.replace(classRegex_1, '');
-            });
+            }));
         }
-    };
+    });
 }
-/** *
+/**
  *  Provider to remove SSR styles on the browser
-  @type {?} */
+ * @type {?}
+ */
 var BROWSER_PROVIDER = {
-    provide: /** @type {?} */ (core.APP_BOOTSTRAP_LISTENER),
+    provide: (/** @type {?} */ (core.APP_BOOTSTRAP_LISTENER)),
     useFactory: removeStyles,
     deps: [common.DOCUMENT, core.PLATFORM_ID],
     multi: true
@@ -91,7 +103,7 @@ var CLASS_NAME = 'flex-layout-';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * *****************************************************************
@@ -111,7 +123,7 @@ var CoreModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class instances emitted [to observers] for each mql notification
@@ -157,7 +169,7 @@ MediaChange = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Utility to emulate a CSS stylesheet
@@ -242,18 +254,18 @@ var StylesheetMap = /** @class */ (function () {
     StylesheetMap.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.defineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+    /** @nocollapse */ StylesheetMap.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_CONFIG = {
@@ -270,42 +282,52 @@ var DEFAULT_CONFIG = {
 /** @type {?} */
 var LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options for the library', {
     providedIn: 'root',
-    factory: function () { return DEFAULT_CONFIG; }
+    factory: (/**
+     * @return {?}
+     */
+    function () { return DEFAULT_CONFIG; })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * Token that is provided to tell whether the FlexLayoutServerModule
  * has been included in the bundle
  *
  * NOTE: This can be manually provided to disable styles when using SSR
-  @type {?} */
+ * @type {?}
+ */
 var SERVER_TOKEN = new core.InjectionToken('FlexLayoutServerLoaded', {
     providedIn: 'root',
-    factory: function () { return false; }
+    factory: (/**
+     * @return {?}
+     */
+    function () { return false; })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var BREAKPOINT = new core.InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
     providedIn: 'root',
-    factory: function () { return null; }
+    factory: (/**
+     * @return {?}
+     */
+    function () { return null; })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * For the specified MediaChange, make sure it contains the breakpoint alias
@@ -319,23 +341,24 @@ function mergeAlias(dest, source) {
     if (source) {
         dest.mqAlias = source.alias;
         dest.mediaQuery = source.mediaQuery;
-        dest.suffix = /** @type {?} */ (source.suffix);
-        dest.priority = /** @type {?} */ (source.priority);
+        dest.suffix = (/** @type {?} */ (source.suffix));
+        dest.priority = (/** @type {?} */ (source.priority));
     }
     return dest;
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * @license
  * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
-  @type {?} */
+ * @type {?}
+ */
 var INLINE = 'inline';
 /** @type {?} */
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -358,7 +381,11 @@ function validateValue(value) {
     value = value ? value.toLowerCase() : '';
     var _a = value.split(' '), direction = _a[0], wrap = _a[1], inline = _a[2];
     // First value must be the `flex-direction`
-    if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
+    if (!LAYOUT_VALUES.find((/**
+     * @param {?} x
+     * @return {?}
+     */
+    function (x) { return x === direction; }))) {
         direction = LAYOUT_VALUES[0];
     }
     if (wrap === INLINE) {
@@ -419,7 +446,7 @@ function buildCSS(direction, wrap, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -449,6 +476,7 @@ BaseDirective2 = /** @class */ (function () {
         /** Access to host element's parent DOM node */
         get: /**
          * Access to host element's parent DOM node
+         * @protected
          * @return {?}
          */
         function () {
@@ -461,6 +489,7 @@ BaseDirective2 = /** @class */ (function () {
         /** Access to the HTMLElement for the directive */
         get: /**
          * Access to the HTMLElement for the directive
+         * @protected
          * @return {?}
          */
         function () {
@@ -501,7 +530,11 @@ BaseDirective2 = /** @class */ (function () {
      */
     function (changes) {
         var _this = this;
-        Object.keys(changes).forEach(function (key) {
+        Object.keys(changes).forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
             if (_this.inputs.indexOf(key) !== -1) {
                 /** @type {?} */
                 var bp = key.split('.').slice(1).join('.');
@@ -509,7 +542,7 @@ BaseDirective2 = /** @class */ (function () {
                 var val = changes[key].currentValue;
                 _this.setValue(val, bp);
             }
-        });
+        }));
     };
     /**
      * @return {?}
@@ -525,11 +558,13 @@ BaseDirective2 = /** @class */ (function () {
     /** Register with central marshaller service */
     /**
      * Register with central marshaller service
+     * @protected
      * @param {?=} extraTriggers
      * @return {?}
      */
     BaseDirective2.prototype.init = /**
      * Register with central marshaller service
+     * @protected
      * @param {?=} extraTriggers
      * @return {?}
      */
@@ -540,12 +575,14 @@ BaseDirective2 = /** @class */ (function () {
     /** Add styles to the element using predefined style builder */
     /**
      * Add styles to the element using predefined style builder
+     * @protected
      * @param {?} input
      * @param {?=} parent
      * @return {?}
      */
     BaseDirective2.prototype.addStyles = /**
      * Add styles to the element using predefined style builder
+     * @protected
      * @param {?} input
      * @param {?=} parent
      * @return {?}
@@ -570,27 +607,35 @@ BaseDirective2 = /** @class */ (function () {
     /** Remove generated styles from an element using predefined style builder */
     /**
      * Remove generated styles from an element using predefined style builder
+     * @protected
      * @return {?}
      */
     BaseDirective2.prototype.clearStyles = /**
      * Remove generated styles from an element using predefined style builder
+     * @protected
      * @return {?}
      */
     function () {
         var _this = this;
-        Object.keys(this.mru).forEach(function (k) {
+        Object.keys(this.mru).forEach((/**
+         * @param {?} k
+         * @return {?}
+         */
+        function (k) {
             _this.mru[k] = '';
-        });
+        }));
         this.applyStyleToElement(this.mru);
         this.mru = {};
     };
     /** Force trigger style updates on DOM element */
     /**
      * Force trigger style updates on DOM element
+     * @protected
      * @return {?}
      */
     BaseDirective2.prototype.triggerUpdate = /**
      * Force trigger style updates on DOM element
+     * @protected
      * @return {?}
      */
     function () {
@@ -607,6 +652,7 @@ BaseDirective2 = /** @class */ (function () {
      *
      * Check inline style first then check computed (stylesheet) style.
      * And optionally add the flow value to element's inline style.
+     * @protected
      * @param {?} target
      * @param {?=} addIfMissing
      * @return {?}
@@ -616,6 +662,7 @@ BaseDirective2 = /** @class */ (function () {
      *
      * Check inline style first then check computed (stylesheet) style.
      * And optionally add the flow value to element's inline style.
+     * @protected
      * @param {?} target
      * @param {?=} addIfMissing
      * @return {?}
@@ -638,6 +685,7 @@ BaseDirective2 = /** @class */ (function () {
     /** Applies styles given via string pair or object map to the directive element */
     /**
      * Applies styles given via string pair or object map to the directive element
+     * @protected
      * @param {?} style
      * @param {?=} value
      * @param {?=} element
@@ -645,6 +693,7 @@ BaseDirective2 = /** @class */ (function () {
      */
     BaseDirective2.prototype.applyStyleToElement = /**
      * Applies styles given via string pair or object map to the directive element
+     * @protected
      * @param {?} style
      * @param {?=} value
      * @param {?=} element
@@ -655,11 +704,13 @@ BaseDirective2 = /** @class */ (function () {
         this.styler.applyStyleToElement(element, style, value);
     };
     /**
+     * @protected
      * @param {?} val
      * @param {?} bp
      * @return {?}
      */
     BaseDirective2.prototype.setValue = /**
+     * @protected
      * @param {?} val
      * @param {?} bp
      * @return {?}
@@ -668,10 +719,12 @@ BaseDirective2 = /** @class */ (function () {
         this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, val, bp);
     };
     /**
+     * @protected
      * @param {?} input
      * @return {?}
      */
     BaseDirective2.prototype.updateWithValue = /**
+     * @protected
      * @param {?} input
      * @return {?}
      */
@@ -683,65 +736,66 @@ BaseDirective2 = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * NOTE: Smaller ranges have HIGHER priority since the match is more specific
-  @type {?} */
+ * @type {?}
+ */
 var DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
-        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.99px)',
+        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.9px)',
         priority: 1000,
     },
     {
         alias: 'sm',
-        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.99px)',
+        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.9px)',
         priority: 900,
     },
     {
         alias: 'md',
-        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.99px)',
+        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.9px)',
         priority: 800,
     },
     {
         alias: 'lg',
-        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.99px)',
+        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.9px)',
         priority: 700,
     },
     {
         alias: 'xl',
-        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.99px)',
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.9px)',
         priority: 600,
     },
     {
         alias: 'lt-sm',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 599.99px)',
+        mediaQuery: 'screen and (max-width: 599.9px)',
         priority: 950,
     },
     {
         alias: 'lt-md',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 959.99px)',
+        mediaQuery: 'screen and (max-width: 959.9px)',
         priority: 850,
     },
     {
         alias: 'lt-lg',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 1279.99px)',
+        mediaQuery: 'screen and (max-width: 1279.9px)',
         priority: 750,
     },
     {
         alias: 'lt-xl',
         overlapping: true,
         priority: 650,
-        mediaQuery: 'screen and (max-width: 1919.99px)',
+        mediaQuery: 'screen and (max-width: 1919.9px)',
     },
     {
         alias: 'gt-xs',
@@ -770,17 +824,18 @@ var DEFAULT_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
+/* tslint:disable */
 /** @type {?} */
-var HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599.99px)';
+var HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599.9px)';
 /** @type {?} */
-var HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.99px)';
+var HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.9px)';
 /** @type {?} */
-var TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.99px)';
+var TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.9px)';
 /** @type {?} */
-var TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.99px)';
+var TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.9px)';
 /** @type {?} */
 var WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
 /** @type {?} */
@@ -797,9 +852,10 @@ var ScreenTypes = {
     'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
     'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
 };
-/** *
+/**
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
-  @type {?} */
+ * @type {?}
+ */
 var ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET },
     { 'alias': 'handset.landscape', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
@@ -814,8 +870,14 @@ var ORIENTATION_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
  * similar to Object.assign.
@@ -847,7 +909,7 @@ function extendObject(dest) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALIAS_DELIMITERS = /(\.|-|_)/g;
@@ -881,12 +943,16 @@ function camelCase(name) {
  * @return {?}
  */
 function validateSuffixes(list) {
-    list.forEach(function (bp) {
+    list.forEach((/**
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
         if (!bp.suffix) {
             bp.suffix = camelCase(bp.alias); // create Suffix value based on alias
             bp.overlapping = !!bp.overlapping; // ensure default value
         }
-    });
+    }));
     return list;
 }
 /**
@@ -901,49 +967,69 @@ function mergeByAlias(defaults, custom) {
     if (custom === void 0) { custom = []; }
     /** @type {?} */
     var dict = {};
-    defaults.forEach(function (bp) {
+    defaults.forEach((/**
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
         dict[bp.alias] = bp;
-    });
+    }));
     // Merge custom breakpoints
-    custom.forEach(function (bp) {
+    custom.forEach((/**
+     * @param {?} bp
+     * @return {?}
+     */
+    function (bp) {
         if (dict[bp.alias]) {
             extendObject(dict[bp.alias], bp);
         }
         else {
             dict[bp.alias] = bp;
         }
-    });
-    return validateSuffixes(Object.keys(dict).map(function (k) { return dict[k]; }));
+    }));
+    return validateSuffixes(Object.keys(dict).map((/**
+     * @param {?} k
+     * @return {?}
+     */
+    function (k) { return dict[k]; })));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
-  @type {?} */
+ * @type {?}
+ */
 var BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoints', {
     providedIn: 'root',
-    factory: function () {
+    factory: (/**
+     * @return {?}
+     */
+    function () {
         /** @type {?} */
         var breakpoints = core.inject(BREAKPOINT);
         /** @type {?} */
         var layoutConfig = core.inject(LAYOUT_CONFIG);
         /** @type {?} */
         var bpFlattenArray = [].concat.apply([], (breakpoints || [])
-            .map(function (v) { return Array.isArray(v) ? v : [v]; }));
+            .map((/**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) { return Array.isArray(v) ? v : [v]; })));
         /** @type {?} */
         var builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
             .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
         return mergeByAlias(builtIns, bpFlattenArray);
-    }
+    })
 });
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * HOF to sort the breakpoints by descending priority
@@ -976,7 +1062,7 @@ function sortAscendingPriority(a, b) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
@@ -1005,7 +1091,11 @@ var BreakPointRegistry = /** @class */ (function () {
      * @return {?}
      */
     function (alias) {
-        return !alias ? null : this.findWithPredicate(alias, function (bp) { return bp.alias == alias; });
+        return !alias ? null : this.findWithPredicate(alias, (/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.alias == alias; }));
     };
     /**
      * @param {?} query
@@ -1016,7 +1106,11 @@ var BreakPointRegistry = /** @class */ (function () {
      * @return {?}
      */
     function (query) {
-        return this.findWithPredicate(query, function (bp) { return bp.mediaQuery == query; });
+        return this.findWithPredicate(query, (/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.mediaQuery == query; }));
     };
     Object.defineProperty(BreakPointRegistry.prototype, "overlappings", {
         /**
@@ -1029,7 +1123,11 @@ var BreakPointRegistry = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this.items.filter(function (it) { return it.overlapping == true; });
+            return this.items.filter((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return it.overlapping == true; }));
         },
         enumerable: true,
         configurable: true
@@ -1043,7 +1141,11 @@ var BreakPointRegistry = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this.items.map(function (it) { return it.alias; });
+            return this.items.map((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return it.alias; }));
         },
         enumerable: true,
         configurable: true
@@ -1061,19 +1163,28 @@ var BreakPointRegistry = /** @class */ (function () {
          * @return {?}
          */
         function () {
-            return this.items.map(function (it) { return !!it.suffix ? it.suffix : ''; });
+            return this.items.map((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return !!it.suffix ? it.suffix : ''; }));
         },
         enumerable: true,
         configurable: true
     });
     /**
      * Memoized lookup using custom predicate function
+     */
+    /**
+     * Memoized lookup using custom predicate function
+     * @private
      * @param {?} key
      * @param {?} searchFn
      * @return {?}
      */
     BreakPointRegistry.prototype.findWithPredicate = /**
      * Memoized lookup using custom predicate function
+     * @private
      * @param {?} key
      * @param {?} searchFn
      * @return {?}
@@ -1094,18 +1205,18 @@ var BreakPointRegistry = /** @class */ (function () {
     BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] }] }
     ]; };
-    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.defineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.inject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+    /** @nocollapse */ BreakPointRegistry.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -1137,11 +1248,16 @@ var MatchMedia = /** @class */ (function () {
         function () {
             /** @type {?} */
             var results = [];
-            this.registry.forEach(function (mql, key) {
+            this.registry.forEach((/**
+             * @param {?} mql
+             * @param {?} key
+             * @return {?}
+             */
+            function (mql, key) {
                 if (mql.matches) {
                     results.push(key);
                 }
-            });
+            }));
             return results;
         },
         enumerable: true,
@@ -1203,23 +1319,36 @@ var MatchMedia = /** @class */ (function () {
         if (filterOthers === void 0) { filterOthers = false; }
         if (mqList && mqList.length) {
             /** @type {?} */
-            var matchMedia$ = this._observable$.pipe(operators.filter(function (change) {
+            var matchMedia$ = this._observable$.pipe(operators.filter((/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) {
                 return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
-            }));
+            })));
             /** @type {?} */
-            var registration$ = new rxjs.Observable(function (observer) {
+            var registration$ = new rxjs.Observable((/**
+             * @param {?} observer
+             * @return {?}
+             */
+            function (observer) {
+                // tslint:disable-line:max-line-length
                 /** @type {?} */
                 var matches = _this.registerQuery(mqList);
                 if (matches.length) {
                     /** @type {?} */
-                    var lastChange = /** @type {?} */ ((matches.pop()));
-                    matches.forEach(function (e) {
+                    var lastChange = (/** @type {?} */ (matches.pop()));
+                    matches.forEach((/**
+                     * @param {?} e
+                     * @return {?}
+                     */
+                    function (e) {
                         observer.next(e);
-                    });
+                    }));
                     _this.source.next(lastChange); // last match is cached
                 }
                 observer.complete();
-            });
+            }));
             return rxjs.merge(registration$, matchMedia$);
         }
         return this._observable$;
@@ -1247,11 +1376,22 @@ var MatchMedia = /** @class */ (function () {
         /** @type {?} */
         var matches = [];
         buildQueryCss(list, this._document);
-        list.forEach(function (query) {
+        list.forEach((/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) {
             /** @type {?} */
-            var onMQLEvent = function (e) {
-                _this._zone.run(function () { return _this.source.next(new MediaChange(e.matches, query)); });
-            };
+            var onMQLEvent = (/**
+             * @param {?} e
+             * @return {?}
+             */
+            function (e) {
+                _this._zone.run((/**
+                 * @return {?}
+                 */
+                function () { return _this.source.next(new MediaChange(e.matches, query)); }));
+            });
             /** @type {?} */
             var mql = _this.registry.get(query);
             if (!mql) {
@@ -1262,7 +1402,7 @@ var MatchMedia = /** @class */ (function () {
             if (mql.matches) {
                 matches.push(new MediaChange(true, query));
             }
-        });
+        }));
         return matches;
     };
     /**
@@ -1272,12 +1412,14 @@ var MatchMedia = /** @class */ (function () {
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
     MatchMedia.prototype.buildMQL = /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
@@ -1293,13 +1435,14 @@ var MatchMedia = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MatchMedia.ngInjectableDef = core.defineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.inject(core.NgZone), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+    /** @nocollapse */ MatchMedia.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.ɵɵinject(core.NgZone), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
-/** *
+/**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
-  @type {?} */
+ * @type {?}
+ */
 var ALL_STYLES = {};
 /**
  * For Webkit engines that only trigger the MediaQueryList Listener
@@ -1311,7 +1454,11 @@ var ALL_STYLES = {};
  */
 function buildQueryCss(mediaQueries, _document) {
     /** @type {?} */
-    var list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
+    var list = mediaQueries.filter((/**
+     * @param {?} it
+     * @return {?}
+     */
+    function (it) { return !ALL_STYLES[it]; }));
     if (list.length > 0) {
         /** @type {?} */
         var query = list.join(', ');
@@ -1319,14 +1466,18 @@ function buildQueryCss(mediaQueries, _document) {
             /** @type {?} */
             var styleEl_1 = _document.createElement('style');
             styleEl_1.setAttribute('type', 'text/css');
-            if (!(/** @type {?} */ (styleEl_1)).styleSheet) {
+            if (!((/** @type {?} */ (styleEl_1))).styleSheet) {
                 /** @type {?} */
                 var cssText = "\n/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}\n";
                 styleEl_1.appendChild(_document.createTextNode(cssText));
-            } /** @type {?} */
-            ((_document.head)).appendChild(styleEl_1);
+            }
+            (/** @type {?} */ (_document.head)).appendChild(styleEl_1);
             // Store in private global registry
-            list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
+            list.forEach((/**
+             * @param {?} mq
+             * @return {?}
+             */
+            function (mq) { return ALL_STYLES[mq] = styleEl_1; }));
         }
         catch (e) {
             console.error(e);
@@ -1340,20 +1491,26 @@ function buildQueryCss(mediaQueries, _document) {
  */
 function constructMql(query, isBrowser) {
     /** @type {?} */
-    var canListen = isBrowser && !!(/** @type {?} */ (window)).matchMedia('all').addListener;
-    return canListen ? (/** @type {?} */ (window)).matchMedia(query) : /** @type {?} */ (({
+    var canListen = isBrowser && !!((/** @type {?} */ (window))).matchMedia('all').addListener;
+    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ((/** @type {?} */ ({
         matches: query === 'all' || query === '',
         media: query,
-        addListener: function () {
-        },
-        removeListener: function () {
-        }
-    }));
+        addListener: (/**
+         * @return {?}
+         */
+        function () {
+        }),
+        removeListener: (/**
+         * @return {?}
+         */
+        function () {
+        })
+    }))));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
@@ -1366,7 +1523,8 @@ var MockMatchMedia = /** @class */ (function (_super) {
         var _this = _super.call(this, _zone, _platformId, _document) || this;
         _this._breakpoints = _breakpoints;
         _this.autoRegisterQueries = true; // Used for testing BreakPoint registrations
-        _this.useOverlaps = false;
+        // Used for testing BreakPoint registrations
+        _this.useOverlaps = false; // Allow fallback to overlapping mediaQueries
         return _this;
     }
     /** Easy method to clear all listeners for all mediaQueries */
@@ -1379,9 +1537,13 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function () {
-        this.registry.forEach(function (mql) {
-            (/** @type {?} */ (mql)).destroy();
-        });
+        this.registry.forEach((/**
+         * @param {?} mql
+         * @return {?}
+         */
+        function (mql) {
+            ((/** @type {?} */ (mql))).destroy();
+        }));
         this.registry.clear();
         this.useOverlaps = false;
     };
@@ -1428,6 +1590,11 @@ var MockMatchMedia = /** @class */ (function (_super) {
     /**
      * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
+     */
+    /**
+     * Manually onMediaChange any overlapping mediaQueries to simulate
+     * similar functionality in the window.matchMedia()
+     * @private
      * @param {?} mediaQuery
      * @param {?} useOverlaps
      * @return {?}
@@ -1435,6 +1602,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
     MockMatchMedia.prototype._activateWithOverlaps = /**
      * Manually onMediaChange any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
+     * @private
      * @param {?} mediaQuery
      * @param {?} useOverlaps
      * @return {?}
@@ -1481,63 +1649,95 @@ var MockMatchMedia = /** @class */ (function (_super) {
     };
     /**
      *
+     */
+    /**
+     *
+     * @private
      * @param {?} aliases
      * @return {?}
      */
     MockMatchMedia.prototype._activateByAlias = /**
      *
+     * @private
      * @param {?} aliases
      * @return {?}
      */
     function (aliases) {
         var _this = this;
         /** @type {?} */
-        var activate = function (alias) {
+        var activate = (/**
+         * @param {?} alias
+         * @return {?}
+         */
+        function (alias) {
             /** @type {?} */
             var bp = _this._breakpoints.findByAlias(alias);
             _this._activateByQuery(bp ? bp.mediaQuery : alias);
-        };
-        aliases.split(',').forEach(function (alias) { return activate(alias.trim()); });
+        });
+        aliases.split(',').forEach((/**
+         * @param {?} alias
+         * @return {?}
+         */
+        function (alias) { return activate(alias.trim()); }));
     };
     /**
      *
+     */
+    /**
+     *
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
     MockMatchMedia.prototype._activateByQuery = /**
      *
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
     function (mediaQuery) {
         /** @type {?} */
-        var mql = /** @type {?} */ (this.registry.get(mediaQuery));
+        var mql = (/** @type {?} */ (this.registry.get(mediaQuery)));
         if (mql && !this.isActive(mediaQuery)) {
             this.registry.set(mediaQuery, mql.activate());
         }
         return this.hasActivated;
     };
+    /** Deactivate all current MQLs and reset the buffer */
     /**
      * Deactivate all current MQLs and reset the buffer
-     * @return {?}
+     * @private
+     * @template THIS
+     * @this {THIS}
+     * @return {THIS}
      */
     MockMatchMedia.prototype._deactivateAll = /**
      * Deactivate all current MQLs and reset the buffer
-     * @return {?}
+     * @private
+     * @template THIS
+     * @this {THIS}
+     * @return {THIS}
      */
     function () {
-        this.registry.forEach(function (it) {
-            (/** @type {?} */ (it)).deactivate();
-        });
-        return this;
+        (/** @type {?} */ (this)).registry.forEach((/**
+         * @param {?} it
+         * @return {?}
+         */
+        function (it) {
+            ((/** @type {?} */ (it))).deactivate();
+        }));
+        return (/** @type {?} */ (this));
     };
+    /** Insure the mediaQuery is registered with MatchMedia */
     /**
      * Insure the mediaQuery is registered with MatchMedia
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
     MockMatchMedia.prototype._registerMediaQuery = /**
      * Insure the mediaQuery is registered with MatchMedia
+     * @private
      * @param {?} mediaQuery
      * @return {?}
      */
@@ -1553,12 +1753,14 @@ var MockMatchMedia = /** @class */ (function (_super) {
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
     MockMatchMedia.prototype.buildMQL = /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
+     * @protected
      * @param {?} query
      * @return {?}
      */
@@ -1567,6 +1769,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
     };
     Object.defineProperty(MockMatchMedia.prototype, "hasActivated", {
         get: /**
+         * @protected
          * @return {?}
          */
         function () {
@@ -1655,11 +1858,15 @@ MockMediaQueryList = /** @class */ (function () {
         var _this = this;
         if (!this._isActive) {
             this._isActive = true;
-            this._listeners.forEach(function (callback) {
+            this._listeners.forEach((/**
+             * @param {?} callback
+             * @return {?}
+             */
+            function (callback) {
                 /** @type {?} */
-                var cb = /** @type {?} */ ((callback));
+                var cb = (/** @type {?} */ (callback));
                 cb.call(null, _this);
-            });
+            }));
         }
         return this;
     };
@@ -1676,11 +1883,15 @@ MockMediaQueryList = /** @class */ (function () {
         var _this = this;
         if (this._isActive) {
             this._isActive = false;
-            this._listeners.forEach(function (callback) {
+            this._listeners.forEach((/**
+             * @param {?} callback
+             * @return {?}
+             */
+            function (callback) {
                 /** @type {?} */
-                var cb = /** @type {?} */ ((callback));
+                var cb = (/** @type {?} */ (callback));
                 cb.call(null, _this);
-            });
+            }));
         }
         return this;
     };
@@ -1701,7 +1912,7 @@ MockMediaQueryList = /** @class */ (function () {
         }
         if (this._isActive) {
             /** @type {?} */
-            var cb = /** @type {?} */ ((listener));
+            var cb = (/** @type {?} */ (listener));
             cb.call(null, this);
         }
     };
@@ -1759,9 +1970,10 @@ MockMediaQueryList = /** @class */ (function () {
     };
     return MockMediaQueryList;
 }());
-/** *
+/**
  * Pre-configured provider for MockMatchMedia
-  @type {?} */
+ * @type {?}
+ */
 var MockMatchMediaProvider = {
     // tslint:disable-line:variable-name
     provide: MatchMedia,
@@ -1770,12 +1982,12 @@ var MockMatchMediaProvider = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var PRINT = 'print';
@@ -1850,9 +2062,17 @@ var PrintHook = /** @class */ (function () {
          */
         function () {
             var _this = this;
-            return /** @type {?} */ (this.printAlias
-                .map(function (alias) { return _this.breakpoints.findByAlias(alias); })
-                .filter(function (bp) { return bp !== null; }));
+            return (/** @type {?} */ (this.printAlias
+                .map((/**
+             * @param {?} alias
+             * @return {?}
+             */
+            function (alias) { return _this.breakpoints.findByAlias(alias); }))
+                .filter((/**
+             * @param {?} bp
+             * @return {?}
+             */
+            function (bp) { return bp !== null; }))));
         },
         enumerable: true,
         configurable: true
@@ -1913,7 +2133,11 @@ var PrintHook = /** @class */ (function () {
      */
     function (target) {
         var _this = this;
-        return function (event) {
+        return (/**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) {
             if (_this.isPrintEvent(event)) {
                 if (event.matches && !_this.isPrinting) {
                     _this.startPrinting(target, _this.getEventBreakpoints(event));
@@ -1927,7 +2151,7 @@ var PrintHook = /** @class */ (function () {
             else {
                 _this.collectActivations(event);
             }
-        };
+        });
     };
     /** Stop mediaChange event propagation in event streams */
     /**
@@ -1940,9 +2164,13 @@ var PrintHook = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        return function (event) {
+        return (/**
+         * @param {?} event
+         * @return {?}
+         */
+        function (event) {
             return !(_this.isPrinting || _this.isPrintEvent(event));
-        };
+        });
     };
     /**
      * Save current activateBreakpoints (for later restore)
@@ -1951,6 +2179,7 @@ var PrintHook = /** @class */ (function () {
     /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
+     * @protected
      * @param {?} target
      * @param {?} bpList
      * @return {?}
@@ -1958,6 +2187,7 @@ var PrintHook = /** @class */ (function () {
     PrintHook.prototype.startPrinting = /**
      * Save current activateBreakpoints (for later restore)
      * and substitute only the printAlias breakpoint
+     * @protected
      * @param {?} target
      * @param {?} bpList
      * @return {?}
@@ -1969,11 +2199,13 @@ var PrintHook = /** @class */ (function () {
     /** For any print de-activations, reset the entire print queue */
     /**
      * For any print de-activations, reset the entire print queue
+     * @protected
      * @param {?} target
      * @return {?}
      */
     PrintHook.prototype.stopPrinting = /**
      * For any print de-activations, reset the entire print queue
+     * @protected
      * @param {?} target
      * @return {?}
      */
@@ -2044,7 +2276,6 @@ var PrintHook = /** @class */ (function () {
                 /** @type {?} */
                 var bp = this.breakpoints.findByQuery(event.mediaQuery);
                 if (bp) { // Deactivating a breakpoint
-                    // Deactivating a breakpoint
                     this.deactivations.push(bp);
                     this.deactivations.sort(sortDescendingPriority);
                 }
@@ -2062,14 +2293,21 @@ var PrintHook = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ngInjectableDef = core.defineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.inject(BreakPointRegistry), core.inject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
+// ************************************************************************
+// Internal Utility class 'PrintQueue'
+// ************************************************************************
 /**
  * Utility class to manage print breakpoints + activatedBreakpoints
  * with correct sorting WHILE printing
  */
-var /**
+var 
+// ************************************************************************
+// Internal Utility class 'PrintQueue'
+// ************************************************************************
+/**
  * Utility class to manage print breakpoints + activatedBreakpoints
  * with correct sorting WHILE printing
  */
@@ -2092,7 +2330,11 @@ PrintQueue = /** @class */ (function () {
         var _this = this;
         bpList.push(BREAKPOINT_PRINT);
         bpList.sort(sortDescendingPriority);
-        bpList.forEach(function (bp) { return _this.addBreakpoint(bp); });
+        bpList.forEach((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return _this.addBreakpoint(bp); }));
         return this.printBreakpoints;
     };
     /** Add Print breakpoint to queue */
@@ -2109,7 +2351,11 @@ PrintQueue = /** @class */ (function () {
     function (bp) {
         if (!!bp) {
             /** @type {?} */
-            var bpInList = this.printBreakpoints.find(function (it) { return it.mediaQuery === bp.mediaQuery; });
+            var bpInList = this.printBreakpoints.find((/**
+             * @param {?} it
+             * @return {?}
+             */
+            function (it) { return it.mediaQuery === bp.mediaQuery; }));
             if (bpInList === undefined) {
                 // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
                 // register as highest priority in the queue
@@ -2131,6 +2377,9 @@ PrintQueue = /** @class */ (function () {
     };
     return PrintQueue;
 }());
+// ************************************************************************
+// Internal Utility methods
+// ************************************************************************
 /**
  * Only support intercept queueing if the Breakpoint is a print \@media query
  * @param {?} bp
@@ -2142,7 +2391,7 @@ function isPrintBreakPoint(bp) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -2157,7 +2406,7 @@ function coerceArray(value) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
@@ -2211,7 +2460,15 @@ var MediaObserver = /** @class */ (function () {
         this.filterOverlaps = false;
         this.destroyed$ = new rxjs.Subject();
         this._media$ = this.watchActivations();
-        this.media$ = this._media$.pipe(operators.filter(function (changes) { return changes.length > 0; }), operators.map(function (changes) { return changes[0]; }));
+        this.media$ = this._media$.pipe(operators.filter((/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) { return changes.length > 0; })), operators.map((/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) { return changes[0]; })));
     }
     /**
      * Completes the active subject, signalling to all complete for all
@@ -2237,11 +2494,18 @@ var MediaObserver = /** @class */ (function () {
     /**
      * Observe changes to current activation 'list'
      */
+    // ************************************************
+    // Public Methods
+    // ************************************************
     /**
      * Observe changes to current activation 'list'
      * @return {?}
      */
-    MediaObserver.prototype.asObservable = /**
+    MediaObserver.prototype.asObservable = 
+    // ************************************************
+    // Public Methods
+    // ************************************************
+    /**
      * Observe changes to current activation 'list'
      * @return {?}
      */
@@ -2270,27 +2534,52 @@ var MediaObserver = /** @class */ (function () {
         var _this = this;
         /** @type {?} */
         var aliases = splitQueries(coerceArray(value));
-        return aliases.some(function (alias) {
+        return aliases.some((/**
+         * @param {?} alias
+         * @return {?}
+         */
+        function (alias) {
             /** @type {?} */
             var query = toMediaQuery(alias, _this.breakpoints);
             return _this.matchMedia.isActive(query);
-        });
+        }));
     };
+    // ************************************************
+    // Internal Methods
+    // ************************************************
     /**
      * Register all the mediaQueries registered in the BreakPointRegistry
      * This is needed so subscribers can be auto-notified of all standard, registered
      * mediaQuery activations
-     * @return {?}
      */
-    MediaObserver.prototype.watchActivations = /**
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
      * Register all the mediaQueries registered in the BreakPointRegistry
      * This is needed so subscribers can be auto-notified of all standard, registered
      * mediaQuery activations
+     * @private
+     * @return {?}
+     */
+    MediaObserver.prototype.watchActivations = 
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
+     * Register all the mediaQueries registered in the BreakPointRegistry
+     * This is needed so subscribers can be auto-notified of all standard, registered
+     * mediaQuery activations
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
-        var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
+        var queries = this.breakpoints.items.map((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.mediaQuery; }));
         return this.buildObservable(queries);
     };
     /**
@@ -2306,6 +2595,21 @@ var MediaObserver = /** @class */ (function () {
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
+     */
+    /**
+     * Only pass/announce activations (not de-activations)
+     *
+     * Since multiple-mediaQueries can be activation in a cycle,
+     * gather all current activations into a single list of changes to observers
+     *
+     * Inject associated (if any) alias information into the MediaChange event
+     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude print activations that do not have an associated mediaQuery
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
+     * @private
      * @param {?} mqList
      * @return {?}
      */
@@ -2322,56 +2626,99 @@ var MediaObserver = /** @class */ (function () {
      * NOTE: the raw MediaChange events [from MatchMedia] do not
      *       contain important alias information; as such this info
      *       must be injected into the MediaChange
+     * @private
      * @param {?} mqList
      * @return {?}
      */
     function (mqList) {
         var _this = this;
         /** @type {?} */
-        var hasChanges = function (changes) {
+        var hasChanges = (/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) {
             /** @type {?} */
-            var isValidQuery = function (change) { return (change.mediaQuery.length > 0); };
+            var isValidQuery = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) { return (change.mediaQuery.length > 0); });
             return (changes.filter(isValidQuery).length > 0);
-        };
+        });
         /** @type {?} */
-        var excludeOverlaps = function (changes) {
-            return !_this.filterOverlaps ? changes : changes.filter(function (change) {
+        var excludeOverlaps = (/**
+         * @param {?} changes
+         * @return {?}
+         */
+        function (changes) {
+            return !_this.filterOverlaps ? changes : changes.filter((/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) {
                 /** @type {?} */
                 var bp = _this.breakpoints.findByQuery(change.mediaQuery);
                 return !bp ? true : !bp.overlapping;
-            });
-        };
+            }));
+        });
         /**
-             */
+         */
         return this.matchMedia
             .observe(this.hook.withPrintQuery(mqList))
-            .pipe(operators.filter(function (change) { return change.matches; }), operators.debounceTime(0, rxjs.asapScheduler), operators.switchMap(function (_) { return rxjs.of(_this.findAllActivations()); }), operators.map(excludeOverlaps), operators.filter(hasChanges), operators.takeUntil(this.destroyed$));
+            .pipe(operators.filter((/**
+         * @param {?} change
+         * @return {?}
+         */
+        function (change) { return change.matches; })), operators.debounceTime(0, rxjs.asapScheduler), operators.switchMap((/**
+         * @param {?} _
+         * @return {?}
+         */
+        function (_) { return rxjs.of(_this.findAllActivations()); })), operators.map(excludeOverlaps), operators.filter(hasChanges), operators.takeUntil(this.destroyed$));
     };
     /**
      * Find all current activations and prepare single list of activations
      * sorted by descending priority.
+     */
+    /**
+     * Find all current activations and prepare single list of activations
+     * sorted by descending priority.
+     * @private
      * @return {?}
      */
     MediaObserver.prototype.findAllActivations = /**
      * Find all current activations and prepare single list of activations
      * sorted by descending priority.
+     * @private
      * @return {?}
      */
     function () {
         var _this = this;
         /** @type {?} */
-        var mergeMQAlias = function (change) {
+        var mergeMQAlias = (/**
+         * @param {?} change
+         * @return {?}
+         */
+        function (change) {
             /** @type {?} */
             var bp = _this.breakpoints.findByQuery(change.mediaQuery);
             return mergeAlias(change, bp);
-        };
+        });
         /** @type {?} */
-        var replaceWithPrintAlias = function (change) {
+        var replaceWithPrintAlias = (/**
+         * @param {?} change
+         * @return {?}
+         */
+        function (change) {
             return _this.hook.isPrintEvent(change) ? _this.hook.updateEvent(change) : change;
-        };
+        });
         return this.matchMedia
             .activations
-            .map(function (query) { return new MediaChange(true, query); })
+            .map((/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) { return new MediaChange(true, query); }))
             .map(replaceWithPrintAlias)
             .map(mergeMQAlias)
             .sort(sortDescendingPriority);
@@ -2385,7 +2732,7 @@ var MediaObserver = /** @class */ (function () {
         { type: MatchMedia },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ngInjectableDef = core.defineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 /**
@@ -2406,19 +2753,32 @@ function toMediaQuery(query, locator) {
  * @return {?}
  */
 function splitQueries(queries) {
-    return queries.map(function (query) { return query.split(','); })
-        .reduce(function (a1, a2) { return a1.concat(a2); })
-        .map(function (query) { return query.trim(); });
+    return queries.map((/**
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) { return query.split(','); }))
+        .reduce((/**
+     * @param {?} a1
+     * @param {?} a2
+     * @return {?}
+     */
+    function (a1, a2) { return a1.concat(a2); }))
+        .map((/**
+     * @param {?} query
+     * @return {?}
+     */
+    function (query) { return query.trim(); }));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class
@@ -2449,7 +2809,11 @@ var MediaTrigger = /** @class */ (function () {
      * @return {?}
      */
     function (list) {
-        list = list.map(function (it) { return it.trim(); }); // trim queries
+        list = list.map((/**
+         * @param {?} it
+         * @return {?}
+         */
+        function (it) { return it.trim(); })); // trim queries
         this.saveActivations();
         this.deactivateAll();
         this.setActivations(list);
@@ -2472,7 +2836,11 @@ var MediaTrigger = /** @class */ (function () {
     function () {
         if (this.hasCachedRegistryMatches) {
             /** @type {?} */
-            var extractQuery = function (change) { return change.mediaQuery; };
+            var extractQuery = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) { return change.mediaQuery; });
             /** @type {?} */
             var list = this.originalActivations.map(extractQuery);
             try {
@@ -2488,14 +2856,30 @@ var MediaTrigger = /** @class */ (function () {
             }
         }
     };
+    // ************************************************
+    // Internal Methods
+    // ************************************************
     /**
      * Whenever window resizes, immediately auto-restore original
      * activations (if we are simulating activations)
-     * @return {?}
      */
-    MediaTrigger.prototype.prepareAutoRestore = /**
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
      * Whenever window resizes, immediately auto-restore original
      * activations (if we are simulating activations)
+     * @private
+     * @return {?}
+     */
+    MediaTrigger.prototype.prepareAutoRestore = 
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
+     * Whenever window resizes, immediately auto-restore original
+     * activations (if we are simulating activations)
+     * @private
      * @return {?}
      */
     function () {
@@ -2514,6 +2898,13 @@ var MediaTrigger = /** @class */ (function () {
      *
      * Note: we must force 'matches' updates for
      *       future matchMedia::activation lookups
+     */
+    /**
+     * Notify all matchMedia subscribers of de-activations
+     *
+     * Note: we must force 'matches' updates for
+     *       future matchMedia::activation lookups
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.deactivateAll = /**
@@ -2521,6 +2912,7 @@ var MediaTrigger = /** @class */ (function () {
      *
      * Note: we must force 'matches' updates for
      *       future matchMedia::activation lookups
+     * @private
      * @return {?}
      */
     function () {
@@ -2531,23 +2923,36 @@ var MediaTrigger = /** @class */ (function () {
     };
     /**
      * Cache current activations as sorted, prioritized list of MediaChanges
+     */
+    /**
+     * Cache current activations as sorted, prioritized list of MediaChanges
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.saveActivations = /**
      * Cache current activations as sorted, prioritized list of MediaChanges
+     * @private
      * @return {?}
      */
     function () {
         var _this = this;
         if (!this.hasCachedRegistryMatches) {
             /** @type {?} */
-            var toMediaChange = function (query) { return new MediaChange(true, query); };
+            var toMediaChange = (/**
+             * @param {?} query
+             * @return {?}
+             */
+            function (query) { return new MediaChange(true, query); });
             /** @type {?} */
-            var mergeMQAlias = function (change) {
+            var mergeMQAlias = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            function (change) {
                 /** @type {?} */
                 var bp = _this.breakpoints.findByQuery(change.mediaQuery);
                 return mergeAlias(change, bp);
-            };
+            });
             this.originalActivations = this.currentActivations
                 .map(toMediaChange)
                 .map(mergeMQAlias)
@@ -2557,11 +2962,16 @@ var MediaTrigger = /** @class */ (function () {
     };
     /**
      * Force set manual activations for specified mediaQuery list
+     */
+    /**
+     * Force set manual activations for specified mediaQuery list
+     * @private
      * @param {?} list
      * @return {?}
      */
     MediaTrigger.prototype.setActivations = /**
      * Force set manual activations for specified mediaQuery list
+     * @private
      * @param {?} list
      * @return {?}
      */
@@ -2573,12 +2983,17 @@ var MediaTrigger = /** @class */ (function () {
     };
     /**
      * For specified mediaQuery list manually simulate activations or deactivations
+     */
+    /**
+     * For specified mediaQuery list manually simulate activations or deactivations
+     * @private
      * @param {?} queries
      * @param {?=} matches
      * @return {?}
      */
     MediaTrigger.prototype.simulateMediaChanges = /**
      * For specified mediaQuery list manually simulate activations or deactivations
+     * @private
      * @param {?} queries
      * @param {?=} matches
      * @return {?}
@@ -2587,20 +3002,33 @@ var MediaTrigger = /** @class */ (function () {
         var _this = this;
         if (matches === void 0) { matches = true; }
         /** @type {?} */
-        var toMediaQuery = function (query) {
+        var toMediaQuery = (/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) {
             /** @type {?} */
             var locator = _this.breakpoints;
             /** @type {?} */
             var bp = locator.findByAlias(query) || locator.findByQuery(query);
             return bp ? bp.mediaQuery : query;
-        };
+        });
         /** @type {?} */
-        var emitChangeEvent = function (query) { return _this.emitChangeEvent(matches, query); };
+        var emitChangeEvent = (/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) { return _this.emitChangeEvent(matches, query); });
         queries.map(toMediaQuery).forEach(emitChangeEvent);
     };
     /**
      * Replace current registry with simulated registry...
      * Note: this is required since MediaQueryList::matches is 'readOnly'
+     */
+    /**
+     * Replace current registry with simulated registry...
+     * Note: this is required since MediaQueryList::matches is 'readOnly'
+     * @private
      * @param {?} queries
      * @param {?} matches
      * @return {?}
@@ -2608,6 +3036,7 @@ var MediaTrigger = /** @class */ (function () {
     MediaTrigger.prototype.forceRegistryMatches = /**
      * Replace current registry with simulated registry...
      * Note: this is required since MediaQueryList::matches is 'readOnly'
+     * @private
      * @param {?} queries
      * @param {?} matches
      * @return {?}
@@ -2615,54 +3044,83 @@ var MediaTrigger = /** @class */ (function () {
     function (queries, matches) {
         /** @type {?} */
         var registry = new Map();
-        queries.forEach(function (query) {
-            registry.set(query, /** @type {?} */ ({ matches: matches }));
-        });
+        queries.forEach((/**
+         * @param {?} query
+         * @return {?}
+         */
+        function (query) {
+            registry.set(query, (/** @type {?} */ ({ matches: matches })));
+        }));
         this.matchMedia.registry = registry;
     };
     /**
      * Save current MatchMedia::registry items.
+     */
+    /**
+     * Save current MatchMedia::registry items.
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.cacheRegistryMatches = /**
      * Save current MatchMedia::registry items.
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
         var target = this.originalRegistry;
         target.clear();
-        this.matchMedia.registry.forEach(function (value, key) {
+        this.matchMedia.registry.forEach((/**
+         * @param {?} value
+         * @param {?} key
+         * @return {?}
+         */
+        function (value, key) {
             target.set(key, value);
-        });
+        }));
         this.hasCachedRegistryMatches = true;
     };
     /**
      * Restore original, 'true' registry
+     */
+    /**
+     * Restore original, 'true' registry
+     * @private
      * @return {?}
      */
     MediaTrigger.prototype.restoreRegistryMatches = /**
      * Restore original, 'true' registry
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
         var target = this.matchMedia.registry;
         target.clear();
-        this.originalRegistry.forEach(function (value, key) {
+        this.originalRegistry.forEach((/**
+         * @param {?} value
+         * @param {?} key
+         * @return {?}
+         */
+        function (value, key) {
             target.set(key, value);
-        });
+        }));
         this.originalRegistry.clear();
         this.hasCachedRegistryMatches = false;
     };
     /**
      * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     */
+    /**
+     * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     * @private
      * @param {?} matches
      * @param {?} query
      * @return {?}
      */
     MediaTrigger.prototype.emitChangeEvent = /**
      * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     * @private
      * @param {?} matches
      * @param {?} query
      * @return {?}
@@ -2672,6 +3130,7 @@ var MediaTrigger = /** @class */ (function () {
     };
     Object.defineProperty(MediaTrigger.prototype, "currentActivations", {
         get: /**
+         * @private
          * @return {?}
          */
         function () {
@@ -2691,24 +3150,25 @@ var MediaTrigger = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.defineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.inject(BreakPointRegistry), core.inject(MatchMedia), core.inject(LAYOUT_CONFIG), core.inject(core.PLATFORM_ID), core.inject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+    /** @nocollapse */ MediaTrigger.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     return MediaTrigger;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+
 /**
  * Applies CSS prefixes to appropriate style keys.
  *
@@ -2772,7 +3232,7 @@ function applyCssPrefixes(target) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleUtils = /** @class */ (function () {
     function StyleUtils(_serverStylesheet, _serverModuleLoaded, _platformId, layoutConfig) {
@@ -2829,9 +3289,13 @@ var StyleUtils = /** @class */ (function () {
         if (elements === void 0) { elements = []; }
         /** @type {?} */
         var styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
-        elements.forEach(function (el) {
+        elements.forEach((/**
+         * @param {?} el
+         * @return {?}
+         */
+        function (el) {
             _this._applyMultiValueStyleToElement(styles, el);
-        });
+        }));
     };
     /**
      * Determine the DOM element's Flexbox flow (flex-direction)
@@ -2947,6 +3411,12 @@ var StyleUtils = /** @class */ (function () {
      * Applies the styles to the element. The styles object map may contain an array of values
      * Each value will be added as element style
      * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     */
+    /**
+     * Applies the styles to the element. The styles object map may contain an array of values
+     * Each value will be added as element style
+     * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     * @private
      * @param {?} styles
      * @param {?} element
      * @return {?}
@@ -2955,13 +3425,18 @@ var StyleUtils = /** @class */ (function () {
      * Applies the styles to the element. The styles object map may contain an array of values
      * Each value will be added as element style
      * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     * @private
      * @param {?} styles
      * @param {?} element
      * @return {?}
      */
     function (styles, element) {
         var _this = this;
-        Object.keys(styles).sort().forEach(function (key) {
+        Object.keys(styles).sort().forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        function (key) {
             /** @type {?} */
             var el = styles[key];
             /** @type {?} */
@@ -2978,15 +3453,17 @@ var StyleUtils = /** @class */ (function () {
                     _this._serverStylesheet.addStyleToElement(element, key, value);
                 }
             }
-        });
+        }));
     };
     /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @param {?=} styleValue
      * @return {?}
      */
     StyleUtils.prototype._setServerStyle = /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @param {?=} styleValue
@@ -3000,11 +3477,13 @@ var StyleUtils = /** @class */ (function () {
         this._writeStyleAttribute(element, styleMap);
     };
     /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @return {?}
      */
     StyleUtils.prototype._getServerStyle = /**
+     * @private
      * @param {?} element
      * @param {?} styleName
      * @return {?}
@@ -3015,10 +3494,12 @@ var StyleUtils = /** @class */ (function () {
         return styleMap[styleName] || '';
     };
     /**
+     * @private
      * @param {?} element
      * @return {?}
      */
     StyleUtils.prototype._readStyleAttribute = /**
+     * @private
      * @param {?} element
      * @return {?}
      */
@@ -3048,11 +3529,13 @@ var StyleUtils = /** @class */ (function () {
         return styleMap;
     };
     /**
+     * @private
      * @param {?} element
      * @param {?} styleMap
      * @return {?}
      */
     StyleUtils.prototype._writeStyleAttribute = /**
+     * @private
      * @param {?} element
      * @param {?} styleMap
      * @return {?}
@@ -3079,13 +3562,13 @@ var StyleUtils = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ngInjectableDef = core.defineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.inject(StylesheetMap, 8), core.inject(SERVER_TOKEN, 8), core.inject(core.PLATFORM_ID), core.inject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap, 8), core.ɵɵinject(SERVER_TOKEN, 8), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * A class that encapsulates CSS style generation for common directives
@@ -3132,7 +3615,7 @@ StyleBuilder = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -3190,7 +3673,7 @@ function _validateCalcValue(calc) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMarshaller - register responsive values from directives and
@@ -3204,9 +3687,12 @@ var MediaMarshaller = /** @class */ (function () {
         this.activatedBreakpoints = [];
         this.elementMap = new Map();
         this.elementKeyMap = new WeakMap();
-        this.watcherMap = new WeakMap();
-        this.updateMap = new WeakMap();
-        this.clearMap = new WeakMap();
+        this.watcherMap = new WeakMap(); // special triggers to update elements
+        // special triggers to update elements
+        this.updateMap = new WeakMap(); // callback functions to update styles
+        // callback functions to update styles
+        this.clearMap = new WeakMap(); // callback functions to clear styles
+        // callback functions to clear styles
         this.subject = new rxjs.Subject();
         this.observeActivations();
     }
@@ -3404,7 +3890,11 @@ var MediaMarshaller = /** @class */ (function () {
     function (element, key) {
         return this.subject
             .asObservable()
-            .pipe(operators.filter(function (v) { return v.element === element && v.key === key; }));
+            .pipe(operators.filter((/**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) { return v.element === element && v.key === key; })));
     };
     /** update all styles for all elements on the current breakpoint */
     /**
@@ -3417,18 +3907,32 @@ var MediaMarshaller = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        this.elementMap.forEach(function (bpMap, el) {
+        this.elementMap.forEach((/**
+         * @param {?} bpMap
+         * @param {?} el
+         * @return {?}
+         */
+        function (bpMap, el) {
             /** @type {?} */
-            var keyMap = new Set(/** @type {?} */ ((_this.elementKeyMap.get(el))));
+            var keyMap = new Set((/** @type {?} */ (_this.elementKeyMap.get(el))));
             /** @type {?} */
             var valueMap = _this.getActivatedValues(bpMap);
             if (valueMap) {
-                valueMap.forEach(function (v, k) {
+                valueMap.forEach((/**
+                 * @param {?} v
+                 * @param {?} k
+                 * @return {?}
+                 */
+                function (v, k) {
                     _this.updateElement(el, k, v);
                     keyMap.delete(k);
-                });
+                }));
             }
-            keyMap.forEach(function (k) {
+            keyMap.forEach((/**
+             * @param {?} k
+             * @return {?}
+             */
+            function (k) {
                 valueMap = _this.getActivatedValues(bpMap, k);
                 if (valueMap) {
                     /** @type {?} */
@@ -3438,8 +3942,8 @@ var MediaMarshaller = /** @class */ (function () {
                 else {
                     _this.clearElement(el, k);
                 }
-            });
-        });
+            }));
+        }));
     };
     /**
      * clear the styles for a given element
@@ -3463,7 +3967,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.clearMap.get(element);
         if (builders) {
             /** @type {?} */
-            var clearFn = /** @type {?} */ (builders.get(key));
+            var clearFn = (/** @type {?} */ (builders.get(key)));
             if (!!clearFn) {
                 clearFn();
                 this.subject.next({ element: element, key: key, value: '' });
@@ -3495,7 +3999,7 @@ var MediaMarshaller = /** @class */ (function () {
         var builders = this.updateMap.get(element);
         if (builders) {
             /** @type {?} */
-            var updateFn = /** @type {?} */ (builders.get(key));
+            var updateFn = (/** @type {?} */ (builders.get(key)));
             if (!!updateFn) {
                 updateFn(value);
                 this.subject.next({ element: element, key: key, value: value });
@@ -3520,13 +4024,22 @@ var MediaMarshaller = /** @class */ (function () {
         /** @type {?} */
         var watcherMap = this.watcherMap.get(element);
         if (watcherMap) {
-            watcherMap.forEach(function (s) { return s.unsubscribe(); });
+            watcherMap.forEach((/**
+             * @param {?} s
+             * @return {?}
+             */
+            function (s) { return s.unsubscribe(); }));
             this.watcherMap.delete(element);
         }
         /** @type {?} */
         var elementMap = this.elementMap.get(element);
         if (elementMap) {
-            elementMap.forEach(function (_, s) { return elementMap.delete(s); });
+            elementMap.forEach((/**
+             * @param {?} _
+             * @param {?} s
+             * @return {?}
+             */
+            function (_, s) { return elementMap.delete(s); }));
             this.elementMap.delete(element);
         }
     };
@@ -3559,19 +4072,27 @@ var MediaMarshaller = /** @class */ (function () {
                     this.updateElement(element, key, valueMap.get(key));
                 }
                 else {
-                    valueMap.forEach(function (v, k) { return _this.updateElement(element, k, v); });
+                    valueMap.forEach((/**
+                     * @param {?} v
+                     * @param {?} k
+                     * @return {?}
+                     */
+                    function (v, k) { return _this.updateElement(element, k, v); }));
                 }
             }
         }
     };
+    /** Cross-reference for HTMLElement with directive key */
     /**
      * Cross-reference for HTMLElement with directive key
+     * @private
      * @param {?} element
      * @param {?} key
      * @return {?}
      */
     MediaMarshaller.prototype.buildElementKeyMap = /**
      * Cross-reference for HTMLElement with directive key
+     * @private
      * @param {?} element
      * @param {?} key
      * @return {?}
@@ -3590,6 +4111,13 @@ var MediaMarshaller = /** @class */ (function () {
      * - directionality
      * - layout changes
      * - mutationobserver updates
+     */
+    /**
+     * Other triggers that should force style updates:
+     * - directionality
+     * - layout changes
+     * - mutationobserver updates
+     * @private
      * @param {?} element
      * @param {?} key
      * @param {?} triggers
@@ -3600,6 +4128,7 @@ var MediaMarshaller = /** @class */ (function () {
      * - directionality
      * - layout changes
      * - mutationobserver updates
+     * @private
      * @param {?} element
      * @param {?} key
      * @param {?} triggers
@@ -3618,22 +4147,28 @@ var MediaMarshaller = /** @class */ (function () {
             var subscription = watchers.get(key);
             if (!subscription) {
                 /** @type {?} */
-                var newSubscription = rxjs.merge.apply(void 0, triggers).subscribe(function () {
+                var newSubscription = rxjs.merge.apply(void 0, triggers).subscribe((/**
+                 * @return {?}
+                 */
+                function () {
                     /** @type {?} */
                     var currentValue = _this.getValue(element, key);
                     _this.updateElement(element, key, currentValue);
-                });
+                }));
                 watchers.set(key, newSubscription);
             }
         }
     };
+    /** Breakpoint locator by mediaQuery */
     /**
      * Breakpoint locator by mediaQuery
+     * @private
      * @param {?} query
      * @return {?}
      */
     MediaMarshaller.prototype.findByQuery = /**
      * Breakpoint locator by mediaQuery
+     * @private
      * @param {?} query
      * @return {?}
      */
@@ -3642,12 +4177,19 @@ var MediaMarshaller = /** @class */ (function () {
     };
     /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
+     * @param bpMap
+     * @param key
+     */
+    /**
+     * get the fallback breakpoint for a given element, starting with the current breakpoint
+     * @private
      * @param {?} bpMap
      * @param {?=} key
      * @return {?}
      */
     MediaMarshaller.prototype.getActivatedValues = /**
      * get the fallback breakpoint for a given element, starting with the current breakpoint
+     * @private
      * @param {?} bpMap
      * @param {?=} key
      * @return {?}
@@ -3670,17 +4212,26 @@ var MediaMarshaller = /** @class */ (function () {
     };
     /**
      * Watch for mediaQuery breakpoint activations
+     */
+    /**
+     * Watch for mediaQuery breakpoint activations
+     * @private
      * @return {?}
      */
     MediaMarshaller.prototype.observeActivations = /**
      * Watch for mediaQuery breakpoint activations
+     * @private
      * @return {?}
      */
     function () {
         /** @type {?} */
-        var target = /** @type {?} */ ((this));
+        var target = (/** @type {?} */ ((/** @type {?} */ (this))));
         /** @type {?} */
-        var queries = this.breakpoints.items.map(function (bp) { return bp.mediaQuery; });
+        var queries = this.breakpoints.items.map((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        function (bp) { return bp.mediaQuery; }));
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
             .pipe(operators.tap(this.hook.interceptEvents(target)), operators.filter(this.hook.blockPropagation()))
@@ -3695,7 +4246,7 @@ var MediaMarshaller = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.defineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.inject(MatchMedia), core.inject(BreakPointRegistry), core.inject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.ɵɵinject(MatchMedia), core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**
