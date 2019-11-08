@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: utils/layout-validator.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -118,6 +119,7 @@ function buildCSS(direction, wrap = null, inline = false) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/layout/layout.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LayoutStyleBuilder extends StyleBuilder {
@@ -196,6 +198,7 @@ const layoutCache = new Map();
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/layout-gap/layout-gap.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -598,6 +601,7 @@ function buildGapCSS(gapValue, parent) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: utils/object-extend.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
@@ -627,6 +631,7 @@ function extendObject(dest, ...sources) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/flex/flex.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexStyleBuilder extends StyleBuilder {
@@ -973,6 +978,7 @@ const flexColumnWrapCache = new Map();
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/flex-order/flex-order.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexOrderStyleBuilder extends StyleBuilder {
@@ -1049,6 +1055,7 @@ DefaultFlexOrderDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/flex-offset/flex-offset.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexOffsetStyleBuilder extends StyleBuilder {
@@ -1186,6 +1193,7 @@ const flexOffsetCacheColumnLtr = new Map();
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/flex-align/flex-align.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexAlignStyleBuilder extends StyleBuilder {
@@ -1277,6 +1285,7 @@ DefaultFlexAlignDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/flex-fill/flex-fill.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1338,6 +1347,7 @@ const flexFillCache = new Map();
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/layout-align/layout-align.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LayoutAlignStyleBuilder extends StyleBuilder {
@@ -1564,6 +1574,7 @@ const layoutAlignVerticalRevInlineCache = new Map();
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1601,11 +1612,13 @@ FlexModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/public-api.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: flex/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 

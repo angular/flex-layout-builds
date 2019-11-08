@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/img-src/img-src.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ImgSrcStyleBuilder extends StyleBuilder {
@@ -135,6 +136,7 @@ DefaultImgSrcDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/class/class.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ClassDirective extends BaseDirective2 {
@@ -240,6 +242,7 @@ DefaultClassDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/show-hide/show-hide.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ShowHideStyleBuilder extends StyleBuilder {
@@ -451,6 +454,7 @@ DefaultShowHideDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/style/style-transforms.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
@@ -585,6 +589,7 @@ function keyValuesToMap(map, entry) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/style/style.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class StyleDirective extends BaseDirective2 {
@@ -758,6 +763,7 @@ function buildMapFromList$1(styles, sanitize) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -788,11 +794,13 @@ ExtendedModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/public-api.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: extended/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 

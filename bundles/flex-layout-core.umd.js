@@ -61,6 +61,7 @@ function __spreadArrays() {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/browser-provider.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -111,6 +112,7 @@ var CLASS_NAME = 'flex-layout-';
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -131,6 +133,7 @@ var CoreModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/media-change.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -177,6 +180,7 @@ MediaChange = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/stylesheet-map/stylesheet-map.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -268,11 +272,13 @@ var StylesheetMap = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/stylesheet-map/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/tokens/library-config.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -298,6 +304,7 @@ var LAYOUT_CONFIG = new core.InjectionToken('Flex Layout token, config options f
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/tokens/server-token.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -317,6 +324,7 @@ var SERVER_TOKEN = new core.InjectionToken('FlexLayoutServerLoaded', {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/tokens/breakpoint-token.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -330,11 +338,13 @@ var BREAKPOINT = new core.InjectionToken('Flex Layout token, collect all breakpo
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/tokens/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/add-alias.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -357,6 +367,7 @@ function mergeAlias(dest, source) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: utils/layout-validator.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -454,6 +465,7 @@ function buildCSS(direction, wrap, inline) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/base/base2.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -744,11 +756,13 @@ BaseDirective2 = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/base/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/breakpoints/data/break-points.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -832,6 +846,7 @@ var DEFAULT_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/breakpoints/data/orientation-break-points.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
@@ -878,11 +893,13 @@ var ORIENTATION_BREAKPOINTS = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/breakpoints/break-point.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: utils/object-extend.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
@@ -917,6 +934,7 @@ function extendObject(dest) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/breakpoints/breakpoint-tools.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1004,6 +1022,7 @@ function mergeByAlias(defaults, custom) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/breakpoints/break-points-token.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -1037,6 +1056,7 @@ var BREAKPOINTS = new core.InjectionToken('Token (@angular/flex-layout) Breakpoi
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/utils/sort.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -1070,6 +1090,7 @@ function sortAscendingPriority(a, b) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/breakpoints/break-point-registry.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -1219,11 +1240,13 @@ var BreakPointRegistry = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/breakpoints/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/match-media/match-media.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -1518,6 +1541,7 @@ function constructMql(query, isBrowser) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/match-media/mock/mock-match-media.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -1990,11 +2014,13 @@ var MockMatchMediaProvider = {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/match-media/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/media-marshaller/print-hook.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -2399,6 +2425,7 @@ function isPrintBreakPoint(bp) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/utils/array.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
@@ -2414,6 +2441,7 @@ function coerceArray(value) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/media-observer/media-observer.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -2781,11 +2809,13 @@ function splitQueries(queries) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/media-observer/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/media-trigger/media-trigger.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -3164,16 +3194,19 @@ var MediaTrigger = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/media-trigger/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/utils/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: utils/auto-prefixer.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
@@ -3240,6 +3273,7 @@ function applyCssPrefixes(target) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/style-utils/style-utils.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleUtils = /** @class */ (function () {
@@ -3576,6 +3610,7 @@ var StyleUtils = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/style-builder/style-builder.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -3623,6 +3658,7 @@ StyleBuilder = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/basis-validator/basis-validator.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
@@ -3681,6 +3717,7 @@ function _validateCalcValue(calc) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: core/media-marshaller/media-marshaller.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**

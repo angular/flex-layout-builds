@@ -50,6 +50,7 @@ function __spreadArrays() {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/grid-align/grid-align.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -184,6 +185,7 @@ function buildCss(align) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/align-columns/align-columns.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -372,6 +374,7 @@ function buildCss$1(align, inline) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/align-rows/align-rows.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -542,6 +545,7 @@ function buildCss$2(align, inline) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/area/area.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -624,6 +628,7 @@ var DefaultGridAreaDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/areas/areas.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -761,6 +766,7 @@ var DefaultGridAreasDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/auto/auto.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -895,6 +901,7 @@ var DefaultGridAutoDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/column/column.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -977,6 +984,7 @@ var DefaultGridColumnDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/columns/columns.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1122,6 +1130,7 @@ var DefaultGridColumnsDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/gap/gap.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1252,6 +1261,7 @@ var DefaultGridGapDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/row/row.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1334,6 +1344,7 @@ var DefaultGridRowDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/rows/rows.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1479,6 +1490,7 @@ var DefaultGridRowsDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */

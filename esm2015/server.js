@@ -12,6 +12,7 @@ import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: server/server-match-media.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -238,6 +239,7 @@ ServerMatchMedia.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: server/server-provider.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -417,6 +419,7 @@ function getClassName(element, classMap) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: server/module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexLayoutServerModule {
@@ -429,11 +432,13 @@ FlexLayoutServerModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: server/public-api.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: server/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 

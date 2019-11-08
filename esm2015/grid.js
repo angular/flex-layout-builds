@@ -11,6 +11,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/grid-align/grid-align.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -140,6 +141,7 @@ function buildCss(align = '') {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/align-columns/align-columns.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -309,6 +311,7 @@ function buildCss$1(align, inline) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/align-rows/align-rows.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -460,6 +463,7 @@ function buildCss$2(align, inline) {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/area/area.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -538,6 +542,7 @@ DefaultGridAreaDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/areas/areas.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -654,6 +659,7 @@ DefaultGridAreasDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/auto/auto.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -767,6 +773,7 @@ DefaultGridAutoDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/column/column.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -845,6 +852,7 @@ DefaultGridColumnDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/columns/columns.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -969,6 +977,7 @@ DefaultGridColumnsDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/gap/gap.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1078,6 +1087,7 @@ DefaultGridGapDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/row/row.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1156,6 +1166,7 @@ DefaultGridRowDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/rows/rows.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1280,6 +1291,7 @@ DefaultGridRowsDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -1324,11 +1336,13 @@ GridModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/public-api.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: grid/index.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
