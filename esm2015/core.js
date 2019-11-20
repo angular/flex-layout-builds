@@ -68,7 +68,7 @@ const CLASS_NAME = 'flex-layout-';
  */
 /**
  * *****************************************************************
- * Define module for the MediaQuery API
+ * Define module for common Angular Layout utilities
  * *****************************************************************
  */
 class CoreModule {

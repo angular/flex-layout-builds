@@ -87,7 +87,7 @@ class ImgSrcDirective extends BaseDirective2 {
     }
 }
 ImgSrcDirective.decorators = [
-    { type: Directive, args: [{ selector: 'img-src-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 ImgSrcDirective.ctorParameters = () => [
@@ -194,7 +194,7 @@ class ClassDirective extends BaseDirective2 {
     }
 }
 ClassDirective.decorators = [
-    { type: Directive, args: [{ selector: 'class-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 ClassDirective.ctorParameters = () => [
@@ -403,7 +403,7 @@ class ShowHideDirective extends BaseDirective2 {
     }
 }
 ShowHideDirective.decorators = [
-    { type: Directive, args: [{ selector: 'show-hide-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 ShowHideDirective.ctorParameters = () => [
@@ -613,7 +613,7 @@ class StyleDirective extends BaseDirective2 {
         this.ngStyleInstance = ngStyleInstance;
         this.DIRECTIVE_KEY = 'ngStyle';
         if (!this.ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
             this.ngStyleInstance = new NgStyle(this.delegate);
         }
@@ -686,7 +686,7 @@ class StyleDirective extends BaseDirective2 {
     }
 }
 StyleDirective.decorators = [
-    { type: Directive, args: [{ selector: 'style-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 StyleDirective.ctorParameters = () => [
@@ -772,10 +772,6 @@ const ALL_DIRECTIVES = [
     DefaultClassDirective,
     DefaultStyleDirective,
     DefaultImgSrcDirective,
-    ClassDirective,
-    ImgSrcDirective,
-    ShowHideDirective,
-    StyleDirective,
 ];
 /**
  * *****************************************************************

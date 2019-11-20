@@ -175,7 +175,7 @@ class LayoutDirective extends BaseDirective2 {
     }
 }
 LayoutDirective.decorators = [
-    { type: Directive, args: [{ selector: 'layout-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 LayoutDirective.ctorParameters = () => [
@@ -492,7 +492,7 @@ class LayoutGapDirective extends BaseDirective2 {
     }
 }
 LayoutGapDirective.decorators = [
-    { type: Directive, args: [{ selector: 'layout-gap-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 LayoutGapDirective.ctorParameters = () => [
@@ -944,7 +944,7 @@ class FlexDirective extends BaseDirective2 {
     }
 }
 FlexDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexDirective.ctorParameters = () => [
@@ -1032,7 +1032,7 @@ class FlexOrderDirective extends BaseDirective2 {
     }
 }
 FlexOrderDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-order-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexOrderDirective.ctorParameters = () => [
@@ -1163,7 +1163,7 @@ class FlexOffsetDirective extends BaseDirective2 {
     }
 }
 FlexOffsetDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-offset-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexOffsetDirective.ctorParameters = () => [
@@ -1262,7 +1262,7 @@ class FlexAlignDirective extends BaseDirective2 {
     }
 }
 FlexAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-align-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexAlignDirective.ctorParameters = () => [
@@ -1537,7 +1537,7 @@ class LayoutAlignDirective extends BaseDirective2 {
     }
 }
 LayoutAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: 'layout-align-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 LayoutAlignDirective.ctorParameters = () => [
@@ -1587,13 +1587,6 @@ const ALL_DIRECTIVES = [
     FlexFillDirective,
     DefaultFlexAlignDirective,
     DefaultFlexDirective,
-    FlexDirective,
-    FlexAlignDirective,
-    FlexOffsetDirective,
-    FlexOrderDirective,
-    LayoutDirective,
-    LayoutAlignDirective,
-    LayoutGapDirective,
 ];
 /**
  * *****************************************************************

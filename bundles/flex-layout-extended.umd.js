@@ -159,7 +159,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         }
     };
     ImgSrcDirective.decorators = [
-        { type: core.Directive, args: [{ selector: 'img-src-directive' },] },
+        { type: core.Directive },
     ];
     /** @nocollapse */
     ImgSrcDirective.ctorParameters = function () { return [
@@ -288,7 +288,7 @@ var ClassDirective = /** @class */ (function (_super) {
         this.ngClassInstance.ngDoCheck();
     };
     ClassDirective.decorators = [
-        { type: core.Directive, args: [{ selector: 'class-directive' },] },
+        { type: core.Directive },
     ];
     /** @nocollapse */
     ClassDirective.ctorParameters = function () { return [
@@ -559,7 +559,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
     };
     ShowHideDirective.decorators = [
-        { type: core.Directive, args: [{ selector: 'show-hide-directive' },] },
+        { type: core.Directive },
     ];
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
@@ -757,7 +757,7 @@ var StyleDirective = /** @class */ (function (_super) {
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
             _this.ngStyleInstance = new common.NgStyle(_this.delegate);
         }
@@ -873,7 +873,7 @@ var StyleDirective = /** @class */ (function (_super) {
         this.ngStyleInstance.ngDoCheck();
     };
     StyleDirective.decorators = [
-        { type: core.Directive, args: [{ selector: 'style-directive' },] },
+        { type: core.Directive },
     ];
     /** @nocollapse */
     StyleDirective.ctorParameters = function () { return [
@@ -959,10 +959,6 @@ var ALL_DIRECTIVES = [
     DefaultClassDirective,
     DefaultStyleDirective,
     DefaultImgSrcDirective,
-    ClassDirective,
-    ImgSrcDirective,
-    ShowHideDirective,
-    StyleDirective,
 ];
 /**
  * *****************************************************************

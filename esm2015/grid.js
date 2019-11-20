@@ -50,7 +50,7 @@ class GridAlignDirective extends BaseDirective2 {
     }
 }
 GridAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-align-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridAlignDirective.ctorParameters = () => [
@@ -202,7 +202,7 @@ class GridAlignColumnsDirective extends BaseDirective2 {
     }
 }
 GridAlignColumnsDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-align-columns-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridAlignColumnsDirective.ctorParameters = () => [
@@ -372,7 +372,7 @@ class GridAlignRowsDirective extends BaseDirective2 {
     }
 }
 GridAlignRowsDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-align-rows-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridAlignRowsDirective.ctorParameters = () => [
@@ -500,7 +500,7 @@ class GridAreaDirective extends BaseDirective2 {
     }
 }
 GridAreaDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-area-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridAreaDirective.ctorParameters = () => [
@@ -612,7 +612,7 @@ class GridAreasDirective extends BaseDirective2 {
     }
 }
 GridAreasDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-areas-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridAreasDirective.ctorParameters = () => [
@@ -726,7 +726,7 @@ class GridAutoDirective extends BaseDirective2 {
     }
 }
 GridAutoDirective.decorators = [
-    { type: Directive, args: [{ selector: `grid-auto-directive` },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridAutoDirective.ctorParameters = () => [
@@ -810,7 +810,7 @@ class GridColumnDirective extends BaseDirective2 {
     }
 }
 GridColumnDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-column-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridColumnDirective.ctorParameters = () => [
@@ -929,7 +929,7 @@ class GridColumnsDirective extends BaseDirective2 {
     }
 }
 GridColumnsDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-columns-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridColumnsDirective.ctorParameters = () => [
@@ -1039,7 +1039,7 @@ class GridGapDirective extends BaseDirective2 {
     }
 }
 GridGapDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-gap-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridGapDirective.ctorParameters = () => [
@@ -1124,7 +1124,7 @@ class GridRowDirective extends BaseDirective2 {
     }
 }
 GridRowDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-row-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridRowDirective.ctorParameters = () => [
@@ -1243,7 +1243,7 @@ class GridRowsDirective extends BaseDirective2 {
     }
 }
 GridRowsDirective.decorators = [
-    { type: Directive, args: [{ selector: 'grid-rows-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 GridRowsDirective.ctorParameters = () => [
@@ -1307,17 +1307,6 @@ const ALL_DIRECTIVES = [
     DefaultGridGapDirective,
     DefaultGridRowDirective,
     DefaultGridRowsDirective,
-    GridAlignColumnsDirective,
-    GridAlignRowsDirective,
-    GridAreaDirective,
-    GridAreasDirective,
-    GridAutoDirective,
-    GridColumnDirective,
-    GridColumnsDirective,
-    GridGapDirective,
-    GridAlignDirective,
-    GridRowDirective,
-    GridRowsDirective,
 ];
 /**
  * *****************************************************************
