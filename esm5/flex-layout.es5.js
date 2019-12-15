@@ -26,7 +26,7 @@ export { ɵf2, ɵe2, ɵd2, ɵi2, ɵh2, ɵg2, ɵl2, ɵk2, ɵj2, ɵo2, ɵn2, ɵm2,
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new Version('8.0.0-beta.27-c8bf82e');
+var VERSION = new Version('8.0.0-beta.27-01b19d8');
 
 /**
  * @fileoverview added by tsickle
