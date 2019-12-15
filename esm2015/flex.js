@@ -13,7 +13,8 @@ import { takeUntil } from 'rxjs/operators';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: utils/layout-validator.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @license
@@ -118,7 +119,8 @@ function buildCSS(direction, wrap = null, inline = false) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/layout/layout.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LayoutStyleBuilder extends StyleBuilder {
     /**
@@ -132,7 +134,7 @@ class LayoutStyleBuilder extends StyleBuilder {
 LayoutStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ LayoutStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+/** @nocollapse */ LayoutStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs = [
     'fxLayout', 'fxLayout.xs', 'fxLayout.sm', 'fxLayout.md',
@@ -173,7 +175,7 @@ class LayoutDirective extends BaseDirective2 {
     }
 }
 LayoutDirective.decorators = [
-    { type: Directive, args: [{ selector: 'layout-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 LayoutDirective.ctorParameters = () => [
@@ -196,7 +198,8 @@ const layoutCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/layout-gap/layout-gap.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const CLEAR_MARGIN_CSS = {
@@ -264,7 +267,7 @@ LayoutGapStyleBuilder.decorators = [
 LayoutGapStyleBuilder.ctorParameters = () => [
     { type: StyleUtils }
 ];
-/** @nocollapse */ LayoutGapStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
+/** @nocollapse */ LayoutGapStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$1 = [
     'fxLayoutGap', 'fxLayoutGap.xs', 'fxLayoutGap.sm', 'fxLayoutGap.md',
@@ -489,7 +492,7 @@ class LayoutGapDirective extends BaseDirective2 {
     }
 }
 LayoutGapDirective.decorators = [
-    { type: Directive, args: [{ selector: 'layout-gap-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 LayoutGapDirective.ctorParameters = () => [
@@ -598,7 +601,8 @@ function buildGapCSS(gapValue, parent) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: utils/object-extend.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -627,7 +631,8 @@ function extendObject(dest, ...sources) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/flex/flex.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexStyleBuilder extends StyleBuilder {
     /**
@@ -796,7 +801,7 @@ FlexStyleBuilder.decorators = [
 FlexStyleBuilder.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
 ];
-/** @nocollapse */ FlexStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
+/** @nocollapse */ FlexStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$2 = [
     'fxFlex', 'fxFlex.xs', 'fxFlex.sm', 'fxFlex.md',
@@ -939,7 +944,7 @@ class FlexDirective extends BaseDirective2 {
     }
 }
 FlexDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexDirective.ctorParameters = () => [
@@ -973,7 +978,8 @@ const flexColumnWrapCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/flex-order/flex-order.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexOrderStyleBuilder extends StyleBuilder {
     /**
@@ -987,7 +993,7 @@ class FlexOrderStyleBuilder extends StyleBuilder {
 FlexOrderStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ FlexOrderStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+/** @nocollapse */ FlexOrderStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$3 = [
     'fxFlexOrder', 'fxFlexOrder.xs', 'fxFlexOrder.sm', 'fxFlexOrder.md',
@@ -1026,7 +1032,7 @@ class FlexOrderDirective extends BaseDirective2 {
     }
 }
 FlexOrderDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-order-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexOrderDirective.ctorParameters = () => [
@@ -1049,7 +1055,8 @@ DefaultFlexOrderDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/flex-offset/flex-offset.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexOffsetStyleBuilder extends StyleBuilder {
     /**
@@ -1079,7 +1086,7 @@ class FlexOffsetStyleBuilder extends StyleBuilder {
 FlexOffsetStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ FlexOffsetStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+/** @nocollapse */ FlexOffsetStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$4 = [
     'fxFlexOffset', 'fxFlexOffset.xs', 'fxFlexOffset.sm', 'fxFlexOffset.md',
@@ -1156,7 +1163,7 @@ class FlexOffsetDirective extends BaseDirective2 {
     }
 }
 FlexOffsetDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-offset-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexOffsetDirective.ctorParameters = () => [
@@ -1186,7 +1193,8 @@ const flexOffsetCacheColumnLtr = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/flex-align/flex-align.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexAlignStyleBuilder extends StyleBuilder {
     /**
@@ -1215,7 +1223,7 @@ class FlexAlignStyleBuilder extends StyleBuilder {
 FlexAlignStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ FlexAlignStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+/** @nocollapse */ FlexAlignStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$5 = [
     'fxFlexAlign', 'fxFlexAlign.xs', 'fxFlexAlign.sm', 'fxFlexAlign.md',
@@ -1254,7 +1262,7 @@ class FlexAlignDirective extends BaseDirective2 {
     }
 }
 FlexAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: 'flex-align-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 FlexAlignDirective.ctorParameters = () => [
@@ -1277,7 +1285,8 @@ DefaultFlexAlignDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/flex-fill/flex-fill.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const FLEX_FILL_CSS = {
@@ -1299,7 +1308,7 @@ class FlexFillStyleBuilder extends StyleBuilder {
 FlexFillStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ FlexFillStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+/** @nocollapse */ FlexFillStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
 /**
  * 'fxFill' flexbox styling directive
  *  Maximizes width and height of element in a layout container
@@ -1338,7 +1347,8 @@ const flexFillCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/layout-align/layout-align.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LayoutAlignStyleBuilder extends StyleBuilder {
     /**
@@ -1418,7 +1428,7 @@ class LayoutAlignStyleBuilder extends StyleBuilder {
 LayoutAlignStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ LayoutAlignStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+/** @nocollapse */ LayoutAlignStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$6 = [
     'fxLayoutAlign', 'fxLayoutAlign.xs', 'fxLayoutAlign.sm', 'fxLayoutAlign.md',
@@ -1527,7 +1537,7 @@ class LayoutAlignDirective extends BaseDirective2 {
     }
 }
 LayoutAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: 'layout-align-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 LayoutAlignDirective.ctorParameters = () => [
@@ -1564,7 +1574,8 @@ const layoutAlignVerticalRevInlineCache = new Map();
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const ALL_DIRECTIVES = [
@@ -1576,13 +1587,6 @@ const ALL_DIRECTIVES = [
     FlexFillDirective,
     DefaultFlexAlignDirective,
     DefaultFlexDirective,
-    FlexDirective,
-    FlexAlignDirective,
-    FlexOffsetDirective,
-    FlexOrderDirective,
-    LayoutDirective,
-    LayoutAlignDirective,
-    LayoutGapDirective,
 ];
 /**
  * *****************************************************************
@@ -1601,12 +1605,14 @@ FlexModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/public-api.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: flex/index.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { FlexModule, FlexStyleBuilder, FlexDirective, DefaultFlexDirective, FlexAlignStyleBuilder, FlexAlignDirective, DefaultFlexAlignDirective, FlexFillStyleBuilder, FlexFillDirective, FlexOffsetStyleBuilder, FlexOffsetDirective, DefaultFlexOffsetDirective, FlexOrderStyleBuilder, FlexOrderDirective, DefaultFlexOrderDirective, LayoutStyleBuilder, LayoutDirective, DefaultLayoutDirective, LayoutAlignStyleBuilder, LayoutAlignDirective, DefaultLayoutAlignDirective, LayoutGapStyleBuilder, LayoutGapDirective, DefaultLayoutGapDirective };
