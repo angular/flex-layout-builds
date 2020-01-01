@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { __extends, __assign } from 'tslib';
+import { __extends, __assign, __spreadArrays } from 'tslib';
 import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, Optional, Self, SecurityContext, ɵɵdefineInjectable } from '@angular/core';
 import { isPlatformServer, NgClass, ɵNgClassImpl, ɵNgClassR2Impl, NgStyle, ɵNgStyleImpl, ɵNgStyleR2Impl } from '@angular/common';
 import { MediaMarshaller, BaseDirective2, SERVER_TOKEN, StyleBuilder, StyleUtils, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
@@ -15,7 +15,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/img-src/img-src.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     __extends(ImgSrcStyleBuilder, _super);
@@ -36,7 +37,7 @@ var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     ImgSrcStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ImgSrcStyleBuilder.ɵprov4 = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
     return ImgSrcStyleBuilder;
 }(StyleBuilder));
 var ImgSrcDirective = /** @class */ (function (_super) {
@@ -112,7 +113,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         }
     };
     ImgSrcDirective.decorators = [
-        { type: Directive, args: [{ selector: 'img-src-directive' },] },
+        { type: Directive },
     ];
     /** @nocollapse */
     ImgSrcDirective.ctorParameters = function () { return [
@@ -162,7 +163,8 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/class/class.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
@@ -240,7 +242,7 @@ var ClassDirective = /** @class */ (function (_super) {
         this.ngClassInstance.ngDoCheck();
     };
     ClassDirective.decorators = [
-        { type: Directive, args: [{ selector: 'class-directive' },] },
+        { type: Directive },
     ];
     /** @nocollapse */
     ClassDirective.ctorParameters = function () { return [
@@ -289,7 +291,8 @@ var DefaultClassDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/show-hide/show-hide.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ShowHideStyleBuilder = /** @class */ (function (_super) {
     __extends(ShowHideStyleBuilder, _super);
@@ -314,7 +317,7 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     ShowHideStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ ShowHideStyleBuilder.ɵprov4 = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
     return ShowHideStyleBuilder;
 }(StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
@@ -510,7 +513,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
     };
     ShowHideDirective.decorators = [
-        { type: Directive, args: [{ selector: 'show-hide-directive' },] },
+        { type: Directive },
     ];
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
@@ -557,7 +560,8 @@ var DefaultShowHideDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/style/style-transforms.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -692,7 +696,8 @@ function keyValuesToMap(map, entry) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/style/style.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
@@ -706,7 +711,7 @@ var StyleDirective = /** @class */ (function (_super) {
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
             _this.ngStyleInstance = new NgStyle(_this.delegate);
         }
@@ -733,7 +738,7 @@ var StyleDirective = /** @class */ (function (_super) {
     function (value) {
         /** @type {?} */
         var styles = this.buildStyleMap(value);
-        this.ngStyleInstance.ngStyle = __assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngStyle = __assign(__assign({}, this.fallbackStyles), styles);
         if (this.isServer) {
             this.applyStyleToElement(styles);
         }
@@ -822,7 +827,7 @@ var StyleDirective = /** @class */ (function (_super) {
         this.ngStyleInstance.ngDoCheck();
     };
     StyleDirective.decorators = [
-        { type: Directive, args: [{ selector: 'style-directive' },] },
+        { type: Directive },
     ];
     /** @nocollapse */
     StyleDirective.ctorParameters = function () { return [
@@ -899,7 +904,8 @@ function buildMapFromList$1(styles, sanitize) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
@@ -907,10 +913,6 @@ var ALL_DIRECTIVES = [
     DefaultClassDirective,
     DefaultStyleDirective,
     DefaultImgSrcDirective,
-    ClassDirective,
-    ImgSrcDirective,
-    ShowHideDirective,
-    StyleDirective,
 ];
 /**
  * *****************************************************************
@@ -923,8 +925,8 @@ var ExtendedModule = /** @class */ (function () {
     ExtendedModule.decorators = [
         { type: NgModule, args: [{
                     imports: [CoreModule],
-                    declarations: ALL_DIRECTIVES.slice(),
-                    exports: ALL_DIRECTIVES.slice()
+                    declarations: __spreadArrays(ALL_DIRECTIVES),
+                    exports: __spreadArrays(ALL_DIRECTIVES)
                 },] },
     ];
     return ExtendedModule;
@@ -932,12 +934,14 @@ var ExtendedModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/public-api.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/index.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { ExtendedModule, ClassDirective, LayoutNgClassImplProvider, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, LayoutNgStyleImplProvider, DefaultStyleDirective };

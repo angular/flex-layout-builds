@@ -19,17 +19,19 @@ export { ɵf2, ɵe2, ɵd2, ɵi2, ɵh2, ɵg2, ɵl2, ɵk2, ɵj2, ɵo2, ɵn2, ɵm2,
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: version.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new Version('8.0.0-beta.27-3363125');
+var VERSION = new Version('8.0.0-beta.27-0b88ab4');
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -67,11 +69,11 @@ var FlexLayoutModule = /** @class */ (function () {
             ngModule: FlexLayoutModule,
             providers: configOptions.serverLoaded ?
                 [
-                    { provide: LAYOUT_CONFIG, useValue: __assign({}, DEFAULT_CONFIG, configOptions) },
+                    { provide: LAYOUT_CONFIG, useValue: __assign(__assign({}, DEFAULT_CONFIG), configOptions) },
                     { provide: BREAKPOINT, useValue: breakpoints, multi: true },
                     { provide: SERVER_TOKEN, useValue: true },
                 ] : [
-                { provide: LAYOUT_CONFIG, useValue: __assign({}, DEFAULT_CONFIG, configOptions) },
+                { provide: LAYOUT_CONFIG, useValue: __assign(__assign({}, DEFAULT_CONFIG), configOptions) },
                 { provide: BREAKPOINT, useValue: breakpoints, multi: true },
             ]
         };
@@ -92,12 +94,14 @@ var FlexLayoutModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: public-api.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: index.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { VERSION, FlexLayoutModule };

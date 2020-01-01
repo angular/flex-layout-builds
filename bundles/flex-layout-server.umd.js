@@ -40,9 +40,18 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+}
+
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: server/server-match-media.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Special server-only class to simulate a MediaQueryList and
@@ -347,7 +356,8 @@ var ServerMatchMedia = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: server/server-provider.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Activate all of the registered breakpoints in sequence, and then
@@ -373,7 +383,7 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     nextId = 0;
     /** @type {?} */
     var styleText = generateCss(defaultStyles, 'all', classMap);
-    breakpoints.slice().sort(core$1.sortAscendingPriority).forEach((/**
+    __spreadArrays(breakpoints).sort(core$1.sortAscendingPriority).forEach((/**
      * @param {?} bp
      * @param {?} i
      * @return {?}
@@ -534,7 +544,8 @@ function getClassName(element, classMap) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: server/module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexLayoutServerModule = /** @class */ (function () {
     function FlexLayoutServerModule() {

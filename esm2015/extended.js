@@ -14,7 +14,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/img-src/img-src.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ImgSrcStyleBuilder extends StyleBuilder {
     /**
@@ -28,7 +29,7 @@ class ImgSrcStyleBuilder extends StyleBuilder {
 ImgSrcStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+/** @nocollapse */ ImgSrcStyleBuilder.ɵprov4 = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
 class ImgSrcDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -86,7 +87,7 @@ class ImgSrcDirective extends BaseDirective2 {
     }
 }
 ImgSrcDirective.decorators = [
-    { type: Directive, args: [{ selector: 'img-src-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 ImgSrcDirective.ctorParameters = () => [
@@ -135,7 +136,8 @@ DefaultImgSrcDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/class/class.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ClassDirective extends BaseDirective2 {
     /**
@@ -192,7 +194,7 @@ class ClassDirective extends BaseDirective2 {
     }
 }
 ClassDirective.decorators = [
-    { type: Directive, args: [{ selector: 'class-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 ClassDirective.ctorParameters = () => [
@@ -240,7 +242,8 @@ DefaultClassDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/show-hide/show-hide.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ShowHideStyleBuilder extends StyleBuilder {
     /**
@@ -257,7 +260,7 @@ class ShowHideStyleBuilder extends StyleBuilder {
 ShowHideStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+/** @nocollapse */ ShowHideStyleBuilder.ɵprov4 = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
 class ShowHideDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -400,7 +403,7 @@ class ShowHideDirective extends BaseDirective2 {
     }
 }
 ShowHideDirective.decorators = [
-    { type: Directive, args: [{ selector: 'show-hide-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 ShowHideDirective.ctorParameters = () => [
@@ -451,7 +454,8 @@ DefaultShowHideDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/style/style-transforms.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -585,7 +589,8 @@ function keyValuesToMap(map, entry) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/style/style.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class StyleDirective extends BaseDirective2 {
     /**
@@ -608,7 +613,7 @@ class StyleDirective extends BaseDirective2 {
         this.ngStyleInstance = ngStyleInstance;
         this.DIRECTIVE_KEY = 'ngStyle';
         if (!this.ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
             this.ngStyleInstance = new NgStyle(this.delegate);
         }
@@ -627,7 +632,7 @@ class StyleDirective extends BaseDirective2 {
     updateWithValue(value) {
         /** @type {?} */
         const styles = this.buildStyleMap(value);
-        this.ngStyleInstance.ngStyle = Object.assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngStyle = Object.assign(Object.assign({}, this.fallbackStyles), styles);
         if (this.isServer) {
             this.applyStyleToElement(styles);
         }
@@ -681,7 +686,7 @@ class StyleDirective extends BaseDirective2 {
     }
 }
 StyleDirective.decorators = [
-    { type: Directive, args: [{ selector: 'style-directive' },] },
+    { type: Directive },
 ];
 /** @nocollapse */
 StyleDirective.ctorParameters = () => [
@@ -758,7 +763,8 @@ function buildMapFromList$1(styles, sanitize) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const ALL_DIRECTIVES = [
@@ -766,10 +772,6 @@ const ALL_DIRECTIVES = [
     DefaultClassDirective,
     DefaultStyleDirective,
     DefaultImgSrcDirective,
-    ClassDirective,
-    ImgSrcDirective,
-    ShowHideDirective,
-    StyleDirective,
 ];
 /**
  * *****************************************************************
@@ -788,12 +790,14 @@ ExtendedModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/public-api.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated from: extended/index.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { ExtendedModule, ClassDirective, LayoutNgClassImplProvider, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, LayoutNgStyleImplProvider, DefaultStyleDirective };
