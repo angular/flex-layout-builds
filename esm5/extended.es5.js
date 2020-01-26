@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { __extends, __assign, __spreadArrays } from 'tslib';
-import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, Optional, Self, SecurityContext, ɵɵdefineInjectable } from '@angular/core';
-import { isPlatformServer, NgClass, ɵNgClassImpl, ɵNgClassR2Impl, NgStyle, ɵNgStyleImpl, ɵNgStyleR2Impl } from '@angular/common';
+import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, IterableDiffers, KeyValueDiffers, Optional, Renderer2, Self, SecurityContext, ɵɵdefineInjectable } from '@angular/core';
+import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
 import { MediaMarshaller, BaseDirective2, SERVER_TOKEN, StyleBuilder, StyleUtils, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { takeUntil } from 'rxjs/operators';
@@ -44,10 +44,6 @@ var ImgSrcDirective = /** @class */ (function (_super) {
     __extends(ImgSrcDirective, _super);
     function ImgSrcDirective(elementRef, styleBuilder, styler, marshal, platformId, serverModuleLoaded) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
         _this.DIRECTIVE_KEY = 'img-src';
@@ -168,18 +164,14 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
-    function ClassDirective(elementRef, styler, marshal, delegate, ngClassInstance) {
+    function ClassDirective(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer2, ngClassInstance) {
         var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styler = styler;
-        _this.marshal = marshal;
-        _this.delegate = delegate;
         _this.ngClassInstance = ngClassInstance;
         _this.DIRECTIVE_KEY = 'ngClass';
         if (!_this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            _this.ngClassInstance = new NgClass(_this.delegate);
+            _this.ngClassInstance = new NgClass(iterableDiffers, keyValueDiffers, elementRef, renderer2);
         }
         _this.init();
         _this.setValue('', '');
@@ -249,7 +241,9 @@ var ClassDirective = /** @class */ (function (_super) {
         { type: ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: ɵNgClassImpl },
+        { type: IterableDiffers },
+        { type: KeyValueDiffers },
+        { type: Renderer2 },
         { type: NgClass, decorators: [{ type: Optional }, { type: Self }] }
     ]; };
     ClassDirective.propDecorators = {
@@ -265,12 +259,6 @@ var inputs$1 = [
 ];
 /** @type {?} */
 var selector$1 = "\n  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n";
-// tslint:disable-next-line:variable-name
-/** @type {?} */
-var LayoutNgClassImplProvider = {
-    provide: ɵNgClassImpl,
-    useClass: ɵNgClassR2Impl
-};
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
@@ -284,7 +272,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultClassDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1, providers: [LayoutNgClassImplProvider] },] },
+        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
     ];
     return DefaultClassDirective;
 }(ClassDirective));
@@ -324,10 +312,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
     __extends(ShowHideDirective, _super);
     function ShowHideDirective(elementRef, styleBuilder, styler, marshal, layoutConfig, platformId, serverModuleLoaded) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.layoutConfig = layoutConfig;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
@@ -523,7 +507,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         { type: MediaMarshaller },
         { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] }
+        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] }
     ]; };
     return ShowHideDirective;
 }(BaseDirective2));
@@ -701,19 +685,15 @@ function keyValuesToMap(map, entry) {
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, delegate, sanitizer, ngStyleInstance, serverLoaded, platformId) {
+    function StyleDirective(elementRef, styler, marshal, sanitizer, differs, renderer2, ngStyleInstance, serverLoaded, platformId) {
         var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styler = styler;
-        _this.marshal = marshal;
-        _this.delegate = delegate;
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
             // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            _this.ngStyleInstance = new NgStyle(_this.delegate);
+            _this.ngStyleInstance = new NgStyle(elementRef, differs, renderer2);
         }
         _this.init();
         /** @type {?} */
@@ -834,10 +814,11 @@ var StyleDirective = /** @class */ (function (_super) {
         { type: ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: ɵNgStyleImpl },
         { type: DomSanitizer },
+        { type: KeyValueDiffers },
+        { type: Renderer2 },
         { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] },
-        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
     ]; };
     return StyleDirective;
@@ -851,12 +832,6 @@ var inputs$3 = [
 ];
 /** @type {?} */
 var selector$3 = "\n  [ngStyle],\n  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n";
-// tslint:disable-next-line:variable-name
-/** @type {?} */
-var LayoutNgStyleImplProvider = {
-    provide: ɵNgStyleImpl,
-    useClass: ɵNgStyleR2Impl
-};
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -869,7 +844,7 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultStyleDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3, providers: [LayoutNgStyleImplProvider] },] },
+        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
     ];
     return DefaultStyleDirective;
 }(StyleDirective));
@@ -944,5 +919,5 @@ var ExtendedModule = /** @class */ (function () {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { ExtendedModule, ClassDirective, LayoutNgClassImplProvider, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, LayoutNgStyleImplProvider, DefaultStyleDirective };
+export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, DefaultStyleDirective };
 //# sourceMappingURL=extended.es5.js.map

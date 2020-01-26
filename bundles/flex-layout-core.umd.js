@@ -2038,9 +2038,19 @@ var BREAKPOINT_PRINT = {
  * Used in MediaMarshaller and MediaObserver
  */
 var PrintHook = /** @class */ (function () {
-    function PrintHook(breakpoints, layoutConfig) {
+    function PrintHook(breakpoints, layoutConfig, _document) {
         this.breakpoints = breakpoints;
         this.layoutConfig = layoutConfig;
+        this._document = _document;
+        // registeredBeforeAfterPrintHooks tracks if we registered the `beforeprint`
+        //  and `afterprint` event listeners.
+        this.registeredBeforeAfterPrintHooks = false;
+        // isPrintingBeforeAfterEvent is used to track if we are printing from within
+        // a `beforeprint` event handler. This prevents the typicall `stopPrinting`
+        // form `interceptEvents` so that printing is not stopped while the dialog
+        // is still open. This is an extension of the `isPrinting` property on
+        // browsers which support `beforeprint` and `afterprint` events.
+        this.isPrintingBeforeAfterEvent = false;
         /**
          * Is this service currently in Print-mode ?
          */
@@ -2151,6 +2161,62 @@ var PrintHook = /** @class */ (function () {
         }
         return mergeAlias(event, bp);
     };
+    // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+    // trigger print styles synchronously and apply proper layout styles.
+    // It is a noop if the hooks have already been registered or if the document's
+    // `defaultView` is not available.
+    // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+    // trigger print styles synchronously and apply proper layout styles.
+    // It is a noop if the hooks have already been registered or if the document's
+    // `defaultView` is not available.
+    /**
+     * @private
+     * @param {?} target
+     * @return {?}
+     */
+    PrintHook.prototype.registerBeforeAfterPrintHooks = 
+    // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+    // trigger print styles synchronously and apply proper layout styles.
+    // It is a noop if the hooks have already been registered or if the document's
+    // `defaultView` is not available.
+    /**
+     * @private
+     * @param {?} target
+     * @return {?}
+     */
+    function (target) {
+        var _this = this;
+        // `defaultView` may be null when rendering on the server or in other contexts.
+        if (!this._document.defaultView || this.registeredBeforeAfterPrintHooks) {
+            return;
+        }
+        this.registeredBeforeAfterPrintHooks = true;
+        // Could we have teardown logic to remove if there are no print listeners being used?
+        this._document.defaultView.addEventListener('beforeprint', (/**
+         * @return {?}
+         */
+        function () {
+            // If we aren't already printing, start printing and update the styles as
+            // if there was a regular print `MediaChange`(from matchMedia).
+            if (!_this.isPrinting) {
+                _this.isPrintingBeforeAfterEvent = true;
+                _this.startPrinting(target, _this.getEventBreakpoints(new MediaChange(true, PRINT)));
+                target.updateStyles();
+            }
+        }));
+        this._document.defaultView.addEventListener('afterprint', (/**
+         * @return {?}
+         */
+        function () {
+            // If we aren't already printing, start printing and update the styles as
+            // if there was a regular print `MediaChange`(from matchMedia).
+            _this.isPrintingBeforeAfterEvent = false;
+            if (_this.isPrinting) {
+                _this.stopPrinting(target);
+                target.updateStyles();
+            }
+        }));
+    };
     /**
      * Prepare RxJs filter operator with partial application
      * @return pipeable filter predicate
@@ -2167,6 +2233,7 @@ var PrintHook = /** @class */ (function () {
      */
     function (target) {
         var _this = this;
+        this.registerBeforeAfterPrintHooks(target);
         return (/**
          * @param {?} event
          * @return {?}
@@ -2177,7 +2244,7 @@ var PrintHook = /** @class */ (function () {
                     _this.startPrinting(target, _this.getEventBreakpoints(event));
                     target.updateStyles();
                 }
-                else if (!event.matches && _this.isPrinting) {
+                else if (!event.matches && _this.isPrinting && !_this.isPrintingBeforeAfterEvent) {
                     _this.stopPrinting(target);
                     target.updateStyles();
                 }
@@ -2252,7 +2319,8 @@ var PrintHook = /** @class */ (function () {
     /**
      * To restore pre-Print Activations, we must capture the proper
      * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-     * is not supported; so 'print' mediaQuery activations must be used.
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
      *
      * >  But activated breakpoints are deactivated BEFORE 'print' activation.
      *
@@ -2269,7 +2337,8 @@ var PrintHook = /** @class */ (function () {
     /**
      * To restore pre-Print Activations, we must capture the proper
      * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-     * is not supported; so 'print' mediaQuery activations must be used.
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
      *
      * >  But activated breakpoints are deactivated BEFORE 'print' activation.
      *
@@ -2288,7 +2357,8 @@ var PrintHook = /** @class */ (function () {
     PrintHook.prototype.collectActivations = /**
      * To restore pre-Print Activations, we must capture the proper
      * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-     * is not supported; so 'print' mediaQuery activations must be used.
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
      *
      * >  But activated breakpoints are deactivated BEFORE 'print' activation.
      *
@@ -2305,7 +2375,7 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (event) {
-        if (!this.isPrinting) {
+        if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
             if (!event.matches) {
                 /** @type {?} */
                 var bp = this.breakpoints.findByQuery(event.mediaQuery);
@@ -2314,7 +2384,10 @@ var PrintHook = /** @class */ (function () {
                     this.deactivations.sort(sortDescendingPriority);
                 }
             }
-            else {
+            else if (!this.isPrintingBeforeAfterEvent) {
+                // Only clear deactivations if we aren't printing from a `beforeprint` event.
+                // Otherwise this will clear before `stopPrinting()` is called to restore
+                // the pre-Print Activations.
                 this.deactivations = [];
             }
         }
@@ -2325,9 +2398,10 @@ var PrintHook = /** @class */ (function () {
     /** @nocollapse */
     PrintHook.ctorParameters = function () { return [
         { type: BreakPointRegistry },
-        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
+        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ɵprov0 = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ɵprov0 = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(common.DOCUMENT)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
 // ************************************************************************
@@ -3599,12 +3673,12 @@ var StyleUtils = /** @class */ (function () {
     ];
     /** @nocollapse */
     StyleUtils.ctorParameters = function () { return [
-        { type: StylesheetMap, decorators: [{ type: core.Optional }] },
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
+        { type: StylesheetMap },
+        { type: Boolean, decorators: [{ type: core.Inject, args: [SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ɵprov0 = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap, 8), core.ɵɵinject(SERVER_TOKEN, 8), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ɵprov0 = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap), core.ɵɵinject(SERVER_TOKEN), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 

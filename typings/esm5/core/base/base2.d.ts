@@ -21,11 +21,12 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     protected mru: StyleDefinition;
     protected destroySubject: Subject<void>;
     /** Access to host element's parent DOM node */
-    protected readonly parentElement: HTMLElement | null;
+    protected get parentElement(): HTMLElement | null;
     /** Access to the HTMLElement for the directive */
-    protected readonly nativeElement: HTMLElement;
+    protected get nativeElement(): HTMLElement;
     /** Access to the activated value for the directive */
-    activatedValue: string;
+    get activatedValue(): string;
+    set activatedValue(value: string);
     /** Cache map for style computation */
     protected styleCache: Map<string, StyleDefinition>;
     protected constructor(elementRef: ElementRef, styleBuilder: StyleBuilder, styler: StyleUtils, marshal: MediaMarshaller);

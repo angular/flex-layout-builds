@@ -23,19 +23,23 @@ export declare const BREAKPOINT_PRINT: {
 export declare class PrintHook {
     protected breakpoints: BreakPointRegistry;
     protected layoutConfig: LayoutConfigOptions;
-    constructor(breakpoints: BreakPointRegistry, layoutConfig: LayoutConfigOptions);
+    protected _document: any;
+    constructor(breakpoints: BreakPointRegistry, layoutConfig: LayoutConfigOptions, _document: any);
     /** Add 'print' mediaQuery: to listen for matchMedia activations */
     withPrintQuery(queries: string[]): string[];
     /** Is the MediaChange event for any 'print' @media */
     isPrintEvent(e: MediaChange): Boolean;
     /** What is the desired mqAlias to use while printing? */
-    readonly printAlias: string[];
+    get printAlias(): string[];
     /** Lookup breakpoints associated with print aliases. */
-    readonly printBreakPoints: BreakPoint[];
+    get printBreakPoints(): BreakPoint[];
     /** Lookup breakpoint associated with mediaQuery */
     getEventBreakpoints({ mediaQuery }: MediaChange): BreakPoint[];
     /** Update event with printAlias mediaQuery information */
     updateEvent(event: MediaChange): MediaChange;
+    private registeredBeforeAfterPrintHooks;
+    private isPrintingBeforeAfterEvent;
+    private registerBeforeAfterPrintHooks;
     /**
      * Prepare RxJs filter operator with partial application
      * @return pipeable filter predicate
@@ -53,7 +57,8 @@ export declare class PrintHook {
     /**
      * To restore pre-Print Activations, we must capture the proper
      * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-     * is not supported; so 'print' mediaQuery activations must be used.
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
      *
      * >  But activated breakpoints are deactivated BEFORE 'print' activation.
      *

@@ -378,6 +378,9 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     // and initialize the fallback block of stylings
     /** @type {?} */
     var defaultStyles = new Map(serverSheet.stylesheet);
+    // Reset the class counter, otherwise class numbers will
+    // increase with each server render
+    nextId = 0;
     /** @type {?} */
     var styleText = generateCss(defaultStyles, 'all', classMap);
     __spreadArrays(breakpoints).sort(core$1.sortAscendingPriority).forEach((/**

@@ -2038,9 +2038,19 @@ var BREAKPOINT_PRINT = {
  * Used in MediaMarshaller and MediaObserver
  */
 var PrintHook = /** @class */ (function () {
-    function PrintHook(breakpoints, layoutConfig) {
+    function PrintHook(breakpoints, layoutConfig, _document) {
         this.breakpoints = breakpoints;
         this.layoutConfig = layoutConfig;
+        this._document = _document;
+        // registeredBeforeAfterPrintHooks tracks if we registered the `beforeprint`
+        //  and `afterprint` event listeners.
+        this.registeredBeforeAfterPrintHooks = false;
+        // isPrintingBeforeAfterEvent is used to track if we are printing from within
+        // a `beforeprint` event handler. This prevents the typicall `stopPrinting`
+        // form `interceptEvents` so that printing is not stopped while the dialog
+        // is still open. This is an extension of the `isPrinting` property on
+        // browsers which support `beforeprint` and `afterprint` events.
+        this.isPrintingBeforeAfterEvent = false;
         /**
          * Is this service currently in Print-mode ?
          */
@@ -2151,6 +2161,62 @@ var PrintHook = /** @class */ (function () {
         }
         return mergeAlias(event, bp);
     };
+    // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+    // trigger print styles synchronously and apply proper layout styles.
+    // It is a noop if the hooks have already been registered or if the document's
+    // `defaultView` is not available.
+    // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+    // trigger print styles synchronously and apply proper layout styles.
+    // It is a noop if the hooks have already been registered or if the document's
+    // `defaultView` is not available.
+    /**
+     * @private
+     * @param {?} target
+     * @return {?}
+     */
+    PrintHook.prototype.registerBeforeAfterPrintHooks = 
+    // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+    // trigger print styles synchronously and apply proper layout styles.
+    // It is a noop if the hooks have already been registered or if the document's
+    // `defaultView` is not available.
+    /**
+     * @private
+     * @param {?} target
+     * @return {?}
+     */
+    function (target) {
+        var _this = this;
+        // `defaultView` may be null when rendering on the server or in other contexts.
+        if (!this._document.defaultView || this.registeredBeforeAfterPrintHooks) {
+            return;
+        }
+        this.registeredBeforeAfterPrintHooks = true;
+        // Could we have teardown logic to remove if there are no print listeners being used?
+        this._document.defaultView.addEventListener('beforeprint', (/**
+         * @return {?}
+         */
+        function () {
+            // If we aren't already printing, start printing and update the styles as
+            // if there was a regular print `MediaChange`(from matchMedia).
+            if (!_this.isPrinting) {
+                _this.isPrintingBeforeAfterEvent = true;
+                _this.startPrinting(target, _this.getEventBreakpoints(new MediaChange(true, PRINT)));
+                target.updateStyles();
+            }
+        }));
+        this._document.defaultView.addEventListener('afterprint', (/**
+         * @return {?}
+         */
+        function () {
+            // If we aren't already printing, start printing and update the styles as
+            // if there was a regular print `MediaChange`(from matchMedia).
+            _this.isPrintingBeforeAfterEvent = false;
+            if (_this.isPrinting) {
+                _this.stopPrinting(target);
+                target.updateStyles();
+            }
+        }));
+    };
     /**
      * Prepare RxJs filter operator with partial application
      * @return pipeable filter predicate
@@ -2167,6 +2233,7 @@ var PrintHook = /** @class */ (function () {
      */
     function (target) {
         var _this = this;
+        this.registerBeforeAfterPrintHooks(target);
         return (/**
          * @param {?} event
          * @return {?}
@@ -2177,7 +2244,7 @@ var PrintHook = /** @class */ (function () {
                     _this.startPrinting(target, _this.getEventBreakpoints(event));
                     target.updateStyles();
                 }
-                else if (!event.matches && _this.isPrinting) {
+                else if (!event.matches && _this.isPrinting && !_this.isPrintingBeforeAfterEvent) {
                     _this.stopPrinting(target);
                     target.updateStyles();
                 }
@@ -2252,7 +2319,8 @@ var PrintHook = /** @class */ (function () {
     /**
      * To restore pre-Print Activations, we must capture the proper
      * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-     * is not supported; so 'print' mediaQuery activations must be used.
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
      *
      * >  But activated breakpoints are deactivated BEFORE 'print' activation.
      *
@@ -2269,7 +2337,8 @@ var PrintHook = /** @class */ (function () {
     /**
      * To restore pre-Print Activations, we must capture the proper
      * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-     * is not supported; so 'print' mediaQuery activations must be used.
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
      *
      * >  But activated breakpoints are deactivated BEFORE 'print' activation.
      *
@@ -2288,7 +2357,8 @@ var PrintHook = /** @class */ (function () {
     PrintHook.prototype.collectActivations = /**
      * To restore pre-Print Activations, we must capture the proper
      * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-     * is not supported; so 'print' mediaQuery activations must be used.
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
      *
      * >  But activated breakpoints are deactivated BEFORE 'print' activation.
      *
@@ -2305,7 +2375,7 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (event) {
-        if (!this.isPrinting) {
+        if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
             if (!event.matches) {
                 /** @type {?} */
                 var bp = this.breakpoints.findByQuery(event.mediaQuery);
@@ -2314,7 +2384,10 @@ var PrintHook = /** @class */ (function () {
                     this.deactivations.sort(sortDescendingPriority);
                 }
             }
-            else {
+            else if (!this.isPrintingBeforeAfterEvent) {
+                // Only clear deactivations if we aren't printing from a `beforeprint` event.
+                // Otherwise this will clear before `stopPrinting()` is called to restore
+                // the pre-Print Activations.
                 this.deactivations = [];
             }
         }
@@ -2325,9 +2398,10 @@ var PrintHook = /** @class */ (function () {
     /** @nocollapse */
     PrintHook.ctorParameters = function () { return [
         { type: BreakPointRegistry },
-        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
+        { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] },
+        { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ɵprov0 = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ɵprov0 = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(common.DOCUMENT)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
 // ************************************************************************
@@ -3599,12 +3673,12 @@ var StyleUtils = /** @class */ (function () {
     ];
     /** @nocollapse */
     StyleUtils.ctorParameters = function () { return [
-        { type: StylesheetMap, decorators: [{ type: core.Optional }] },
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
+        { type: StylesheetMap },
+        { type: Boolean, decorators: [{ type: core.Inject, args: [SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ɵprov0 = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap, 8), core.ɵɵinject(SERVER_TOKEN, 8), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ɵprov0 = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap), core.ɵɵinject(SERVER_TOKEN), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
@@ -4344,10 +4418,6 @@ var ImgSrcDirective = /** @class */ (function (_super) {
     __extends(ImgSrcDirective, _super);
     function ImgSrcDirective(elementRef, styleBuilder, styler, marshal, platformId, serverModuleLoaded) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
         _this.DIRECTIVE_KEY = 'img-src';
@@ -4468,18 +4538,14 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
-    function ClassDirective(elementRef, styler, marshal, delegate, ngClassInstance) {
+    function ClassDirective(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer2, ngClassInstance) {
         var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styler = styler;
-        _this.marshal = marshal;
-        _this.delegate = delegate;
         _this.ngClassInstance = ngClassInstance;
         _this.DIRECTIVE_KEY = 'ngClass';
         if (!_this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            _this.ngClassInstance = new common.NgClass(_this.delegate);
+            _this.ngClassInstance = new common.NgClass(iterableDiffers, keyValueDiffers, elementRef, renderer2);
         }
         _this.init();
         _this.setValue('', '');
@@ -4549,7 +4615,9 @@ var ClassDirective = /** @class */ (function (_super) {
         { type: core.ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: common.ɵNgClassImpl },
+        { type: core.IterableDiffers },
+        { type: core.KeyValueDiffers },
+        { type: core.Renderer2 },
         { type: common.NgClass, decorators: [{ type: core.Optional }, { type: core.Self }] }
     ]; };
     ClassDirective.propDecorators = {
@@ -4565,12 +4633,6 @@ var inputs$1 = [
 ];
 /** @type {?} */
 var selector$1 = "\n  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n";
-// tslint:disable-next-line:variable-name
-/** @type {?} */
-var LayoutNgClassImplProvider = {
-    provide: common.ɵNgClassImpl,
-    useClass: common.ɵNgClassR2Impl
-};
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
@@ -4584,7 +4646,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultClassDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1, providers: [LayoutNgClassImplProvider] },] },
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
     ];
     return DefaultClassDirective;
 }(ClassDirective));
@@ -4624,10 +4686,6 @@ var ShowHideDirective = /** @class */ (function (_super) {
     __extends(ShowHideDirective, _super);
     function ShowHideDirective(elementRef, styleBuilder, styler, marshal, layoutConfig, platformId, serverModuleLoaded) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.layoutConfig = layoutConfig;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
@@ -4823,7 +4881,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         { type: MediaMarshaller },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] }
+        { type: Boolean, decorators: [{ type: core.Inject, args: [SERVER_TOKEN,] }] }
     ]; };
     return ShowHideDirective;
 }(BaseDirective2));
@@ -5001,19 +5059,15 @@ function keyValuesToMap(map, entry) {
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, delegate, sanitizer, ngStyleInstance, serverLoaded, platformId) {
+    function StyleDirective(elementRef, styler, marshal, sanitizer, differs, renderer2, ngStyleInstance, serverLoaded, platformId) {
         var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styler = styler;
-        _this.marshal = marshal;
-        _this.delegate = delegate;
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
             // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            _this.ngStyleInstance = new common.NgStyle(_this.delegate);
+            _this.ngStyleInstance = new common.NgStyle(elementRef, differs, renderer2);
         }
         _this.init();
         /** @type {?} */
@@ -5134,10 +5188,11 @@ var StyleDirective = /** @class */ (function (_super) {
         { type: core.ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: common.ɵNgStyleImpl },
         { type: platformBrowser.DomSanitizer },
+        { type: core.KeyValueDiffers },
+        { type: core.Renderer2 },
         { type: common.NgStyle, decorators: [{ type: core.Optional }, { type: core.Self }] },
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
+        { type: Boolean, decorators: [{ type: core.Inject, args: [SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] }
     ]; };
     return StyleDirective;
@@ -5151,12 +5206,6 @@ var inputs$3 = [
 ];
 /** @type {?} */
 var selector$3 = "\n  [ngStyle],\n  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n";
-// tslint:disable-next-line:variable-name
-/** @type {?} */
-var LayoutNgStyleImplProvider = {
-    provide: common.ɵNgStyleImpl,
-    useClass: common.ɵNgStyleR2Impl
-};
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -5169,7 +5218,7 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultStyleDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3, providers: [LayoutNgStyleImplProvider] },] },
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
     ];
     return DefaultStyleDirective;
 }(StyleDirective));
@@ -5387,10 +5436,6 @@ var LayoutDirective = /** @class */ (function (_super) {
     __extends(LayoutDirective, _super);
     function LayoutDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout';
         _this.styleCache = layoutCache;
         _this.init();
@@ -5403,7 +5448,7 @@ var LayoutDirective = /** @class */ (function (_super) {
     LayoutDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
-        { type: LayoutStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return LayoutDirective;
@@ -5523,12 +5568,9 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     __extends(LayoutGapDirective, _super);
     function LayoutGapDirective(elRef, zone, directionality, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
         _this.zone = zone;
         _this.directionality = directionality;
         _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.layout = 'row'; // default flex-direction
         // default flex-direction
         _this.DIRECTIVE_KEY = 'layout-gap';
@@ -5790,7 +5832,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         { type: core.NgZone },
         { type: bidi.Directionality },
         { type: StyleUtils },
-        { type: LayoutGapStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutGapStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return LayoutGapDirective;
@@ -6126,11 +6168,7 @@ var FlexDirective = /** @class */ (function (_super) {
     __extends(FlexDirective, _super);
     function FlexDirective(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
         _this.layoutConfig = layoutConfig;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex';
         _this.direction = '';
         _this.wrap = false;
@@ -6352,10 +6390,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
     __extends(FlexOrderDirective, _super);
     function FlexOrderDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-order';
         _this.styleCache = flexOrderCache;
         _this.init();
@@ -6368,7 +6402,7 @@ var FlexOrderDirective = /** @class */ (function (_super) {
     FlexOrderDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
-        { type: FlexOrderStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexOrderStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return FlexOrderDirective;
@@ -6449,11 +6483,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
     __extends(FlexOffsetDirective, _super);
     function FlexOffsetDirective(elRef, directionality, styleBuilder, marshal, styler) {
         var _this = _super.call(this, elRef, styleBuilder, styler, marshal) || this;
-        _this.elRef = elRef;
         _this.directionality = directionality;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
-        _this.styler = styler;
         _this.DIRECTIVE_KEY = 'flex-offset';
         _this.init([_this.directionality.change]);
         // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
@@ -6524,7 +6554,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
     FlexOffsetDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: bidi.Directionality },
-        { type: FlexOffsetStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexOffsetStyleBuilder },
         { type: MediaMarshaller },
         { type: StyleUtils }
     ]; };
@@ -6611,10 +6641,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
     __extends(FlexAlignDirective, _super);
     function FlexAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-align';
         _this.styleCache = flexAlignCache;
         _this.init();
@@ -6627,7 +6653,7 @@ var FlexAlignDirective = /** @class */ (function (_super) {
     FlexAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
-        { type: FlexAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexAlignStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return FlexAlignDirective;
@@ -6692,10 +6718,6 @@ var FlexFillDirective = /** @class */ (function (_super) {
     __extends(FlexFillDirective, _super);
     function FlexFillDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.styleCache = flexFillCache;
         _this.addStyles('');
         return _this;
@@ -6831,10 +6853,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     __extends(LayoutAlignDirective, _super);
     function LayoutAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout-align';
         _this.layout = 'row'; // default flex-direction
         // default flex-direction
@@ -6938,7 +6956,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     LayoutAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
-        { type: LayoutAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutAlignStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return LayoutAlignDirective;
@@ -7041,10 +7059,6 @@ var GridAlignDirective = /** @class */ (function (_super) {
     __extends(GridAlignDirective, _super);
     function GridAlignDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align';
         _this.styleCache = alignCache;
         _this.init();
@@ -7056,7 +7070,7 @@ var GridAlignDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridAlignStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -7178,10 +7192,6 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
     __extends(GridAlignColumnsDirective, _super);
     function GridAlignColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-columns';
         _this._inline = false;
         _this.init();
@@ -7230,7 +7240,7 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAlignColumnsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridAlignColumnsStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridAlignColumnsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -7367,10 +7377,6 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
     __extends(GridAlignRowsDirective, _super);
     function GridAlignRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-rows';
         _this._inline = false;
         _this.init();
@@ -7419,7 +7425,7 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAlignRowsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridAlignRowsStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridAlignRowsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -7534,10 +7540,6 @@ var GridAreaDirective = /** @class */ (function (_super) {
     __extends(GridAreaDirective, _super);
     function GridAreaDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-area';
         _this.styleCache = gridAreaCache;
         _this.init();
@@ -7550,7 +7552,7 @@ var GridAreaDirective = /** @class */ (function (_super) {
     GridAreaDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
-        { type: GridAreaStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridAreaStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return GridAreaDirective;
@@ -7630,10 +7632,6 @@ var GridAreasDirective = /** @class */ (function (_super) {
     __extends(GridAreasDirective, _super);
     function GridAreasDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-areas';
         _this._inline = false;
         _this.init();
@@ -7683,7 +7681,7 @@ var GridAreasDirective = /** @class */ (function (_super) {
     GridAreasDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
-        { type: GridAreasStyleBuiler, decorators: [{ type: core.Optional }] },
+        { type: GridAreasStyleBuiler },
         { type: MediaMarshaller }
     ]; };
     GridAreasDirective.propDecorators = {
@@ -7765,10 +7763,6 @@ var GridAutoDirective = /** @class */ (function (_super) {
     __extends(GridAutoDirective, _super);
     function GridAutoDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this._inline = false;
         _this.DIRECTIVE_KEY = 'grid-auto';
         _this.init();
@@ -7817,7 +7811,7 @@ var GridAutoDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAutoDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridAutoStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridAutoStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -7890,10 +7884,6 @@ var GridColumnDirective = /** @class */ (function (_super) {
     __extends(GridColumnDirective, _super);
     function GridColumnDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-column';
         _this.styleCache = columnCache;
         _this.init();
@@ -7905,7 +7895,7 @@ var GridColumnDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridColumnDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridColumnStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridColumnStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -7993,10 +7983,6 @@ var GridColumnsDirective = /** @class */ (function (_super) {
     __extends(GridColumnsDirective, _super);
     function GridColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-columns';
         _this._inline = false;
         _this.init();
@@ -8045,7 +8031,7 @@ var GridColumnsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridColumnsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridColumnsStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridColumnsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -8124,10 +8110,6 @@ var GridGapDirective = /** @class */ (function (_super) {
     __extends(GridGapDirective, _super);
     function GridGapDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-gap';
         _this._inline = false;
         _this.init();
@@ -8177,7 +8159,7 @@ var GridGapDirective = /** @class */ (function (_super) {
     GridGapDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: StyleUtils },
-        { type: GridGapStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridGapStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     GridGapDirective.propDecorators = {
@@ -8250,10 +8232,6 @@ var GridRowDirective = /** @class */ (function (_super) {
     __extends(GridRowDirective, _super);
     function GridRowDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-row';
         _this.styleCache = rowCache;
         _this.init();
@@ -8265,7 +8243,7 @@ var GridRowDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridRowDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridRowStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridRowStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -8353,10 +8331,6 @@ var GridRowsDirective = /** @class */ (function (_super) {
     __extends(GridRowsDirective, _super);
     function GridRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-rows';
         _this._inline = false;
         _this.init();
@@ -8405,7 +8379,7 @@ var GridRowsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridRowsDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
-        { type: GridRowsStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: GridRowsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -8492,7 +8466,7 @@ var GridModule = /** @class */ (function () {
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new core.Version('8.0.0-beta.27-e61eeb5');
+var VERSION = new core.Version('8.0.0-beta.27-15b6e5a');
 
 /**
  * @fileoverview added by tsickle
@@ -8552,7 +8526,7 @@ var FlexLayoutModule = /** @class */ (function () {
     ];
     /** @nocollapse */
     FlexLayoutModule.ctorParameters = function () { return [
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [SERVER_TOKEN,] }] },
+        { type: Boolean, decorators: [{ type: core.Inject, args: [SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] }
     ]; };
     return FlexLayoutModule;
@@ -8593,7 +8567,6 @@ exports.BREAKPOINT_PRINT = BREAKPOINT_PRINT;
 exports.PrintHook = PrintHook;
 exports.ExtendedModule = ExtendedModule;
 exports.ClassDirective = ClassDirective;
-exports.LayoutNgClassImplProvider = LayoutNgClassImplProvider;
 exports.DefaultClassDirective = DefaultClassDirective;
 exports.ImgSrcStyleBuilder = ImgSrcStyleBuilder;
 exports.ImgSrcDirective = ImgSrcDirective;
@@ -8602,7 +8575,6 @@ exports.ShowHideStyleBuilder = ShowHideStyleBuilder;
 exports.ShowHideDirective = ShowHideDirective;
 exports.DefaultShowHideDirective = DefaultShowHideDirective;
 exports.StyleDirective = StyleDirective;
-exports.LayoutNgStyleImplProvider = LayoutNgStyleImplProvider;
 exports.DefaultStyleDirective = DefaultStyleDirective;
 exports.FlexModule = FlexModule;
 exports.FlexStyleBuilder = FlexStyleBuilder;

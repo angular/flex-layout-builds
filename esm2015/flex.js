@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Injectable, Optional, NgModule, NgZone, Inject, Input, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
+import { Directive, ElementRef, Injectable, NgModule, NgZone, Inject, Input, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleUtils, MediaMarshaller, CoreModule, LAYOUT_CONFIG, validateBasis } from '@angular/flex-layout/core';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { Subject } from 'rxjs';
@@ -165,10 +165,6 @@ class LayoutDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'layout';
         this.styleCache = layoutCache;
         this.init();
@@ -181,7 +177,7 @@ LayoutDirective.decorators = [
 LayoutDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: LayoutStyleBuilder, decorators: [{ type: Optional }] },
+    { type: LayoutStyleBuilder },
     { type: MediaMarshaller }
 ];
 class DefaultLayoutDirective extends LayoutDirective {
@@ -297,12 +293,9 @@ class LayoutGapDirective extends BaseDirective2 {
      */
     constructor(elRef, zone, directionality, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
         this.zone = zone;
         this.directionality = directionality;
         this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.layout = 'row'; // default flex-direction
         // default flex-direction
         this.DIRECTIVE_KEY = 'layout-gap';
@@ -500,7 +493,7 @@ LayoutGapDirective.ctorParameters = () => [
     { type: NgZone },
     { type: Directionality },
     { type: StyleUtils },
-    { type: LayoutGapStyleBuilder, decorators: [{ type: Optional }] },
+    { type: LayoutGapStyleBuilder },
     { type: MediaMarshaller }
 ];
 class DefaultLayoutGapDirective extends LayoutGapDirective {
@@ -832,11 +825,7 @@ class FlexDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
         this.layoutConfig = layoutConfig;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex';
         this.direction = '';
         this.wrap = false;
@@ -1022,10 +1011,6 @@ class FlexOrderDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex-order';
         this.styleCache = flexOrderCache;
         this.init();
@@ -1038,7 +1023,7 @@ FlexOrderDirective.decorators = [
 FlexOrderDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: FlexOrderStyleBuilder, decorators: [{ type: Optional }] },
+    { type: FlexOrderStyleBuilder },
     { type: MediaMarshaller }
 ];
 /** @type {?} */
@@ -1115,11 +1100,7 @@ class FlexOffsetDirective extends BaseDirective2 {
      */
     constructor(elRef, directionality, styleBuilder, marshal, styler) {
         super(elRef, styleBuilder, styler, marshal);
-        this.elRef = elRef;
         this.directionality = directionality;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
-        this.styler = styler;
         this.DIRECTIVE_KEY = 'flex-offset';
         this.init([this.directionality.change]);
         // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
@@ -1169,7 +1150,7 @@ FlexOffsetDirective.decorators = [
 FlexOffsetDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Directionality },
-    { type: FlexOffsetStyleBuilder, decorators: [{ type: Optional }] },
+    { type: FlexOffsetStyleBuilder },
     { type: MediaMarshaller },
     { type: StyleUtils }
 ];
@@ -1252,10 +1233,6 @@ class FlexAlignDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex-align';
         this.styleCache = flexAlignCache;
         this.init();
@@ -1268,7 +1245,7 @@ FlexAlignDirective.decorators = [
 FlexAlignDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: FlexAlignStyleBuilder, decorators: [{ type: Optional }] },
+    { type: FlexAlignStyleBuilder },
     { type: MediaMarshaller }
 ];
 /** @type {?} */
@@ -1324,10 +1301,6 @@ class FlexFillDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.styleCache = flexFillCache;
         this.addStyles('');
     }
@@ -1462,10 +1435,6 @@ class LayoutAlignDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'layout-align';
         this.layout = 'row'; // default flex-direction
         // default flex-direction
@@ -1543,7 +1512,7 @@ LayoutAlignDirective.decorators = [
 LayoutAlignDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: LayoutAlignStyleBuilder, decorators: [{ type: Optional }] },
+    { type: LayoutAlignStyleBuilder },
     { type: MediaMarshaller }
 ];
 class DefaultLayoutAlignDirective extends LayoutAlignDirective {
