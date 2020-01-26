@@ -23,16 +23,14 @@ export declare class FlexStyleBuilder extends StyleBuilder {
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 export declare class FlexDirective extends BaseDirective2 {
-    protected elRef: ElementRef;
-    protected styleUtils: StyleUtils;
     protected layoutConfig: LayoutConfigOptions;
-    protected styleBuilder: FlexStyleBuilder;
-    protected marshal: MediaMarshaller;
     protected DIRECTIVE_KEY: string;
     protected direction: string;
     protected wrap: boolean;
-    shrink: string;
-    grow: string;
+    get shrink(): string;
+    set shrink(value: string);
+    get grow(): string;
+    set grow(value: string);
     protected flexGrow: string;
     protected flexShrink: string;
     constructor(elRef: ElementRef, styleUtils: StyleUtils, layoutConfig: LayoutConfigOptions, styleBuilder: FlexStyleBuilder, marshal: MediaMarshaller);

@@ -30,9 +30,9 @@ export declare class PrintHook {
     /** Is the MediaChange event for any 'print' @media */
     isPrintEvent(e: MediaChange): Boolean;
     /** What is the desired mqAlias to use while printing? */
-    readonly printAlias: string[];
+    get printAlias(): string[];
     /** Lookup breakpoints associated with print aliases. */
-    readonly printBreakPoints: BreakPoint[];
+    get printBreakPoints(): BreakPoint[];
     /** Lookup breakpoint associated with mediaQuery */
     getEventBreakpoints({ mediaQuery }: MediaChange): BreakPoint[];
     /** Update event with printAlias mediaQuery information */

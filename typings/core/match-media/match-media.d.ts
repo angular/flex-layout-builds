@@ -26,7 +26,7 @@ export declare class MatchMedia {
     /**
      * Publish list of all current activations
      */
-    readonly activations: string[];
+    get activations(): string[];
     /**
      * For the specified mediaQuery?
      */

@@ -214,10 +214,6 @@ var LayoutDirective = /** @class */ (function (_super) {
     __extends(LayoutDirective, _super);
     function LayoutDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout';
         _this.styleCache = layoutCache;
         _this.init();
@@ -230,7 +226,7 @@ var LayoutDirective = /** @class */ (function (_super) {
     LayoutDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: LayoutStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return LayoutDirective;
@@ -350,12 +346,9 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     __extends(LayoutGapDirective, _super);
     function LayoutGapDirective(elRef, zone, directionality, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
         _this.zone = zone;
         _this.directionality = directionality;
         _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.layout = 'row'; // default flex-direction
         // default flex-direction
         _this.DIRECTIVE_KEY = 'layout-gap';
@@ -617,7 +610,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         { type: core.NgZone },
         { type: bidi.Directionality },
         { type: core$1.StyleUtils },
-        { type: LayoutGapStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutGapStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return LayoutGapDirective;
@@ -953,11 +946,7 @@ var FlexDirective = /** @class */ (function (_super) {
     __extends(FlexDirective, _super);
     function FlexDirective(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
         _this.layoutConfig = layoutConfig;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex';
         _this.direction = '';
         _this.wrap = false;
@@ -1179,10 +1168,6 @@ var FlexOrderDirective = /** @class */ (function (_super) {
     __extends(FlexOrderDirective, _super);
     function FlexOrderDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-order';
         _this.styleCache = flexOrderCache;
         _this.init();
@@ -1195,7 +1180,7 @@ var FlexOrderDirective = /** @class */ (function (_super) {
     FlexOrderDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: FlexOrderStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexOrderStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return FlexOrderDirective;
@@ -1276,11 +1261,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
     __extends(FlexOffsetDirective, _super);
     function FlexOffsetDirective(elRef, directionality, styleBuilder, marshal, styler) {
         var _this = _super.call(this, elRef, styleBuilder, styler, marshal) || this;
-        _this.elRef = elRef;
         _this.directionality = directionality;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
-        _this.styler = styler;
         _this.DIRECTIVE_KEY = 'flex-offset';
         _this.init([_this.directionality.change]);
         // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
@@ -1351,7 +1332,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
     FlexOffsetDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: bidi.Directionality },
-        { type: FlexOffsetStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexOffsetStyleBuilder },
         { type: core$1.MediaMarshaller },
         { type: core$1.StyleUtils }
     ]; };
@@ -1438,10 +1419,6 @@ var FlexAlignDirective = /** @class */ (function (_super) {
     __extends(FlexAlignDirective, _super);
     function FlexAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-align';
         _this.styleCache = flexAlignCache;
         _this.init();
@@ -1454,7 +1431,7 @@ var FlexAlignDirective = /** @class */ (function (_super) {
     FlexAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: FlexAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexAlignStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return FlexAlignDirective;
@@ -1519,10 +1496,6 @@ var FlexFillDirective = /** @class */ (function (_super) {
     __extends(FlexFillDirective, _super);
     function FlexFillDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.styleCache = flexFillCache;
         _this.addStyles('');
         return _this;
@@ -1658,10 +1631,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     __extends(LayoutAlignDirective, _super);
     function LayoutAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout-align';
         _this.layout = 'row'; // default flex-direction
         // default flex-direction
@@ -1765,7 +1734,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     LayoutAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: LayoutAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutAlignStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return LayoutAlignDirective;

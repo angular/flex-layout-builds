@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { __extends, __spreadArrays } from 'tslib';
-import { Directive, ElementRef, Injectable, Optional, NgModule, Input, ɵɵdefineInjectable } from '@angular/core';
+import { Directive, ElementRef, Injectable, NgModule, Input, ɵɵdefineInjectable } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleUtils, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
@@ -45,10 +45,6 @@ var GridAlignDirective = /** @class */ (function (_super) {
     __extends(GridAlignDirective, _super);
     function GridAlignDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align';
         _this.styleCache = alignCache;
         _this.init();
@@ -60,7 +56,7 @@ var GridAlignDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAlignDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAlignStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAlignStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -182,10 +178,6 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
     __extends(GridAlignColumnsDirective, _super);
     function GridAlignColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-columns';
         _this._inline = false;
         _this.init();
@@ -234,7 +226,7 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAlignColumnsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAlignColumnsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAlignColumnsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -371,10 +363,6 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
     __extends(GridAlignRowsDirective, _super);
     function GridAlignRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-rows';
         _this._inline = false;
         _this.init();
@@ -423,7 +411,7 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAlignRowsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAlignRowsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAlignRowsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -538,10 +526,6 @@ var GridAreaDirective = /** @class */ (function (_super) {
     __extends(GridAreaDirective, _super);
     function GridAreaDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-area';
         _this.styleCache = gridAreaCache;
         _this.init();
@@ -554,7 +538,7 @@ var GridAreaDirective = /** @class */ (function (_super) {
     GridAreaDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
-        { type: GridAreaStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAreaStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return GridAreaDirective;
@@ -634,10 +618,6 @@ var GridAreasDirective = /** @class */ (function (_super) {
     __extends(GridAreasDirective, _super);
     function GridAreasDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-areas';
         _this._inline = false;
         _this.init();
@@ -687,7 +667,7 @@ var GridAreasDirective = /** @class */ (function (_super) {
     GridAreasDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
-        { type: GridAreasStyleBuiler, decorators: [{ type: Optional }] },
+        { type: GridAreasStyleBuiler },
         { type: MediaMarshaller }
     ]; };
     GridAreasDirective.propDecorators = {
@@ -769,10 +749,6 @@ var GridAutoDirective = /** @class */ (function (_super) {
     __extends(GridAutoDirective, _super);
     function GridAutoDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this._inline = false;
         _this.DIRECTIVE_KEY = 'grid-auto';
         _this.init();
@@ -821,7 +797,7 @@ var GridAutoDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridAutoDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAutoStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAutoStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -894,10 +870,6 @@ var GridColumnDirective = /** @class */ (function (_super) {
     __extends(GridColumnDirective, _super);
     function GridColumnDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-column';
         _this.styleCache = columnCache;
         _this.init();
@@ -909,7 +881,7 @@ var GridColumnDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridColumnDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridColumnStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridColumnStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -997,10 +969,6 @@ var GridColumnsDirective = /** @class */ (function (_super) {
     __extends(GridColumnsDirective, _super);
     function GridColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-columns';
         _this._inline = false;
         _this.init();
@@ -1049,7 +1017,7 @@ var GridColumnsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridColumnsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridColumnsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridColumnsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -1128,10 +1096,6 @@ var GridGapDirective = /** @class */ (function (_super) {
     __extends(GridGapDirective, _super);
     function GridGapDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-gap';
         _this._inline = false;
         _this.init();
@@ -1181,7 +1145,7 @@ var GridGapDirective = /** @class */ (function (_super) {
     GridGapDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
-        { type: GridGapStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridGapStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     GridGapDirective.propDecorators = {
@@ -1254,10 +1218,6 @@ var GridRowDirective = /** @class */ (function (_super) {
     __extends(GridRowDirective, _super);
     function GridRowDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-row';
         _this.styleCache = rowCache;
         _this.init();
@@ -1269,7 +1229,7 @@ var GridRowDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridRowDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridRowStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridRowStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -1357,10 +1317,6 @@ var GridRowsDirective = /** @class */ (function (_super) {
     __extends(GridRowsDirective, _super);
     function GridRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-rows';
         _this._inline = false;
         _this.init();
@@ -1409,7 +1365,7 @@ var GridRowsDirective = /** @class */ (function (_super) {
     /** @nocollapse */
     GridRowsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridRowsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridRowsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };

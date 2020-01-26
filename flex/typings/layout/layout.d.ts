@@ -23,10 +23,6 @@ export declare class LayoutStyleBuilder extends StyleBuilder {
  *
  */
 export declare class LayoutDirective extends BaseDirective2 implements OnChanges {
-    protected elRef: ElementRef;
-    protected styleUtils: StyleUtils;
-    protected styleBuilder: LayoutStyleBuilder;
-    protected marshal: MediaMarshaller;
     protected DIRECTIVE_KEY: string;
     constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: LayoutStyleBuilder, marshal: MediaMarshaller);
     protected styleCache: Map<string, StyleDefinition>;

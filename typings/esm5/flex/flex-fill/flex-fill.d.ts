@@ -23,10 +23,6 @@ export declare class FlexFillStyleBuilder extends StyleBuilder {
  *  NOTE: fxFill is NOT responsive API!!
  */
 export declare class FlexFillDirective extends BaseDirective2 {
-    protected elRef: ElementRef;
-    protected styleUtils: StyleUtils;
-    protected styleBuilder: FlexFillStyleBuilder;
-    protected marshal: MediaMarshaller;
     constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: FlexFillStyleBuilder, marshal: MediaMarshaller);
     protected styleCache: Map<string, StyleDefinition>;
 }

@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Injectable, Optional, NgModule, Input, ɵɵdefineInjectable } from '@angular/core';
+import { Directive, ElementRef, Injectable, NgModule, Input, ɵɵdefineInjectable } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleUtils, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
@@ -40,10 +40,6 @@ class GridAlignDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-align';
         this.styleCache = alignCache;
         this.init();
@@ -55,7 +51,7 @@ GridAlignDirective.decorators = [
 /** @nocollapse */
 GridAlignDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridAlignStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridAlignStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
@@ -171,10 +167,6 @@ class GridAlignColumnsDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-align-columns';
         this._inline = false;
         this.init();
@@ -207,7 +199,7 @@ GridAlignColumnsDirective.decorators = [
 /** @nocollapse */
 GridAlignColumnsDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridAlignColumnsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridAlignColumnsStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
@@ -341,10 +333,6 @@ class GridAlignRowsDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-align-rows';
         this._inline = false;
         this.init();
@@ -377,7 +365,7 @@ GridAlignRowsDirective.decorators = [
 /** @nocollapse */
 GridAlignRowsDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridAlignRowsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridAlignRowsStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
@@ -490,10 +478,6 @@ class GridAreaDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-area';
         this.styleCache = gridAreaCache;
         this.init();
@@ -506,7 +490,7 @@ GridAreaDirective.decorators = [
 GridAreaDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: GridAreaStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridAreaStyleBuilder },
     { type: MediaMarshaller }
 ];
 /** @type {?} */
@@ -581,10 +565,6 @@ class GridAreasDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-areas';
         this._inline = false;
         this.init();
@@ -618,7 +598,7 @@ GridAreasDirective.decorators = [
 GridAreasDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: GridAreasStyleBuiler, decorators: [{ type: Optional }] },
+    { type: GridAreasStyleBuiler },
     { type: MediaMarshaller }
 ];
 GridAreasDirective.propDecorators = {
@@ -695,10 +675,6 @@ class GridAutoDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this._inline = false;
         this.DIRECTIVE_KEY = 'grid-auto';
         this.init();
@@ -731,7 +707,7 @@ GridAutoDirective.decorators = [
 /** @nocollapse */
 GridAutoDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridAutoStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridAutoStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
@@ -800,10 +776,6 @@ class GridColumnDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-column';
         this.styleCache = columnCache;
         this.init();
@@ -815,7 +787,7 @@ GridColumnDirective.decorators = [
 /** @nocollapse */
 GridColumnDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridColumnStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridColumnStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
@@ -898,10 +870,6 @@ class GridColumnsDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-columns';
         this._inline = false;
         this.init();
@@ -934,7 +902,7 @@ GridColumnsDirective.decorators = [
 /** @nocollapse */
 GridColumnsDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridColumnsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridColumnsStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
@@ -1008,10 +976,6 @@ class GridGapDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-gap';
         this._inline = false;
         this.init();
@@ -1045,7 +1009,7 @@ GridGapDirective.decorators = [
 GridGapDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: GridGapStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridGapStyleBuilder },
     { type: MediaMarshaller }
 ];
 GridGapDirective.propDecorators = {
@@ -1114,10 +1078,6 @@ class GridRowDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-row';
         this.styleCache = rowCache;
         this.init();
@@ -1129,7 +1089,7 @@ GridRowDirective.decorators = [
 /** @nocollapse */
 GridRowDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridRowStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridRowStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
@@ -1212,10 +1172,6 @@ class GridRowsDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'grid-rows';
         this._inline = false;
         this.init();
@@ -1248,7 +1204,7 @@ GridRowsDirective.decorators = [
 /** @nocollapse */
 GridRowsDirective.ctorParameters = () => [
     { type: ElementRef },
-    { type: GridRowsStyleBuilder, decorators: [{ type: Optional }] },
+    { type: GridRowsStyleBuilder },
     { type: StyleUtils },
     { type: MediaMarshaller }
 ];
