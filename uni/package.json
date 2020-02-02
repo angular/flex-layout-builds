@@ -1,0 +1,8 @@
+{
+  "name": "@angular/flex-layout/uni",
+  "typings": "../uni.d.ts",
+  "main": "../bundles/flex-layout-uni.umd.js",
+  "module": "../esm5/uni.es5.js",
+  "es2015": "../esm2015/uni.js",
+  "sideEffects": false
+}

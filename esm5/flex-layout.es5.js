@@ -15,7 +15,7 @@ export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuild
 import { FlexModule } from '@angular/flex-layout/flex';
 export { FlexModule, FlexStyleBuilder, FlexDirective, DefaultFlexDirective, FlexAlignStyleBuilder, FlexAlignDirective, DefaultFlexAlignDirective, FlexFillStyleBuilder, FlexFillDirective, FlexOffsetStyleBuilder, FlexOffsetDirective, DefaultFlexOffsetDirective, FlexOrderStyleBuilder, FlexOrderDirective, DefaultFlexOrderDirective, LayoutStyleBuilder, LayoutDirective, DefaultLayoutDirective, LayoutAlignStyleBuilder, LayoutAlignDirective, DefaultLayoutAlignDirective, LayoutGapStyleBuilder, LayoutGapDirective, DefaultLayoutGapDirective } from '@angular/flex-layout/flex';
 import { GridModule } from '@angular/flex-layout/grid';
-export { ɵf2, ɵe2, ɵd2, ɵi2, ɵh2, ɵg2, ɵl2, ɵk2, ɵj2, ɵo2, ɵn2, ɵm2, ɵr2, ɵq2, ɵp2, ɵu2, ɵt2, ɵs2, ɵx2, ɵw2, ɵv2, ɵba2, ɵz2, ɵy2, ɵc2, ɵb2, ɵa2, ɵbd2, ɵbc2, ɵbb2, ɵbg2, ɵbf2, ɵbe2, GridModule } from '@angular/flex-layout/grid';
+export { ɵf3, ɵe3, ɵd3, ɵi3, ɵh3, ɵg3, ɵl3, ɵk3, ɵj3, ɵo3, ɵn3, ɵm3, ɵr3, ɵq3, ɵp3, ɵu3, ɵt3, ɵs3, ɵx3, ɵw3, ɵv3, ɵba3, ɵz3, ɵy3, ɵc3, ɵb3, ɵa3, ɵbd3, ɵbc3, ɵbb3, ɵbg3, ɵbf3, ɵbe3, GridModule } from '@angular/flex-layout/grid';
 
 /**
  * @fileoverview added by tsickle
@@ -26,7 +26,7 @@ export { ɵf2, ɵe2, ɵd2, ɵi2, ɵh2, ɵg2, ɵl2, ɵk2, ɵj2, ɵo2, ɵn2, ɵm2,
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new Version('9.0.0-beta.28-f8e9d75');
+var VERSION = new Version('9.0.0-beta.28-caf7451');
 
 /**
  * @fileoverview added by tsickle

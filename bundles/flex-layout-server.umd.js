@@ -562,7 +562,7 @@ exports.FlexLayoutServerModule = FlexLayoutServerModule;
 exports.generateStaticFlexLayoutStyles = generateStaticFlexLayoutStyles;
 exports.FLEX_SSR_SERIALIZER_FACTORY = FLEX_SSR_SERIALIZER_FACTORY;
 exports.SERVER_PROVIDERS = SERVER_PROVIDERS;
-exports.ɵa1 = ServerMatchMedia;
+exports.ɵa2 = ServerMatchMedia;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

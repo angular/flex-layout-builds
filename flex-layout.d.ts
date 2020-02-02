@@ -7,6 +7,7 @@
  */
 export * from './typings/index';
 export * from './core';
+export * from './uni';
 export * from './flex';
 export * from './grid';
 export * from './extended';
