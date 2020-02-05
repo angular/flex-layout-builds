@@ -175,7 +175,7 @@ class StylesheetMap {
 StylesheetMap.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ StylesheetMap.ɵprov0 = ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+/** @nocollapse */ StylesheetMap.ɵprov = ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -1002,7 +1002,7 @@ BreakPointRegistry.decorators = [
 BreakPointRegistry.ctorParameters = () => [
     { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
 ];
-/** @nocollapse */ BreakPointRegistry.ɵprov0 = ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+/** @nocollapse */ BreakPointRegistry.ɵprov = ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -1178,7 +1178,7 @@ MatchMedia.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ MatchMedia.ɵprov0 = ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(ɵɵinject(NgZone), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+/** @nocollapse */ MatchMedia.ɵprov = ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(ɵɵinject(NgZone), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
 /**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
@@ -1863,7 +1863,7 @@ PrintHook.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ PrintHook.ɵprov0 = ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(ɵɵinject(BreakPointRegistry), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(DOCUMENT)); }, token: PrintHook, providedIn: "root" });
+/** @nocollapse */ PrintHook.ɵprov = ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(ɵɵinject(BreakPointRegistry), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(DOCUMENT)); }, token: PrintHook, providedIn: "root" });
 // ************************************************************************
 // Internal Utility class 'PrintQueue'
 // ************************************************************************
@@ -2186,7 +2186,7 @@ MediaObserver.ctorParameters = () => [
     { type: MatchMedia },
     { type: PrintHook }
 ];
-/** @nocollapse */ MediaObserver.ɵprov0 = ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+/** @nocollapse */ MediaObserver.ɵprov = ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
 /**
  * Find associated breakpoint (if any)
  * @param {?} query
@@ -2491,7 +2491,7 @@ MediaTrigger.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ MediaTrigger.ɵprov0 = ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+/** @nocollapse */ MediaTrigger.ɵprov = ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -2807,7 +2807,7 @@ StyleUtils.ctorParameters = () => [
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
 ];
-/** @nocollapse */ StyleUtils.ɵprov0 = ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(ɵɵinject(StylesheetMap), ɵɵinject(SERVER_TOKEN), ɵɵinject(PLATFORM_ID), ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+/** @nocollapse */ StyleUtils.ɵprov = ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(ɵɵinject(StylesheetMap), ɵɵinject(SERVER_TOKEN), ɵɵinject(PLATFORM_ID), ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -3296,7 +3296,7 @@ MediaMarshaller.ctorParameters = () => [
     { type: BreakPointRegistry },
     { type: PrintHook }
 ];
-/** @nocollapse */ MediaMarshaller.ɵprov0 = ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(ɵɵinject(MatchMedia), ɵɵinject(BreakPointRegistry), ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+/** @nocollapse */ MediaMarshaller.ɵprov = ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(ɵɵinject(MatchMedia), ɵɵinject(BreakPointRegistry), ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
 /**
  * @param {?} map
  * @param {?} element

@@ -76,7 +76,7 @@ var GridAlignStyleBuilder = /** @class */ (function (_super) {
     GridAlignStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
     return GridAlignStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAlignDirective = /** @class */ (function (_super) {
@@ -209,7 +209,7 @@ var GridAlignColumnsStyleBuilder = /** @class */ (function (_super) {
     GridAlignColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignColumnsStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignColumnsStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
     return GridAlignColumnsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAlignColumnsDirective = /** @class */ (function (_super) {
@@ -394,7 +394,7 @@ var GridAlignRowsStyleBuilder = /** @class */ (function (_super) {
     GridAlignRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignRowsStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignRowsStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
     return GridAlignRowsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAlignRowsDirective = /** @class */ (function (_super) {
@@ -557,7 +557,7 @@ var GridAreaStyleBuilder = /** @class */ (function (_super) {
     GridAreaStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreaStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAreaStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
     return GridAreaStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAreaDirective = /** @class */ (function (_super) {
@@ -649,7 +649,7 @@ var GridAreasStyleBuiler = /** @class */ (function (_super) {
     GridAreasStyleBuiler.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreasStyleBuiler.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+    /** @nocollapse */ GridAreasStyleBuiler.ɵprov = core.ɵɵdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
     return GridAreasStyleBuiler;
 }(core$1.StyleBuilder));
 var GridAreasDirective = /** @class */ (function (_super) {
@@ -780,7 +780,7 @@ var GridAutoStyleBuilder = /** @class */ (function (_super) {
     GridAutoStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAutoStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAutoStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
     return GridAutoStyleBuilder;
 }(core$1.StyleBuilder));
 var GridAutoDirective = /** @class */ (function (_super) {
@@ -901,7 +901,7 @@ var GridColumnStyleBuilder = /** @class */ (function (_super) {
     GridColumnStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
     return GridColumnStyleBuilder;
 }(core$1.StyleBuilder));
 var GridColumnDirective = /** @class */ (function (_super) {
@@ -1000,7 +1000,7 @@ var GridColumnsStyleBuilder = /** @class */ (function (_super) {
     GridColumnsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnsStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnsStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
     return GridColumnsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridColumnsDirective = /** @class */ (function (_super) {
@@ -1127,7 +1127,7 @@ var GridGapStyleBuilder = /** @class */ (function (_super) {
     GridGapStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridGapStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridGapStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
     return GridGapStyleBuilder;
 }(core$1.StyleBuilder));
 var GridGapDirective = /** @class */ (function (_super) {
@@ -1249,7 +1249,7 @@ var GridRowStyleBuilder = /** @class */ (function (_super) {
     GridRowStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
     return GridRowStyleBuilder;
 }(core$1.StyleBuilder));
 var GridRowDirective = /** @class */ (function (_super) {
@@ -1348,7 +1348,7 @@ var GridRowsStyleBuilder = /** @class */ (function (_super) {
     GridRowsStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowsStyleBuilder.ɵprov2 = core.ɵɵdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowsStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
     return GridRowsStyleBuilder;
 }(core$1.StyleBuilder));
 var GridRowsDirective = /** @class */ (function (_super) {
@@ -1482,39 +1482,39 @@ var GridModule = /** @class */ (function () {
 }());
 
 exports.GridModule = GridModule;
-exports.ɵf2 = DefaultGridAlignColumnsDirective;
-exports.ɵe2 = GridAlignColumnsDirective;
-exports.ɵd2 = GridAlignColumnsStyleBuilder;
-exports.ɵi2 = DefaultGridAlignRowsDirective;
-exports.ɵh2 = GridAlignRowsDirective;
-exports.ɵg2 = GridAlignRowsStyleBuilder;
-exports.ɵl2 = DefaultGridAreaDirective;
-exports.ɵk2 = GridAreaDirective;
-exports.ɵj2 = GridAreaStyleBuilder;
-exports.ɵo2 = DefaultGridAreasDirective;
-exports.ɵn2 = GridAreasDirective;
-exports.ɵm2 = GridAreasStyleBuiler;
-exports.ɵr2 = DefaultGridAutoDirective;
-exports.ɵq2 = GridAutoDirective;
-exports.ɵp2 = GridAutoStyleBuilder;
-exports.ɵu2 = DefaultGridColumnDirective;
-exports.ɵt2 = GridColumnDirective;
-exports.ɵs2 = GridColumnStyleBuilder;
-exports.ɵx2 = DefaultGridColumnsDirective;
-exports.ɵw2 = GridColumnsDirective;
-exports.ɵv2 = GridColumnsStyleBuilder;
-exports.ɵba2 = DefaultGridGapDirective;
-exports.ɵz2 = GridGapDirective;
-exports.ɵy2 = GridGapStyleBuilder;
-exports.ɵc2 = DefaultGridAlignDirective;
-exports.ɵb2 = GridAlignDirective;
-exports.ɵa2 = GridAlignStyleBuilder;
-exports.ɵbd2 = DefaultGridRowDirective;
-exports.ɵbc2 = GridRowDirective;
-exports.ɵbb2 = GridRowStyleBuilder;
-exports.ɵbg2 = DefaultGridRowsDirective;
-exports.ɵbf2 = GridRowsDirective;
-exports.ɵbe2 = GridRowsStyleBuilder;
+exports.ɵgrid_privatef = DefaultGridAlignColumnsDirective;
+exports.ɵgrid_privatee = GridAlignColumnsDirective;
+exports.ɵgrid_privated = GridAlignColumnsStyleBuilder;
+exports.ɵgrid_privatei = DefaultGridAlignRowsDirective;
+exports.ɵgrid_privateh = GridAlignRowsDirective;
+exports.ɵgrid_privateg = GridAlignRowsStyleBuilder;
+exports.ɵgrid_privatel = DefaultGridAreaDirective;
+exports.ɵgrid_privatek = GridAreaDirective;
+exports.ɵgrid_privatej = GridAreaStyleBuilder;
+exports.ɵgrid_privateo = DefaultGridAreasDirective;
+exports.ɵgrid_privaten = GridAreasDirective;
+exports.ɵgrid_privatem = GridAreasStyleBuiler;
+exports.ɵgrid_privater = DefaultGridAutoDirective;
+exports.ɵgrid_privateq = GridAutoDirective;
+exports.ɵgrid_privatep = GridAutoStyleBuilder;
+exports.ɵgrid_privateu = DefaultGridColumnDirective;
+exports.ɵgrid_privatet = GridColumnDirective;
+exports.ɵgrid_privates = GridColumnStyleBuilder;
+exports.ɵgrid_privatex = DefaultGridColumnsDirective;
+exports.ɵgrid_privatew = GridColumnsDirective;
+exports.ɵgrid_privatev = GridColumnsStyleBuilder;
+exports.ɵgrid_privateba = DefaultGridGapDirective;
+exports.ɵgrid_privatez = GridGapDirective;
+exports.ɵgrid_privatey = GridGapStyleBuilder;
+exports.ɵgrid_privatec = DefaultGridAlignDirective;
+exports.ɵgrid_privateb = GridAlignDirective;
+exports.ɵgrid_privatea = GridAlignStyleBuilder;
+exports.ɵgrid_privatebd = DefaultGridRowDirective;
+exports.ɵgrid_privatebc = GridRowDirective;
+exports.ɵgrid_privatebb = GridRowStyleBuilder;
+exports.ɵgrid_privatebg = DefaultGridRowsDirective;
+exports.ɵgrid_privatebf = GridRowsDirective;
+exports.ɵgrid_privatebe = GridRowsStyleBuilder;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -144,7 +144,7 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     LayoutStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -279,7 +279,7 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -877,7 +877,7 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1100,7 +1100,7 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     FlexOrderStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOrderStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOrderStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1194,7 +1194,7 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     FlexOffsetStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexOffsetStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexOffsetStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1351,7 +1351,7 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     FlexAlignStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexAlignStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1436,7 +1436,7 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     FlexFillStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ FlexFillStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ FlexFillStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     return FlexFillStyleBuilder;
 }(StyleBuilder));
 /**
@@ -1559,7 +1559,7 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
     LayoutAlignStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ LayoutAlignStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ LayoutAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
