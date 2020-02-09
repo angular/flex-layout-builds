@@ -5,5 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Tag } from './tags';
-export declare const FLEX_ALIGN_TAG: Tag;
+import { Tag, ValuePriority } from '../tag';
+export declare class FlexOrder extends Tag {
+    readonly tag = "flexOrder";
+    build(input?: string): Map<string, ValuePriority>;
+}

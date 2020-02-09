@@ -7,5 +7,7 @@
  */
 import { ModuleWithProviders } from '@angular/core';
 export declare class UnifiedModule {
-    static withDefaults(): ModuleWithProviders<UnifiedModule>;
+    static withDefaults(withDefaultBp?: boolean): ModuleWithProviders<UnifiedModule>;
+    static withFlex(withDefaultBp?: boolean): ModuleWithProviders<UnifiedModule>;
+    static withGrid(withDefaultBp?: boolean): ModuleWithProviders<UnifiedModule>;
 }

@@ -8,7 +8,7 @@
 import { AfterContentInit, ElementRef, OnDestroy, QueryList } from '@angular/core';
 import { GrandCentral } from './central';
 import { Breakpoint } from './breakpoint';
-import { Builder } from './builder';
+import { Tag, ValuePriority } from './tags/tag';
 export declare class BreakpointDirective {
     name: string;
     readonly element: HTMLElement;
@@ -25,8 +25,10 @@ export declare class UnifiedDirective implements AfterContentInit, OnDestroy {
     private readonly rootObserver;
     private readonly observerMap;
     private readonly tagNames;
-    constructor(parent: UnifiedDirective, elementRef: ElementRef<HTMLElement>, breakpoints: Breakpoint[], tags: Map<string, Builder>, grandCentral: GrandCentral);
+    private readonly fallbackStyles;
+    constructor(parent: UnifiedDirective, elementRef: ElementRef<HTMLElement>, breakpoints: Breakpoint[], tags: Map<string, Tag>, grandCentral: GrandCentral);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
+    applyStyles(styles: Map<string, ValuePriority>): void;
     private processAttributeMutation;
 }
