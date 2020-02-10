@@ -17,13 +17,21 @@ import { MediaMatcher } from '@angular/cdk/layout';
  */
 /** @type {?} */
 var FALLBACK_BREAKPOINT_KEY = '__FALLBACK__';
-/** @type {?} */
+/**
+ * The fallback breakpoint, which has no real name and is
+ * superseded by any other breakpoint value
+ * @type {?}
+ */
 var FALLBACK_BREAKPOINT = {
     name: FALLBACK_BREAKPOINT_KEY,
     media: 'all',
-    priority: -1,
+    priority: -Number.MAX_SAFE_INTEGER,
 };
-/** @type {?} */
+/**
+ * The default breakpoints as provided by Google's Material Design.
+ * These do not include orientation breakpoints or device breakpoints.
+ * @type {?}
+ */
 var DEFAULT_BREAKPOINTS = [
     {
         name: 'xs',
@@ -90,15 +98,27 @@ var DEFAULT_BREAKPOINTS = [
         priority: -650,
     }
 ];
-/** @type {?} */
+/**
+ * The user-facing injection token for providing breakpoints,
+ * this is meant to be provided as a multi-provider, and
+ * consolidated later.
+ * @type {?}
+ */
 var BREAKPOINTS = new InjectionToken('Angular Layout Breakpoints');
-/** @type {?} */
+/**
+ * An internal-facing provider for the default breakpoints
+ * @type {?}
+ */
 var BREAKPOINTS_PROVIDER = {
     provide: BREAKPOINTS,
     useValue: DEFAULT_BREAKPOINTS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing injection token to consolidate all registered
+ * breakpoints for use in the application.
+ * @type {?}
+ */
 var BPS = new InjectionToken('Angular Layout Condensed Breakpoints', {
     providedIn: 'root',
     factory: (/**
@@ -132,14 +152,27 @@ var BPS = new InjectionToken('Angular Layout Condensed Breakpoints', {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
+ * A tag is a way of consolidating logic about a style pattern. For instance,
+ * setting the 'flex' attribute could be done with a Flex Tag. Each tag has an
+ * associated name, builder, cache, and dependencies on other builder input
+ * values.
  * @abstract
  */
 var  /**
+ * A tag is a way of consolidating logic about a style pattern. For instance,
+ * setting the 'flex' attribute could be done with a Flex Tag. Each tag has an
+ * associated name, builder, cache, and dependencies on other builder input
+ * values.
  * @abstract
  */
 Tag = /** @class */ (function () {
     function Tag() {
         this.cache = new Map();
+        /**
+         * The deps required to build this pattern. This can be from the
+         * directive the tag is on, its parent, or other outside dependencies
+         * like Directionality.
+         */
         this.deps = [];
     }
     /**
@@ -281,7 +314,7 @@ var FlexOrder = /** @class */ (function (_super) {
             return cache;
         }
         /** @type {?} */
-        var styles = new Map().set(input, { value: parseInt(input, 10), priority: 0 });
+        var styles = new Map().set('order', { value: parseInt(input, 10), priority: 0 });
         this.setCache(input, styles);
         return styles;
     };
@@ -538,36 +571,145 @@ var SPACE_EVENLY = 'space-evenly';
 
 /**
  * @fileoverview added by tsickle
- * Generated from: uni/src/tags/tags.ts
+ * Generated from: uni/src/tags/grid/gap.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * 'grid-gap' CSS Grid styling directive
+ * Configures the gap between items in the grid
+ * Syntax: <row gap> [<column-gap>]
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-17
+ */
+var  /**
+ * 'grid-gap' CSS Grid styling directive
+ * Configures the gap between items in the grid
+ * Syntax: <row gap> [<column-gap>]
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-17
+ */
+Gap = /** @class */ (function (_super) {
+    __extends(Gap, _super);
+    function Gap() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.tag = 'gap';
+        return _this;
+    }
+    /**
+     * @param {?=} input
+     * @return {?}
+     */
+    Gap.prototype.build = /**
+     * @param {?=} input
+     * @return {?}
+     */
+    function (input) {
+        input = input || '0';
+        /** @type {?} */
+        var cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        var styles = new Map()
+            .set('display', { value: 'grid', priority: -1 })
+            .set('grid-gap', { value: input, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    };
+    return Gap;
+}(Tag));
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/inline.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
-var FLEX_TAGS = [FlexAlign, FlexFill, FlexOrder, FlexOffset, LayoutAlign];
-/** @type {?} */
-var GRID_TAGS = [];
-/** @type {?} */
+var INLINE_STYLES = new Map().set('display', { value: 'inline-grid', priority: 1 });
+var Inline = /** @class */ (function (_super) {
+    __extends(Inline, _super);
+    function Inline() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.tag = 'inline';
+        return _this;
+    }
+    /**
+     * @return {?}
+     */
+    Inline.prototype.build = /**
+     * @return {?}
+     */
+    function () {
+        return INLINE_STYLES;
+    };
+    return Inline;
+}(Tag));
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/tags.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * All of the standard CSS flexbox-related tags
+ * @type {?}
+ */
+var FLEX_TAGS = [
+    new FlexAlign(),
+    new FlexFill(),
+    new FlexOrder(),
+    new FlexOffset(),
+    new LayoutAlign()
+];
+/**
+ * All of the standard CSS grid-related tags
+ * @type {?}
+ */
+var GRID_TAGS = [new Inline(), new Gap()];
+/**
+ * The default tags as provided by Angular Layout. These include both
+ * flex and grid type tags.
+ * @type {?}
+ */
 var DEFAULT_TAGS = __spreadArrays(FLEX_TAGS, GRID_TAGS);
-/** @type {?} */
+/**
+ * The user-facing injection token for providing tags,
+ * this is meant to be provided as a multi-provider, and
+ * consolidated later.
+ * @type {?}
+ */
 var LAYOUT_TAGS = new InjectionToken('Angular Layout Tags');
-/** @type {?} */
+/**
+ * An internal-facing provider for the default flex tags
+ * @type {?}
+ */
 var FLEX_PROVIDER = {
     provide: LAYOUT_TAGS,
     useValue: FLEX_TAGS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing provider for the default grid tags
+ * @type {?}
+ */
 var GRID_PROVIDER = {
     provide: LAYOUT_TAGS,
     useValue: GRID_TAGS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing provider for the default tags
+ * @type {?}
+ */
 var TAGS_PROVIDER = {
     provide: LAYOUT_TAGS,
     useValue: DEFAULT_TAGS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing injection token to consolidate all registered
+ * tags for use in the application.
+ * @type {?}
+ */
 var TAGS = new InjectionToken('Angular Layout Condensed Tags', {
     providedIn: 'root',
     factory: (/**
@@ -588,7 +730,7 @@ var TAGS = new InjectionToken('Angular Layout Condensed Tags', {
              * @return {?}
              */
             function (tag) {
-                tagsMap.set(tag.tag, tag.constructor());
+                tagsMap.set(tag.tag, tag);
             }));
         }));
         return tagsMap;
@@ -599,6 +741,14 @@ var TAGS = new InjectionToken('Angular Layout Condensed Tags', {
  * @fileoverview added by tsickle
  * Generated from: uni/src/central.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * GrandCentral is a switchyard for all of the various Layout directives
+ * registered in an application. It is the single source of truth for all of
+ * the layout changes that occur in an application. For instance, any changes
+ * to the browser state via registered media queries are monitored and updated
+ * in this service. The directives themselves simply store their respective values
+ * for each of the media states.
  */
 var GrandCentral = /** @class */ (function () {
     function GrandCentral(directionality, mediaMatcher, bps, tags) {
@@ -612,6 +762,7 @@ var GrandCentral = /** @class */ (function () {
         this.elementsMap = new Map();
         this.elementDataMap = new Map();
         this.dirListeners = new Set();
+        this.elListeners = new Map();
         bps.forEach((/**
          * @param {?} bp
          * @return {?}
@@ -632,8 +783,9 @@ var GrandCentral = /** @class */ (function () {
                 var deactivate = !e.matches && _this.activations.indexOf(bp) > -1;
                 if (!_this.activating && (activate || deactivate)) {
                     _this.dirListeners.clear();
-                    _this.computeStyles();
+                    _this.elListeners.clear();
                     _this.activating = true;
+                    _this.computeStyles();
                 }
             }));
         }));
@@ -643,12 +795,15 @@ var GrandCentral = /** @class */ (function () {
          */
         function () { return _this.dirListeners.forEach(_this.addStyles); }));
     }
+    /** Add a directive for a corresponding breakpoint */
     /**
+     * Add a directive for a corresponding breakpoint
      * @param {?} dir
      * @param {?} bp
      * @return {?}
      */
     GrandCentral.prototype.addDirective = /**
+     * Add a directive for a corresponding breakpoint
      * @param {?} dir
      * @param {?} bp
      * @return {?}
@@ -657,54 +812,59 @@ var GrandCentral = /** @class */ (function () {
         (/** @type {?} */ (this.elementsMap.get(bp))).add(dir);
         this.updateDirective(dir);
     };
+    /** Trigger an update for a directive */
     /**
+     * Trigger an update for a directive
      * @param {?} dir
      * @return {?}
      */
     GrandCentral.prototype.updateDirective = /**
+     * Trigger an update for a directive
      * @param {?} dir
      * @return {?}
      */
     function (dir) {
         this.computeDirective(dir);
         this.addStyles(dir);
+        /** @type {?} */
+        var listeners = this.elListeners.get(dir);
+        if (listeners) {
+            listeners.forEach(this.addStyles);
+        }
     };
+    /** Remove a directive from all future updates */
     /**
-     * @param {?} dir
-     * @param {?} bp
-     * @return {?}
-     */
-    GrandCentral.prototype.removeDirectiveBp = /**
-     * @param {?} dir
-     * @param {?} bp
-     * @return {?}
-     */
-    function (dir, bp) {
-        (/** @type {?} */ (this.elementsMap.get(bp))).delete(dir);
-        this.updateDirective(dir);
-    };
-    /**
+     * Remove a directive from all future updates
      * @param {?} dir
      * @return {?}
      */
     GrandCentral.prototype.removeDirective = /**
+     * Remove a directive from all future updates
      * @param {?} dir
      * @return {?}
      */
     function (dir) {
         var _this = this;
         this.dirListeners.delete(dir);
+        /** @type {?} */
+        var parentListeners = this.elListeners.get(dir.parent);
+        if (parentListeners) {
+            parentListeners.delete(dir);
+        }
         this.bps.forEach((/**
          * @param {?} bp
          * @return {?}
          */
         function (bp) { return (/** @type {?} */ (_this.elementsMap.get(bp))).delete(dir); }));
     };
+    /** Compute the active breakpoints and sort by descending priority */
     /**
+     * Compute the active breakpoints and sort by descending priority
      * @private
      * @return {?}
      */
     GrandCentral.prototype.computeActivations = /**
+     * Compute the active breakpoints and sort by descending priority
      * @private
      * @return {?}
      */
@@ -723,11 +883,14 @@ var GrandCentral = /** @class */ (function () {
          */
         function (a, b) { return b.priority - a.priority; }));
     };
+    /** Compute the styles and update the directives for all active breakpoints */
     /**
+     * Compute the styles and update the directives for all active breakpoints
      * @private
      * @return {?}
      */
     GrandCentral.prototype.computeStyles = /**
+     * Compute the styles and update the directives for all active breakpoints
      * @private
      * @return {?}
      */
@@ -744,12 +907,15 @@ var GrandCentral = /** @class */ (function () {
         Array.from(this.elementDataMap.keys()).forEach(this.addStyles.bind(this));
         this.activating = false;
     };
+    /** Compute the styles for an individual directive */
     /**
+     * Compute the styles for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
      */
     GrandCentral.prototype.computeDirective = /**
+     * Compute the styles for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
@@ -779,12 +945,15 @@ var GrandCentral = /** @class */ (function () {
         }));
         this.elementDataMap.set(dir, values);
     };
+    /** Add the computed styles for an individual directive */
     /**
+     * Add the computed styles for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
      */
     GrandCentral.prototype.addStyles = /**
+     * Add the computed styles for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
@@ -820,7 +989,9 @@ var GrandCentral = /** @class */ (function () {
         }));
         dir.applyStyles(styles);
     };
+    /** Compute the CSS styles for a directive given a tag and value */
     /**
+     * Compute the CSS styles for a directive given a tag and value
      * @private
      * @param {?} tagName
      * @param {?} value
@@ -828,6 +999,7 @@ var GrandCentral = /** @class */ (function () {
      * @return {?}
      */
     GrandCentral.prototype.calculateStyle = /**
+     * Compute the CSS styles for a directive given a tag and value
      * @private
      * @param {?} tagName
      * @param {?} value
@@ -841,13 +1013,16 @@ var GrandCentral = /** @class */ (function () {
         var args = this.resolve(dir, tag.deps);
         return tag.build.apply(tag, __spreadArrays([value], args));
     };
+    /** Resolve the arguments for a builder given a directive */
     /**
+     * Resolve the arguments for a builder given a directive
      * @private
      * @param {?} dir
      * @param {?} deps
      * @return {?}
      */
     GrandCentral.prototype.resolve = /**
+     * Resolve the arguments for a builder given a directive
      * @private
      * @param {?} dir
      * @param {?} deps
@@ -864,10 +1039,16 @@ var GrandCentral = /** @class */ (function () {
             /** @type {?} */
             var keys = dep.split(KEY_DELIMITER);
             if (keys.length > 1 && keys[0] === PARENT_KEY || keys[0] === SELF_KEY) {
-                // TODO: setup listeners, only get triggered when element is updated in isolation
-                // does this account for when that element gets updated by directionality?
+                // NOTE: elListeners does not account for directionality change, because
+                // the assumption is that directionality does not change the parent values
                 /** @type {?} */
                 var dataMap = _this.elementDataMap.get(keys[0] === PARENT_KEY ? dir.parent : dir);
+                if (dataMap) {
+                    /** @type {?} */
+                    var elements = _this.elListeners.get(dir.parent) || new Set();
+                    elements.add(dir);
+                    _this.elListeners.set(dir.parent, elements);
+                }
                 return _b = (_a = dataMap) === null || _a === void 0 ? void 0 : _a.get(dep), _b !== null && _b !== void 0 ? _b : '';
             }
             else if (dep === DIR_KEY) {
@@ -906,6 +1087,10 @@ var DIR_KEY = 'directionality';
  * Generated from: uni/src/unified.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/**
+ * This is a simplistic, wrapping directive meant only to
+ * capture and record values for individual breakpoints.
+ */
 var BreakpointDirective = /** @class */ (function () {
     function BreakpointDirective(elementRef) {
         this.name = '';
@@ -923,6 +1108,11 @@ var BreakpointDirective = /** @class */ (function () {
     };
     return BreakpointDirective;
 }());
+/**
+ * One directive to rule them all. This directive is responsible for
+ * tagging an HTML element as part of the layout system, and then
+ * coordinating all updates with GrandCentral.
+ */
 var UnifiedDirective = /** @class */ (function () {
     function UnifiedDirective(parent, elementRef, breakpoints, tags, grandCentral) {
         var _this = this;
@@ -1035,17 +1225,6 @@ var UnifiedDirective = /** @class */ (function () {
                 _this.observerMap.set(el, mo);
             }
         }));
-        // const oldNodes = Array.from(mutation.removedNodes)
-        //   .filter(n => isElement(n) && breakpointNames.indexOf(n.tagName) > -1) as Element[];
-        // oldNodes.forEach(el => {
-        //   const tagName = el.tagName.toLowerCase();
-        //   const breakpoint = breakpoints.find(bp => bp.name === tagName)!;
-        //   const observer = this.observerMap.get(el);
-        //   if (observer) {
-        //     grandCentral.removeDirectiveBp(this, breakpoint);
-        //     observer.disconnect();
-        //   }
-        // });
     };
     /**
      * @return {?}
@@ -1064,16 +1243,21 @@ var UnifiedDirective = /** @class */ (function () {
         function (observer) { return observer.disconnect(); }));
         this.grandCentral.removeDirective(this);
     };
+    /** Apply the given styles to the underlying HTMLElement */
     /**
+     * Apply the given styles to the underlying HTMLElement
      * @param {?} styles
      * @return {?}
      */
     UnifiedDirective.prototype.applyStyles = /**
+     * Apply the given styles to the underlying HTMLElement
      * @param {?} styles
      * @return {?}
      */
     function (styles) {
         var _this = this;
+        /** @type {?} */
+        var styleKeys = new Set(this.fallbackStyles.keys());
         styles.forEach((/**
          * @param {?} value
          * @param {?} key
@@ -1081,30 +1265,33 @@ var UnifiedDirective = /** @class */ (function () {
          */
         function (value, key) {
             if (!_this.fallbackStyles.get(key)) {
+                // TODO: this needs to be computed?
                 _this.fallbackStyles.set(key, _this.element.style.getPropertyValue(key));
             }
+            else {
+                _this.fallbackStyles.set(key, value.value);
+            }
             _this.element.style.setProperty(key, value.value);
+            styleKeys.delete(key);
         }));
-        // TODO: let's say we go xs and that adds max-width, then we go to md, without,
-        // does this clear it?
-        this.fallbackStyles.forEach((/**
-         * @param {?} _
+        styleKeys.forEach((/**
          * @param {?} key
          * @return {?}
          */
-        function (_, key) {
-            if (!styles.has(key)) {
-                _this.element.style.setProperty(key, _this.fallbackStyles.get(key) || '');
-            }
+        function (key) {
+            _this.element.style.setProperty(key, (/** @type {?} */ (_this.fallbackStyles.get(key))));
         }));
     };
+    /** Process a MutationObserver's attribute-type mutation */
     /**
+     * Process a MutationObserver's attribute-type mutation
      * @private
      * @param {?} mutation
      * @param {?=} isParent
      * @return {?}
      */
     UnifiedDirective.prototype.processAttributeMutation = /**
+     * Process a MutationObserver's attribute-type mutation
      * @private
      * @param {?} mutation
      * @param {?=} isParent
@@ -1234,5 +1421,5 @@ var UnifiedModule = /** @class */ (function () {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { BREAKPOINTS, DEFAULT_BREAKPOINTS, FLEX_TAGS, GRID_TAGS, LAYOUT_TAGS, DEFAULT_TAGS, Tag, GrandCentral, BreakpointDirective, UnifiedDirective, UnifiedModule, BPS as ɵb0, BREAKPOINTS_PROVIDER as ɵa0, FlexAlign as ɵg0, FlexFill as ɵh0, FlexOffset as ɵj0, FlexOrder as ɵi0, LayoutAlign as ɵk0, FLEX_PROVIDER as ɵc0, GRID_PROVIDER as ɵd0, TAGS as ɵf0, TAGS_PROVIDER as ɵe0 };
+export { BREAKPOINTS, DEFAULT_BREAKPOINTS, FLEX_TAGS, GRID_TAGS, LAYOUT_TAGS, DEFAULT_TAGS, Tag, GrandCentral, BreakpointDirective, UnifiedDirective, UnifiedModule, BPS as ɵb0, BREAKPOINTS_PROVIDER as ɵa0, FlexAlign as ɵg0, FlexFill as ɵh0, FlexOffset as ɵj0, FlexOrder as ɵi0, LayoutAlign as ɵk0, Gap as ɵm0, Inline as ɵl0, FLEX_PROVIDER as ɵc0, GRID_PROVIDER as ɵd0, TAGS as ɵf0, TAGS_PROVIDER as ɵe0 };
 //# sourceMappingURL=uni.es5.js.map

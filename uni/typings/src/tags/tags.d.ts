@@ -7,28 +7,41 @@
  */
 import { InjectionToken } from '@angular/core';
 import { Tag } from './tag';
-import { FlexAlign } from './flex/flex-align';
-import { FlexFill } from './flex/flex-fill';
-import { FlexOrder } from './flex/flex-order';
-import { FlexOffset } from './flex/flex-offset';
-import { LayoutAlign } from './flex/layout-align';
-export declare const FLEX_TAGS: (typeof FlexAlign | typeof FlexFill | typeof FlexOrder | typeof FlexOffset | typeof LayoutAlign)[];
-export declare const GRID_TAGS: never[];
-export declare const DEFAULT_TAGS: (typeof FlexAlign | typeof FlexFill | typeof FlexOrder | typeof FlexOffset | typeof LayoutAlign)[];
+/** All of the standard CSS flexbox-related tags */
+export declare const FLEX_TAGS: Tag[];
+/** All of the standard CSS grid-related tags */
+export declare const GRID_TAGS: Tag[];
+/**
+ * The default tags as provided by Angular Layout. These include both
+ * flex and grid type tags.
+ */
+export declare const DEFAULT_TAGS: Tag[];
+/**
+ * The user-facing injection token for providing tags,
+ * this is meant to be provided as a multi-provider, and
+ * consolidated later.
+ */
 export declare const LAYOUT_TAGS: InjectionToken<Tag[][]>;
+/** An internal-facing provider for the default flex tags */
 export declare const FLEX_PROVIDER: {
     provide: InjectionToken<Tag[][]>;
-    useValue: (typeof FlexAlign | typeof FlexFill | typeof FlexOrder | typeof FlexOffset | typeof LayoutAlign)[];
+    useValue: Tag[];
     multi: boolean;
 };
+/** An internal-facing provider for the default grid tags */
 export declare const GRID_PROVIDER: {
     provide: InjectionToken<Tag[][]>;
-    useValue: never[];
+    useValue: Tag[];
     multi: boolean;
 };
+/** An internal-facing provider for the default tags */
 export declare const TAGS_PROVIDER: {
     provide: InjectionToken<Tag[][]>;
-    useValue: (typeof FlexAlign | typeof FlexFill | typeof FlexOrder | typeof FlexOffset | typeof LayoutAlign)[];
+    useValue: Tag[];
     multi: boolean;
 };
+/**
+ * An internal-facing injection token to consolidate all registered
+ * tags for use in the application.
+ */
 export declare const TAGS: InjectionToken<Map<string, Tag>>;

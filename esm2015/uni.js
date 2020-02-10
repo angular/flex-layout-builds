@@ -16,13 +16,21 @@ import { MediaMatcher } from '@angular/cdk/layout';
  */
 /** @type {?} */
 const FALLBACK_BREAKPOINT_KEY = '__FALLBACK__';
-/** @type {?} */
+/**
+ * The fallback breakpoint, which has no real name and is
+ * superseded by any other breakpoint value
+ * @type {?}
+ */
 const FALLBACK_BREAKPOINT = {
     name: FALLBACK_BREAKPOINT_KEY,
     media: 'all',
-    priority: -1,
+    priority: -Number.MAX_SAFE_INTEGER,
 };
-/** @type {?} */
+/**
+ * The default breakpoints as provided by Google's Material Design.
+ * These do not include orientation breakpoints or device breakpoints.
+ * @type {?}
+ */
 const DEFAULT_BREAKPOINTS = [
     {
         name: 'xs',
@@ -89,15 +97,27 @@ const DEFAULT_BREAKPOINTS = [
         priority: -650,
     }
 ];
-/** @type {?} */
+/**
+ * The user-facing injection token for providing breakpoints,
+ * this is meant to be provided as a multi-provider, and
+ * consolidated later.
+ * @type {?}
+ */
 const BREAKPOINTS = new InjectionToken('Angular Layout Breakpoints');
-/** @type {?} */
+/**
+ * An internal-facing provider for the default breakpoints
+ * @type {?}
+ */
 const BREAKPOINTS_PROVIDER = {
     provide: BREAKPOINTS,
     useValue: DEFAULT_BREAKPOINTS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing injection token to consolidate all registered
+ * breakpoints for use in the application.
+ * @type {?}
+ */
 const BPS = new InjectionToken('Angular Layout Condensed Breakpoints', {
     providedIn: 'root',
     factory: (/**
@@ -131,11 +151,20 @@ const BPS = new InjectionToken('Angular Layout Condensed Breakpoints', {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
+ * A tag is a way of consolidating logic about a style pattern. For instance,
+ * setting the 'flex' attribute could be done with a Flex Tag. Each tag has an
+ * associated name, builder, cache, and dependencies on other builder input
+ * values.
  * @abstract
  */
 class Tag {
     constructor() {
         this.cache = new Map();
+        /**
+         * The deps required to build this pattern. This can be from the
+         * directive the tag is on, its parent, or other outside dependencies
+         * like Directionality.
+         */
         this.deps = [];
     }
     /**
@@ -246,7 +275,7 @@ class FlexOrder extends Tag {
             return cache;
         }
         /** @type {?} */
-        const styles = new Map().set(input, { value: parseInt(input, 10), priority: 0 });
+        const styles = new Map().set('order', { value: parseInt(input, 10), priority: 0 });
         this.setCache(input, styles);
         return styles;
     }
@@ -485,36 +514,126 @@ const SPACE_EVENLY = 'space-evenly';
 
 /**
  * @fileoverview added by tsickle
- * Generated from: uni/src/tags/tags.ts
+ * Generated from: uni/src/tags/grid/gap.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * 'grid-gap' CSS Grid styling directive
+ * Configures the gap between items in the grid
+ * Syntax: <row gap> [<column-gap>]
+ * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-17
+ */
+class Gap extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'gap';
+    }
+    /**
+     * @param {?=} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || '0';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map()
+            .set('display', { value: 'grid', priority: -1 })
+            .set('grid-gap', { value: input, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/inline.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
-const FLEX_TAGS = [FlexAlign, FlexFill, FlexOrder, FlexOffset, LayoutAlign];
-/** @type {?} */
-const GRID_TAGS = [];
-/** @type {?} */
+const INLINE_STYLES = new Map().set('display', { value: 'inline-grid', priority: 1 });
+class Inline extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'inline';
+    }
+    /**
+     * @return {?}
+     */
+    build() {
+        return INLINE_STYLES;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/tags.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * All of the standard CSS flexbox-related tags
+ * @type {?}
+ */
+const FLEX_TAGS = [
+    new FlexAlign(),
+    new FlexFill(),
+    new FlexOrder(),
+    new FlexOffset(),
+    new LayoutAlign()
+];
+/**
+ * All of the standard CSS grid-related tags
+ * @type {?}
+ */
+const GRID_TAGS = [new Inline(), new Gap()];
+/**
+ * The default tags as provided by Angular Layout. These include both
+ * flex and grid type tags.
+ * @type {?}
+ */
 const DEFAULT_TAGS = [...FLEX_TAGS, ...GRID_TAGS];
-/** @type {?} */
+/**
+ * The user-facing injection token for providing tags,
+ * this is meant to be provided as a multi-provider, and
+ * consolidated later.
+ * @type {?}
+ */
 const LAYOUT_TAGS = new InjectionToken('Angular Layout Tags');
-/** @type {?} */
+/**
+ * An internal-facing provider for the default flex tags
+ * @type {?}
+ */
 const FLEX_PROVIDER = {
     provide: LAYOUT_TAGS,
     useValue: FLEX_TAGS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing provider for the default grid tags
+ * @type {?}
+ */
 const GRID_PROVIDER = {
     provide: LAYOUT_TAGS,
     useValue: GRID_TAGS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing provider for the default tags
+ * @type {?}
+ */
 const TAGS_PROVIDER = {
     provide: LAYOUT_TAGS,
     useValue: DEFAULT_TAGS,
     multi: true,
 };
-/** @type {?} */
+/**
+ * An internal-facing injection token to consolidate all registered
+ * tags for use in the application.
+ * @type {?}
+ */
 const TAGS = new InjectionToken('Angular Layout Condensed Tags', {
     providedIn: 'root',
     factory: (/**
@@ -535,7 +654,7 @@ const TAGS = new InjectionToken('Angular Layout Condensed Tags', {
              * @return {?}
              */
             tag => {
-                tagsMap.set(tag.tag, tag.constructor());
+                tagsMap.set(tag.tag, tag);
             }));
         }));
         return tagsMap;
@@ -546,6 +665,14 @@ const TAGS = new InjectionToken('Angular Layout Condensed Tags', {
  * @fileoverview added by tsickle
  * Generated from: uni/src/central.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * GrandCentral is a switchyard for all of the various Layout directives
+ * registered in an application. It is the single source of truth for all of
+ * the layout changes that occur in an application. For instance, any changes
+ * to the browser state via registered media queries are monitored and updated
+ * in this service. The directives themselves simply store their respective values
+ * for each of the media states.
  */
 class GrandCentral {
     /**
@@ -564,6 +691,7 @@ class GrandCentral {
         this.elementsMap = new Map();
         this.elementDataMap = new Map();
         this.dirListeners = new Set();
+        this.elListeners = new Map();
         bps.forEach((/**
          * @param {?} bp
          * @return {?}
@@ -584,8 +712,9 @@ class GrandCentral {
                 const deactivate = !e.matches && this.activations.indexOf(bp) > -1;
                 if (!this.activating && (activate || deactivate)) {
                     this.dirListeners.clear();
-                    this.computeStyles();
+                    this.elListeners.clear();
                     this.activating = true;
+                    this.computeStyles();
                 }
             }));
         }));
@@ -596,6 +725,7 @@ class GrandCentral {
         () => this.dirListeners.forEach(this.addStyles)));
     }
     /**
+     * Add a directive for a corresponding breakpoint
      * @param {?} dir
      * @param {?} bp
      * @return {?}
@@ -605,28 +735,31 @@ class GrandCentral {
         this.updateDirective(dir);
     }
     /**
+     * Trigger an update for a directive
      * @param {?} dir
      * @return {?}
      */
     updateDirective(dir) {
         this.computeDirective(dir);
         this.addStyles(dir);
+        /** @type {?} */
+        const listeners = this.elListeners.get(dir);
+        if (listeners) {
+            listeners.forEach(this.addStyles);
+        }
     }
     /**
-     * @param {?} dir
-     * @param {?} bp
-     * @return {?}
-     */
-    removeDirectiveBp(dir, bp) {
-        (/** @type {?} */ (this.elementsMap.get(bp))).delete(dir);
-        this.updateDirective(dir);
-    }
-    /**
+     * Remove a directive from all future updates
      * @param {?} dir
      * @return {?}
      */
     removeDirective(dir) {
         this.dirListeners.delete(dir);
+        /** @type {?} */
+        const parentListeners = this.elListeners.get(dir.parent);
+        if (parentListeners) {
+            parentListeners.delete(dir);
+        }
         this.bps.forEach((/**
          * @param {?} bp
          * @return {?}
@@ -634,6 +767,7 @@ class GrandCentral {
         bp => (/** @type {?} */ (this.elementsMap.get(bp))).delete(dir)));
     }
     /**
+     * Compute the active breakpoints and sort by descending priority
      * @private
      * @return {?}
      */
@@ -652,6 +786,7 @@ class GrandCentral {
         (a, b) => b.priority - a.priority));
     }
     /**
+     * Compute the styles and update the directives for all active breakpoints
      * @private
      * @return {?}
      */
@@ -666,6 +801,7 @@ class GrandCentral {
         this.activating = false;
     }
     /**
+     * Compute the styles for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
@@ -696,6 +832,7 @@ class GrandCentral {
         this.elementDataMap.set(dir, values);
     }
     /**
+     * Add the computed styles for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
@@ -731,6 +868,7 @@ class GrandCentral {
         dir.applyStyles(styles);
     }
     /**
+     * Compute the CSS styles for a directive given a tag and value
      * @private
      * @param {?} tagName
      * @param {?} value
@@ -745,6 +883,7 @@ class GrandCentral {
         return tag.build(value, ...args);
     }
     /**
+     * Resolve the arguments for a builder given a directive
      * @private
      * @param {?} dir
      * @param {?} deps
@@ -760,10 +899,16 @@ class GrandCentral {
             /** @type {?} */
             const keys = dep.split(KEY_DELIMITER);
             if (keys.length > 1 && keys[0] === PARENT_KEY || keys[0] === SELF_KEY) {
-                // TODO: setup listeners, only get triggered when element is updated in isolation
-                // does this account for when that element gets updated by directionality?
+                // NOTE: elListeners does not account for directionality change, because
+                // the assumption is that directionality does not change the parent values
                 /** @type {?} */
                 const dataMap = this.elementDataMap.get(keys[0] === PARENT_KEY ? dir.parent : dir);
+                if (dataMap) {
+                    /** @type {?} */
+                    const elements = this.elListeners.get(dir.parent) || new Set();
+                    elements.add(dir);
+                    this.elListeners.set(dir.parent, elements);
+                }
                 return _b = (_a = dataMap) === null || _a === void 0 ? void 0 : _a.get(dep), _b !== null && _b !== void 0 ? _b : '';
             }
             else if (dep === DIR_KEY) {
@@ -801,6 +946,10 @@ const DIR_KEY = 'directionality';
  * Generated from: uni/src/unified.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/**
+ * This is a simplistic, wrapping directive meant only to
+ * capture and record values for individual breakpoints.
+ */
 class BreakpointDirective {
     /**
      * @param {?} elementRef
@@ -820,6 +969,11 @@ BreakpointDirective.ctorParameters = () => [
 BreakpointDirective.propDecorators = {
     name: [{ type: Input, args: ['tag',] }]
 };
+/**
+ * One directive to rule them all. This directive is responsible for
+ * tagging an HTML element as part of the layout system, and then
+ * coordinating all updates with GrandCentral.
+ */
 class UnifiedDirective {
     /**
      * @param {?} parent
@@ -934,17 +1088,6 @@ class UnifiedDirective {
                 this.observerMap.set(el, mo);
             }
         }));
-        // const oldNodes = Array.from(mutation.removedNodes)
-        //   .filter(n => isElement(n) && breakpointNames.indexOf(n.tagName) > -1) as Element[];
-        // oldNodes.forEach(el => {
-        //   const tagName = el.tagName.toLowerCase();
-        //   const breakpoint = breakpoints.find(bp => bp.name === tagName)!;
-        //   const observer = this.observerMap.get(el);
-        //   if (observer) {
-        //     grandCentral.removeDirectiveBp(this, breakpoint);
-        //     observer.disconnect();
-        //   }
-        // });
     }
     /**
      * @return {?}
@@ -961,10 +1104,13 @@ class UnifiedDirective {
         this.grandCentral.removeDirective(this);
     }
     /**
+     * Apply the given styles to the underlying HTMLElement
      * @param {?} styles
      * @return {?}
      */
     applyStyles(styles) {
+        /** @type {?} */
+        const styleKeys = new Set(this.fallbackStyles.keys());
         styles.forEach((/**
          * @param {?} value
          * @param {?} key
@@ -972,24 +1118,25 @@ class UnifiedDirective {
          */
         (value, key) => {
             if (!this.fallbackStyles.get(key)) {
+                // TODO: this needs to be computed?
                 this.fallbackStyles.set(key, this.element.style.getPropertyValue(key));
             }
+            else {
+                this.fallbackStyles.set(key, value.value);
+            }
             this.element.style.setProperty(key, value.value);
+            styleKeys.delete(key);
         }));
-        // TODO: let's say we go xs and that adds max-width, then we go to md, without,
-        // does this clear it?
-        this.fallbackStyles.forEach((/**
-         * @param {?} _
+        styleKeys.forEach((/**
          * @param {?} key
          * @return {?}
          */
-        (_, key) => {
-            if (!styles.has(key)) {
-                this.element.style.setProperty(key, this.fallbackStyles.get(key) || '');
-            }
+        key => {
+            this.element.style.setProperty(key, (/** @type {?} */ (this.fallbackStyles.get(key))));
         }));
     }
     /**
+     * Process a MutationObserver's attribute-type mutation
      * @private
      * @param {?} mutation
      * @param {?=} isParent
@@ -1099,5 +1246,5 @@ UnifiedModule.decorators = [
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { BREAKPOINTS, DEFAULT_BREAKPOINTS, FLEX_TAGS, GRID_TAGS, LAYOUT_TAGS, DEFAULT_TAGS, Tag, GrandCentral, BreakpointDirective, UnifiedDirective, UnifiedModule, BPS as ɵb0, BREAKPOINTS_PROVIDER as ɵa0, FlexAlign as ɵg0, FlexFill as ɵh0, FlexOffset as ɵj0, FlexOrder as ɵi0, LayoutAlign as ɵk0, FLEX_PROVIDER as ɵc0, GRID_PROVIDER as ɵd0, TAGS as ɵf0, TAGS_PROVIDER as ɵe0 };
+export { BREAKPOINTS, DEFAULT_BREAKPOINTS, FLEX_TAGS, GRID_TAGS, LAYOUT_TAGS, DEFAULT_TAGS, Tag, GrandCentral, BreakpointDirective, UnifiedDirective, UnifiedModule, BPS as ɵb0, BREAKPOINTS_PROVIDER as ɵa0, FlexAlign as ɵg0, FlexFill as ɵh0, FlexOffset as ɵj0, FlexOrder as ɵi0, LayoutAlign as ɵk0, Gap as ɵm0, Inline as ɵl0, FLEX_PROVIDER as ɵc0, GRID_PROVIDER as ɵd0, TAGS as ɵf0, TAGS_PROVIDER as ɵe0 };
 //# sourceMappingURL=uni.js.map

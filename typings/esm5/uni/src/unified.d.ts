@@ -9,11 +9,20 @@ import { AfterContentInit, ElementRef, OnDestroy, QueryList } from '@angular/cor
 import { GrandCentral } from './central';
 import { Breakpoint } from './breakpoint';
 import { Tag, ValuePriority } from './tags/tag';
+/**
+ * This is a simplistic, wrapping directive meant only to
+ * capture and record values for individual breakpoints.
+ */
 export declare class BreakpointDirective {
     name: string;
     readonly element: HTMLElement;
     constructor(elementRef: ElementRef<HTMLElement>);
 }
+/**
+ * One directive to rule them all. This directive is responsible for
+ * tagging an HTML element as part of the layout system, and then
+ * coordinating all updates with GrandCentral.
+ */
 export declare class UnifiedDirective implements AfterContentInit, OnDestroy {
     readonly parent: UnifiedDirective;
     private readonly breakpoints;
@@ -29,6 +38,8 @@ export declare class UnifiedDirective implements AfterContentInit, OnDestroy {
     constructor(parent: UnifiedDirective, elementRef: ElementRef<HTMLElement>, breakpoints: Breakpoint[], tags: Map<string, Tag>, grandCentral: GrandCentral);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
+    /** Apply the given styles to the underlying HTMLElement */
     applyStyles(styles: Map<string, ValuePriority>): void;
+    /** Process a MutationObserver's attribute-type mutation */
     private processAttributeMutation;
 }
