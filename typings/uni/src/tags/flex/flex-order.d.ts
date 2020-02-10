@@ -8,5 +8,5 @@
 import { Tag, ValuePriority } from '../tag';
 export declare class FlexOrder extends Tag {
     readonly tag = "flexOrder";
-    build(input?: string): Map<string, ValuePriority>;
+    build(input: string): Map<string, ValuePriority>;
 }

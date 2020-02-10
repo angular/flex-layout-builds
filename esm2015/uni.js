@@ -197,7 +197,7 @@ class FlexAlign extends Tag {
         this.tag = 'flexAlign';
     }
     /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     build(input) {
@@ -264,7 +264,7 @@ class FlexOrder extends Tag {
         this.tag = 'flexOrder';
     }
     /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     build(input) {
@@ -529,7 +529,7 @@ class Gap extends Tag {
         this.tag = 'gap';
     }
     /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     build(input) {
@@ -1020,7 +1020,7 @@ class UnifiedDirective {
         tagName => {
             /** @type {?} */
             const attr = this.element.getAttribute(tagName);
-            if (attr) {
+            if (attr !== null) {
                 (/** @type {?} */ (this.valueMap.get(FALLBACK_BREAKPOINT_KEY))).set(tagName, attr);
             }
         }));

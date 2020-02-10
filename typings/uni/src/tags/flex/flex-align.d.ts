@@ -8,5 +8,5 @@
 import { Tag, ValuePriority } from '../tag';
 export declare class FlexAlign extends Tag {
     readonly tag = "flexAlign";
-    build(input?: string): Map<string, ValuePriority>;
+    build(input: string): Map<string, ValuePriority>;
 }

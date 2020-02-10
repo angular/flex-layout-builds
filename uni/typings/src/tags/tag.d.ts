@@ -39,7 +39,7 @@ export declare abstract class Tag {
      * @param input the value for the tag, e.g. flex="50" the input is "50"
      * @param args the resolved dependencies for this tag
      */
-    abstract build(input?: string, ...args: string[]): Map<string, ValuePriority>;
+    abstract build(input: string, ...args: string[]): Map<string, ValuePriority>;
     protected setCache(input: string, value: Map<string, ValuePriority>): void;
     protected getCache(input: string): Map<string, ValuePriority> | undefined;
 }

@@ -257,11 +257,11 @@ var FlexAlign = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     FlexAlign.prototype.build = /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     function (input) {
@@ -337,11 +337,11 @@ var FlexOrder = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     FlexOrder.prototype.build = /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     function (input) {
@@ -632,11 +632,11 @@ Gap = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     Gap.prototype.build = /**
-     * @param {?=} input
+     * @param {?} input
      * @return {?}
      */
     function (input) {
@@ -1191,7 +1191,7 @@ var UnifiedDirective = /** @class */ (function () {
         function (tagName) {
             /** @type {?} */
             var attr = _this.element.getAttribute(tagName);
-            if (attr) {
+            if (attr !== null) {
                 (/** @type {?} */ (_this.valueMap.get(FALLBACK_BREAKPOINT_KEY))).set(tagName, attr);
             }
         }));
