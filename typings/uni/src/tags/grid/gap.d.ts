@@ -12,7 +12,7 @@ import { Tag, ValuePriority } from '../tag';
  * Syntax: <row gap> [<column-gap>]
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-17
  */
-export declare class Gap extends Tag {
-    readonly tag = "gap";
+export declare class GridGap extends Tag {
+    readonly tag = "gridGap";
     build(input: string): Map<string, ValuePriority>;
 }

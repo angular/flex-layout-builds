@@ -7,6 +7,8 @@
  */
 import { InjectionToken } from '@angular/core';
 import { Tag } from './tag';
+/** All of the extended features that are not CSS standard */
+export declare const CORE_TAGS: Tag[];
 /** All of the standard CSS flexbox-related tags */
 export declare const FLEX_TAGS: Tag[];
 /** All of the standard CSS grid-related tags */
@@ -14,7 +16,7 @@ export declare const GRID_TAGS: Tag[];
 /**
  * The default tags as provided by Angular Layout. These include both
  * flex and grid type tags.
- */
+*/
 export declare const DEFAULT_TAGS: Tag[];
 /**
  * The user-facing injection token for providing tags,

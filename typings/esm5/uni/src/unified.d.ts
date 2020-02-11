@@ -34,12 +34,14 @@ export declare class UnifiedDirective implements AfterContentInit, OnDestroy {
     private readonly rootObserver;
     private readonly observerMap;
     private readonly tagNames;
-    private readonly fallbackStyles;
+    private readonly fallbacks;
     constructor(parent: UnifiedDirective, elementRef: ElementRef<HTMLElement>, breakpoints: Breakpoint[], tags: Map<string, Tag>, grandCentral: GrandCentral);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
-    /** Apply the given styles to the underlying HTMLElement */
-    applyStyles(styles: Map<string, ValuePriority>): void;
+    /** Apply the given styles, attributes, and classes to the underlying HTMLElement */
+    apply(map: Map<string, ValuePriority>): void;
+    /** Apply the given value to the underlying HTMLElement */
+    private addToElement;
     /** Process a MutationObserver's attribute-type mutation */
     private processAttributeMutation;
 }

@@ -266,7 +266,7 @@ var StylesheetMap = /** @class */ (function () {
     StylesheetMap.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ StylesheetMap.ɵprov1 = core.ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+    /** @nocollapse */ StylesheetMap.ɵprov = core.ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
@@ -1234,7 +1234,7 @@ var BreakPointRegistry = /** @class */ (function () {
     BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: core.Inject, args: [BREAKPOINTS,] }] }
     ]; };
-    /** @nocollapse */ BreakPointRegistry.ɵprov1 = core.ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+    /** @nocollapse */ BreakPointRegistry.ɵprov = core.ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(core.ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
 
@@ -1466,7 +1466,7 @@ var MatchMedia = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MatchMedia.ɵprov1 = core.ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.ɵɵinject(core.NgZone), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+    /** @nocollapse */ MatchMedia.ɵprov = core.ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(core.ɵɵinject(core.NgZone), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
 /**
@@ -2401,7 +2401,7 @@ var PrintHook = /** @class */ (function () {
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ɵprov1 = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(common.DOCUMENT)); }, token: PrintHook, providedIn: "root" });
+    /** @nocollapse */ PrintHook.ɵprov = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(common.DOCUMENT)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
 // ************************************************************************
@@ -2842,7 +2842,7 @@ var MediaObserver = /** @class */ (function () {
         { type: MatchMedia },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ɵprov1 = core.ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+    /** @nocollapse */ MediaObserver.ɵprov = core.ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 /**
@@ -3262,7 +3262,7 @@ var MediaTrigger = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [common.DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MediaTrigger.ɵprov1 = core.ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+    /** @nocollapse */ MediaTrigger.ɵprov = core.ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(MatchMedia), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(common.DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     return MediaTrigger;
 }());
 
@@ -3678,7 +3678,7 @@ var StyleUtils = /** @class */ (function () {
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: core.Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ɵprov1 = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap), core.ɵɵinject(SERVER_TOKEN), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+    /** @nocollapse */ StyleUtils.ɵprov = core.ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(core.ɵɵinject(StylesheetMap), core.ɵɵinject(SERVER_TOKEN), core.ɵɵinject(core.PLATFORM_ID), core.ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
@@ -4365,7 +4365,7 @@ var MediaMarshaller = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ɵprov1 = core.ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.ɵɵinject(MatchMedia), core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+    /** @nocollapse */ MediaMarshaller.ɵprov = core.ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(core.ɵɵinject(MatchMedia), core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**

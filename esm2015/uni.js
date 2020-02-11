@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { inject, InjectionToken, Inject, Injectable, ContentChildren, Directive, ElementRef, Input, Optional, SkipSelf, NgModule, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Directionality } from '@angular/cdk/bidi';
 import { MediaMatcher } from '@angular/cdk/layout';
 
@@ -188,49 +189,7 @@ class Tag {
 
 /**
  * @fileoverview added by tsickle
- * Generated from: uni/src/tags/flex/flex-align.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FlexAlign extends Tag {
-    constructor() {
-        super(...arguments);
-        this.tag = 'flexAlign';
-    }
-    /**
-     * @param {?} input
-     * @return {?}
-     */
-    build(input) {
-        input = input || 'stretch';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        const styles = new Map();
-        // Cross-axis
-        /** @type {?} */
-        const key = 'align-self';
-        switch (input) {
-            case 'start':
-                styles.set(key, { value: 'flex-start', priority: 0 });
-                break;
-            case 'end':
-                styles.set(key, { value: 'flex-end', priority: 0 });
-                break;
-            default:
-                styles.set(key, { value: input, priority: 0 });
-                break;
-        }
-        this.setCache(input, styles);
-        return styles;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * Generated from: uni/src/tags/flex/flex-fill.ts
+ * Generated from: uni/src/tags/core/fill.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
@@ -240,10 +199,10 @@ const STYLES = new Map()
     .set('height', { value: '100%', priority: 0 })
     .set('min-width', { value: '100%', priority: 0 })
     .set('min-height', { value: '100%', priority: 0 });
-class FlexFill extends Tag {
+class Fill extends Tag {
     constructor() {
         super(...arguments);
-        this.tag = 'flexFill';
+        this.tag = 'fill';
     }
     /**
      * @return {?}
@@ -255,27 +214,29 @@ class FlexFill extends Tag {
 
 /**
  * @fileoverview added by tsickle
- * Generated from: uni/src/tags/flex/flex-order.ts
+ * Generated from: uni/src/tags/core/gap.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-class FlexOrder extends Tag {
+class Gap extends Tag {
     constructor() {
         super(...arguments);
-        this.tag = 'flexOrder';
+        this.tag = 'gap';
+        this.deps = ['self.layout', 'directionality'];
     }
     /**
      * @param {?} input
+     * @param {?} _
+     * @param {?} __
      * @return {?}
      */
-    build(input) {
-        input = input || '0';
+    build(input, _, __) {
         /** @type {?} */
         const cache = this.getCache(input);
         if (cache) {
             return cache;
         }
         /** @type {?} */
-        const styles = new Map().set('order', { value: parseInt(input, 10), priority: 0 });
+        const styles = new Map();
         this.setCache(input, styles);
         return styles;
     }
@@ -283,7 +244,7 @@ class FlexOrder extends Tag {
 
 /**
  * @fileoverview added by tsickle
- * Generated from: uni/src/tags/flex/utils.ts
+ * Generated from: uni/src/tags/utils.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
@@ -358,10 +319,10 @@ function isFlowHorizontal(value) {
 
 /**
  * @fileoverview added by tsickle
- * Generated from: uni/src/tags/flex/flex-offset.ts
+ * Generated from: uni/src/tags/core/offset.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-class FlexOffset extends Tag {
+class Offset extends Tag {
     constructor() {
         super(...arguments);
         this.tag = 'flexOffset';
@@ -398,6 +359,343 @@ class FlexOffset extends Tag {
         /** @type {?} */
         const styles = new Map().set(key, input);
         this.setCache(cacheKey, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/core/order.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Order extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'order';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || '0';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map().set('order', { value: parseInt(input, 10), priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/constants.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ * @type {?}
+ */
+const JUSTIFY_CONTENT = 'justify-content';
+/** @type {?} */
+const JUSTIFY_ITEMS = 'justify-items';
+/** @type {?} */
+const JUSTIFY_SELF = 'justify-self';
+/** @type {?} */
+const ALIGN_CONTENT = 'align-content';
+/** @type {?} */
+const ALIGN_ITEMS = 'align-items';
+/** @type {?} */
+const ALIGN_SELF = 'align-self';
+/** @type {?} */
+const CENTER = 'center';
+/** @type {?} */
+const STRETCH = 'stretch';
+/** @type {?} */
+const BASELINE = 'baseline';
+/** @type {?} */
+const END = 'end';
+/** @type {?} */
+const FLEX_END = 'flex-end';
+/** @type {?} */
+const START = 'start';
+/** @type {?} */
+const FLEX_START = 'flex-start';
+/** @type {?} */
+const SPACE_AROUND = 'space-around';
+/** @type {?} */
+const SPACE_BETWEEN = 'space-between';
+/** @type {?} */
+const SPACE_EVENLY = 'space-evenly';
+/** @type {?} */
+const KEY_DELIMITER = '.';
+/** @type {?} */
+const PARENT_KEY = 'parent';
+/** @type {?} */
+const SELF_KEY = 'self';
+/** @type {?} */
+const DIR_KEY = 'directionality';
+/** @type {?} */
+const CLASS_KEY = 'class';
+/** @type {?} */
+const STYLE_KEY = 'style';
+/** @type {?} */
+const ATTR_KEY = 'attr';
+/**
+ * Special key to clear an applied value and restore the fallback
+ * @type {?}
+ */
+const CLEAR_VALUE = '__CLEAR__';
+/**
+ * Special key indicating that a value cannot be resolved for a dependency
+ * @type {?}
+ */
+const NO_VALUE = '__NO_VALUE__';
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/core/show-hide.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/** @type {?} */
+const HIDE_STYLES = new Map().set('display', { value: 'none', priority: 100 });
+/** @type {?} */
+const EMPTY_MAP = new Map();
+class Hide extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'hide';
+        this.deps = ['self.show'];
+    }
+    /**
+     * @param {?} input
+     * @param {?} show
+     * @return {?}
+     */
+    build(input, show) {
+        return coerceBooleanProperty(input) && show === NO_VALUE ? HIDE_STYLES : EMPTY_MAP;
+    }
+}
+class Show extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'show';
+    }
+    /**
+     * @return {?}
+     */
+    build() {
+        return EMPTY_MAP;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/flex/flex.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Flex extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'flex';
+        this.deps = ['parent.layout'];
+    }
+    /**
+     * @param {?} input
+     * @param {?} layout
+     * @return {?}
+     */
+    build(input, layout) {
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map()
+            .set('box-sizing', { value: 'border-box', priority: 0 });
+        /** @type {?} */
+        const wrap = layout.indexOf('wrap') > -1;
+        let [grow, shrink, ...basisParts] = input.split(' ');
+        /** @type {?} */
+        const zeroIndex = basisParts.indexOf('zero');
+        /** @type {?} */
+        const useColumnBasisZero = zeroIndex > -1;
+        /** @type {?} */
+        let basis = !useColumnBasisZero ? basisParts.join(' ') : basisParts.splice(zeroIndex, 1).join(' ');
+        // The flex-direction of this element's flex container. Defaults to 'row'.
+        /** @type {?} */
+        const direction = layout.indexOf('column') > -1 ? 'column' : 'row';
+        /** @type {?} */
+        const max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
+        /** @type {?} */
+        const min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
+        /** @type {?} */
+        const hasCalc = basis.indexOf('calc') > -1;
+        /** @type {?} */
+        const usingCalc = hasCalc || (basis === 'auto');
+        /** @type {?} */
+        const isPercent = basis.indexOf('%') > -1 && !hasCalc;
+        /** @type {?} */
+        const hasUnits = basis.indexOf('px') > -1 || basis.indexOf('rem') > -1 ||
+            basis.indexOf('em') > -1 || basis.indexOf('vw') > -1 || basis.indexOf('vh') > -1;
+        /** @type {?} */
+        let isValue = (hasCalc || hasUnits);
+        // make box inflexible when shrink and grow are both zero
+        // should not set a min when the grow is zero
+        // should not set a max when the shrink is zero
+        /** @type {?} */
+        const isFixed = !grow && !shrink;
+        // flex-basis allows you to specify the initial/starting main-axis size of the element,
+        // before anything else is computed. It can either be a percentage or an absolute value.
+        // It is, however, not the breaking point for flex-grow/shrink properties
+        //
+        // flex-grow can be seen as this:
+        //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
+        //   1: (Default value). Stretch; will be the same size to all other flex items on
+        //       the same row since they have a default value of 1.
+        //   ≥2 (integer n): Stretch. Will be n times the size of other elements
+        //      with 'flex-grow: 1' on the same row.
+        switch (basis) {
+            case '':
+                basis = direction === 'row' ? '0%' : (useColumnBasisZero ? '0.000000001px' : 'auto');
+                break;
+            // default
+            case 'initial':
+            case 'nogrow':
+                grow = '0';
+                basis = 'auto';
+                break;
+            case 'grow':
+                basis = '100%';
+                break;
+            case 'noshrink':
+                shrink = '0';
+                basis = 'auto';
+                break;
+            case 'auto':
+                break;
+            case 'none':
+                grow = '0';
+                shrink = '0';
+                basis = 'auto';
+                break;
+            default:
+                // Defaults to percentage sizing unless `px` is explicitly set
+                if (!isValue && !isPercent && !isNaN((/** @type {?} */ (basis)))) {
+                    basis = basis + '%';
+                }
+                // Fix for issue #280
+                if (basis === '0%') {
+                    isValue = true;
+                }
+                if (basis === '0px') {
+                    basis = '0%';
+                }
+                // Fix for issue #5345
+                if (hasCalc) {
+                    styles.set('flex-grow', { value: grow, priority: 0 });
+                    styles.set('flex-shrink', { value: shrink, priority: 0 });
+                    styles.set('flex-basis', { value: isValue ? basis : '100%', priority: 0 });
+                }
+                else {
+                    styles.set('flex', { value: `${grow} ${shrink} ${isValue ? basis : '100%'}`, priority: 0 });
+                }
+                break;
+        }
+        if (!styles.has('flex') || !styles.has('flex-grow')) {
+            if (hasCalc) {
+                styles.set('flex-grow', { value: grow, priority: 0 });
+                styles.set('flex-shrink', { value: shrink, priority: 0 });
+                styles.set('flex-basis', { value: basis, priority: 0 });
+            }
+            else {
+                styles.set('flex', { value: `${grow} ${shrink} ${basis}`, priority: 0 });
+            }
+        }
+        // Fix for issues #277, #534, and #728
+        if (basis !== '0%' && basis !== '0px' && basis !== '0.000000001px' && basis !== 'auto') {
+            if (isFixed) {
+                styles.set(min, { value: basis, priority: 0 });
+                styles.set(max, { value: basis, priority: 0 });
+            }
+            else {
+                if (isValue && grow) {
+                    styles.set(min, { value: basis, priority: 0 });
+                }
+                if (!usingCalc && shrink) {
+                    styles.set(max, { value: basis, priority: 0 });
+                }
+            }
+        }
+        // Fix for issue #528
+        if (!styles.has(min) && !styles.has(max)) {
+            if (hasCalc) {
+                styles.set('flex-grow', { value: grow, priority: 0 });
+                styles.set('flex-shrink', { value: shrink, priority: 0 });
+                styles.set('flex-basis', { value: basis, priority: 0 });
+            }
+            else {
+                styles.set('flex', { value: `${grow} ${shrink} ${basis}`, priority: 0 });
+            }
+        }
+        else {
+            // Fix for issue #660
+            if (wrap) {
+                /** @type {?} */
+                const value = styles.has(max) ? (/** @type {?} */ (styles.get(max))).value : (/** @type {?} */ (styles.get(min))).value;
+                styles.set(hasCalc ? 'flex-basis' : 'flex', { value: hasCalc ? value : `${grow} ${shrink} ${value}`, priority: 0 });
+            }
+        }
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/flex/flex-align.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FlexAlign extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'flexAlign';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || STRETCH;
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map();
+        // Cross-axis
+        switch (input) {
+            case START:
+                styles.set(ALIGN_SELF, { value: FLEX_START, priority: 0 });
+                break;
+            case END:
+                styles.set(ALIGN_SELF, { value: FLEX_END, priority: 0 });
+                break;
+            default:
+                styles.set(ALIGN_SELF, { value: input, priority: 0 });
+                break;
+        }
+        this.setCache(input, styles);
         return styles;
     }
 }
@@ -485,32 +783,40 @@ class LayoutAlign extends Tag {
         return styles;
     }
 }
-/** @type {?} */
-const JUSTIFY_CONTENT = 'justify-content';
-/** @type {?} */
-const ALIGN_CONTENT = 'align-content';
-/** @type {?} */
-const ALIGN_ITEMS = 'align-items';
-/** @type {?} */
-const CENTER = 'center';
-/** @type {?} */
-const STRETCH = 'stretch';
-/** @type {?} */
-const BASELINE = 'baseline';
-/** @type {?} */
-const END = 'end';
-/** @type {?} */
-const FLEX_END = 'flex-end';
-/** @type {?} */
-const START = 'start';
-/** @type {?} */
-const FLEX_START = 'flex-start';
-/** @type {?} */
-const SPACE_AROUND = 'space-around';
-/** @type {?} */
-const SPACE_BETWEEN = 'space-between';
-/** @type {?} */
-const SPACE_EVENLY = 'space-evenly';
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/flex/layout.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Layout extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'layout';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        const [direction, wrap, isInline] = validateValue(input);
+        /** @type {?} */
+        const styles = new Map()
+            .set('display', { value: isInline ? 'inline-flex' : 'flex', priority: 1 })
+            .set('box-sizing', { value: 'border-box', priority: 0 })
+            .set('flex-direction', { value: direction, priority: 0 });
+        if (!!wrap) {
+            styles.set('flex-wrap', { value: wrap, priority: 0 });
+        }
+        this.setCache(input, styles);
+        return styles;
+    }
+}
 
 /**
  * @fileoverview added by tsickle
@@ -523,10 +829,10 @@ const SPACE_EVENLY = 'space-evenly';
  * Syntax: <row gap> [<column-gap>]
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-17
  */
-class Gap extends Tag {
+class GridGap extends Tag {
     constructor() {
         super(...arguments);
-        this.tag = 'gap';
+        this.tag = 'gridGap';
     }
     /**
      * @param {?} input
@@ -570,31 +876,461 @@ class Inline extends Tag {
 
 /**
  * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/align-columns.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class AlignColumns extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'alignColumns';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        const [mainAxis, crossAxis] = input.split(' ');
+        /** @type {?} */
+        const styles = new Map();
+        // Main axis
+        switch (mainAxis) {
+            case CENTER:
+            case SPACE_AROUND:
+            case SPACE_BETWEEN:
+            case SPACE_EVENLY:
+            case END:
+            case START:
+            case STRETCH:
+                styles.set(ALIGN_CONTENT, { value: mainAxis, priority: 0 });
+                break;
+            default:
+                styles.set(ALIGN_CONTENT, { value: DEFAULT_MAIN, priority: 0 });
+        }
+        // Cross-axis
+        switch (crossAxis) {
+            case START:
+            case CENTER:
+            case END:
+            case STRETCH:
+                styles.set(ALIGN_ITEMS, { value: crossAxis, priority: 0 });
+                break;
+            default:
+                styles.set(ALIGN_ITEMS, { value: DEFAULT_CROSS, priority: 0 });
+        }
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+/** @type {?} */
+const DEFAULT_MAIN = 'start';
+/** @type {?} */
+const DEFAULT_CROSS = 'stretch';
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/align-rows.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class AlignRows extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'alignRows';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        const [mainAxis, crossAxis] = input.split(' ');
+        /** @type {?} */
+        const styles = new Map();
+        // Main axis
+        switch (mainAxis) {
+            case CENTER:
+            case SPACE_AROUND:
+            case SPACE_BETWEEN:
+            case SPACE_EVENLY:
+            case END:
+            case START:
+            case STRETCH:
+                styles.set(JUSTIFY_CONTENT, { value: mainAxis, priority: 0 });
+                break;
+            default:
+                styles.set(JUSTIFY_CONTENT, { value: DEFAULT_MAIN$1, priority: 0 });
+        }
+        // Cross-axis
+        switch (crossAxis) {
+            case START:
+            case CENTER:
+            case END:
+            case STRETCH:
+                styles.set(JUSTIFY_ITEMS, { value: crossAxis, priority: 0 });
+                break;
+            default:
+                styles.set(JUSTIFY_ITEMS, { value: DEFAULT_CROSS$1, priority: 0 });
+        }
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+/** @type {?} */
+const DEFAULT_MAIN$1 = 'start';
+/** @type {?} */
+const DEFAULT_CROSS$1 = 'stretch';
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/area.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Area extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'area';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || 'auto';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map()
+            .set('grid-area', { value: input, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/areas.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Areas extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'areas';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const areas = (input || DEFAULT_VALUE).split(DELIMETER).map((/**
+         * @param {?} v
+         * @return {?}
+         */
+        v => `"${v.trim()}"`));
+        /** @type {?} */
+        const styles = new Map()
+            .set('display', { value: 'grid', priority: 0 })
+            .set('grid-template-areas', { value: areas.join(' '), priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+/** @type {?} */
+const DEFAULT_VALUE = 'none';
+/** @type {?} */
+const DELIMETER = '|';
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/auto.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Auto extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'auto';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || 'initial';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        let [direction, dense] = input.split(' ');
+        if (direction !== 'column' && direction !== 'row' && direction !== 'dense') {
+            direction = 'row';
+        }
+        dense = (dense === 'dense' && direction !== 'dense') ? ' dense' : '';
+        /** @type {?} */
+        const styles = new Map()
+            .set('display', { value: 'grid', priority: 0 })
+            .set('grid-auto-flow', { value: direction + dense, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/align.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Align extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'gridAlign';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || 'stretch';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map();
+        const [rowAxis, columnAxis] = input.split(' ');
+        // Row axis
+        switch (rowAxis) {
+            case END:
+            case CENTER:
+            case STRETCH:
+            case START:
+                styles.set(JUSTIFY_SELF, { value: rowAxis, priority: 0 });
+                break;
+            default:
+                styles.set(JUSTIFY_SELF, { value: STRETCH, priority: 0 });
+        }
+        // Column axis
+        switch (columnAxis) {
+            case END:
+            case CENTER:
+            case STRETCH:
+            case START:
+                styles.set(ALIGN_SELF, { value: rowAxis, priority: 0 });
+                break;
+            default:
+                styles.set(ALIGN_SELF, { value: STRETCH, priority: 0 });
+        }
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/column.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Column extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'column';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || 'auto';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map()
+            .set('grid-column', { value: input, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/columns.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Columns extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'columns';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || 'none';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        let auto = false;
+        if (input.endsWith(AUTO_SPECIFIER)) {
+            input = input.substring(0, input.indexOf(AUTO_SPECIFIER));
+            auto = true;
+        }
+        /** @type {?} */
+        const key = auto ? 'grid-auto-columns' : 'grid-template-columns';
+        /** @type {?} */
+        const styles = new Map()
+            .set('display', { value: 'grid', priority: 0 })
+            .set(key, { value: input, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+/** @type {?} */
+const AUTO_SPECIFIER = '!';
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/row.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Row extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'row';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || 'auto';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const styles = new Map()
+            .set('grid-row', { value: input, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * Generated from: uni/src/tags/grid/rows.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class Rows extends Tag {
+    constructor() {
+        super(...arguments);
+        this.tag = 'rows';
+    }
+    /**
+     * @param {?} input
+     * @return {?}
+     */
+    build(input) {
+        input = input || 'none';
+        /** @type {?} */
+        const cache = this.getCache(input);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        let auto = false;
+        if (input.endsWith(AUTO_SPECIFIER$1)) {
+            input = input.substring(0, input.indexOf(AUTO_SPECIFIER$1));
+            auto = true;
+        }
+        /** @type {?} */
+        const key = auto ? 'grid-auto-rows' : 'grid-template-rows';
+        /** @type {?} */
+        const styles = new Map()
+            .set('display', { value: 'grid', priority: 0 })
+            .set(key, { value: input, priority: 0 });
+        this.setCache(input, styles);
+        return styles;
+    }
+}
+/** @type {?} */
+const AUTO_SPECIFIER$1 = '!';
+
+/**
+ * @fileoverview added by tsickle
  * Generated from: uni/src/tags/tags.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/**
+ * All of the extended features that are not CSS standard
+ * @type {?}
+ */
+const CORE_TAGS = [
+    new Fill(),
+    new Gap(),
+    new Hide(),
+    new Offset(),
+    new Order(),
+    new Show()
+];
 /**
  * All of the standard CSS flexbox-related tags
  * @type {?}
  */
 const FLEX_TAGS = [
+    new Flex(),
     new FlexAlign(),
-    new FlexFill(),
-    new FlexOrder(),
-    new FlexOffset(),
-    new LayoutAlign()
+    new LayoutAlign(),
+    new Layout(),
 ];
 /**
  * All of the standard CSS grid-related tags
  * @type {?}
  */
-const GRID_TAGS = [new Inline(), new Gap()];
+const GRID_TAGS = [
+    new Inline(),
+    new GridGap(),
+    new AlignColumns(),
+    new AlignRows(),
+    new Area(),
+    new Areas(),
+    new Auto(),
+    new Align(),
+    new Column(),
+    new Columns(),
+    new Row(),
+    new Rows(),
+];
 /**
  * The default tags as provided by Angular Layout. These include both
  * flex and grid type tags.
  * @type {?}
  */
-const DEFAULT_TAGS = [...FLEX_TAGS, ...GRID_TAGS];
+const DEFAULT_TAGS = [...CORE_TAGS, ...FLEX_TAGS, ...GRID_TAGS];
 /**
  * The user-facing injection token for providing tags,
  * this is meant to be provided as a multi-provider, and
@@ -714,7 +1450,7 @@ class GrandCentral {
                     this.dirListeners.clear();
                     this.elListeners.clear();
                     this.activating = true;
-                    this.computeStyles();
+                    this.computeValues();
                 }
             }));
         }));
@@ -722,7 +1458,7 @@ class GrandCentral {
         directionality.change.subscribe((/**
          * @return {?}
          */
-        () => this.dirListeners.forEach(this.addStyles)));
+        () => this.dirListeners.forEach(this.addValues)));
     }
     /**
      * Add a directive for a corresponding breakpoint
@@ -741,11 +1477,11 @@ class GrandCentral {
      */
     updateDirective(dir) {
         this.computeDirective(dir);
-        this.addStyles(dir);
+        this.addValues(dir);
         /** @type {?} */
         const listeners = this.elListeners.get(dir);
         if (listeners) {
-            listeners.forEach(this.addStyles);
+            listeners.forEach(this.addValues);
         }
     }
     /**
@@ -786,22 +1522,22 @@ class GrandCentral {
         (a, b) => b.priority - a.priority));
     }
     /**
-     * Compute the styles and update the directives for all active breakpoints
+     * Compute the values and update the directives for all active breakpoints
      * @private
      * @return {?}
      */
-    computeStyles() {
+    computeValues() {
         this.computeActivations();
         this.activations.forEach((/**
          * @param {?} bp
          * @return {?}
          */
         bp => (/** @type {?} */ (this.elementsMap.get(bp))).forEach(this.computeDirective.bind(this))));
-        Array.from(this.elementDataMap.keys()).forEach(this.addStyles.bind(this));
+        Array.from(this.elementDataMap.keys()).forEach(this.addValues.bind(this));
         this.activating = false;
     }
     /**
-     * Compute the styles for an individual directive
+     * Compute the values for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
@@ -832,16 +1568,16 @@ class GrandCentral {
         this.elementDataMap.set(dir, values);
     }
     /**
-     * Add the computed styles for an individual directive
+     * Add the computed values for an individual directive
      * @private
      * @param {?} dir
      * @return {?}
      */
-    addStyles(dir) {
+    addValues(dir) {
         /** @type {?} */
         const values = (/** @type {?} */ (this.elementDataMap.get(dir)));
         /** @type {?} */
-        const styles = new Map();
+        const map = new Map();
         values.forEach((/**
          * @param {?} value
          * @param {?} key
@@ -851,31 +1587,37 @@ class GrandCentral {
             /** @type {?} */
             const tag = (/** @type {?} */ (this.tags.get(key)));
             /** @type {?} */
-            const priorityMap = this.calculateStyle(tag.tag, value, dir);
+            const priorityMap = this.calculate(tag.tag, value, dir);
             priorityMap.forEach((/**
              * @param {?} v
              * @param {?} k
              * @return {?}
              */
             (v, k) => {
+                let [type, typeKey] = k.split(KEY_DELIMITER);
+                if (typeKey === undefined) {
+                    typeKey = type;
+                    type = STYLE_KEY;
+                }
+                k = [type, typeKey].join(KEY_DELIMITER);
                 /** @type {?} */
-                const style = styles.get(k);
-                if (!style || style && style.priority < v.priority) {
-                    styles.set(k, v);
+                const valuePriority = map.get(k);
+                if (!valuePriority || valuePriority.priority < v.priority) {
+                    map.set(k, v);
                 }
             }));
         }));
-        dir.applyStyles(styles);
+        dir.apply(map);
     }
     /**
-     * Compute the CSS styles for a directive given a tag and value
+     * Compute the values to apply for a directive given a tag and input value
      * @private
      * @param {?} tagName
      * @param {?} value
      * @param {?} dir
      * @return {?}
      */
-    calculateStyle(tagName, value, dir) {
+    calculate(tagName, value, dir) {
         /** @type {?} */
         const tag = (/** @type {?} */ (this.tags.get(tagName)));
         /** @type {?} */
@@ -895,7 +1637,7 @@ class GrandCentral {
          * @return {?}
          */
         dep => {
-            var _a, _b;
+            var _a;
             /** @type {?} */
             const keys = dep.split(KEY_DELIMITER);
             if (keys.length > 1 && keys[0] === PARENT_KEY || keys[0] === SELF_KEY) {
@@ -908,16 +1650,14 @@ class GrandCentral {
                     const elements = this.elListeners.get(dir.parent) || new Set();
                     elements.add(dir);
                     this.elListeners.set(dir.parent, elements);
+                    return _a = dataMap.get(keys[1]), _a !== null && _a !== void 0 ? _a : NO_VALUE;
                 }
-                return _b = (_a = dataMap) === null || _a === void 0 ? void 0 : _a.get(dep), _b !== null && _b !== void 0 ? _b : '';
             }
             else if (dep === DIR_KEY) {
                 this.dirListeners.add(dir);
                 return this.directionality.value;
             }
-            else {
-                return '';
-            }
+            return NO_VALUE;
         }));
     }
 }
@@ -931,15 +1671,7 @@ GrandCentral.ctorParameters = () => [
     { type: Array, decorators: [{ type: Inject, args: [BPS,] }] },
     { type: Map, decorators: [{ type: Inject, args: [TAGS,] }] }
 ];
-/** @nocollapse */ GrandCentral.ɵprov0 = ɵɵdefineInjectable({ factory: function GrandCentral_Factory() { return new GrandCentral(ɵɵinject(Directionality), ɵɵinject(MediaMatcher), ɵɵinject(BPS), ɵɵinject(TAGS)); }, token: GrandCentral, providedIn: "root" });
-/** @type {?} */
-const KEY_DELIMITER = '.';
-/** @type {?} */
-const PARENT_KEY = 'parent';
-/** @type {?} */
-const SELF_KEY = 'self';
-/** @type {?} */
-const DIR_KEY = 'directionality';
+/** @nocollapse */ GrandCentral.ɵprov = ɵɵdefineInjectable({ factory: function GrandCentral_Factory() { return new GrandCentral(ɵɵinject(Directionality), ɵɵinject(MediaMatcher), ɵɵinject(BPS), ɵɵinject(TAGS)); }, token: GrandCentral, providedIn: "root" });
 
 /**
  * @fileoverview added by tsickle
@@ -989,13 +1721,17 @@ class UnifiedDirective {
         this.grandCentral = grandCentral;
         this.valueMap = new Map();
         this.observerMap = new Map();
-        this.fallbackStyles = new Map();
         breakpoints.forEach((/**
          * @param {?} bp
          * @return {?}
          */
         bp => this.valueMap.set(bp.name, new Map())));
         this.element = elementRef.nativeElement;
+        this.fallbacks = new Map(Array.from(this.element.classList).map((/**
+         * @param {?} c
+         * @return {?}
+         */
+        c => [c, ''])));
         this.tagNames = Array.from(this.tags.keys());
         /** @type {?} */
         const callback = (/**
@@ -1073,7 +1809,7 @@ class UnifiedDirective {
             tagName => {
                 /** @type {?} */
                 const attr = el.getAttribute(tagName);
-                if (attr) {
+                if (attr !== null) {
                     (/** @type {?} */ (this.valueMap.get(ref.name))).set(tagName, attr);
                 }
             }));
@@ -1104,36 +1840,75 @@ class UnifiedDirective {
         this.grandCentral.removeDirective(this);
     }
     /**
-     * Apply the given styles to the underlying HTMLElement
-     * @param {?} styles
+     * Apply the given styles, attributes, and classes to the underlying HTMLElement
+     * @param {?} map
      * @return {?}
      */
-    applyStyles(styles) {
+    apply(map) {
         /** @type {?} */
-        const styleKeys = new Set(this.fallbackStyles.keys());
-        styles.forEach((/**
+        const keys = new Set(this.fallbacks.keys());
+        map.forEach((/**
          * @param {?} value
          * @param {?} key
          * @return {?}
          */
         (value, key) => {
-            if (!this.fallbackStyles.get(key)) {
-                // TODO: this needs to be computed?
-                this.fallbackStyles.set(key, this.element.style.getPropertyValue(key));
+            let [type, typeKey] = key.split(KEY_DELIMITER);
+            if (typeKey === undefined) {
+                typeKey = type;
+                type = STYLE_KEY;
             }
-            else {
-                this.fallbackStyles.set(key, value.value);
+            if (!this.fallbacks.has(key)) {
+                switch (type) {
+                    case ATTR_KEY:
+                        this.fallbacks.set(key, (/** @type {?} */ (this.element.getAttribute(typeKey))));
+                        break;
+                    case STYLE_KEY:
+                    default:
+                        this.fallbacks.set(key, this.element.style.getPropertyValue(typeKey));
+                }
             }
-            this.element.style.setProperty(key, value.value);
-            styleKeys.delete(key);
+            if (value.value === CLEAR_VALUE) {
+                return;
+            }
+            this.addToElement(type, typeKey, value.value);
+            keys.delete(key);
         }));
-        styleKeys.forEach((/**
+        keys.forEach((/**
          * @param {?} key
          * @return {?}
          */
         key => {
-            this.element.style.setProperty(key, (/** @type {?} */ (this.fallbackStyles.get(key))));
+            let [type, typeKey] = key.split(KEY_DELIMITER);
+            if (typeKey === undefined) {
+                typeKey = type;
+                type = STYLE_KEY;
+            }
+            /** @type {?} */
+            const value = (/** @type {?} */ (this.fallbacks.get(key)));
+            this.addToElement(type, typeKey, value);
         }));
+    }
+    /**
+     * Apply the given value to the underlying HTMLElement
+     * @private
+     * @param {?} type
+     * @param {?} key
+     * @param {?} value
+     * @return {?}
+     */
+    addToElement(type, key, value) {
+        switch (type) {
+            case ATTR_KEY:
+                this.element.setAttribute(key, value);
+                break;
+            case CLASS_KEY:
+                this.element.classList.add(key);
+                break;
+            case STYLE_KEY:
+            default:
+                this.element.style.setProperty(key, value);
+        }
     }
     /**
      * Process a MutationObserver's attribute-type mutation
@@ -1246,5 +2021,5 @@ UnifiedModule.decorators = [
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { BREAKPOINTS, DEFAULT_BREAKPOINTS, FLEX_TAGS, GRID_TAGS, LAYOUT_TAGS, DEFAULT_TAGS, Tag, GrandCentral, BreakpointDirective, UnifiedDirective, UnifiedModule, BPS as ɵb0, BREAKPOINTS_PROVIDER as ɵa0, FlexAlign as ɵg0, FlexFill as ɵh0, FlexOffset as ɵj0, FlexOrder as ɵi0, LayoutAlign as ɵk0, Gap as ɵm0, Inline as ɵl0, FLEX_PROVIDER as ɵc0, GRID_PROVIDER as ɵd0, TAGS as ɵf0, TAGS_PROVIDER as ɵe0 };
+export { BREAKPOINTS, DEFAULT_BREAKPOINTS, FLEX_TAGS, GRID_TAGS, LAYOUT_TAGS, DEFAULT_TAGS, Tag, GrandCentral, BreakpointDirective, UnifiedDirective, UnifiedModule, BPS as ɵflex_layout_privateb, BREAKPOINTS_PROVIDER as ɵflex_layout_privatea, Fill as ɵflex_layout_privatex, Gap as ɵflex_layout_privatey, Offset as ɵflex_layout_privatebb, Order as ɵflex_layout_privatebc, Hide as ɵflex_layout_privatez, Show as ɵflex_layout_privateba, Flex as ɵflex_layout_privateh, FlexAlign as ɵflex_layout_privatei, Layout as ɵflex_layout_privatek, LayoutAlign as ɵflex_layout_privatej, Align as ɵflex_layout_privates, AlignColumns as ɵflex_layout_privaten, AlignRows as ɵflex_layout_privateo, Area as ɵflex_layout_privatep, Areas as ɵflex_layout_privateq, Auto as ɵflex_layout_privater, Column as ɵflex_layout_privatet, Columns as ɵflex_layout_privateu, GridGap as ɵflex_layout_privatem, Inline as ɵflex_layout_privatel, Row as ɵflex_layout_privatev, Rows as ɵflex_layout_privatew, CORE_TAGS as ɵflex_layout_privatec, FLEX_PROVIDER as ɵflex_layout_privated, GRID_PROVIDER as ɵflex_layout_privatee, TAGS as ɵflex_layout_privateg, TAGS_PROVIDER as ɵflex_layout_privatef };
 //# sourceMappingURL=uni.js.map

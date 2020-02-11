@@ -14,7 +14,7 @@ export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuild
 import { FlexModule } from '@angular/flex-layout/flex';
 export { FlexModule, FlexStyleBuilder, FlexDirective, DefaultFlexDirective, FlexAlignStyleBuilder, FlexAlignDirective, DefaultFlexAlignDirective, FlexFillStyleBuilder, FlexFillDirective, FlexOffsetStyleBuilder, FlexOffsetDirective, DefaultFlexOffsetDirective, FlexOrderStyleBuilder, FlexOrderDirective, DefaultFlexOrderDirective, LayoutStyleBuilder, LayoutDirective, DefaultLayoutDirective, LayoutAlignStyleBuilder, LayoutAlignDirective, DefaultLayoutAlignDirective, LayoutGapStyleBuilder, LayoutGapDirective, DefaultLayoutGapDirective } from '@angular/flex-layout/flex';
 import { GridModule } from '@angular/flex-layout/grid';
-export { ɵf3, ɵe3, ɵd3, ɵi3, ɵh3, ɵg3, ɵl3, ɵk3, ɵj3, ɵo3, ɵn3, ɵm3, ɵr3, ɵq3, ɵp3, ɵu3, ɵt3, ɵs3, ɵx3, ɵw3, ɵv3, ɵba3, ɵz3, ɵy3, ɵc3, ɵb3, ɵa3, ɵbd3, ɵbc3, ɵbb3, ɵbg3, ɵbf3, ɵbe3, GridModule } from '@angular/flex-layout/grid';
+export { ɵgrid_privatef, ɵgrid_privatee, ɵgrid_privated, ɵgrid_privatei, ɵgrid_privateh, ɵgrid_privateg, ɵgrid_privatel, ɵgrid_privatek, ɵgrid_privatej, ɵgrid_privateo, ɵgrid_privaten, ɵgrid_privatem, ɵgrid_privater, ɵgrid_privateq, ɵgrid_privatep, ɵgrid_privateu, ɵgrid_privatet, ɵgrid_privates, ɵgrid_privatex, ɵgrid_privatew, ɵgrid_privatev, ɵgrid_privateba, ɵgrid_privatez, ɵgrid_privatey, ɵgrid_privatec, ɵgrid_privateb, ɵgrid_privatea, ɵgrid_privatebd, ɵgrid_privatebc, ɵgrid_privatebb, ɵgrid_privatebg, ɵgrid_privatebf, ɵgrid_privatebe, GridModule } from '@angular/flex-layout/grid';
 
 /**
  * @fileoverview added by tsickle
@@ -25,7 +25,7 @@ export { ɵf3, ɵe3, ɵd3, ɵi3, ɵh3, ɵg3, ɵl3, ɵk3, ɵj3, ɵo3, ɵn3, ɵm3,
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-const VERSION = new Version('9.0.0-beta.28-6edd87d');
+const VERSION = new Version('9.0.0-beta.29-73323b4');
 
 /**
  * @fileoverview added by tsickle

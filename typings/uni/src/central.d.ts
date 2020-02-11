@@ -31,14 +31,14 @@ export declare class GrandCentral {
     removeDirective(dir: UnifiedDirective): void;
     /** Compute the active breakpoints and sort by descending priority */
     private computeActivations;
-    /** Compute the styles and update the directives for all active breakpoints */
-    private computeStyles;
-    /** Compute the styles for an individual directive */
+    /** Compute the values and update the directives for all active breakpoints */
+    private computeValues;
+    /** Compute the values for an individual directive */
     private computeDirective;
-    /** Add the computed styles for an individual directive */
-    private addStyles;
-    /** Compute the CSS styles for a directive given a tag and value */
-    private calculateStyle;
+    /** Add the computed values for an individual directive */
+    private addValues;
+    /** Compute the values to apply for a directive given a tag and input value */
+    private calculate;
     /** Resolve the arguments for a builder given a directive */
     private resolve;
 }

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { Tag, ValuePriority } from '../tag';
-export declare class FlexOrder extends Tag {
-    readonly tag = "flexOrder";
+export declare class Align extends Tag {
+    readonly tag = "gridAlign";
     build(input: string): Map<string, ValuePriority>;
 }
