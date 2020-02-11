@@ -169,7 +169,25 @@ class Tag {
         this.deps = [];
     }
     /**
-     * @protected
+     * @param {?} input
+     * @param {...?} args
+     * @return {?}
+     */
+    compute(input, ...args) {
+        /** @type {?} */
+        const cacheKey = input + args.join('');
+        /** @type {?} */
+        const cache = this.getCache(cacheKey);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        const map = this.build(input, ...args);
+        this.setCache(input, map);
+        return map;
+    }
+    /**
+     * @private
      * @param {?} input
      * @param {?} value
      * @return {?}
@@ -178,7 +196,7 @@ class Tag {
         this.cache.set(input, value);
     }
     /**
-     * @protected
+     * @private
      * @param {?} input
      * @return {?}
      */
@@ -224,20 +242,14 @@ class Gap extends Tag {
         this.deps = ['self.layout', 'directionality'];
     }
     /**
-     * @param {?} input
      * @param {?} _
      * @param {?} __
+     * @param {?} ___
      * @return {?}
      */
-    build(input, _, __) {
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
+    build(_, __, ___) {
         /** @type {?} */
         const styles = new Map();
-        this.setCache(input, styles);
         return styles;
     }
 }
@@ -339,13 +351,6 @@ class Offset extends Tag {
         /** @type {?} */
         const isRtl = direction === 'rtl';
         /** @type {?} */
-        const cacheKey = input + layout + isRtl;
-        /** @type {?} */
-        const cache = this.getCache(cacheKey);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         const isPercent = input.indexOf('%') > -1;
         /** @type {?} */
         const isPx = input.indexOf('px') > -1;
@@ -356,10 +361,7 @@ class Offset extends Tag {
         const horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
         /** @type {?} */
         const key = isFlowHorizontal(layout) ? horizontalLayoutKey : 'margin-top';
-        /** @type {?} */
-        const styles = new Map().set(key, input);
-        this.setCache(cacheKey, styles);
-        return styles;
+        return new Map().set(key, input);
     }
 }
 
@@ -379,15 +381,7 @@ class Order extends Tag {
      */
     build(input) {
         input = input || '0';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        const styles = new Map().set('order', { value: parseInt(input, 10), priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('order', { value: parseInt(input, 10), priority: 0 });
     }
 }
 
@@ -514,11 +508,6 @@ class Flex extends Tag {
      * @return {?}
      */
     build(input, layout) {
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         /** @type {?} */
         const styles = new Map()
             .set('box-sizing', { value: 'border-box', priority: 0 });
@@ -655,7 +644,6 @@ class Flex extends Tag {
                 styles.set(hasCalc ? 'flex-basis' : 'flex', { value: hasCalc ? value : `${grow} ${shrink} ${value}`, priority: 0 });
             }
         }
-        this.setCache(input, styles);
         return styles;
     }
 }
@@ -677,11 +665,6 @@ class FlexAlign extends Tag {
     build(input) {
         input = input || STRETCH;
         /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         const styles = new Map();
         // Cross-axis
         switch (input) {
@@ -695,7 +678,6 @@ class FlexAlign extends Tag {
                 styles.set(ALIGN_SELF, { value: input, priority: 0 });
                 break;
         }
-        this.setCache(input, styles);
         return styles;
     }
 }
@@ -718,13 +700,6 @@ class LayoutAlign extends Tag {
      */
     build(input, layout) {
         layout = layout || 'row';
-        /** @type {?} */
-        const cacheKey = input + layout;
-        /** @type {?} */
-        const cache = this.getCache(cacheKey);
-        if (cache) {
-            return cache;
-        }
         const [mainAxis, crossAxis] = input.split(' ');
         /** @type {?} */
         const maxKey = crossAxis === STRETCH && isFlowHorizontal(layout) ? 'max-height' : 'max-width';
@@ -779,7 +754,6 @@ class LayoutAlign extends Tag {
                 styles.set(ALIGN_CONTENT, { value: STRETCH, priority: 0 });
                 styles.set(ALIGN_ITEMS, { value: STRETCH, priority: 0 });
         }
-        this.setCache(cacheKey, styles);
         return styles;
     }
 }
@@ -799,11 +773,6 @@ class Layout extends Tag {
      * @return {?}
      */
     build(input) {
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         const [direction, wrap, isInline] = validateValue(input);
         /** @type {?} */
         const styles = new Map()
@@ -813,7 +782,6 @@ class Layout extends Tag {
         if (!!wrap) {
             styles.set('flex-wrap', { value: wrap, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     }
 }
@@ -840,17 +808,9 @@ class GridGap extends Tag {
      */
     build(input) {
         input = input || '0';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        const styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: -1 })
             .set('grid-gap', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     }
 }
 
@@ -889,11 +849,6 @@ class AlignColumns extends Tag {
      * @return {?}
      */
     build(input) {
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         const [mainAxis, crossAxis] = input.split(' ');
         /** @type {?} */
         const styles = new Map();
@@ -922,7 +877,6 @@ class AlignColumns extends Tag {
             default:
                 styles.set(ALIGN_ITEMS, { value: DEFAULT_CROSS, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     }
 }
@@ -946,11 +900,6 @@ class AlignRows extends Tag {
      * @return {?}
      */
     build(input) {
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         const [mainAxis, crossAxis] = input.split(' ');
         /** @type {?} */
         const styles = new Map();
@@ -979,7 +928,6 @@ class AlignRows extends Tag {
             default:
                 styles.set(JUSTIFY_ITEMS, { value: DEFAULT_CROSS$1, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     }
 }
@@ -1004,16 +952,7 @@ class Area extends Tag {
      */
     build(input) {
         input = input || 'auto';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        const styles = new Map()
-            .set('grid-area', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('grid-area', { value: input, priority: 0 });
     }
 }
 
@@ -1033,22 +972,14 @@ class Areas extends Tag {
      */
     build(input) {
         /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         const areas = (input || DEFAULT_VALUE).split(DELIMETER).map((/**
          * @param {?} v
          * @return {?}
          */
         v => `"${v.trim()}"`));
-        /** @type {?} */
-        const styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set('grid-template-areas', { value: areas.join(' '), priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     }
 }
 /** @type {?} */
@@ -1072,22 +1003,14 @@ class Auto extends Tag {
      */
     build(input) {
         input = input || 'initial';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         let [direction, dense] = input.split(' ');
         if (direction !== 'column' && direction !== 'row' && direction !== 'dense') {
             direction = 'row';
         }
         dense = (dense === 'dense' && direction !== 'dense') ? ' dense' : '';
-        /** @type {?} */
-        const styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set('grid-auto-flow', { value: direction + dense, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     }
 }
 
@@ -1107,11 +1030,6 @@ class Align extends Tag {
      */
     build(input) {
         input = input || 'stretch';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         /** @type {?} */
         const styles = new Map();
         const [rowAxis, columnAxis] = input.split(' ');
@@ -1137,7 +1055,6 @@ class Align extends Tag {
             default:
                 styles.set(ALIGN_SELF, { value: STRETCH, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     }
 }
@@ -1158,16 +1075,7 @@ class Column extends Tag {
      */
     build(input) {
         input = input || 'auto';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        const styles = new Map()
-            .set('grid-column', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('grid-column', { value: input, priority: 0 });
     }
 }
 
@@ -1188,11 +1096,6 @@ class Columns extends Tag {
     build(input) {
         input = input || 'none';
         /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         let auto = false;
         if (input.endsWith(AUTO_SPECIFIER)) {
             input = input.substring(0, input.indexOf(AUTO_SPECIFIER));
@@ -1200,12 +1103,9 @@ class Columns extends Tag {
         }
         /** @type {?} */
         const key = auto ? 'grid-auto-columns' : 'grid-template-columns';
-        /** @type {?} */
-        const styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set(key, { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     }
 }
 /** @type {?} */
@@ -1227,16 +1127,7 @@ class Row extends Tag {
      */
     build(input) {
         input = input || 'auto';
-        /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        const styles = new Map()
-            .set('grid-row', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('grid-row', { value: input, priority: 0 });
     }
 }
 
@@ -1257,11 +1148,6 @@ class Rows extends Tag {
     build(input) {
         input = input || 'none';
         /** @type {?} */
-        const cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         let auto = false;
         if (input.endsWith(AUTO_SPECIFIER$1)) {
             input = input.substring(0, input.indexOf(AUTO_SPECIFIER$1));
@@ -1269,12 +1155,9 @@ class Rows extends Tag {
         }
         /** @type {?} */
         const key = auto ? 'grid-auto-rows' : 'grid-template-rows';
-        /** @type {?} */
-        const styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set(key, { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     }
 }
 /** @type {?} */
@@ -1622,7 +1505,7 @@ class GrandCentral {
         const tag = (/** @type {?} */ (this.tags.get(tagName)));
         /** @type {?} */
         const args = this.resolve(dir, tag.deps);
-        return tag.build(value, ...args);
+        return tag.compute(value, ...args);
     }
     /**
      * Resolve the arguments for a builder given a directive

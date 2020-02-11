@@ -34,12 +34,13 @@ export declare abstract class Tag {
      * like Directionality.
      */
     readonly deps: string[];
+    compute(input: string, ...args: string[]): Map<string, ValuePriority>;
     /**
      * The builder for this tag, outputting a map of computed styles.
      * @param input the value for the tag, e.g. flex="50" the input is "50"
      * @param args the resolved dependencies for this tag
      */
-    abstract build(input: string, ...args: string[]): Map<string, ValuePriority>;
-    protected setCache(input: string, value: Map<string, ValuePriority>): void;
-    protected getCache(input: string): Map<string, ValuePriority> | undefined;
+    protected abstract build(input: string, ...args: string[]): Map<string, ValuePriority>;
+    private setCache;
+    private getCache;
 }

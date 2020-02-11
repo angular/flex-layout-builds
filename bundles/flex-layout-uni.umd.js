@@ -214,13 +214,40 @@ Tag = /** @class */ (function () {
         this.deps = [];
     }
     /**
-     * @protected
+     * @param {?} input
+     * @param {...?} args
+     * @return {?}
+     */
+    Tag.prototype.compute = /**
+     * @param {?} input
+     * @param {...?} args
+     * @return {?}
+     */
+    function (input) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        /** @type {?} */
+        var cacheKey = input + args.join('');
+        /** @type {?} */
+        var cache = this.getCache(cacheKey);
+        if (cache) {
+            return cache;
+        }
+        /** @type {?} */
+        var map = this.build.apply(this, __spreadArrays([input], args));
+        this.setCache(input, map);
+        return map;
+    };
+    /**
+     * @private
      * @param {?} input
      * @param {?} value
      * @return {?}
      */
     Tag.prototype.setCache = /**
-     * @protected
+     * @private
      * @param {?} input
      * @param {?} value
      * @return {?}
@@ -229,12 +256,12 @@ Tag = /** @class */ (function () {
         this.cache.set(input, value);
     };
     /**
-     * @protected
+     * @private
      * @param {?} input
      * @return {?}
      */
     Tag.prototype.getCache = /**
-     * @protected
+     * @private
      * @param {?} input
      * @return {?}
      */
@@ -289,26 +316,20 @@ var Gap = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * @param {?} input
      * @param {?} _
      * @param {?} __
+     * @param {?} ___
      * @return {?}
      */
     Gap.prototype.build = /**
-     * @param {?} input
      * @param {?} _
      * @param {?} __
+     * @param {?} ___
      * @return {?}
      */
-    function (input, _, __) {
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
+    function (_, __, ___) {
         /** @type {?} */
         var styles = new Map();
-        this.setCache(input, styles);
         return styles;
     };
     return Gap;
@@ -419,13 +440,6 @@ var Offset = /** @class */ (function (_super) {
         /** @type {?} */
         var isRtl = direction === 'rtl';
         /** @type {?} */
-        var cacheKey = input + layout$$1 + isRtl;
-        /** @type {?} */
-        var cache = this.getCache(cacheKey);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         var isPercent = input.indexOf('%') > -1;
         /** @type {?} */
         var isPx = input.indexOf('px') > -1;
@@ -436,10 +450,7 @@ var Offset = /** @class */ (function (_super) {
         var horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
         /** @type {?} */
         var key = isFlowHorizontal(layout$$1) ? horizontalLayoutKey : 'margin-top';
-        /** @type {?} */
-        var styles = new Map().set(key, input);
-        this.setCache(cacheKey, styles);
-        return styles;
+        return new Map().set(key, input);
     };
     return Offset;
 }(Tag));
@@ -466,15 +477,7 @@ var Order = /** @class */ (function (_super) {
      */
     function (input) {
         input = input || '0';
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        var styles = new Map().set('order', { value: parseInt(input, 10), priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('order', { value: parseInt(input, 10), priority: 0 });
     };
     return Order;
 }(Tag));
@@ -624,11 +627,6 @@ var Flex = /** @class */ (function (_super) {
      */
     function (input, layout$$1) {
         /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         var styles = new Map()
             .set('box-sizing', { value: 'border-box', priority: 0 });
         /** @type {?} */
@@ -764,7 +762,6 @@ var Flex = /** @class */ (function (_super) {
                 styles.set(hasCalc ? 'flex-basis' : 'flex', { value: hasCalc ? value : grow + " " + shrink + " " + value, priority: 0 });
             }
         }
-        this.setCache(input, styles);
         return styles;
     };
     return Flex;
@@ -793,11 +790,6 @@ var FlexAlign = /** @class */ (function (_super) {
     function (input) {
         input = input || STRETCH;
         /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         var styles = new Map();
         // Cross-axis
         switch (input) {
@@ -811,7 +803,6 @@ var FlexAlign = /** @class */ (function (_super) {
                 styles.set(ALIGN_SELF, { value: input, priority: 0 });
                 break;
         }
-        this.setCache(input, styles);
         return styles;
     };
     return FlexAlign;
@@ -842,13 +833,6 @@ var LayoutAlign = /** @class */ (function (_super) {
      */
     function (input, layout$$1) {
         layout$$1 = layout$$1 || 'row';
-        /** @type {?} */
-        var cacheKey = input + layout$$1;
-        /** @type {?} */
-        var cache = this.getCache(cacheKey);
-        if (cache) {
-            return cache;
-        }
         var _a = input.split(' '), mainAxis = _a[0], crossAxis = _a[1];
         /** @type {?} */
         var maxKey = crossAxis === STRETCH && isFlowHorizontal(layout$$1) ? 'max-height' : 'max-width';
@@ -903,7 +887,6 @@ var LayoutAlign = /** @class */ (function (_super) {
                 styles.set(ALIGN_CONTENT, { value: STRETCH, priority: 0 });
                 styles.set(ALIGN_ITEMS, { value: STRETCH, priority: 0 });
         }
-        this.setCache(cacheKey, styles);
         return styles;
     };
     return LayoutAlign;
@@ -930,11 +913,6 @@ var Layout = /** @class */ (function (_super) {
      * @return {?}
      */
     function (input) {
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         var _a = validateValue(input), direction = _a[0], wrap = _a[1], isInline = _a[2];
         /** @type {?} */
         var styles = new Map()
@@ -944,7 +922,6 @@ var Layout = /** @class */ (function (_super) {
         if (!!wrap) {
             styles.set('flex-wrap', { value: wrap, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     };
     return Layout;
@@ -984,17 +961,9 @@ GridGap = /** @class */ (function (_super) {
      */
     function (input) {
         input = input || '0';
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        var styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: -1 })
             .set('grid-gap', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     };
     return GridGap;
 }(Tag));
@@ -1046,11 +1015,6 @@ var AlignColumns = /** @class */ (function (_super) {
      * @return {?}
      */
     function (input) {
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         var _a = input.split(' '), mainAxis = _a[0], crossAxis = _a[1];
         /** @type {?} */
         var styles = new Map();
@@ -1079,7 +1043,6 @@ var AlignColumns = /** @class */ (function (_super) {
             default:
                 styles.set(ALIGN_ITEMS, { value: DEFAULT_CROSS, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     };
     return AlignColumns;
@@ -1110,11 +1073,6 @@ var AlignRows = /** @class */ (function (_super) {
      * @return {?}
      */
     function (input) {
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         var _a = input.split(' '), mainAxis = _a[0], crossAxis = _a[1];
         /** @type {?} */
         var styles = new Map();
@@ -1143,7 +1101,6 @@ var AlignRows = /** @class */ (function (_super) {
             default:
                 styles.set(JUSTIFY_ITEMS, { value: DEFAULT_CROSS$1, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     };
     return AlignRows;
@@ -1175,16 +1132,7 @@ var Area = /** @class */ (function (_super) {
      */
     function (input) {
         input = input || 'auto';
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        var styles = new Map()
-            .set('grid-area', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('grid-area', { value: input, priority: 0 });
     };
     return Area;
 }(Tag));
@@ -1211,22 +1159,14 @@ var Areas = /** @class */ (function (_super) {
      */
     function (input) {
         /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         var areas = (input || DEFAULT_VALUE).split(DELIMETER).map((/**
          * @param {?} v
          * @return {?}
          */
         function (v) { return "\"" + v.trim() + "\""; }));
-        /** @type {?} */
-        var styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set('grid-template-areas', { value: areas.join(' '), priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     };
     return Areas;
 }(Tag));
@@ -1257,22 +1197,14 @@ var Auto = /** @class */ (function (_super) {
      */
     function (input) {
         input = input || 'initial';
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
         var _a = input.split(' '), direction = _a[0], dense = _a[1];
         if (direction !== 'column' && direction !== 'row' && direction !== 'dense') {
             direction = 'row';
         }
         dense = (dense === 'dense' && direction !== 'dense') ? ' dense' : '';
-        /** @type {?} */
-        var styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set('grid-auto-flow', { value: direction + dense, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     };
     return Auto;
 }(Tag));
@@ -1300,11 +1232,6 @@ var Align = /** @class */ (function (_super) {
     function (input) {
         input = input || 'stretch';
         /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         var styles = new Map();
         var _a = input.split(' '), rowAxis = _a[0], columnAxis = _a[1];
         // Row axis
@@ -1329,7 +1256,6 @@ var Align = /** @class */ (function (_super) {
             default:
                 styles.set(ALIGN_SELF, { value: STRETCH, priority: 0 });
         }
-        this.setCache(input, styles);
         return styles;
     };
     return Align;
@@ -1357,16 +1283,7 @@ var Column = /** @class */ (function (_super) {
      */
     function (input) {
         input = input || 'auto';
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        var styles = new Map()
-            .set('grid-column', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('grid-column', { value: input, priority: 0 });
     };
     return Column;
 }(Tag));
@@ -1394,11 +1311,6 @@ var Columns = /** @class */ (function (_super) {
     function (input) {
         input = input || 'none';
         /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         var auto = false;
         if (input.endsWith(AUTO_SPECIFIER)) {
             input = input.substring(0, input.indexOf(AUTO_SPECIFIER));
@@ -1406,12 +1318,9 @@ var Columns = /** @class */ (function (_super) {
         }
         /** @type {?} */
         var key = auto ? 'grid-auto-columns' : 'grid-template-columns';
-        /** @type {?} */
-        var styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set(key, { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     };
     return Columns;
 }(Tag));
@@ -1440,16 +1349,7 @@ var Row = /** @class */ (function (_super) {
      */
     function (input) {
         input = input || 'auto';
-        /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
-        var styles = new Map()
-            .set('grid-row', { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
+        return new Map().set('grid-row', { value: input, priority: 0 });
     };
     return Row;
 }(Tag));
@@ -1477,11 +1377,6 @@ var Rows = /** @class */ (function (_super) {
     function (input) {
         input = input || 'none';
         /** @type {?} */
-        var cache = this.getCache(input);
-        if (cache) {
-            return cache;
-        }
-        /** @type {?} */
         var auto = false;
         if (input.endsWith(AUTO_SPECIFIER$1)) {
             input = input.substring(0, input.indexOf(AUTO_SPECIFIER$1));
@@ -1489,12 +1384,9 @@ var Rows = /** @class */ (function (_super) {
         }
         /** @type {?} */
         var key = auto ? 'grid-auto-rows' : 'grid-template-rows';
-        /** @type {?} */
-        var styles = new Map()
+        return new Map()
             .set('display', { value: 'grid', priority: 0 })
             .set(key, { value: input, priority: 0 });
-        this.setCache(input, styles);
-        return styles;
     };
     return Rows;
 }(Tag));
@@ -1898,7 +1790,7 @@ var GrandCentral = /** @class */ (function () {
         var tag = (/** @type {?} */ (this.tags.get(tagName)));
         /** @type {?} */
         var args = this.resolve(dir, tag.deps);
-        return tag.build.apply(tag, __spreadArrays([value], args));
+        return tag.compute.apply(tag, __spreadArrays([value], args));
     };
     /** Resolve the arguments for a builder given a directive */
     /**

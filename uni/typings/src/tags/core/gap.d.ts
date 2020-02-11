@@ -10,5 +10,5 @@ import { Tag, ValuePriority } from '../tag';
 export declare class Gap extends Tag {
     readonly tag = "gap";
     readonly deps: string[];
-    build(input: string, _: string, __: Direction): Map<string, ValuePriority>;
+    build(_: string, __: string, ___: Direction): Map<string, ValuePriority>;
 }
