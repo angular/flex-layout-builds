@@ -871,7 +871,7 @@ var ScreenTypes = {
     'HANDSET_PORTRAIT': "" + HANDSET_PORTRAIT,
     'TABLET_PORTRAIT': TABLET_PORTRAIT + " ",
     'WEB_PORTRAIT': "" + WEB_PORTRAIT,
-    'HANDSET_LANDSCAPE': HANDSET_LANDSCAPE + "]",
+    'HANDSET_LANDSCAPE': "" + HANDSET_LANDSCAPE,
     'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
     'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
 };
@@ -884,7 +884,7 @@ var ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset.landscape', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
     { 'alias': 'handset.portrait', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
     { 'alias': 'tablet', priority: 2100, 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', priority: 2100, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', priority: 2100, 'mediaQuery': ScreenTypes.TABLET_LANDSCAPE },
     { 'alias': 'tablet.portrait', priority: 2100, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
     { 'alias': 'web', priority: 2200, 'mediaQuery': ScreenTypes.WEB, overlapping: true },
     { 'alias': 'web.landscape', priority: 2200, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
@@ -8466,7 +8466,7 @@ var GridModule = /** @class */ (function () {
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new core.Version('9.0.0-beta.29-61ecf46');
+var VERSION = new core.Version('9.0.0-beta.29-dd772d7');
 
 /**
  * @fileoverview added by tsickle
