@@ -2003,6 +2003,8 @@ var PrintHook = /** @class */ (function () {
         // is still open. This is an extension of the `isPrinting` property on
         // browsers which support `beforeprint` and `afterprint` events.
         this.isPrintingBeforeAfterEvent = false;
+        this.beforePrintEventListeners = [];
+        this.afterPrintEventListeners = [];
         /**
          * Is this service currently in Print-mode ?
          */
@@ -2143,8 +2145,8 @@ var PrintHook = /** @class */ (function () {
             return;
         }
         this.registeredBeforeAfterPrintHooks = true;
-        // Could we have teardown logic to remove if there are no print listeners being used?
-        this._document.defaultView.addEventListener('beforeprint', (/**
+        /** @type {?} */
+        var beforePrintListener = (/**
          * @return {?}
          */
         function () {
@@ -2155,8 +2157,9 @@ var PrintHook = /** @class */ (function () {
                 _this.startPrinting(target, _this.getEventBreakpoints(new MediaChange(true, PRINT)));
                 target.updateStyles();
             }
-        }));
-        this._document.defaultView.addEventListener('afterprint', (/**
+        });
+        /** @type {?} */
+        var afterPrintListener = (/**
          * @return {?}
          */
         function () {
@@ -2167,19 +2170,24 @@ var PrintHook = /** @class */ (function () {
                 _this.stopPrinting(target);
                 target.updateStyles();
             }
-        }));
+        });
+        // Could we have teardown logic to remove if there are no print listeners being used?
+        this._document.defaultView.addEventListener('beforeprint', beforePrintListener);
+        this._document.defaultView.addEventListener('afterprint', afterPrintListener);
+        this.beforePrintEventListeners.push(beforePrintListener);
+        this.afterPrintEventListeners.push(afterPrintListener);
     };
     /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @return pipeable filter predicate
      */
     /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
      */
     PrintHook.prototype.interceptEvents = /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
      */
@@ -2343,6 +2351,28 @@ var PrintHook = /** @class */ (function () {
                 this.deactivations = [];
             }
         }
+    };
+    /** Teardown logic for the service. */
+    /**
+     * Teardown logic for the service.
+     * @return {?}
+     */
+    PrintHook.prototype.ngOnDestroy = /**
+     * Teardown logic for the service.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.beforePrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        function (l) { return _this._document.defaultView.removeEventListener('beforeprint', l); }));
+        this.afterPrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        function (l) { return _this._document.defaultView.removeEventListener('afterprint', l); }));
     };
     PrintHook.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
