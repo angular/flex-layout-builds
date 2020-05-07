@@ -654,6 +654,19 @@ BaseDirective2 = /** @class */ (function () {
         }
         return 'row';
     };
+    /**
+     * @protected
+     * @param {?} target
+     * @return {?}
+     */
+    BaseDirective2.prototype.hasWrap = /**
+     * @protected
+     * @param {?} target
+     * @return {?}
+     */
+    function (target) {
+        return this.styler.hasWrap(target);
+    };
     /** Applies styles given via string pair or object map to the directive element */
     /**
      * Applies styles given via string pair or object map to the directive element
@@ -3423,6 +3436,19 @@ var StyleUtils = /** @class */ (function () {
         var hasInlineValue = this.lookupInlineStyle(target, query) ||
             (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
         return [value || 'row', hasInlineValue];
+    };
+    /**
+     * @param {?} target
+     * @return {?}
+     */
+    StyleUtils.prototype.hasWrap = /**
+     * @param {?} target
+     * @return {?}
+     */
+    function (target) {
+        /** @type {?} */
+        var query = 'flex-wrap';
+        return this.lookupStyle(target, query) === 'wrap';
     };
     /**
      * Find the DOM element's raw attribute value (if any)
