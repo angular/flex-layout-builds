@@ -834,20 +834,13 @@ class FlexDirective extends BaseDirective2 {
     constructor(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
         this.layoutConfig = layoutConfig;
+        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex';
-        this.direction = '';
-        this.wrap = false;
+        this.direction = undefined;
+        this.wrap = undefined;
         this.flexGrow = '1';
         this.flexShrink = '1';
         this.init();
-        if (this.parentElement) {
-            this.marshal.trackValue(this.parentElement, 'layout')
-                .pipe(takeUntil(this.destroySubject))
-                .subscribe(this.onLayoutChange.bind(this));
-            this.marshal.trackValue(this.nativeElement, 'layout-align')
-                .pipe(takeUntil(this.destroySubject))
-                .subscribe(this.triggerReflow.bind(this));
-        }
     }
     /**
      * @return {?}
@@ -874,6 +867,19 @@ class FlexDirective extends BaseDirective2 {
         this.triggerReflow();
     }
     /**
+     * @return {?}
+     */
+    ngOnInit() {
+        if (this.parentElement) {
+            this.marshal.trackValue(this.parentElement, 'layout')
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.onLayoutChange.bind(this));
+            this.marshal.trackValue(this.nativeElement, 'layout-align')
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.triggerReflow.bind(this));
+        }
+    }
+    /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      * @protected
@@ -898,8 +904,11 @@ class FlexDirective extends BaseDirective2 {
     updateWithValue(value) {
         /** @type {?} */
         const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
-        if (!this.direction) {
+        if (this.direction === undefined) {
             this.direction = this.getFlexFlowDirection((/** @type {?} */ (this.parentElement)), addFlexToParent);
+        }
+        if (this.wrap === undefined) {
+            this.wrap = this.hasWrap((/** @type {?} */ (this.parentElement)));
         }
         /** @type {?} */
         const direction = this.direction;

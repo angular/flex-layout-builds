@@ -48,6 +48,7 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
      * And optionally add the flow value to element's inline style.
      */
     protected getFlexFlowDirection(target: HTMLElement, addIfMissing?: boolean): string;
+    protected hasWrap(target: HTMLElement): boolean;
     /** Applies styles given via string pair or object map to the directive element */
     protected applyStyleToElement(style: StyleDefinition, value?: string | number, element?: HTMLElement): void;
     protected setValue(val: any, bp: string): void;

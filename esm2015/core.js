@@ -541,6 +541,14 @@ class BaseDirective2 {
         return 'row';
     }
     /**
+     * @protected
+     * @param {?} target
+     * @return {?}
+     */
+    hasWrap(target) {
+        return this.styler.hasWrap(target);
+    }
+    /**
      * Applies styles given via string pair or object map to the directive element
      * @protected
      * @param {?} style
@@ -2664,6 +2672,15 @@ class StyleUtils {
         const hasInlineValue = this.lookupInlineStyle(target, query) ||
             (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
         return [value || 'row', hasInlineValue];
+    }
+    /**
+     * @param {?} target
+     * @return {?}
+     */
+    hasWrap(target) {
+        /** @type {?} */
+        const query = 'flex-wrap';
+        return this.lookupStyle(target, query) === 'wrap';
     }
     /**
      * Find the DOM element's raw attribute value (if any)
