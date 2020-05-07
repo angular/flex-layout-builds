@@ -1036,7 +1036,7 @@ class MatchMedia {
          * Initialize source with 'all' so all non-responsive APIs trigger style updates
          */
         this.source = new BehaviorSubject(new MediaChange(true));
-        this.registry = new Map();
+        this._registry = new Map();
         this._observable$ = this.source.asObservable();
     }
     /**
@@ -1057,6 +1057,20 @@ class MatchMedia {
             }
         }));
         return results;
+    }
+    /**
+     * @return {?}
+     */
+    get registry() {
+        return this._registry;
+    }
+    /**
+     * @param {?} registry
+     * @return {?}
+     */
+    set registry(registry) {
+        this.emptyRegistry();
+        this._registry = registry;
     }
     /**
      * For the specified mediaQuery?
@@ -1087,9 +1101,7 @@ class MatchMedia {
              * @param {?} change
              * @return {?}
              */
-            (change) => {
-                return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
-            })));
+            (change) => !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1))));
             /** @type {?} */
             const registration$ = new Observable((/**
              * @param {?} observer
@@ -1135,16 +1147,7 @@ class MatchMedia {
          */
         (query) => {
             /** @type {?} */
-            const onMQLEvent = (/**
-             * @param {?} e
-             * @return {?}
-             */
-            (e) => {
-                this._zone.run((/**
-                 * @return {?}
-                 */
-                () => this.source.next(new MediaChange(e.matches, query))));
-            });
+            const onMQLEvent = this.onMQLEvent(query);
             /** @type {?} */
             let mql = this.registry.get(query);
             if (!mql) {
@@ -1159,6 +1162,24 @@ class MatchMedia {
         return matches;
     }
     /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.emptyRegistry();
+    }
+    /**
+     * @protected
+     * @return {?}
+     */
+    emptyRegistry() {
+        this.registry.forEach((/**
+         * @param {?} l
+         * @param {?} q
+         * @return {?}
+         */
+        (l, q) => this.destroyMQL(l, q)));
+    }
+    /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
      * @protected
@@ -1167,6 +1188,32 @@ class MatchMedia {
      */
     buildMQL(query) {
         return constructMql(query, isPlatformBrowser(this._platformId));
+    }
+    /**
+     * @protected
+     * @param {?} list
+     * @param {?} query
+     * @return {?}
+     */
+    destroyMQL(list, query) {
+        list.removeListener(this.onMQLEvent(query));
+    }
+    /**
+     * @protected
+     * @param {?} query
+     * @return {?}
+     */
+    onMQLEvent(query) {
+        return (/**
+         * @param {?} e
+         * @return {?}
+         */
+        (e) => {
+            this._zone.run((/**
+             * @return {?}
+             */
+            () => this.source.next(new MediaChange(e.matches, query))));
+        });
     }
 }
 MatchMedia.decorators = [
