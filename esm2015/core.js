@@ -1636,6 +1636,8 @@ class PrintHook {
         // is still open. This is an extension of the `isPrinting` property on
         // browsers which support `beforeprint` and `afterprint` events.
         this.isPrintingBeforeAfterEvent = false;
+        this.beforePrintEventListeners = [];
+        this.afterPrintEventListeners = [];
         /**
          * Is this service currently in Print-mode ?
          */
@@ -1725,8 +1727,8 @@ class PrintHook {
             return;
         }
         this.registeredBeforeAfterPrintHooks = true;
-        // Could we have teardown logic to remove if there are no print listeners being used?
-        this._document.defaultView.addEventListener('beforeprint', (/**
+        /** @type {?} */
+        const beforePrintListener = (/**
          * @return {?}
          */
         () => {
@@ -1737,8 +1739,9 @@ class PrintHook {
                 this.startPrinting(target, this.getEventBreakpoints(new MediaChange(true, PRINT)));
                 target.updateStyles();
             }
-        }));
-        this._document.defaultView.addEventListener('afterprint', (/**
+        });
+        /** @type {?} */
+        const afterPrintListener = (/**
          * @return {?}
          */
         () => {
@@ -1749,10 +1752,15 @@ class PrintHook {
                 this.stopPrinting(target);
                 target.updateStyles();
             }
-        }));
+        });
+        // Could we have teardown logic to remove if there are no print listeners being used?
+        this._document.defaultView.addEventListener('beforeprint', beforePrintListener);
+        this._document.defaultView.addEventListener('afterprint', afterPrintListener);
+        this.beforePrintEventListeners.push(beforePrintListener);
+        this.afterPrintEventListeners.push(afterPrintListener);
     }
     /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
      */
@@ -1852,6 +1860,22 @@ class PrintHook {
                 this.deactivations = [];
             }
         }
+    }
+    /**
+     * Teardown logic for the service.
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.beforePrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        l => this._document.defaultView.removeEventListener('beforeprint', l)));
+        this.afterPrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        l => this._document.defaultView.removeEventListener('afterprint', l)));
     }
 }
 PrintHook.decorators = [
