@@ -1468,7 +1468,6 @@ var MatchMedia = /** @class */ (function () {
      * @return {?}
      */
     function (list, query) {
-        console.log({ list: list, query: query });
         list.removeListener((/** @type {?} */ (this.listeners.get(query))));
     };
     MatchMedia.decorators = [

@@ -1207,7 +1207,6 @@ class MatchMedia {
      * @return {?}
      */
     destroyMQL(list, query) {
-        console.log({ list, query });
         list.removeListener((/** @type {?} */ (this.listeners.get(query))));
     }
 }
