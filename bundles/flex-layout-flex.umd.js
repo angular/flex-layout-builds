@@ -643,21 +643,22 @@ var GRID_SPECIFIER = ' grid';
  * @return {?}
  */
 function buildGridPadding(value, directionality) {
+    var _a = value.split(' '), between = _a[0], below = _a[1];
     /** @type {?} */
-    var paddingTop = '0px';
+    var bottom = below || between;
     /** @type {?} */
     var paddingRight = '0px';
     /** @type {?} */
-    var paddingBottom = value;
+    var paddingBottom = bottom;
     /** @type {?} */
     var paddingLeft = '0px';
     if (directionality === 'rtl') {
-        paddingLeft = value;
+        paddingLeft = between;
     }
     else {
-        paddingRight = value;
+        paddingRight = between;
     }
-    return { 'padding': paddingTop + " " + paddingRight + " " + paddingBottom + " " + paddingLeft };
+    return { 'padding': "0px " + paddingRight + " " + paddingBottom + " " + paddingLeft };
 }
 /**
  * @param {?} value
@@ -665,21 +666,28 @@ function buildGridPadding(value, directionality) {
  * @return {?}
  */
 function buildGridMargin(value, directionality) {
+    var _a = value.split(' '), between = _a[0], below = _a[1];
     /** @type {?} */
-    var marginTop = '0px';
+    var bottom = below || between;
+    /** @type {?} */
+    var minus = (/**
+     * @param {?} str
+     * @return {?}
+     */
+    function (str) { return "-" + str; });
     /** @type {?} */
     var marginRight = '0px';
     /** @type {?} */
-    var marginBottom = '-' + value;
+    var marginBottom = minus(bottom);
     /** @type {?} */
     var marginLeft = '0px';
     if (directionality === 'rtl') {
-        marginLeft = '-' + value;
+        marginLeft = minus(between);
     }
     else {
-        marginRight = '-' + value;
+        marginRight = minus(between);
     }
-    return { 'margin': marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft };
+    return { 'margin': "0px " + marginRight + " " + marginBottom + " " + marginLeft };
 }
 /**
  * @param {?} directionality

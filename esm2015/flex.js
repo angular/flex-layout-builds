@@ -521,21 +521,22 @@ const GRID_SPECIFIER = ' grid';
  * @return {?}
  */
 function buildGridPadding(value, directionality) {
+    const [between, below] = value.split(' ');
     /** @type {?} */
-    let paddingTop = '0px';
+    const bottom = below || between;
     /** @type {?} */
     let paddingRight = '0px';
     /** @type {?} */
-    let paddingBottom = value;
+    let paddingBottom = bottom;
     /** @type {?} */
     let paddingLeft = '0px';
     if (directionality === 'rtl') {
-        paddingLeft = value;
+        paddingLeft = between;
     }
     else {
-        paddingRight = value;
+        paddingRight = between;
     }
-    return { 'padding': `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}` };
+    return { 'padding': `0px ${paddingRight} ${paddingBottom} ${paddingLeft}` };
 }
 /**
  * @param {?} value
@@ -543,21 +544,28 @@ function buildGridPadding(value, directionality) {
  * @return {?}
  */
 function buildGridMargin(value, directionality) {
+    const [between, below] = value.split(' ');
     /** @type {?} */
-    let marginTop = '0px';
+    const bottom = below || between;
+    /** @type {?} */
+    const minus = (/**
+     * @param {?} str
+     * @return {?}
+     */
+    (str) => `-${str}`);
     /** @type {?} */
     let marginRight = '0px';
     /** @type {?} */
-    let marginBottom = '-' + value;
+    let marginBottom = minus(bottom);
     /** @type {?} */
     let marginLeft = '0px';
     if (directionality === 'rtl') {
-        marginLeft = '-' + value;
+        marginLeft = minus(between);
     }
     else {
-        marginRight = '-' + value;
+        marginRight = minus(between);
     }
-    return { 'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}` };
+    return { 'margin': `0px ${marginRight} ${marginBottom} ${marginLeft}` };
 }
 /**
  * @param {?} directionality
