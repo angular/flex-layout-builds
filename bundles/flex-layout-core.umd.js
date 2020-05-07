@@ -1266,6 +1266,7 @@ var MatchMedia = /** @class */ (function () {
          */
         this.source = new rxjs.BehaviorSubject(new MediaChange(true));
         this._registry = new Map();
+        this.listeners = new Map();
         this._observable$ = this.source.asObservable();
     }
     Object.defineProperty(MatchMedia.prototype, "activations", {
@@ -1431,13 +1432,23 @@ var MatchMedia = /** @class */ (function () {
          */
         function (query) {
             /** @type {?} */
-            var onMQLEvent = _this.onMQLEvent(query);
+            var onMQLEvent = (/**
+             * @param {?} e
+             * @return {?}
+             */
+            function (e) {
+                _this._zone.run((/**
+                 * @return {?}
+                 */
+                function () { return _this.source.next(new MediaChange(e.matches, query)); }));
+            });
             /** @type {?} */
             var mql = _this.registry.get(query);
             if (!mql) {
                 mql = _this.buildMQL(query);
                 mql.addListener(onMQLEvent);
                 _this.registry.set(query, mql);
+                _this.listeners.set(query, onMQLEvent);
             }
             if (mql.matches) {
                 matches.push(new MediaChange(true, query));
@@ -1505,30 +1516,8 @@ var MatchMedia = /** @class */ (function () {
      * @return {?}
      */
     function (list, query) {
-        list.removeListener(this.onMQLEvent(query));
-    };
-    /**
-     * @protected
-     * @param {?} query
-     * @return {?}
-     */
-    MatchMedia.prototype.onMQLEvent = /**
-     * @protected
-     * @param {?} query
-     * @return {?}
-     */
-    function (query) {
-        var _this = this;
-        return (/**
-         * @param {?} e
-         * @return {?}
-         */
-        function (e) {
-            _this._zone.run((/**
-             * @return {?}
-             */
-            function () { return _this.source.next(new MediaChange(e.matches, query)); }));
-        });
+        console.log({ list: list, query: query });
+        list.removeListener((/** @type {?} */ (this.listeners.get(query))));
     };
     MatchMedia.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -1596,7 +1585,7 @@ function buildQueryCss(mediaQueries, _document) {
 function constructMql(query, isBrowser) {
     /** @type {?} */
     var canListen = isBrowser && !!((/** @type {?} */ (window))).matchMedia('all').addListener;
-    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ((/** @type {?} */ ({
+    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ({
         matches: query === 'all' || query === '',
         media: query,
         addListener: (/**
@@ -1608,8 +1597,25 @@ function constructMql(query, isBrowser) {
          * @return {?}
          */
         function () {
-        })
-    }))));
+        }),
+        onchange: null,
+        addEventListener: /**
+         * @return {?}
+         */
+        function () {
+        },
+        removeEventListener: /**
+         * @return {?}
+         */
+        function () {
+        },
+        dispatchEvent: /**
+         * @return {?}
+         */
+        function () {
+            return false;
+        }
+    }));
 }
 
 /**
@@ -3234,7 +3240,11 @@ var MediaTrigger = /** @class */ (function () {
          * @return {?}
          */
         function (query) {
-            registry.set(query, (/** @type {?} */ ({ matches: matches })));
+            registry.set(query, (/** @type {?} */ ({ matches: matches, removeListener: (/**
+                 * @param {?} _
+                 * @return {?}
+                 */
+                function (_) { }) })));
         }));
         this.matchMedia.registry = registry;
     };
@@ -3280,7 +3290,7 @@ var MediaTrigger = /** @class */ (function () {
      */
     function () {
         /** @type {?} */
-        var target = this.matchMedia.registry;
+        var target = new Map(this.matchMedia.registry);
         target.clear();
         this.originalRegistry.forEach((/**
          * @param {?} value
@@ -3290,6 +3300,7 @@ var MediaTrigger = /** @class */ (function () {
         function (value, key) {
             target.set(key, value);
         }));
+        this.matchMedia.registry = target;
         this.originalRegistry.clear();
         this.hasCachedRegistryMatches = false;
     };

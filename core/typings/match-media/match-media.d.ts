@@ -47,6 +47,7 @@ export declare class MatchMedia implements OnDestroy {
      * mediaQuery. Each listener emits specific MediaChange data to observers
      */
     registerQuery(mediaQuery: string | string[]): MediaChange[];
+    protected listeners: Map<string, ((this: MediaQueryList, ev: MediaQueryListEvent) => any)>;
     ngOnDestroy(): void;
     protected emptyRegistry(): void;
     /**
@@ -55,6 +56,5 @@ export declare class MatchMedia implements OnDestroy {
      */
     protected buildMQL(query: string): MediaQueryList;
     protected destroyMQL(list: MediaQueryList, query: string): void;
-    protected onMQLEvent(query: string): (e: MediaQueryListEvent) => void;
     protected _observable$: Observable<MediaChange>;
 }

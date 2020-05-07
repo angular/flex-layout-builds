@@ -1037,6 +1037,7 @@ class MatchMedia {
          */
         this.source = new BehaviorSubject(new MediaChange(true));
         this._registry = new Map();
+        this.listeners = new Map();
         this._observable$ = this.source.asObservable();
     }
     /**
@@ -1147,13 +1148,23 @@ class MatchMedia {
          */
         (query) => {
             /** @type {?} */
-            const onMQLEvent = this.onMQLEvent(query);
+            const onMQLEvent = (/**
+             * @param {?} e
+             * @return {?}
+             */
+            (e) => {
+                this._zone.run((/**
+                 * @return {?}
+                 */
+                () => this.source.next(new MediaChange(e.matches, query))));
+            });
             /** @type {?} */
             let mql = this.registry.get(query);
             if (!mql) {
                 mql = this.buildMQL(query);
                 mql.addListener(onMQLEvent);
                 this.registry.set(query, mql);
+                this.listeners.set(query, onMQLEvent);
             }
             if (mql.matches) {
                 matches.push(new MediaChange(true, query));
@@ -1196,24 +1207,8 @@ class MatchMedia {
      * @return {?}
      */
     destroyMQL(list, query) {
-        list.removeListener(this.onMQLEvent(query));
-    }
-    /**
-     * @protected
-     * @param {?} query
-     * @return {?}
-     */
-    onMQLEvent(query) {
-        return (/**
-         * @param {?} e
-         * @return {?}
-         */
-        (e) => {
-            this._zone.run((/**
-             * @return {?}
-             */
-            () => this.source.next(new MediaChange(e.matches, query))));
-        });
+        console.log({ list, query });
+        list.removeListener((/** @type {?} */ (this.listeners.get(query))));
     }
 }
 MatchMedia.decorators = [
@@ -1286,7 +1281,7 @@ function buildQueryCss(mediaQueries, _document) {
 function constructMql(query, isBrowser) {
     /** @type {?} */
     const canListen = isBrowser && !!((/** @type {?} */ (window))).matchMedia('all').addListener;
-    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ((/** @type {?} */ ({
+    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ({
         matches: query === 'all' || query === '',
         media: query,
         addListener: (/**
@@ -1298,8 +1293,25 @@ function constructMql(query, isBrowser) {
          * @return {?}
          */
         () => {
-        })
-    }))));
+        }),
+        onchange: null,
+        /**
+         * @return {?}
+         */
+        addEventListener() {
+        },
+        /**
+         * @return {?}
+         */
+        removeEventListener() {
+        },
+        /**
+         * @return {?}
+         */
+        dispatchEvent() {
+            return false;
+        }
+    }));
 }
 
 /**
@@ -2466,7 +2478,11 @@ class MediaTrigger {
          * @return {?}
          */
         query => {
-            registry.set(query, (/** @type {?} */ ({ matches: matches })));
+            registry.set(query, (/** @type {?} */ ({ matches: matches, removeListener: (/**
+                 * @param {?} _
+                 * @return {?}
+                 */
+                (_) => { }) })));
         }));
         this.matchMedia.registry = registry;
     }
@@ -2496,7 +2512,7 @@ class MediaTrigger {
      */
     restoreRegistryMatches() {
         /** @type {?} */
-        const target = this.matchMedia.registry;
+        const target = new Map(this.matchMedia.registry);
         target.clear();
         this.originalRegistry.forEach((/**
          * @param {?} value
@@ -2506,6 +2522,7 @@ class MediaTrigger {
         (value, key) => {
             target.set(key, value);
         }));
+        this.matchMedia.registry = target;
         this.originalRegistry.clear();
         this.hasCachedRegistryMatches = false;
     }
