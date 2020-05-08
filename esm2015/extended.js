@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, IterableDiffers, KeyValueDiffers, Optional, Renderer2, Self, SecurityContext, defineInjectable } from '@angular/core';
+import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, IterableDiffers, KeyValueDiffers, Optional, Renderer2, Self, SecurityContext, ɵɵdefineInjectable } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
 import { MediaMarshaller, BaseDirective2, SERVER_TOKEN, StyleBuilder, StyleUtils, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -14,7 +14,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/img-src/img-src.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ImgSrcStyleBuilder extends StyleBuilder {
     /**
@@ -28,7 +29,7 @@ class ImgSrcStyleBuilder extends StyleBuilder {
 ImgSrcStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ ImgSrcStyleBuilder.ngInjectableDef = defineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+/** @nocollapse */ ImgSrcStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
 class ImgSrcDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -40,17 +41,13 @@ class ImgSrcDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal, platformId, serverModuleLoaded) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.platformId = platformId;
         this.serverModuleLoaded = serverModuleLoaded;
         this.DIRECTIVE_KEY = 'img-src';
         this.defaultSrc = '';
         this.styleCache = imgSrcCache;
         this.init();
-        this.setValue('', this.nativeElement.getAttribute('src') || '');
+        this.setValue(this.nativeElement.getAttribute('src') || '', '');
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.setAttribute('src', '');
         }
@@ -61,7 +58,7 @@ class ImgSrcDirective extends BaseDirective2 {
      */
     set src(val) {
         this.defaultSrc = val;
-        this.setValue('', this.defaultSrc);
+        this.setValue(this.defaultSrc, '');
     }
     /**
      * Use the [responsively] activated input value to update
@@ -70,19 +67,24 @@ class ImgSrcDirective extends BaseDirective2 {
      *
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
+     * @protected
+     * @param {?=} value
      * @return {?}
      */
-    updateWithValue() {
+    updateWithValue(value) {
         /** @type {?} */
-        let url = this.activatedValue || this.defaultSrc;
+        const url = value || this.defaultSrc;
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.addStyles(url);
         }
         else {
-            this.nativeElement.setAttribute('src', String(url));
+            this.nativeElement.setAttribute('src', url);
         }
     }
 }
+ImgSrcDirective.decorators = [
+    { type: Directive },
+];
 /** @nocollapse */
 ImgSrcDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -130,7 +132,8 @@ DefaultImgSrcDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/class/class.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ClassDirective extends BaseDirective2 {
     /**
@@ -139,25 +142,20 @@ class ClassDirective extends BaseDirective2 {
      * @param {?} marshal
      * @param {?} iterableDiffers
      * @param {?} keyValueDiffers
-     * @param {?} renderer
+     * @param {?} renderer2
      * @param {?} ngClassInstance
      */
-    constructor(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer, ngClassInstance) {
-        super(elementRef, /** @type {?} */ ((null)), styler, marshal);
-        this.elementRef = elementRef;
-        this.styler = styler;
-        this.marshal = marshal;
-        this.iterableDiffers = iterableDiffers;
-        this.keyValueDiffers = keyValueDiffers;
-        this.renderer = renderer;
+    constructor(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer2, ngClassInstance) {
+        super(elementRef, (/** @type {?} */ (null)), styler, marshal);
         this.ngClassInstance = ngClassInstance;
         this.DIRECTIVE_KEY = 'ngClass';
         if (!this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            this.ngClassInstance = new NgClass(this.iterableDiffers, this.keyValueDiffers, this.elementRef, this.renderer);
+            this.ngClassInstance = new NgClass(iterableDiffers, keyValueDiffers, elementRef, renderer2);
         }
         this.init();
+        this.setValue('', '');
     }
     /**
      * Capture class assignments so we cache the default classes
@@ -170,6 +168,7 @@ class ClassDirective extends BaseDirective2 {
         this.setValue(val, '');
     }
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -177,6 +176,9 @@ class ClassDirective extends BaseDirective2 {
         this.ngClassInstance.ngClass = value;
         this.ngClassInstance.ngDoCheck();
     }
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
     /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
@@ -185,6 +187,9 @@ class ClassDirective extends BaseDirective2 {
         this.ngClassInstance.ngDoCheck();
     }
 }
+ClassDirective.decorators = [
+    { type: Directive },
+];
 /** @nocollapse */
 ClassDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -227,7 +232,8 @@ DefaultClassDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/show-hide/show-hide.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ShowHideStyleBuilder extends StyleBuilder {
     /**
@@ -244,7 +250,7 @@ class ShowHideStyleBuilder extends StyleBuilder {
 ShowHideStyleBuilder.decorators = [
     { type: Injectable, args: [{ providedIn: 'root' },] },
 ];
-/** @nocollapse */ ShowHideStyleBuilder.ngInjectableDef = defineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+/** @nocollapse */ ShowHideStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
 class ShowHideDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
@@ -257,10 +263,6 @@ class ShowHideDirective extends BaseDirective2 {
      */
     constructor(elementRef, styleBuilder, styler, marshal, layoutConfig, platformId, serverModuleLoaded) {
         super(elementRef, styleBuilder, styler, marshal);
-        this.elementRef = elementRef;
-        this.styleBuilder = styleBuilder;
-        this.styler = styler;
-        this.marshal = marshal;
         this.layoutConfig = layoutConfig;
         this.platformId = platformId;
         this.serverModuleLoaded = serverModuleLoaded;
@@ -272,6 +274,9 @@ class ShowHideDirective extends BaseDirective2 {
         this.hasLayout = false;
         this.hasFlexChild = false;
     }
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
     /**
      * @return {?}
      */
@@ -280,19 +285,20 @@ class ShowHideDirective extends BaseDirective2 {
         /** @type {?} */
         const children = Array.from(this.nativeElement.children);
         for (let i = 0; i < children.length; i++) {
-            if (this.marshal.hasValue(/** @type {?} */ (children[i]), 'flex')) {
+            if (this.marshal.hasValue((/** @type {?} */ (children[i])), 'flex')) {
                 this.hasFlexChild = true;
                 break;
             }
         }
         if (DISPLAY_MAP.has(this.nativeElement)) {
-            this.display = /** @type {?} */ ((DISPLAY_MAP.get(this.nativeElement)));
+            this.display = (/** @type {?} */ (DISPLAY_MAP.get(this.nativeElement)));
         }
         else {
             this.display = this.getDisplayStyle();
             DISPLAY_MAP.set(this.nativeElement, this.display);
         }
         this.init();
+        // set the default to show unless explicitly overridden
         /** @type {?} */
         const defaultValue = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
         if (defaultValue === undefined || defaultValue === '') {
@@ -310,7 +316,11 @@ class ShowHideDirective extends BaseDirective2 {
      * @return {?}
      */
     ngOnChanges(changes) {
-        Object.keys(changes).forEach(key => {
+        Object.keys(changes).forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        key => {
             if (this.inputs.indexOf(key) !== -1) {
                 /** @type {?} */
                 const inputKey = key.split('.');
@@ -327,25 +337,34 @@ class ShowHideDirective extends BaseDirective2 {
                 }
                 this.setValue(shouldShow, bp);
             }
-        });
+        }));
     }
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
      *  Watch for these extra triggers to update fxShow, fxHide stylings
+     * @protected
      * @return {?}
      */
     trackExtraTriggers() {
         this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
-        ['layout', 'layout-align'].forEach(key => {
+        ['layout', 'layout-align'].forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        key => {
             this.marshal
                 .trackValue(this.nativeElement, key)
                 .pipe(takeUntil(this.destroySubject))
                 .subscribe(this.triggerUpdate.bind(this));
-        });
+        }));
     }
     /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
      * unless it was already explicitly specified inline or in a CSS stylesheet.
+     * @protected
      * @return {?}
      */
     getDisplayStyle() {
@@ -354,6 +373,7 @@ class ShowHideDirective extends BaseDirective2 {
     }
     /**
      * Validate the visibility value and then update the host's inline display style
+     * @protected
      * @param {?=} value
      * @return {?}
      */
@@ -365,8 +385,12 @@ class ShowHideDirective extends BaseDirective2 {
         if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
+        this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
     }
 }
+ShowHideDirective.decorators = [
+    { type: Directive },
+];
 /** @nocollapse */
 ShowHideDirective.ctorParameters = () => [
     { type: ElementRef },
@@ -375,7 +399,7 @@ ShowHideDirective.ctorParameters = () => [
     { type: MediaMarshaller },
     { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] }
+    { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] }
 ];
 /** @type {?} */
 const DISPLAY_MAP = new WeakMap();
@@ -416,8 +440,10 @@ DefaultShowHideDirective.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/style/style-transforms.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+
 /**
  * NgStyle allowed inputs
  */
@@ -459,8 +485,16 @@ function buildRawList(source, delimiter = ';') {
     return String(source)
         .trim()
         .split(delimiter)
-        .map((val) => val.trim())
-        .filter(val => val !== '');
+        .map((/**
+     * @param {?} val
+     * @return {?}
+     */
+    (val) => val.trim()))
+        .filter((/**
+     * @param {?} val
+     * @return {?}
+     */
+    val => val !== ''));
 }
 /**
  * Convert array of key:value strings to a iterable map object
@@ -470,17 +504,25 @@ function buildRawList(source, delimiter = ';') {
  */
 function buildMapFromList(styles, sanitize) {
     /** @type {?} */
-    const sanitizeValue = (it) => {
+    const sanitizeValue = (/**
+     * @param {?} it
+     * @return {?}
+     */
+    (it) => {
         if (sanitize) {
             it.value = sanitize(it.value);
         }
         return it;
-    };
+    });
     return styles
         .map(stringToKeyValue)
-        .filter(entry => !!entry)
+        .filter((/**
+     * @param {?} entry
+     * @return {?}
+     */
+    entry => !!entry))
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, (/** @type {?} */ ({})));
 }
 /**
  * Convert Set<string> or raw Object to an iterable NgStyleMap
@@ -492,12 +534,20 @@ function buildMapFromSet(source, sanitize) {
     /** @type {?} */
     let list = [];
     if (getType(source) === 'set') {
-        (/** @type {?} */ (source)).forEach(entry => list.push(entry));
+        ((/** @type {?} */ (source))).forEach((/**
+         * @param {?} entry
+         * @return {?}
+         */
+        entry => list.push(entry)));
     }
     else {
-        Object.keys(source).forEach((key) => {
+        Object.keys(source).forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        (key) => {
             list.push(`${key}:${((/** @type {?} */ (source)))[key]}`);
-        });
+        }));
     }
     return buildMapFromList(list, sanitize);
 }
@@ -525,34 +575,30 @@ function keyValuesToMap(map, entry) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/style/style.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class StyleDirective extends BaseDirective2 {
     /**
      * @param {?} elementRef
      * @param {?} styler
      * @param {?} marshal
-     * @param {?} keyValueDiffers
-     * @param {?} renderer
      * @param {?} sanitizer
+     * @param {?} differs
+     * @param {?} renderer2
      * @param {?} ngStyleInstance
      * @param {?} serverLoaded
      * @param {?} platformId
      */
-    constructor(elementRef, styler, marshal, keyValueDiffers, renderer, sanitizer, ngStyleInstance, serverLoaded, platformId) {
-        super(elementRef, /** @type {?} */ ((null)), styler, marshal);
-        this.elementRef = elementRef;
-        this.styler = styler;
-        this.marshal = marshal;
-        this.keyValueDiffers = keyValueDiffers;
-        this.renderer = renderer;
+    constructor(elementRef, styler, marshal, sanitizer, differs, renderer2, ngStyleInstance, serverLoaded, platformId) {
+        super(elementRef, (/** @type {?} */ (null)), styler, marshal);
         this.sanitizer = sanitizer;
         this.ngStyleInstance = ngStyleInstance;
         this.DIRECTIVE_KEY = 'ngStyle';
         if (!this.ngStyleInstance) {
-            // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+            // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            this.ngStyleInstance = new NgStyle(this.keyValueDiffers, this.elementRef, this.renderer);
+            this.ngStyleInstance = new NgStyle(elementRef, differs, renderer2);
         }
         this.init();
         /** @type {?} */
@@ -562,13 +608,14 @@ class StyleDirective extends BaseDirective2 {
     }
     /**
      * Add generated styles
+     * @protected
      * @param {?} value
      * @return {?}
      */
     updateWithValue(value) {
         /** @type {?} */
         const styles = this.buildStyleMap(value);
-        this.ngStyleInstance.ngStyle = Object.assign({}, this.fallbackStyles, styles);
+        this.ngStyleInstance.ngStyle = Object.assign(Object.assign({}, this.fallbackStyles), styles);
         if (this.isServer) {
             this.applyStyleToElement(styles);
         }
@@ -576,6 +623,7 @@ class StyleDirective extends BaseDirective2 {
     }
     /**
      * Remove generated styles
+     * @protected
      * @return {?}
      */
     clearStyles() {
@@ -587,22 +635,31 @@ class StyleDirective extends BaseDirective2 {
      * NOTE: Raw string key-value pairs MUST be delimited by `;`
      *       Comma-delimiters are not supported due to complexities of
      *       possible style values such as `rgba(x,x,x,x)` and others
+     * @protected
      * @param {?} styles
      * @return {?}
      */
     buildStyleMap(styles) {
+        // Always safe-guard (aka sanitize) style property values
         /** @type {?} */
-        const sanitizer = (val) => this.sanitizer.sanitize(SecurityContext.STYLE, val) || '';
+        const sanitizer = (/**
+         * @param {?} val
+         * @return {?}
+         */
+        (val) => this.sanitizer.sanitize(SecurityContext.STYLE, val) || '');
         if (styles) {
             switch (getType(styles)) {
                 case 'string': return buildMapFromList$1(buildRawList(styles), sanitizer);
-                case 'array': return buildMapFromList$1(/** @type {?} */ (styles), sanitizer);
+                case 'array': return buildMapFromList$1((/** @type {?} */ (styles)), sanitizer);
                 case 'set': return buildMapFromSet(styles, sanitizer);
                 default: return buildMapFromSet(styles, sanitizer);
             }
         }
         return {};
     }
+    // ******************************************************************
+    // Lifecycle Hooks
+    // ******************************************************************
     /**
      * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      * @return {?}
@@ -611,16 +668,19 @@ class StyleDirective extends BaseDirective2 {
         this.ngStyleInstance.ngDoCheck();
     }
 }
+StyleDirective.decorators = [
+    { type: Directive },
+];
 /** @nocollapse */
 StyleDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
     { type: MediaMarshaller },
+    { type: DomSanitizer },
     { type: KeyValueDiffers },
     { type: Renderer2 },
-    { type: DomSanitizer },
     { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] },
-    { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+    { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
     { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
 ];
 /** @type {?} */
@@ -658,29 +718,38 @@ DefaultStyleDirective.decorators = [
  */
 function buildMapFromList$1(styles, sanitize) {
     /** @type {?} */
-    const sanitizeValue = (it) => {
+    const sanitizeValue = (/**
+     * @param {?} it
+     * @return {?}
+     */
+    (it) => {
         if (sanitize) {
             it.value = sanitize(it.value);
         }
         return it;
-    };
+    });
     return styles
         .map(stringToKeyValue)
-        .filter(entry => !!entry)
+        .filter((/**
+     * @param {?} entry
+     * @return {?}
+     */
+    entry => !!entry))
         .map(sanitizeValue)
-        .reduce(keyValuesToMap, /** @type {?} */ ({}));
+        .reduce(keyValuesToMap, (/** @type {?} */ ({})));
 }
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const ALL_DIRECTIVES = [
     DefaultShowHideDirective,
     DefaultClassDirective,
     DefaultStyleDirective,
-    DefaultImgSrcDirective
+    DefaultImgSrcDirective,
 ];
 /**
  * *****************************************************************
@@ -699,12 +768,14 @@ ExtendedModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/public-api.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: extended/index.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, DefaultStyleDirective };

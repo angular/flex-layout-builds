@@ -11,17 +11,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BaseDirective2, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
 import { NgStyleType, NgStyleMap } from './style-transforms';
 export declare class StyleDirective extends BaseDirective2 implements DoCheck {
-    protected elementRef: ElementRef;
-    protected styler: StyleUtils;
-    protected marshal: MediaMarshaller;
-    protected keyValueDiffers: KeyValueDiffers;
-    protected renderer: Renderer2;
     protected sanitizer: DomSanitizer;
     private readonly ngStyleInstance;
     protected DIRECTIVE_KEY: string;
     protected fallbackStyles: NgStyleMap;
     protected isServer: boolean;
-    constructor(elementRef: ElementRef, styler: StyleUtils, marshal: MediaMarshaller, keyValueDiffers: KeyValueDiffers, renderer: Renderer2, sanitizer: DomSanitizer, ngStyleInstance: NgStyle, serverLoaded: boolean, platformId: Object);
+    constructor(elementRef: ElementRef, styler: StyleUtils, marshal: MediaMarshaller, sanitizer: DomSanitizer, differs: KeyValueDiffers, renderer2: Renderer2, ngStyleInstance: NgStyle, serverLoaded: boolean, platformId: Object);
     /** Add generated styles */
     protected updateWithValue(value: any): void;
     /** Remove generated styles */

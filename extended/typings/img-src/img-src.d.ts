@@ -9,19 +9,15 @@ import { ElementRef } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 export declare class ImgSrcStyleBuilder extends StyleBuilder {
     buildStyles(url: string): {
-        'content': string;
+        content: string;
     };
 }
 export declare class ImgSrcDirective extends BaseDirective2 {
-    protected elementRef: ElementRef;
-    protected styleBuilder: ImgSrcStyleBuilder;
-    protected styler: StyleUtils;
-    protected marshal: MediaMarshaller;
     protected platformId: Object;
     protected serverModuleLoaded: boolean;
     protected DIRECTIVE_KEY: string;
     protected defaultSrc: string;
-    src: string;
+    set src(val: string);
     constructor(elementRef: ElementRef, styleBuilder: ImgSrcStyleBuilder, styler: StyleUtils, marshal: MediaMarshaller, platformId: Object, serverModuleLoaded: boolean);
     /**
      * Use the [responsively] activated input value to update
@@ -31,7 +27,7 @@ export declare class ImgSrcDirective extends BaseDirective2 {
      * Do nothing to standard `<img src="">` usages, only when responsive
      * keys are present do we actually call `setAttribute()`
      */
-    protected updateWithValue(): void;
+    protected updateWithValue(value?: string): void;
     protected styleCache: Map<string, StyleDefinition>;
 }
 /**

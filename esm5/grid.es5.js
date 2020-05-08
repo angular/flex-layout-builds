@@ -5,14 +5,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { __extends } from 'tslib';
-import { Directive, ElementRef, Injectable, Optional, NgModule, Input, defineInjectable } from '@angular/core';
+import { __extends, __spreadArrays } from 'tslib';
+import { Directive, ElementRef, Injectable, NgModule, Input, ɵɵdefineInjectable } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleUtils, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/grid-align/grid-align.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ROW_DEFAULT = 'stretch';
@@ -37,29 +38,25 @@ var GridAlignStyleBuilder = /** @class */ (function (_super) {
     GridAlignStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
     return GridAlignStyleBuilder;
 }(StyleBuilder));
 var GridAlignDirective = /** @class */ (function (_super) {
     __extends(GridAlignDirective, _super);
-    function GridAlignDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAlignDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align';
         _this.styleCache = alignCache;
         _this.init();
         return _this;
     }
+    GridAlignDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridAlignDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAlignStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAlignStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -146,7 +143,8 @@ function buildCss(align) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/align-columns/align-columns.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_MAIN = 'start';
@@ -173,20 +171,13 @@ var GridAlignColumnsStyleBuilder = /** @class */ (function (_super) {
     GridAlignColumnsStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignColumnsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignColumnsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
     return GridAlignColumnsStyleBuilder;
 }(StyleBuilder));
 var GridAlignColumnsDirective = /** @class */ (function (_super) {
     __extends(GridAlignColumnsDirective, _super);
-    function GridAlignColumnsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAlignColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-columns';
         _this._inline = false;
         _this.init();
@@ -208,11 +199,20 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAlignColumnsDirective.prototype.updateWithValue = /**
+    GridAlignColumnsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -220,10 +220,13 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? alignColumnsInlineCache : alignColumnsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAlignColumnsDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridAlignColumnsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAlignColumnsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAlignColumnsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -316,7 +319,6 @@ function buildCss$1(align, inline) {
             css['align-items'] = 'stretch';
             break;
         default: // 'stretch'
-            // 'stretch'
             css['align-items'] = DEFAULT_CROSS; // default cross axis
             break;
     }
@@ -326,7 +328,8 @@ function buildCss$1(align, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/align-rows/align-rows.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_MAIN$1 = 'start';
@@ -353,20 +356,13 @@ var GridAlignRowsStyleBuilder = /** @class */ (function (_super) {
     GridAlignRowsStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAlignRowsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAlignRowsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
     return GridAlignRowsStyleBuilder;
 }(StyleBuilder));
 var GridAlignRowsDirective = /** @class */ (function (_super) {
     __extends(GridAlignRowsDirective, _super);
-    function GridAlignRowsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAlignRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-align-rows';
         _this._inline = false;
         _this.init();
@@ -388,11 +384,20 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAlignRowsDirective.prototype.updateWithValue = /**
+    GridAlignRowsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -400,10 +405,13 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? alignRowsInlineCache : alignRowsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAlignRowsDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridAlignRowsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAlignRowsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAlignRowsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -478,7 +486,6 @@ function buildCss$2(align, inline) {
             css['justify-items'] = crossAxis;
             break;
         default: // 'stretch'
-            // 'stretch'
             css['justify-items'] = DEFAULT_CROSS$1; // default cross axis
             break;
     }
@@ -488,7 +495,8 @@ function buildCss$2(align, inline) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/area/area.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE = 'auto';
@@ -511,30 +519,26 @@ var GridAreaStyleBuilder = /** @class */ (function (_super) {
     GridAreaStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreaStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAreaStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
     return GridAreaStyleBuilder;
 }(StyleBuilder));
 var GridAreaDirective = /** @class */ (function (_super) {
     __extends(GridAreaDirective, _super);
-    function GridAreaDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function GridAreaDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-area';
         _this.styleCache = gridAreaCache;
         _this.init();
         return _this;
     }
+    GridAreaDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridAreaDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
-        { type: GridAreaStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAreaStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     return GridAreaDirective;
@@ -570,7 +574,8 @@ var DefaultGridAreaDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/areas/areas.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$1 = 'none';
@@ -593,7 +598,11 @@ var GridAreasStyleBuiler = /** @class */ (function (_super) {
      */
     function (input, parent) {
         /** @type {?} */
-        var areas = (input || DEFAULT_VALUE$1).split(DELIMETER).map(function (v) { return "\"" + v.trim() + "\""; });
+        var areas = (input || DEFAULT_VALUE$1).split(DELIMETER).map((/**
+         * @param {?} v
+         * @return {?}
+         */
+        function (v) { return "\"" + v.trim() + "\""; }));
         return {
             'display': parent.inline ? 'inline-grid' : 'grid',
             'grid-template-areas': areas.join(' ')
@@ -602,20 +611,13 @@ var GridAreasStyleBuiler = /** @class */ (function (_super) {
     GridAreasStyleBuiler.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAreasStyleBuiler.ngInjectableDef = defineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+    /** @nocollapse */ GridAreasStyleBuiler.ɵprov = ɵɵdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
     return GridAreasStyleBuiler;
 }(StyleBuilder));
 var GridAreasDirective = /** @class */ (function (_super) {
     __extends(GridAreasDirective, _super);
-    function GridAreasDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function GridAreasDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-areas';
         _this._inline = false;
         _this.init();
@@ -637,11 +639,20 @@ var GridAreasDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAreasDirective.prototype.updateWithValue = /**
+    GridAreasDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -649,11 +660,14 @@ var GridAreasDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? areasInlineCache : areasCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAreasDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridAreasDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
-        { type: GridAreasStyleBuiler, decorators: [{ type: Optional }] },
+        { type: GridAreasStyleBuiler },
         { type: MediaMarshaller }
     ]; };
     GridAreasDirective.propDecorators = {
@@ -694,7 +708,8 @@ var DefaultGridAreasDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/auto/auto.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$2 = 'initial';
@@ -727,20 +742,13 @@ var GridAutoStyleBuilder = /** @class */ (function (_super) {
     GridAutoStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridAutoStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridAutoStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
     return GridAutoStyleBuilder;
 }(StyleBuilder));
 var GridAutoDirective = /** @class */ (function (_super) {
     __extends(GridAutoDirective, _super);
-    function GridAutoDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridAutoDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this._inline = false;
         _this.DIRECTIVE_KEY = 'grid-auto';
         _this.init();
@@ -762,11 +770,20 @@ var GridAutoDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridAutoDirective.prototype.updateWithValue = /**
+    GridAutoDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -774,10 +791,13 @@ var GridAutoDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? autoInlineCache : autoCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridAutoDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridAutoDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridAutoStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridAutoStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -819,7 +839,8 @@ var DefaultGridAutoDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/column/column.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$3 = 'auto';
@@ -842,29 +863,25 @@ var GridColumnStyleBuilder = /** @class */ (function (_super) {
     GridColumnStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
     return GridColumnStyleBuilder;
 }(StyleBuilder));
 var GridColumnDirective = /** @class */ (function (_super) {
     __extends(GridColumnDirective, _super);
-    function GridColumnDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridColumnDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-column';
         _this.styleCache = columnCache;
         _this.init();
         return _this;
     }
+    GridColumnDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridColumnDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridColumnStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridColumnStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -901,7 +918,8 @@ var DefaultGridColumnDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/columns/columns.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$4 = 'none';
@@ -944,20 +962,13 @@ var GridColumnsStyleBuilder = /** @class */ (function (_super) {
     GridColumnsStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridColumnsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridColumnsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
     return GridColumnsStyleBuilder;
 }(StyleBuilder));
 var GridColumnsDirective = /** @class */ (function (_super) {
     __extends(GridColumnsDirective, _super);
-    function GridColumnsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridColumnsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-columns';
         _this._inline = false;
         _this.init();
@@ -979,11 +990,20 @@ var GridColumnsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridColumnsDirective.prototype.updateWithValue = /**
+    GridColumnsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -991,10 +1011,13 @@ var GridColumnsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? columnsInlineCache : columnsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridColumnsDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridColumnsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridColumnsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridColumnsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -1037,7 +1060,8 @@ var DefaultGridColumnsDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/gap/gap.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$5 = '0';
@@ -1065,20 +1089,13 @@ var GridGapStyleBuilder = /** @class */ (function (_super) {
     GridGapStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridGapStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridGapStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
     return GridGapStyleBuilder;
 }(StyleBuilder));
 var GridGapDirective = /** @class */ (function (_super) {
     __extends(GridGapDirective, _super);
-    function GridGapDirective(elRef, styleUtils, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, marshal) {
+    function GridGapDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-gap';
         _this._inline = false;
         _this.init();
@@ -1100,11 +1117,20 @@ var GridGapDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridGapDirective.prototype.updateWithValue = /**
+    GridGapDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -1112,11 +1138,14 @@ var GridGapDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? gapInlineCache : gapCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridGapDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridGapDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
-        { type: GridGapStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridGapStyleBuilder },
         { type: MediaMarshaller }
     ]; };
     GridGapDirective.propDecorators = {
@@ -1158,7 +1187,8 @@ var DefaultGridGapDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/row/row.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$6 = 'auto';
@@ -1181,29 +1211,25 @@ var GridRowStyleBuilder = /** @class */ (function (_super) {
     GridRowStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
     return GridRowStyleBuilder;
 }(StyleBuilder));
 var GridRowDirective = /** @class */ (function (_super) {
     __extends(GridRowDirective, _super);
-    function GridRowDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridRowDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-row';
         _this.styleCache = rowCache;
         _this.init();
         return _this;
     }
+    GridRowDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridRowDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridRowStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridRowStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -1240,7 +1266,8 @@ var DefaultGridRowDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/rows/rows.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_VALUE$7 = 'none';
@@ -1283,20 +1310,13 @@ var GridRowsStyleBuilder = /** @class */ (function (_super) {
     GridRowsStyleBuilder.decorators = [
         { type: Injectable, args: [{ providedIn: 'root' },] },
     ];
-    /** @nocollapse */ GridRowsStyleBuilder.ngInjectableDef = defineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+    /** @nocollapse */ GridRowsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
     return GridRowsStyleBuilder;
 }(StyleBuilder));
 var GridRowsDirective = /** @class */ (function (_super) {
     __extends(GridRowsDirective, _super);
-    function GridRowsDirective(elementRef, 
-    // NOTE: not actually optional, but we need to force DI without a
-    // constructor call
-    styleBuilder, styler, marshal) {
+    function GridRowsDirective(elementRef, styleBuilder, styler, marshal) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'grid-rows';
         _this._inline = false;
         _this.init();
@@ -1318,11 +1338,20 @@ var GridRowsDirective = /** @class */ (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
     /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
-    GridRowsDirective.prototype.updateWithValue = /**
+    GridRowsDirective.prototype.updateWithValue = 
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /**
+     * @protected
      * @param {?} value
      * @return {?}
      */
@@ -1330,10 +1359,13 @@ var GridRowsDirective = /** @class */ (function (_super) {
         this.styleCache = this.inline ? rowsInlineCache : rowsCache;
         this.addStyles(value, { inline: this.inline });
     };
+    GridRowsDirective.decorators = [
+        { type: Directive },
+    ];
     /** @nocollapse */
     GridRowsDirective.ctorParameters = function () { return [
         { type: ElementRef },
-        { type: GridRowsStyleBuilder, decorators: [{ type: Optional }] },
+        { type: GridRowsStyleBuilder },
         { type: StyleUtils },
         { type: MediaMarshaller }
     ]; };
@@ -1376,7 +1408,8 @@ var DefaultGridRowsDirective = /** @class */ (function (_super) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
@@ -1403,8 +1436,8 @@ var GridModule = /** @class */ (function () {
     GridModule.decorators = [
         { type: NgModule, args: [{
                     imports: [CoreModule],
-                    declarations: ALL_DIRECTIVES.slice(),
-                    exports: ALL_DIRECTIVES.slice()
+                    declarations: __spreadArrays(ALL_DIRECTIVES),
+                    exports: __spreadArrays(ALL_DIRECTIVES)
                 },] },
     ];
     return GridModule;
@@ -1412,13 +1445,15 @@ var GridModule = /** @class */ (function () {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/public-api.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: grid/index.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { GridModule, DefaultGridAlignColumnsDirective as ɵf, GridAlignColumnsDirective as ɵe, GridAlignColumnsStyleBuilder as ɵd, DefaultGridAlignRowsDirective as ɵi, GridAlignRowsDirective as ɵh, GridAlignRowsStyleBuilder as ɵg, DefaultGridAreaDirective as ɵl, GridAreaDirective as ɵk, GridAreaStyleBuilder as ɵj, DefaultGridAreasDirective as ɵo, GridAreasDirective as ɵn, GridAreasStyleBuiler as ɵm, DefaultGridAutoDirective as ɵr, GridAutoDirective as ɵq, GridAutoStyleBuilder as ɵp, DefaultGridColumnDirective as ɵu, GridColumnDirective as ɵt, GridColumnStyleBuilder as ɵs, DefaultGridColumnsDirective as ɵx, GridColumnsDirective as ɵw, GridColumnsStyleBuilder as ɵv, DefaultGridGapDirective as ɵba, GridGapDirective as ɵz, GridGapStyleBuilder as ɵy, DefaultGridAlignDirective as ɵc, GridAlignDirective as ɵb, GridAlignStyleBuilder as ɵa, DefaultGridRowDirective as ɵbd, GridRowDirective as ɵbc, GridRowStyleBuilder as ɵbb, DefaultGridRowsDirective as ɵbg, GridRowsDirective as ɵbf, GridRowsStyleBuilder as ɵbe };
+export { GridModule, DefaultGridAlignColumnsDirective as ɵgrid_privatef, GridAlignColumnsDirective as ɵgrid_privatee, GridAlignColumnsStyleBuilder as ɵgrid_privated, DefaultGridAlignRowsDirective as ɵgrid_privatei, GridAlignRowsDirective as ɵgrid_privateh, GridAlignRowsStyleBuilder as ɵgrid_privateg, DefaultGridAreaDirective as ɵgrid_privatel, GridAreaDirective as ɵgrid_privatek, GridAreaStyleBuilder as ɵgrid_privatej, DefaultGridAreasDirective as ɵgrid_privateo, GridAreasDirective as ɵgrid_privaten, GridAreasStyleBuiler as ɵgrid_privatem, DefaultGridAutoDirective as ɵgrid_privater, GridAutoDirective as ɵgrid_privateq, GridAutoStyleBuilder as ɵgrid_privatep, DefaultGridColumnDirective as ɵgrid_privateu, GridColumnDirective as ɵgrid_privatet, GridColumnStyleBuilder as ɵgrid_privates, DefaultGridColumnsDirective as ɵgrid_privatex, GridColumnsDirective as ɵgrid_privatew, GridColumnsStyleBuilder as ɵgrid_privatev, DefaultGridGapDirective as ɵgrid_privateba, GridGapDirective as ɵgrid_privatez, GridGapStyleBuilder as ɵgrid_privatey, DefaultGridAlignDirective as ɵgrid_privatec, GridAlignDirective as ɵgrid_privateb, GridAlignStyleBuilder as ɵgrid_privatea, DefaultGridRowDirective as ɵgrid_privatebd, GridRowDirective as ɵgrid_privatebc, GridRowStyleBuilder as ɵgrid_privatebb, DefaultGridRowsDirective as ɵgrid_privatebg, GridRowsDirective as ɵgrid_privatebf, GridRowsStyleBuilder as ɵgrid_privatebe };
 //# sourceMappingURL=grid.es5.js.map

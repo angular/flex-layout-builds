@@ -15,14 +15,8 @@ import { BreakPointRegistry } from '../../breakpoints/break-point-registry';
  */
 export declare class MockMatchMedia extends MatchMedia {
     private _breakpoints;
-    /** Special flag used to test BreakPoint registrations with MatchMedia */
     autoRegisterQueries: boolean;
-    /**
-     * Allow fallback to overlapping mediaQueries to determine
-     * activatedInput(s).
-     */
     useOverlaps: boolean;
-    protected _registry: Map<string, MockMediaQueryList>;
     constructor(_zone: NgZone, _platformId: Object, _document: any, _breakpoints: BreakPointRegistry);
     /** Easy method to clear all listeners for all mediaQueries */
     clearAll(): void;
@@ -52,8 +46,7 @@ export declare class MockMatchMedia extends MatchMedia {
      * supports 0..n listeners for activation/deactivation
      */
     protected buildMQL(query: string): MediaQueryList;
-    protected readonly hasActivated: boolean;
-    private _actives;
+    protected get hasActivated(): boolean;
 }
 /**
  * Special internal class to simulate a MediaQueryList and
@@ -64,8 +57,8 @@ export declare class MockMediaQueryList implements MediaQueryList {
     private _mediaQuery;
     private _isActive;
     private _listeners;
-    readonly matches: boolean;
-    readonly media: string;
+    get matches(): boolean;
+    get media(): string;
     constructor(_mediaQuery: string);
     /**
      * Destroy the current list by deactivating the

@@ -8,7 +8,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/flex-layout/core'), require('@angular/flex-layout/extended'), require('@angular/flex-layout/flex'), require('@angular/flex-layout/grid')) :
 	typeof define === 'function' && define.amd ? define('@angular/flex-layout', ['exports', '@angular/core', '@angular/common', '@angular/flex-layout/core', '@angular/flex-layout/extended', '@angular/flex-layout/flex', '@angular/flex-layout/grid'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.flexLayout.extended,global.ng.flexLayout.flex,global.ng.flexLayout.grid));
+	(factory((global.ng = global.ng || {}, global.ng.flexLayout = {}),global.ng.core,global.ng.common,global.ng.flexLayout.core,global.ng.flexLayout.extended,global.ng.flexLayout.flex,global.ng.flexLayout.grid));
 }(this, (function (exports,core,common,core$1,extended,flex,grid) { 'use strict';
 
 /*! *****************************************************************************
@@ -39,16 +39,19 @@ var __assign = function() {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: version.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-/** *
+/**
  * Current version of Angular Flex-Layout.
-  @type {?} */
-var VERSION = new core.Version('7.0.0-beta.22-cab001c');
+ * @type {?}
+ */
+var VERSION = new core.Version('9.0.0-beta.29-7aebbc7');
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,uselessCode} checked by tsc
+ * Generated from: module.ts
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -86,11 +89,11 @@ var FlexLayoutModule = /** @class */ (function () {
             ngModule: FlexLayoutModule,
             providers: configOptions.serverLoaded ?
                 [
-                    { provide: core$1.LAYOUT_CONFIG, useValue: __assign({}, core$1.DEFAULT_CONFIG, configOptions) },
+                    { provide: core$1.LAYOUT_CONFIG, useValue: __assign(__assign({}, core$1.DEFAULT_CONFIG), configOptions) },
                     { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
                     { provide: core$1.SERVER_TOKEN, useValue: true },
                 ] : [
-                { provide: core$1.LAYOUT_CONFIG, useValue: __assign({}, core$1.DEFAULT_CONFIG, configOptions) },
+                { provide: core$1.LAYOUT_CONFIG, useValue: __assign(__assign({}, core$1.DEFAULT_CONFIG), configOptions) },
                 { provide: core$1.BREAKPOINT, useValue: breakpoints, multi: true },
             ]
         };
@@ -103,37 +106,37 @@ var FlexLayoutModule = /** @class */ (function () {
     ];
     /** @nocollapse */
     FlexLayoutModule.ctorParameters = function () { return [
-        { type: Boolean, decorators: [{ type: core.Optional }, { type: core.Inject, args: [core$1.SERVER_TOKEN,] }] },
+        { type: Boolean, decorators: [{ type: core.Inject, args: [core$1.SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: core.Inject, args: [core.PLATFORM_ID,] }] }
     ]; };
     return FlexLayoutModule;
 }());
 
+exports.ɵMatchMedia = core$1.ɵMatchMedia;
+exports.ɵMockMatchMedia = core$1.ɵMockMatchMedia;
+exports.ɵMockMatchMediaProvider = core$1.ɵMockMatchMediaProvider;
+exports.CoreModule = core$1.CoreModule;
 exports.removeStyles = core$1.removeStyles;
 exports.BROWSER_PROVIDER = core$1.BROWSER_PROVIDER;
 exports.CLASS_NAME = core$1.CLASS_NAME;
-exports.CoreModule = core$1.CoreModule;
 exports.MediaChange = core$1.MediaChange;
 exports.StylesheetMap = core$1.StylesheetMap;
 exports.DEFAULT_CONFIG = core$1.DEFAULT_CONFIG;
 exports.LAYOUT_CONFIG = core$1.LAYOUT_CONFIG;
 exports.SERVER_TOKEN = core$1.SERVER_TOKEN;
 exports.BREAKPOINT = core$1.BREAKPOINT;
+exports.mergeAlias = core$1.mergeAlias;
 exports.BaseDirective2 = core$1.BaseDirective2;
-exports.sortDescendingPriority = core$1.sortDescendingPriority;
-exports.sortAscendingPriority = core$1.sortAscendingPriority;
 exports.DEFAULT_BREAKPOINTS = core$1.DEFAULT_BREAKPOINTS;
 exports.ScreenTypes = core$1.ScreenTypes;
 exports.ORIENTATION_BREAKPOINTS = core$1.ORIENTATION_BREAKPOINTS;
 exports.BreakPointRegistry = core$1.BreakPointRegistry;
 exports.BREAKPOINTS = core$1.BREAKPOINTS;
-exports.MatchMedia = core$1.MatchMedia;
-exports.MockMatchMedia = core$1.MockMatchMedia;
-exports.MockMediaQueryList = core$1.MockMediaQueryList;
-exports.MockMatchMediaProvider = core$1.MockMatchMediaProvider;
-exports.ServerMediaQueryList = core$1.ServerMediaQueryList;
-exports.ServerMatchMedia = core$1.ServerMatchMedia;
 exports.MediaObserver = core$1.MediaObserver;
+exports.MediaTrigger = core$1.MediaTrigger;
+exports.sortDescendingPriority = core$1.sortDescendingPriority;
+exports.sortAscendingPriority = core$1.sortAscendingPriority;
+exports.coerceArray = core$1.coerceArray;
 exports.StyleUtils = core$1.StyleUtils;
 exports.StyleBuilder = core$1.StyleBuilder;
 exports.validateBasis = core$1.validateBasis;
@@ -175,39 +178,39 @@ exports.DefaultLayoutAlignDirective = flex.DefaultLayoutAlignDirective;
 exports.LayoutGapStyleBuilder = flex.LayoutGapStyleBuilder;
 exports.LayoutGapDirective = flex.LayoutGapDirective;
 exports.DefaultLayoutGapDirective = flex.DefaultLayoutGapDirective;
-exports.ɵf = grid.ɵf;
-exports.ɵe = grid.ɵe;
-exports.ɵd = grid.ɵd;
-exports.ɵi = grid.ɵi;
-exports.ɵh = grid.ɵh;
-exports.ɵg = grid.ɵg;
-exports.ɵl = grid.ɵl;
-exports.ɵk = grid.ɵk;
-exports.ɵj = grid.ɵj;
-exports.ɵo = grid.ɵo;
-exports.ɵn = grid.ɵn;
-exports.ɵm = grid.ɵm;
-exports.ɵr = grid.ɵr;
-exports.ɵq = grid.ɵq;
-exports.ɵp = grid.ɵp;
-exports.ɵu = grid.ɵu;
-exports.ɵt = grid.ɵt;
-exports.ɵs = grid.ɵs;
-exports.ɵx = grid.ɵx;
-exports.ɵw = grid.ɵw;
-exports.ɵv = grid.ɵv;
-exports.ɵba = grid.ɵba;
-exports.ɵz = grid.ɵz;
-exports.ɵy = grid.ɵy;
-exports.ɵc = grid.ɵc;
-exports.ɵb = grid.ɵb;
-exports.ɵa = grid.ɵa;
-exports.ɵbd = grid.ɵbd;
-exports.ɵbc = grid.ɵbc;
-exports.ɵbb = grid.ɵbb;
-exports.ɵbg = grid.ɵbg;
-exports.ɵbf = grid.ɵbf;
-exports.ɵbe = grid.ɵbe;
+exports.ɵgrid_privatef = grid.ɵgrid_privatef;
+exports.ɵgrid_privatee = grid.ɵgrid_privatee;
+exports.ɵgrid_privated = grid.ɵgrid_privated;
+exports.ɵgrid_privatei = grid.ɵgrid_privatei;
+exports.ɵgrid_privateh = grid.ɵgrid_privateh;
+exports.ɵgrid_privateg = grid.ɵgrid_privateg;
+exports.ɵgrid_privatel = grid.ɵgrid_privatel;
+exports.ɵgrid_privatek = grid.ɵgrid_privatek;
+exports.ɵgrid_privatej = grid.ɵgrid_privatej;
+exports.ɵgrid_privateo = grid.ɵgrid_privateo;
+exports.ɵgrid_privaten = grid.ɵgrid_privaten;
+exports.ɵgrid_privatem = grid.ɵgrid_privatem;
+exports.ɵgrid_privater = grid.ɵgrid_privater;
+exports.ɵgrid_privateq = grid.ɵgrid_privateq;
+exports.ɵgrid_privatep = grid.ɵgrid_privatep;
+exports.ɵgrid_privateu = grid.ɵgrid_privateu;
+exports.ɵgrid_privatet = grid.ɵgrid_privatet;
+exports.ɵgrid_privates = grid.ɵgrid_privates;
+exports.ɵgrid_privatex = grid.ɵgrid_privatex;
+exports.ɵgrid_privatew = grid.ɵgrid_privatew;
+exports.ɵgrid_privatev = grid.ɵgrid_privatev;
+exports.ɵgrid_privateba = grid.ɵgrid_privateba;
+exports.ɵgrid_privatez = grid.ɵgrid_privatez;
+exports.ɵgrid_privatey = grid.ɵgrid_privatey;
+exports.ɵgrid_privatec = grid.ɵgrid_privatec;
+exports.ɵgrid_privateb = grid.ɵgrid_privateb;
+exports.ɵgrid_privatea = grid.ɵgrid_privatea;
+exports.ɵgrid_privatebd = grid.ɵgrid_privatebd;
+exports.ɵgrid_privatebc = grid.ɵgrid_privatebc;
+exports.ɵgrid_privatebb = grid.ɵgrid_privatebb;
+exports.ɵgrid_privatebg = grid.ɵgrid_privatebg;
+exports.ɵgrid_privatebf = grid.ɵgrid_privatebf;
+exports.ɵgrid_privatebe = grid.ɵgrid_privatebe;
 exports.GridModule = grid.GridModule;
 exports.VERSION = VERSION;
 exports.FlexLayoutModule = FlexLayoutModule;

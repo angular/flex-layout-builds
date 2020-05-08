@@ -19,11 +19,14 @@ export declare class MatchMedia {
     protected _zone: NgZone;
     protected _platformId: Object;
     protected _document: any;
-    /** Initialize with 'all' so all non-responsive APIs trigger style updates */
-    protected _source: BehaviorSubject<MediaChange>;
-    protected _registry: Map<string, MediaQueryList>;
-    protected _observable$: Observable<MediaChange>;
+    /** Initialize source with 'all' so all non-responsive APIs trigger style updates */
+    readonly source: BehaviorSubject<MediaChange>;
+    registry: Map<string, MediaQueryList>;
     constructor(_zone: NgZone, _platformId: Object, _document: any);
+    /**
+     * Publish list of all current activations
+     */
+    get activations(): string[];
     /**
      * For the specified mediaQuery?
      */
@@ -47,4 +50,5 @@ export declare class MatchMedia {
      * supports 0..n listeners for activation/deactivation
      */
     protected buildMQL(query: string): MediaQueryList;
+    protected _observable$: Observable<MediaChange>;
 }

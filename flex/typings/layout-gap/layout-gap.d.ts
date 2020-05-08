@@ -25,17 +25,14 @@ export declare class LayoutGapStyleBuilder extends StyleBuilder {
  *  Defines padding of child elements in a layout container
  */
 export declare class LayoutGapDirective extends BaseDirective2 implements AfterContentInit, OnDestroy {
-    protected elRef: ElementRef;
     protected zone: NgZone;
     protected directionality: Directionality;
     protected styleUtils: StyleUtils;
-    protected styleBuilder: LayoutGapStyleBuilder;
-    protected marshal: MediaMarshaller;
     protected layout: string;
     protected DIRECTIVE_KEY: string;
     protected observerSubject: Subject<void>;
     /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
-    protected readonly childrenNodes: HTMLElement[];
+    protected get childrenNodes(): HTMLElement[];
     constructor(elRef: ElementRef, zone: NgZone, directionality: Directionality, styleUtils: StyleUtils, styleBuilder: LayoutGapStyleBuilder, marshal: MediaMarshaller);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
@@ -47,6 +44,8 @@ export declare class LayoutGapDirective extends BaseDirective2 implements AfterC
      *
      */
     protected updateWithValue(value: string): void;
+    /** We need to override clearStyles because in most cases mru isn't populated */
+    protected clearStyles(): void;
     /** Determine if an element will show or hide based on current activation */
     protected willDisplay(source: HTMLElement): boolean;
     protected buildChildObservable(): void;
