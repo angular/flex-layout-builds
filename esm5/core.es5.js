@@ -1275,7 +1275,11 @@ var MatchMedia = /** @class */ (function () {
     function (mediaQuery) {
         /** @type {?} */
         var mql = this.registry.get(mediaQuery);
-        return !!mql ? mql.matches : false;
+        return !!mql ? mql.matches : this.registerQuery(mediaQuery).some((/**
+         * @param {?} m
+         * @return {?}
+         */
+        function (m) { return m.matches; }));
     };
     /**
      * External observers can watch for all (or a specific) mql changes.
@@ -2646,7 +2650,7 @@ var MediaObserver = /** @class */ (function () {
         function (alias) {
             /** @type {?} */
             var query = toMediaQuery(alias, _this.breakpoints);
-            return _this.matchMedia.isActive(query);
+            return query !== null && _this.matchMedia.isActive(query);
         }));
     };
     // ************************************************
@@ -2849,7 +2853,7 @@ var MediaObserver = /** @class */ (function () {
 function toMediaQuery(query, locator) {
     /** @type {?} */
     var bp = locator.findByAlias(query) || locator.findByQuery(query);
-    return bp ? bp.mediaQuery : query;
+    return bp ? bp.mediaQuery : null;
 }
 /**
  * Split each query string into separate query strings if two queries are provided as comma

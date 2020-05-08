@@ -1074,7 +1074,11 @@ class MatchMedia {
     isActive(mediaQuery) {
         /** @type {?} */
         const mql = this.registry.get(mediaQuery);
-        return !!mql ? mql.matches : false;
+        return !!mql ? mql.matches : this.registerQuery(mediaQuery).some((/**
+         * @param {?} m
+         * @return {?}
+         */
+        m => m.matches));
     }
     /**
      * External observers can watch for all (or a specific) mql changes.
@@ -2088,7 +2092,7 @@ class MediaObserver {
         alias => {
             /** @type {?} */
             const query = toMediaQuery(alias, this.breakpoints);
-            return this.matchMedia.isActive(query);
+            return query !== null && this.matchMedia.isActive(query);
         }));
     }
     // ************************************************
@@ -2228,7 +2232,7 @@ MediaObserver.ctorParameters = () => [
 function toMediaQuery(query, locator) {
     /** @type {?} */
     const bp = locator.findByAlias(query) || locator.findByQuery(query);
-    return bp ? bp.mediaQuery : query;
+    return bp ? bp.mediaQuery : null;
 }
 /**
  * Split each query string into separate query strings if two queries are provided as comma
