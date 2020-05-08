@@ -12,7 +12,7 @@ export interface GridAutoParent {
 }
 export declare class GridAutoStyleBuilder extends StyleBuilder {
     buildStyles(input: string, parent: GridAutoParent): {
-        'display': string;
+        display: string;
         'grid-auto-flow': string;
     };
 }

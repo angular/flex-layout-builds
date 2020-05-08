@@ -9,7 +9,7 @@ import { ElementRef } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
 export declare class ImgSrcStyleBuilder extends StyleBuilder {
     buildStyles(url: string): {
-        'content': string;
+        content: string;
     };
 }
 export declare class ImgSrcDirective extends BaseDirective2 {

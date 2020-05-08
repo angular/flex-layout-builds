@@ -92,7 +92,7 @@ ServerMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -117,7 +117,7 @@ ServerMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -140,7 +140,7 @@ ServerMediaQueryList = /** @class */ (function () {
         if (this._isActive) {
             /** @type {?} */
             var cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     };
     /** Don't need to remove listeners in the server environment */

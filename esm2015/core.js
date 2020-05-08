@@ -1520,7 +1520,7 @@ class MockMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -1539,7 +1539,7 @@ class MockMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -1556,7 +1556,7 @@ class MockMediaQueryList {
         if (this._isActive) {
             /** @type {?} */
             const cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     }
     /**

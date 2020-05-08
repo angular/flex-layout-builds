@@ -12,7 +12,7 @@ export interface GridAreasParent {
 }
 export declare class GridAreasStyleBuiler extends StyleBuilder {
     buildStyles(input: string, parent: GridAreasParent): {
-        'display': string;
+        display: string;
         'grid-template-areas': string;
     };
 }
