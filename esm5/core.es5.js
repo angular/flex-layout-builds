@@ -714,7 +714,10 @@ BaseDirective2 = /** @class */ (function () {
      * @return {?}
      */
     function (input) {
-        this.addStyles(input);
+        if (this.currentValue !== input) {
+            this.addStyles(input);
+            this.currentValue = input;
+        }
     };
     return BaseDirective2;
 }());

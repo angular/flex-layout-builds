@@ -574,7 +574,10 @@ class BaseDirective2 {
      * @return {?}
      */
     updateWithValue(input) {
-        this.addStyles(input);
+        if (this.currentValue !== input) {
+            this.addStyles(input);
+            this.currentValue = input;
+        }
     }
 }
 
