@@ -3303,7 +3303,7 @@ class MediaMarshaller {
             /** @type {?} */
             const valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                if (key === undefined || valueMap.has(key)) {
+                if (key === undefined || (valueMap.has(key) && valueMap.get(key) !== undefined)) {
                     return valueMap;
                 }
             }

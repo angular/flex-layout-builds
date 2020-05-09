@@ -4332,7 +4332,7 @@ var MediaMarshaller = /** @class */ (function () {
             /** @type {?} */
             var valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                if (key === undefined || valueMap.has(key)) {
+                if (key === undefined || (valueMap.has(key) && valueMap.get(key) !== undefined)) {
                     return valueMap;
                 }
             }
