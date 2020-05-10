@@ -9,9 +9,9 @@ import { ElementRef } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
 export declare class FlexFillStyleBuilder extends StyleBuilder {
     buildStyles(_input: string): {
-        'margin': number;
-        'width': string;
-        'height': string;
+        margin: number;
+        width: string;
+        height: string;
         'min-width': string;
         'min-height': string;
     };

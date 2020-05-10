@@ -21,14 +21,13 @@ export declare class MatchMedia implements OnDestroy {
     protected _document: any;
     /** Initialize source with 'all' so all non-responsive APIs trigger style updates */
     readonly source: BehaviorSubject<MediaChange>;
-    protected _registry: Map<string, MediaQueryList>;
+    registry: Map<string, MediaQueryList>;
+    private readonly pendingRemoveListenerFns;
     constructor(_zone: NgZone, _platformId: Object, _document: any);
     /**
      * Publish list of all current activations
      */
     get activations(): string[];
-    get registry(): Map<string, MediaQueryList>;
-    set registry(registry: Map<string, MediaQueryList>);
     /**
      * For the specified mediaQuery?
      */
@@ -47,14 +46,11 @@ export declare class MatchMedia implements OnDestroy {
      * mediaQuery. Each listener emits specific MediaChange data to observers
      */
     registerQuery(mediaQuery: string | string[]): MediaChange[];
-    protected listeners: Map<string, ((this: MediaQueryList, ev: MediaQueryListEvent) => any)>;
     ngOnDestroy(): void;
-    protected emptyRegistry(): void;
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation
      */
     protected buildMQL(query: string): MediaQueryList;
-    protected destroyMQL(list: MediaQueryList, query: string): void;
     protected _observable$: Observable<MediaChange>;
 }

@@ -521,21 +521,22 @@ const GRID_SPECIFIER = ' grid';
  * @return {?}
  */
 function buildGridPadding(value, directionality) {
+    const [between, below] = value.split(' ');
     /** @type {?} */
-    let paddingTop = '0px';
+    const bottom = below || between;
     /** @type {?} */
     let paddingRight = '0px';
     /** @type {?} */
-    let paddingBottom = value;
+    let paddingBottom = bottom;
     /** @type {?} */
     let paddingLeft = '0px';
     if (directionality === 'rtl') {
-        paddingLeft = value;
+        paddingLeft = between;
     }
     else {
-        paddingRight = value;
+        paddingRight = between;
     }
-    return { 'padding': `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}` };
+    return { 'padding': `0px ${paddingRight} ${paddingBottom} ${paddingLeft}` };
 }
 /**
  * @param {?} value
@@ -543,21 +544,28 @@ function buildGridPadding(value, directionality) {
  * @return {?}
  */
 function buildGridMargin(value, directionality) {
+    const [between, below] = value.split(' ');
     /** @type {?} */
-    let marginTop = '0px';
+    const bottom = below || between;
+    /** @type {?} */
+    const minus = (/**
+     * @param {?} str
+     * @return {?}
+     */
+    (str) => `-${str}`);
     /** @type {?} */
     let marginRight = '0px';
     /** @type {?} */
-    let marginBottom = '-' + value;
+    let marginBottom = minus(bottom);
     /** @type {?} */
     let marginLeft = '0px';
     if (directionality === 'rtl') {
-        marginLeft = '-' + value;
+        marginLeft = minus(between);
     }
     else {
-        marginRight = '-' + value;
+        marginRight = minus(between);
     }
-    return { 'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}` };
+    return { 'margin': `0px ${marginRight} ${marginBottom} ${marginLeft}` };
 }
 /**
  * @param {?} directionality
@@ -826,20 +834,13 @@ class FlexDirective extends BaseDirective2 {
     constructor(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
         this.layoutConfig = layoutConfig;
+        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex';
-        this.direction = '';
-        this.wrap = false;
+        this.direction = undefined;
+        this.wrap = undefined;
         this.flexGrow = '1';
         this.flexShrink = '1';
         this.init();
-        if (this.parentElement) {
-            this.marshal.trackValue(this.parentElement, 'layout')
-                .pipe(takeUntil(this.destroySubject))
-                .subscribe(this.onLayoutChange.bind(this));
-            this.marshal.trackValue(this.nativeElement, 'layout-align')
-                .pipe(takeUntil(this.destroySubject))
-                .subscribe(this.triggerReflow.bind(this));
-        }
     }
     /**
      * @return {?}
@@ -866,6 +867,19 @@ class FlexDirective extends BaseDirective2 {
         this.triggerReflow();
     }
     /**
+     * @return {?}
+     */
+    ngOnInit() {
+        if (this.parentElement) {
+            this.marshal.trackValue(this.parentElement, 'layout')
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.onLayoutChange.bind(this));
+            this.marshal.trackValue(this.nativeElement, 'layout-align')
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.triggerReflow.bind(this));
+        }
+    }
+    /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      * @protected
@@ -890,8 +904,11 @@ class FlexDirective extends BaseDirective2 {
     updateWithValue(value) {
         /** @type {?} */
         const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
-        if (!this.direction) {
+        if (this.direction === undefined) {
             this.direction = this.getFlexFlowDirection((/** @type {?} */ (this.parentElement)), addFlexToParent);
+        }
+        if (this.wrap === undefined) {
+            this.wrap = this.hasWrap((/** @type {?} */ (this.parentElement)));
         }
         /** @type {?} */
         const direction = this.direction;

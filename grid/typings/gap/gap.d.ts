@@ -12,7 +12,7 @@ export interface GridGapParent {
 }
 export declare class GridGapStyleBuilder extends StyleBuilder {
     buildStyles(input: string, parent: GridGapParent): {
-        'display': string;
+        display: string;
         'grid-gap': string;
     };
 }

@@ -20,6 +20,7 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     /** The most recently used styles for the builder */
     protected mru: StyleDefinition;
     protected destroySubject: Subject<void>;
+    protected currentValue: any;
     /** Access to host element's parent DOM node */
     protected get parentElement(): HTMLElement | null;
     /** Access to the HTMLElement for the directive */
@@ -48,6 +49,7 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
      * And optionally add the flow value to element's inline style.
      */
     protected getFlexFlowDirection(target: HTMLElement, addIfMissing?: boolean): string;
+    protected hasWrap(target: HTMLElement): boolean;
     /** Applies styles given via string pair or object map to the directive element */
     protected applyStyleToElement(style: StyleDefinition, value?: string | number, element?: HTMLElement): void;
     protected setValue(val: any, bp: string): void;

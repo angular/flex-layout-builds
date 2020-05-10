@@ -9,7 +9,7 @@ import { ElementRef, OnChanges } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
 export declare class LayoutStyleBuilder extends StyleBuilder {
     buildStyles(input: string): {
-        'display': string;
+        display: string;
         'box-sizing': string;
         'flex-direction': string;
         'flex-wrap': string | null;

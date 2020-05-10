@@ -643,21 +643,22 @@ var GRID_SPECIFIER = ' grid';
  * @return {?}
  */
 function buildGridPadding(value, directionality) {
+    var _a = value.split(' '), between = _a[0], below = _a[1];
     /** @type {?} */
-    var paddingTop = '0px';
+    var bottom = below || between;
     /** @type {?} */
     var paddingRight = '0px';
     /** @type {?} */
-    var paddingBottom = value;
+    var paddingBottom = bottom;
     /** @type {?} */
     var paddingLeft = '0px';
     if (directionality === 'rtl') {
-        paddingLeft = value;
+        paddingLeft = between;
     }
     else {
-        paddingRight = value;
+        paddingRight = between;
     }
-    return { 'padding': paddingTop + " " + paddingRight + " " + paddingBottom + " " + paddingLeft };
+    return { 'padding': "0px " + paddingRight + " " + paddingBottom + " " + paddingLeft };
 }
 /**
  * @param {?} value
@@ -665,21 +666,28 @@ function buildGridPadding(value, directionality) {
  * @return {?}
  */
 function buildGridMargin(value, directionality) {
+    var _a = value.split(' '), between = _a[0], below = _a[1];
     /** @type {?} */
-    var marginTop = '0px';
+    var bottom = below || between;
+    /** @type {?} */
+    var minus = (/**
+     * @param {?} str
+     * @return {?}
+     */
+    function (str) { return "-" + str; });
     /** @type {?} */
     var marginRight = '0px';
     /** @type {?} */
-    var marginBottom = '-' + value;
+    var marginBottom = minus(bottom);
     /** @type {?} */
     var marginLeft = '0px';
     if (directionality === 'rtl') {
-        marginLeft = '-' + value;
+        marginLeft = minus(between);
     }
     else {
-        marginRight = '-' + value;
+        marginRight = minus(between);
     }
-    return { 'margin': marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft };
+    return { 'margin': "0px " + marginRight + " " + marginBottom + " " + marginLeft };
 }
 /**
  * @param {?} directionality
@@ -947,20 +955,13 @@ var FlexDirective = /** @class */ (function (_super) {
     function FlexDirective(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
         _this.layoutConfig = layoutConfig;
+        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex';
-        _this.direction = '';
-        _this.wrap = false;
+        _this.direction = undefined;
+        _this.wrap = undefined;
         _this.flexGrow = '1';
         _this.flexShrink = '1';
         _this.init();
-        if (_this.parentElement) {
-            _this.marshal.trackValue(_this.parentElement, 'layout')
-                .pipe(operators.takeUntil(_this.destroySubject))
-                .subscribe(_this.onLayoutChange.bind(_this));
-            _this.marshal.trackValue(_this.nativeElement, 'layout-align')
-                .pipe(operators.takeUntil(_this.destroySubject))
-                .subscribe(_this.triggerReflow.bind(_this));
-        }
         return _this;
     }
     Object.defineProperty(FlexDirective.prototype, "shrink", {
@@ -995,6 +996,22 @@ var FlexDirective = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * @return {?}
+     */
+    FlexDirective.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        if (this.parentElement) {
+            this.marshal.trackValue(this.parentElement, 'layout')
+                .pipe(operators.takeUntil(this.destroySubject))
+                .subscribe(this.onLayoutChange.bind(this));
+            this.marshal.trackValue(this.nativeElement, 'layout-align')
+                .pipe(operators.takeUntil(this.destroySubject))
+                .subscribe(this.triggerReflow.bind(this));
+        }
+    };
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
@@ -1038,8 +1055,11 @@ var FlexDirective = /** @class */ (function (_super) {
     function (value) {
         /** @type {?} */
         var addFlexToParent = this.layoutConfig.addFlexToParent !== false;
-        if (!this.direction) {
+        if (this.direction === undefined) {
             this.direction = this.getFlexFlowDirection((/** @type {?} */ (this.parentElement)), addFlexToParent);
+        }
+        if (this.wrap === undefined) {
+            this.wrap = this.hasWrap((/** @type {?} */ (this.parentElement)));
         }
         /** @type {?} */
         var direction = this.direction;

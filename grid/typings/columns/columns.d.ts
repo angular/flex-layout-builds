@@ -12,7 +12,7 @@ export interface GridColumnsParent {
 }
 export declare class GridColumnsStyleBuilder extends StyleBuilder {
     buildStyles(input: string, parent: GridColumnsParent): {
-        'display': string;
+        display: string;
         'grid-auto-columns': string;
         'grid-template-columns': string;
     };

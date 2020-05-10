@@ -541,6 +541,14 @@ class BaseDirective2 {
         return 'row';
     }
     /**
+     * @protected
+     * @param {?} target
+     * @return {?}
+     */
+    hasWrap(target) {
+        return this.styler.hasWrap(target);
+    }
+    /**
      * Applies styles given via string pair or object map to the directive element
      * @protected
      * @param {?} style
@@ -566,7 +574,10 @@ class BaseDirective2 {
      * @return {?}
      */
     updateWithValue(input) {
-        this.addStyles(input);
+        if (this.currentValue !== input) {
+            this.addStyles(input);
+            this.currentValue = input;
+        }
     }
 }
 
@@ -1036,8 +1047,8 @@ class MatchMedia {
          * Initialize source with 'all' so all non-responsive APIs trigger style updates
          */
         this.source = new BehaviorSubject(new MediaChange(true));
-        this._registry = new Map();
-        this.listeners = new Map();
+        this.registry = new Map();
+        this.pendingRemoveListenerFns = [];
         this._observable$ = this.source.asObservable();
     }
     /**
@@ -1060,20 +1071,6 @@ class MatchMedia {
         return results;
     }
     /**
-     * @return {?}
-     */
-    get registry() {
-        return this._registry;
-    }
-    /**
-     * @param {?} registry
-     * @return {?}
-     */
-    set registry(registry) {
-        this.emptyRegistry();
-        this._registry = registry;
-    }
-    /**
      * For the specified mediaQuery?
      * @param {?} mediaQuery
      * @return {?}
@@ -1081,7 +1078,11 @@ class MatchMedia {
     isActive(mediaQuery) {
         /** @type {?} */
         const mql = this.registry.get(mediaQuery);
-        return !!mql ? mql.matches : false;
+        return !!mql ? mql.matches : this.registerQuery(mediaQuery).some((/**
+         * @param {?} m
+         * @return {?}
+         */
+        m => m.matches));
     }
     /**
      * External observers can watch for all (or a specific) mql changes.
@@ -1163,8 +1164,11 @@ class MatchMedia {
             if (!mql) {
                 mql = this.buildMQL(query);
                 mql.addListener(onMQLEvent);
+                this.pendingRemoveListenerFns.push((/**
+                 * @return {?}
+                 */
+                () => (/** @type {?} */ (mql)).removeListener(onMQLEvent)));
                 this.registry.set(query, mql);
-                this.listeners.set(query, onMQLEvent);
             }
             if (mql.matches) {
                 matches.push(new MediaChange(true, query));
@@ -1176,19 +1180,11 @@ class MatchMedia {
      * @return {?}
      */
     ngOnDestroy() {
-        this.emptyRegistry();
-    }
-    /**
-     * @protected
-     * @return {?}
-     */
-    emptyRegistry() {
-        this.registry.forEach((/**
-         * @param {?} l
-         * @param {?} q
-         * @return {?}
-         */
-        (l, q) => this.destroyMQL(l, q)));
+        /** @type {?} */
+        let fn;
+        while (fn = this.pendingRemoveListenerFns.pop()) {
+            fn();
+        }
     }
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
@@ -1199,15 +1195,6 @@ class MatchMedia {
      */
     buildMQL(query) {
         return constructMql(query, isPlatformBrowser(this._platformId));
-    }
-    /**
-     * @protected
-     * @param {?} list
-     * @param {?} query
-     * @return {?}
-     */
-    destroyMQL(list, query) {
-        list.removeListener((/** @type {?} */ (this.listeners.get(query))));
     }
 }
 MatchMedia.decorators = [
@@ -1570,7 +1557,7 @@ class MockMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -1589,7 +1576,7 @@ class MockMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -1606,7 +1593,7 @@ class MockMediaQueryList {
         if (this._isActive) {
             /** @type {?} */
             const cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     }
     /**
@@ -1694,6 +1681,8 @@ class PrintHook {
         // is still open. This is an extension of the `isPrinting` property on
         // browsers which support `beforeprint` and `afterprint` events.
         this.isPrintingBeforeAfterEvent = false;
+        this.beforePrintEventListeners = [];
+        this.afterPrintEventListeners = [];
         /**
          * Is this service currently in Print-mode ?
          */
@@ -1783,8 +1772,8 @@ class PrintHook {
             return;
         }
         this.registeredBeforeAfterPrintHooks = true;
-        // Could we have teardown logic to remove if there are no print listeners being used?
-        this._document.defaultView.addEventListener('beforeprint', (/**
+        /** @type {?} */
+        const beforePrintListener = (/**
          * @return {?}
          */
         () => {
@@ -1795,8 +1784,9 @@ class PrintHook {
                 this.startPrinting(target, this.getEventBreakpoints(new MediaChange(true, PRINT)));
                 target.updateStyles();
             }
-        }));
-        this._document.defaultView.addEventListener('afterprint', (/**
+        });
+        /** @type {?} */
+        const afterPrintListener = (/**
          * @return {?}
          */
         () => {
@@ -1807,10 +1797,15 @@ class PrintHook {
                 this.stopPrinting(target);
                 target.updateStyles();
             }
-        }));
+        });
+        // Could we have teardown logic to remove if there are no print listeners being used?
+        this._document.defaultView.addEventListener('beforeprint', beforePrintListener);
+        this._document.defaultView.addEventListener('afterprint', afterPrintListener);
+        this.beforePrintEventListeners.push(beforePrintListener);
+        this.afterPrintEventListeners.push(afterPrintListener);
     }
     /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
      */
@@ -1910,6 +1905,22 @@ class PrintHook {
                 this.deactivations = [];
             }
         }
+    }
+    /**
+     * Teardown logic for the service.
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.beforePrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        l => this._document.defaultView.removeEventListener('beforeprint', l)));
+        this.afterPrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        l => this._document.defaultView.removeEventListener('afterprint', l)));
     }
 }
 PrintHook.decorators = [
@@ -2114,7 +2125,7 @@ class MediaObserver {
         alias => {
             /** @type {?} */
             const query = toMediaQuery(alias, this.breakpoints);
-            return this.matchMedia.isActive(query);
+            return query !== null && this.matchMedia.isActive(query);
         }));
     }
     // ************************************************
@@ -2254,7 +2265,7 @@ MediaObserver.ctorParameters = () => [
 function toMediaQuery(query, locator) {
     /** @type {?} */
     const bp = locator.findByAlias(query) || locator.findByQuery(query);
-    return bp ? bp.mediaQuery : query;
+    return bp ? bp.mediaQuery : null;
 }
 /**
  * Split each query string into separate query strings if two queries are provided as comma
@@ -2703,6 +2714,15 @@ class StyleUtils {
         const hasInlineValue = this.lookupInlineStyle(target, query) ||
             (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
         return [value || 'row', hasInlineValue];
+    }
+    /**
+     * @param {?} target
+     * @return {?}
+     */
+    hasWrap(target) {
+        /** @type {?} */
+        const query = 'flex-wrap';
+        return this.lookupStyle(target, query) === 'wrap';
     }
     /**
      * Find the DOM element's raw attribute value (if any)
@@ -3321,7 +3341,7 @@ class MediaMarshaller {
             /** @type {?} */
             const valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                if (key === undefined || valueMap.has(key)) {
+                if (key === undefined || (valueMap.has(key) && valueMap.get(key) != null)) {
                     return valueMap;
                 }
             }

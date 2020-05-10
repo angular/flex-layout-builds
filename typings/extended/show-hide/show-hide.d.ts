@@ -12,7 +12,7 @@ export interface ShowHideParent {
 }
 export declare class ShowHideStyleBuilder extends StyleBuilder {
     buildStyles(show: string, parent: ShowHideParent): {
-        'display': string;
+        display: string;
     };
 }
 export declare class ShowHideDirective extends BaseDirective2 implements AfterViewInit, OnChanges {

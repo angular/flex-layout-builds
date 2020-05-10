@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { OnDestroy } from '@angular/core';
 import { MediaChange } from '../media-change';
 import { BreakPoint } from '../breakpoints/break-point';
 import { LayoutConfigOptions } from '../tokens/library-config';
@@ -20,7 +28,7 @@ export declare const BREAKPOINT_PRINT: {
  *
  * Used in MediaMarshaller and MediaObserver
  */
-export declare class PrintHook {
+export declare class PrintHook implements OnDestroy {
     protected breakpoints: BreakPointRegistry;
     protected layoutConfig: LayoutConfigOptions;
     protected _document: any;
@@ -39,9 +47,11 @@ export declare class PrintHook {
     updateEvent(event: MediaChange): MediaChange;
     private registeredBeforeAfterPrintHooks;
     private isPrintingBeforeAfterEvent;
+    private beforePrintEventListeners;
+    private afterPrintEventListeners;
     private registerBeforeAfterPrintHooks;
     /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @return pipeable filter predicate
      */
     interceptEvents(target: HookTarget): (event: MediaChange) => void;
@@ -73,6 +83,8 @@ export declare class PrintHook {
      *    - restore as activatedTargets and clear when stop printing
      */
     collectActivations(event: MediaChange): void;
+    /** Teardown logic for the service. */
+    ngOnDestroy(): void;
     /** Is this service currently in Print-mode ? */
     private isPrinting;
     private queue;

@@ -66,7 +66,7 @@ class ServerMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -85,7 +85,7 @@ class ServerMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -102,7 +102,7 @@ class ServerMediaQueryList {
         if (this._isActive) {
             /** @type {?} */
             const cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     }
     /**
