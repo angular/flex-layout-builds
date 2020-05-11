@@ -1234,6 +1234,7 @@ var MatchMedia = /** @class */ (function () {
          */
         this.source = new BehaviorSubject(new MediaChange(true));
         this.registry = new Map();
+        this.pendingRemoveListenerFns = [];
         this._observable$ = this.source.asObservable();
     }
     Object.defineProperty(MatchMedia.prototype, "activations", {
@@ -1400,6 +1401,10 @@ var MatchMedia = /** @class */ (function () {
             if (!mql) {
                 mql = _this.buildMQL(query);
                 mql.addListener(onMQLEvent);
+                _this.pendingRemoveListenerFns.push((/**
+                 * @return {?}
+                 */
+                function () { return (/** @type {?} */ (mql)).removeListener(onMQLEvent); }));
                 _this.registry.set(query, mql);
             }
             if (mql.matches) {
@@ -1407,6 +1412,19 @@ var MatchMedia = /** @class */ (function () {
             }
         }));
         return matches;
+    };
+    /**
+     * @return {?}
+     */
+    MatchMedia.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var fn;
+        while (fn = this.pendingRemoveListenerFns.pop()) {
+            fn();
+        }
     };
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
@@ -1495,7 +1513,7 @@ function buildQueryCss(mediaQueries, _document) {
 function constructMql(query, isBrowser) {
     /** @type {?} */
     var canListen = isBrowser && !!((/** @type {?} */ (window))).matchMedia('all').addListener;
-    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ((/** @type {?} */ ({
+    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ({
         matches: query === 'all' || query === '',
         media: query,
         addListener: (/**
@@ -1507,8 +1525,25 @@ function constructMql(query, isBrowser) {
          * @return {?}
          */
         function () {
-        })
-    }))));
+        }),
+        onchange: null,
+        addEventListener: /**
+         * @return {?}
+         */
+        function () {
+        },
+        removeEventListener: /**
+         * @return {?}
+         */
+        function () {
+        },
+        dispatchEvent: /**
+         * @return {?}
+         */
+        function () {
+            return false;
+        }
+    }));
 }
 
 /**
