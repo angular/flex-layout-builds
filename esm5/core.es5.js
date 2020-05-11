@@ -3198,11 +3198,7 @@ var MediaTrigger = /** @class */ (function () {
          * @return {?}
          */
         function (query) {
-            registry.set(query, (/** @type {?} */ ({ matches: matches, removeListener: (/**
-                 * @param {?} _
-                 * @return {?}
-                 */
-                function (_) { }) })));
+            registry.set(query, (/** @type {?} */ ({ matches: matches })));
         }));
         this.matchMedia.registry = registry;
     };
@@ -3248,7 +3244,7 @@ var MediaTrigger = /** @class */ (function () {
      */
     function () {
         /** @type {?} */
-        var target = new Map(this.matchMedia.registry);
+        var target = this.matchMedia.registry;
         target.clear();
         this.originalRegistry.forEach((/**
          * @param {?} value
@@ -3258,7 +3254,6 @@ var MediaTrigger = /** @class */ (function () {
         function (value, key) {
             target.set(key, value);
         }));
-        this.matchMedia.registry = target;
         this.originalRegistry.clear();
         this.hasCachedRegistryMatches = false;
     };

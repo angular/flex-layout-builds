@@ -2488,11 +2488,7 @@ class MediaTrigger {
          * @return {?}
          */
         query => {
-            registry.set(query, (/** @type {?} */ ({ matches: matches, removeListener: (/**
-                 * @param {?} _
-                 * @return {?}
-                 */
-                (_) => { }) })));
+            registry.set(query, (/** @type {?} */ ({ matches })));
         }));
         this.matchMedia.registry = registry;
     }
@@ -2522,7 +2518,7 @@ class MediaTrigger {
      */
     restoreRegistryMatches() {
         /** @type {?} */
-        const target = new Map(this.matchMedia.registry);
+        const target = this.matchMedia.registry;
         target.clear();
         this.originalRegistry.forEach((/**
          * @param {?} value
@@ -2532,7 +2528,6 @@ class MediaTrigger {
         (value, key) => {
             target.set(key, value);
         }));
-        this.matchMedia.registry = target;
         this.originalRegistry.clear();
         this.hasCachedRegistryMatches = false;
     }
