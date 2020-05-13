@@ -346,7 +346,7 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     function (show, parent) {
         /** @type {?} */
         var shouldShow = show === 'true';
-        return { 'display': shouldShow ? parent.display : 'none' };
+        return { 'display': shouldShow ? parent.display || (parent.isServer ? 'initial' : '') : 'none' };
     };
     ShowHideStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
@@ -363,7 +363,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         _this.serverModuleLoaded = serverModuleLoaded;
         _this.DIRECTIVE_KEY = 'show-hide';
         /**
-         * Original dom Elements CSS display style
+         * Original DOM Element CSS display style
          */
         _this.display = '';
         _this.hasLayout = false;
@@ -536,8 +536,10 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (value === '') {
             return;
         }
-        this.addStyles(value ? 'true' : 'false', { display: this.display });
-        if (common.isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+        /** @type {?} */
+        var isServer = common.isPlatformServer(this.platformId);
+        this.addStyles(value ? 'true' : 'false', { display: this.display, isServer: isServer });
+        if (isServer && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
         this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');

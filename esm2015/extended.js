@@ -244,7 +244,7 @@ class ShowHideStyleBuilder extends StyleBuilder {
     buildStyles(show, parent) {
         /** @type {?} */
         const shouldShow = show === 'true';
-        return { 'display': shouldShow ? parent.display : 'none' };
+        return { 'display': shouldShow ? parent.display || (parent.isServer ? 'initial' : '') : 'none' };
     }
 }
 ShowHideStyleBuilder.decorators = [
@@ -268,7 +268,7 @@ class ShowHideDirective extends BaseDirective2 {
         this.serverModuleLoaded = serverModuleLoaded;
         this.DIRECTIVE_KEY = 'show-hide';
         /**
-         * Original dom Elements CSS display style
+         * Original DOM Element CSS display style
          */
         this.display = '';
         this.hasLayout = false;
@@ -381,8 +381,10 @@ class ShowHideDirective extends BaseDirective2 {
         if (value === '') {
             return;
         }
-        this.addStyles(value ? 'true' : 'false', { display: this.display });
-        if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+        /** @type {?} */
+        const isServer = isPlatformServer(this.platformId);
+        this.addStyles(value ? 'true' : 'false', { display: this.display, isServer });
+        if (isServer && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
         this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
