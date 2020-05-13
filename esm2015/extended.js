@@ -244,7 +244,7 @@ class ShowHideStyleBuilder extends StyleBuilder {
     buildStyles(show, parent) {
         /** @type {?} */
         const shouldShow = show === 'true';
-        return { 'display': shouldShow ? parent.display || 'initial' : 'none' };
+        return { 'display': shouldShow ? parent.display : 'none' };
     }
 }
 ShowHideStyleBuilder.decorators = [
