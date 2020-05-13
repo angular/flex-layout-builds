@@ -346,7 +346,7 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     function (show, parent) {
         /** @type {?} */
         var shouldShow = show === 'true';
-        return { 'display': shouldShow ? parent.display || 'initial' : 'none' };
+        return { 'display': shouldShow ? parent.display : 'none' };
     };
     ShowHideStyleBuilder.decorators = [
         { type: core.Injectable, args: [{ providedIn: 'root' },] },
