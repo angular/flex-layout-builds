@@ -333,7 +333,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             }
             return buffer;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -930,7 +930,7 @@ var FlexDirective = /** @class */ (function (_super) {
             this.flexShrink = value || '1';
             this.triggerReflow();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "grow", {
@@ -946,7 +946,7 @@ var FlexDirective = /** @class */ (function (_super) {
             this.flexGrow = value || '1';
             this.triggerReflow();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**

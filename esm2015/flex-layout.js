@@ -25,7 +25,7 @@ export { ɵgrid_privatef, ɵgrid_privatee, ɵgrid_privated, ɵgrid_privatei, ɵg
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-const VERSION = new Version('9.0.0-beta.31-f47da38');
+const VERSION = new Version('9.0.0-beta.31-e7761e6');
 
 /**
  * @fileoverview added by tsickle
@@ -38,51 +38,60 @@ const VERSION = new Version('9.0.0-beta.31-f47da38');
  * * Can be configured using the static withConfig method, options viewable on the Wiki's
  *   Configuration page
  */
-class FlexLayoutModule {
+let FlexLayoutModule = /** @class */ (() => {
     /**
-     * @param {?} serverModuleLoaded
-     * @param {?} platformId
+     * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
+     * * Will automatically provide Flex, Grid, and Extended modules for use in the application
+     * * Can be configured using the static withConfig method, options viewable on the Wiki's
+     *   Configuration page
      */
-    constructor(serverModuleLoaded, platformId) {
-        if (isPlatformServer(platformId) && !serverModuleLoaded) {
-            console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
+    class FlexLayoutModule {
+        /**
+         * @param {?} serverModuleLoaded
+         * @param {?} platformId
+         */
+        constructor(serverModuleLoaded, platformId) {
+            if (isPlatformServer(platformId) && !serverModuleLoaded) {
+                console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
+            }
         }
-    }
-    /**
-     * Initialize the FlexLayoutModule with a set of config options,
-     * which sets the corresponding tokens accordingly
-     * @param {?} configOptions
-     * @param {?=} breakpoints
-     * @return {?}
-     */
-    static withConfig(configOptions, 
-    // tslint:disable-next-line:max-line-length
-    breakpoints = []) {
-        return {
-            ngModule: FlexLayoutModule,
-            providers: configOptions.serverLoaded ?
-                [
+        /**
+         * Initialize the FlexLayoutModule with a set of config options,
+         * which sets the corresponding tokens accordingly
+         * @param {?} configOptions
+         * @param {?=} breakpoints
+         * @return {?}
+         */
+        static withConfig(configOptions, 
+        // tslint:disable-next-line:max-line-length
+        breakpoints = []) {
+            return {
+                ngModule: FlexLayoutModule,
+                providers: configOptions.serverLoaded ?
+                    [
+                        { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
+                        { provide: BREAKPOINT, useValue: breakpoints, multi: true },
+                        { provide: SERVER_TOKEN, useValue: true },
+                    ] : [
                     { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
                     { provide: BREAKPOINT, useValue: breakpoints, multi: true },
-                    { provide: SERVER_TOKEN, useValue: true },
-                ] : [
-                { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
-                { provide: BREAKPOINT, useValue: breakpoints, multi: true },
-            ]
-        };
+                ]
+            };
+        }
     }
-}
-FlexLayoutModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [FlexModule, ExtendedModule, GridModule],
-                exports: [FlexModule, ExtendedModule, GridModule]
-            },] },
-];
-/** @nocollapse */
-FlexLayoutModule.ctorParameters = () => [
-    { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
-];
+    FlexLayoutModule.decorators = [
+        { type: NgModule, args: [{
+                    imports: [FlexModule, ExtendedModule, GridModule],
+                    exports: [FlexModule, ExtendedModule, GridModule]
+                },] },
+    ];
+    /** @nocollapse */
+    FlexLayoutModule.ctorParameters = () => [
+        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
+        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
+    ];
+    return FlexLayoutModule;
+})();
 
 /**
  * @fileoverview added by tsickle

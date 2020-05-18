@@ -454,7 +454,7 @@ BaseDirective2 = /** @class */ (function () {
         function () {
             return this.elementRef.nativeElement.parentElement;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseDirective2.prototype, "nativeElement", {
@@ -467,7 +467,7 @@ BaseDirective2 = /** @class */ (function () {
         function () {
             return this.elementRef.nativeElement;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseDirective2.prototype, "activatedValue", {
@@ -486,7 +486,7 @@ BaseDirective2 = /** @class */ (function () {
         function (value) {
             this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedAlias);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /** For @Input changes */
@@ -1126,7 +1126,7 @@ var BreakPointRegistry = /** @class */ (function () {
              */
             function (it) { return it.overlapping == true; }));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BreakPointRegistry.prototype, "aliases", {
@@ -1144,7 +1144,7 @@ var BreakPointRegistry = /** @class */ (function () {
              */
             function (it) { return it.alias; }));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BreakPointRegistry.prototype, "suffixes", {
@@ -1166,7 +1166,7 @@ var BreakPointRegistry = /** @class */ (function () {
              */
             function (it) { return !!it.suffix ? it.suffix : ''; }));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1260,7 +1260,7 @@ var MatchMedia = /** @class */ (function () {
             }));
             return results;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1814,7 +1814,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
         function () {
             return this.activations.length > 0;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     MockMatchMedia.decorators = [
@@ -1853,7 +1853,7 @@ MockMediaQueryList = /** @class */ (function () {
         function () {
             return this._isActive;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(MockMediaQueryList.prototype, "media", {
@@ -1863,7 +1863,7 @@ MockMediaQueryList = /** @class */ (function () {
         function () {
             return this._mediaQuery;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -2104,7 +2104,7 @@ var PrintHook = /** @class */ (function () {
         function () {
             return this.layoutConfig.printWithBreakpoints || [];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PrintHook.prototype, "printBreakPoints", {
@@ -2127,7 +2127,7 @@ var PrintHook = /** @class */ (function () {
              */
             function (bp) { return bp !== null; }))));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /** Lookup breakpoint associated with mediaQuery */
@@ -3285,7 +3285,7 @@ var MediaTrigger = /** @class */ (function () {
         function () {
             return this.matchMedia.activations;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     MediaTrigger.decorators = [
@@ -3872,7 +3872,7 @@ var MediaMarshaller = /** @class */ (function () {
         function () {
             return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
