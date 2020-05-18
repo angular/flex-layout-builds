@@ -26,7 +26,7 @@ export { ɵgrid_privatef, ɵgrid_privatee, ɵgrid_privated, ɵgrid_privatei, ɵg
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new Version('9.0.0-beta.31-fc0b4f5');
+var VERSION = new Version('9.0.0-beta.31-f47da38');
 
 /**
  * @fileoverview added by tsickle
@@ -63,7 +63,9 @@ var FlexLayoutModule = /** @class */ (function () {
      * @param {?=} breakpoints
      * @return {?}
      */
-    function (configOptions, breakpoints) {
+    function (configOptions, 
+    // tslint:disable-next-line:max-line-length
+    breakpoints) {
         if (breakpoints === void 0) { breakpoints = []; }
         return {
             ngModule: FlexLayoutModule,
