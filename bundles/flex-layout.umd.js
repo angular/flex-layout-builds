@@ -46,7 +46,7 @@ var __assign = function() {
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new core.Version('9.0.0-beta.31-fc0b4f5');
+var VERSION = new core.Version('9.0.0-beta.31-48bedde');
 
 /**
  * @fileoverview added by tsickle
@@ -83,7 +83,9 @@ var FlexLayoutModule = /** @class */ (function () {
      * @param {?=} breakpoints
      * @return {?}
      */
-    function (configOptions, breakpoints) {
+    function (configOptions, 
+    // tslint:disable-next-line:max-line-length
+    breakpoints) {
         if (breakpoints === void 0) { breakpoints = []; }
         return {
             ngModule: FlexLayoutModule,
