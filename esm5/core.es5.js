@@ -1655,31 +1655,31 @@ var MockMatchMedia = /** @class */ (function (_super) {
             // Simulate activation of overlapping lt-<XXX> ranges
             switch (alias) {
                 case 'lg':
-                    this._activateByAlias('lt-xl');
+                    this._activateByAlias(['lt-xl']);
                     break;
                 case 'md':
-                    this._activateByAlias('lt-xl, lt-lg');
+                    this._activateByAlias(['lt-xl', 'lt-lg']);
                     break;
                 case 'sm':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md');
+                    this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md']);
                     break;
                 case 'xs':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
+                    this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md', 'lt-sm']);
                     break;
             }
             // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
-                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
+                    this._activateByAlias(['gt-lg', 'gt-md', 'gt-sm', 'gt-xs']);
                     break;
                 case 'lg':
-                    this._activateByAlias('gt-md, gt-sm, gt-xs');
+                    this._activateByAlias(['gt-md', 'gt-sm', 'gt-xs']);
                     break;
                 case 'md':
-                    this._activateByAlias('gt-sm, gt-xs');
+                    this._activateByAlias(['gt-sm', 'gt-xs']);
                     break;
                 case 'sm':
-                    this._activateByAlias('gt-xs');
+                    this._activateByAlias(['gt-xs']);
                     break;
             }
         }
@@ -1713,11 +1713,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
             var bp = _this._breakpoints.findByAlias(alias);
             _this._activateByQuery(bp ? bp.mediaQuery : alias);
         });
-        aliases.split(',').forEach((/**
-         * @param {?} alias
-         * @return {?}
-         */
-        function (alias) { return activate(alias.trim()); }));
+        aliases.forEach(activate);
     };
     /**
      *
@@ -1735,6 +1731,9 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (mediaQuery) {
+        if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
+            this._registerMediaQuery(mediaQuery);
+        }
         /** @type {?} */
         var mql = (/** @type {?} */ (this.registry.get(mediaQuery)));
         if (mql && !this.isActive(mediaQuery)) {
