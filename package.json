@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "9.0.0-beta.31-af92cb0",
+  "version": "9.0.0-beta.31-400d8af",
   "description": "Angular Flex-Layout",
   "main": "./bundles/flex-layout.umd.js",
   "module": "./esm5/flex-layout.es5.js",
@@ -22,13 +22,15 @@
     "url": "https://github.com/angular/flex-layout/issues"
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
-    "@angular/cdk": "^9.0.0-rc.8",
-    "@angular/core": ">=9.1.5",
-    "@angular/common": ">=9.1.5",
-    "@angular/platform-browser": ">=9.1.5",
-    "rxjs": "^6.0.0",
-    "tslib": "^1.9.0"
+    "@angular/cdk": "^10.0.0-next.0",
+    "@angular/core": ">=10.0.0-rc.0",
+    "@angular/common": ">=10.0.0-rc.0",
+    "@angular/platform-browser": ">=10.0.0-rc.0",
+    "rxjs": "^6.0.0"
   },
   "sideEffects": false
 }

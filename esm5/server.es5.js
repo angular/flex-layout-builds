@@ -41,7 +41,7 @@ ServerMediaQueryList = /** @class */ (function () {
         function () {
             return this._isActive;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServerMediaQueryList.prototype, "media", {
@@ -51,7 +51,7 @@ ServerMediaQueryList = /** @class */ (function () {
         function () {
             return this._mediaQuery;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**

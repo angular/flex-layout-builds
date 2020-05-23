@@ -65,7 +65,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
             this.defaultSrc = val;
             this.setValue(this.defaultSrc, '');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -192,7 +192,7 @@ var ClassDirective = /** @class */ (function (_super) {
             this.ngClassInstance.klass = val;
             this.setValue(val, '');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**

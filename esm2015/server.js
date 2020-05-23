@@ -142,100 +142,109 @@ class ServerMediaQueryList {
  *
  * Also contains methods to activate and deactivate breakpoints
  */
-class ServerMatchMedia extends ɵMatchMedia {
+let ServerMatchMedia = /** @class */ (() => {
     /**
-     * @param {?} _zone
-     * @param {?} _platformId
-     * @param {?} _document
-     * @param {?} breakpoints
-     * @param {?} layoutConfig
+     * Special server-only implementation of MatchMedia that uses the above
+     * ServerMediaQueryList as its internal representation
+     *
+     * Also contains methods to activate and deactivate breakpoints
      */
-    constructor(_zone, _platformId, _document, breakpoints, layoutConfig) {
-        super(_zone, _platformId, _document);
-        this._zone = _zone;
-        this._platformId = _platformId;
-        this._document = _document;
-        this.breakpoints = breakpoints;
-        this.layoutConfig = layoutConfig;
-        this._activeBreakpoints = [];
-        /** @type {?} */
-        const serverBps = layoutConfig.ssrObserveBreakpoints;
-        if (serverBps) {
-            this._activeBreakpoints = serverBps
-                .reduce((/**
-             * @param {?} acc
-             * @param {?} serverBp
-             * @return {?}
-             */
-            (acc, serverBp) => {
-                /** @type {?} */
-                const foundBp = breakpoints.find((/**
-                 * @param {?} bp
+    class ServerMatchMedia extends ɵMatchMedia {
+        /**
+         * @param {?} _zone
+         * @param {?} _platformId
+         * @param {?} _document
+         * @param {?} breakpoints
+         * @param {?} layoutConfig
+         */
+        constructor(_zone, _platformId, _document, breakpoints, layoutConfig) {
+            super(_zone, _platformId, _document);
+            this._zone = _zone;
+            this._platformId = _platformId;
+            this._document = _document;
+            this.breakpoints = breakpoints;
+            this.layoutConfig = layoutConfig;
+            this._activeBreakpoints = [];
+            /** @type {?} */
+            const serverBps = layoutConfig.ssrObserveBreakpoints;
+            if (serverBps) {
+                this._activeBreakpoints = serverBps
+                    .reduce((/**
+                 * @param {?} acc
+                 * @param {?} serverBp
                  * @return {?}
                  */
-                bp => serverBp === bp.alias));
-                if (!foundBp) {
-                    console.warn(`FlexLayoutServerModule: unknown breakpoint alias "${serverBp}"`);
-                }
-                else {
-                    acc.push(foundBp);
-                }
-                return acc;
-            }), []);
+                (acc, serverBp) => {
+                    /** @type {?} */
+                    const foundBp = breakpoints.find((/**
+                     * @param {?} bp
+                     * @return {?}
+                     */
+                    bp => serverBp === bp.alias));
+                    if (!foundBp) {
+                        console.warn(`FlexLayoutServerModule: unknown breakpoint alias "${serverBp}"`);
+                    }
+                    else {
+                        acc.push(foundBp);
+                    }
+                    return acc;
+                }), []);
+            }
         }
-    }
-    /**
-     * Activate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    activateBreakpoint(bp) {
-        /** @type {?} */
-        const lookupBreakpoint = (/** @type {?} */ (this.registry.get(bp.mediaQuery)));
-        if (lookupBreakpoint) {
-            lookupBreakpoint.activate();
-        }
-    }
-    /**
-     * Deactivate the specified breakpoint if we're on the server, no-op otherwise
-     * @param {?} bp
-     * @return {?}
-     */
-    deactivateBreakpoint(bp) {
-        /** @type {?} */
-        const lookupBreakpoint = (/** @type {?} */ (this.registry.get(bp.mediaQuery)));
-        if (lookupBreakpoint) {
-            lookupBreakpoint.deactivate();
-        }
-    }
-    /**
-     * Call window.matchMedia() to build a MediaQueryList; which
-     * supports 0..n listeners for activation/deactivation
-     * @protected
-     * @param {?} query
-     * @return {?}
-     */
-    buildMQL(query) {
-        /** @type {?} */
-        const isActive = this._activeBreakpoints.some((/**
-         * @param {?} ab
+        /**
+         * Activate the specified breakpoint if we're on the server, no-op otherwise
+         * @param {?} bp
          * @return {?}
          */
-        ab => ab.mediaQuery === query));
-        return new ServerMediaQueryList(query, isActive);
+        activateBreakpoint(bp) {
+            /** @type {?} */
+            const lookupBreakpoint = (/** @type {?} */ (this.registry.get(bp.mediaQuery)));
+            if (lookupBreakpoint) {
+                lookupBreakpoint.activate();
+            }
+        }
+        /**
+         * Deactivate the specified breakpoint if we're on the server, no-op otherwise
+         * @param {?} bp
+         * @return {?}
+         */
+        deactivateBreakpoint(bp) {
+            /** @type {?} */
+            const lookupBreakpoint = (/** @type {?} */ (this.registry.get(bp.mediaQuery)));
+            if (lookupBreakpoint) {
+                lookupBreakpoint.deactivate();
+            }
+        }
+        /**
+         * Call window.matchMedia() to build a MediaQueryList; which
+         * supports 0..n listeners for activation/deactivation
+         * @protected
+         * @param {?} query
+         * @return {?}
+         */
+        buildMQL(query) {
+            /** @type {?} */
+            const isActive = this._activeBreakpoints.some((/**
+             * @param {?} ab
+             * @return {?}
+             */
+            ab => ab.mediaQuery === query));
+            return new ServerMediaQueryList(query, isActive);
+        }
     }
-}
-ServerMatchMedia.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-ServerMatchMedia.ctorParameters = () => [
-    { type: NgZone },
-    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
-    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] },
-    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
-];
+    ServerMatchMedia.decorators = [
+        { type: Injectable },
+    ];
+    /** @nocollapse */
+    ServerMatchMedia.ctorParameters = () => [
+        { type: NgZone },
+        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
+        { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] },
+        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
+    ];
+    return ServerMatchMedia;
+})();
 
 /**
  * @fileoverview added by tsickle
@@ -425,13 +434,16 @@ function getClassName(element, classMap) {
  * Generated from: server/module.ts
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-class FlexLayoutServerModule {
-}
-FlexLayoutServerModule.decorators = [
-    { type: NgModule, args: [{
-                providers: [SERVER_PROVIDERS]
-            },] },
-];
+let FlexLayoutServerModule = /** @class */ (() => {
+    class FlexLayoutServerModule {
+    }
+    FlexLayoutServerModule.decorators = [
+        { type: NgModule, args: [{
+                    providers: [SERVER_PROVIDERS]
+                },] },
+    ];
+    return FlexLayoutServerModule;
+})();
 
 /**
  * @fileoverview added by tsickle

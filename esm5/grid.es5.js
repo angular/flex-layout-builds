@@ -193,7 +193,7 @@ var GridAlignColumnsDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) { this._inline = coerceBooleanProperty(val); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -378,7 +378,7 @@ var GridAlignRowsDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) { this._inline = coerceBooleanProperty(val); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -633,7 +633,7 @@ var GridAreasDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) { this._inline = coerceBooleanProperty(val); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -764,7 +764,7 @@ var GridAutoDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) { this._inline = coerceBooleanProperty(val); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -984,7 +984,7 @@ var GridColumnsDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) { this._inline = coerceBooleanProperty(val); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -1111,7 +1111,7 @@ var GridGapDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) { this._inline = coerceBooleanProperty(val); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -1332,7 +1332,7 @@ var GridRowsDirective = /** @class */ (function (_super) {
          * @return {?}
          */
         function (val) { this._inline = coerceBooleanProperty(val); },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
