@@ -80,10 +80,10 @@ var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     function (url) {
         return { 'content': url ? "url(" + url + ")" : '' };
     };
-    ImgSrcStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ ImgSrcStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    ImgSrcStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return ImgSrcStyleBuilder;
 }(core$1.StyleBuilder));
 var ImgSrcDirective = /** @class */ (function (_super) {
@@ -155,7 +155,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         }
     };
     ImgSrcDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     ImgSrcDirective.ctorParameters = function () { return [
@@ -198,7 +198,7 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultImgSrcDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] },
+        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] }
     ];
     return DefaultImgSrcDirective;
 }(ImgSrcDirective));
@@ -280,7 +280,7 @@ var ClassDirective = /** @class */ (function (_super) {
         this.ngClassInstance.ngDoCheck();
     };
     ClassDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     ClassDirective.ctorParameters = function () { return [
@@ -318,7 +318,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultClassDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
     ];
     return DefaultClassDirective;
 }(ClassDirective));
@@ -348,10 +348,10 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
         var shouldShow = show === 'true';
         return { 'display': shouldShow ? parent.display || (parent.isServer ? 'initial' : '') : 'none' };
     };
-    ShowHideStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ ShowHideStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    ShowHideStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return ShowHideStyleBuilder;
 }(core$1.StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
@@ -545,7 +545,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
     };
     ShowHideDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
@@ -585,7 +585,7 @@ var DefaultShowHideDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultShowHideDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$2, inputs: inputs$2 },] },
+        { type: core.Directive, args: [{ selector: selector$2, inputs: inputs$2 },] }
     ];
     return DefaultShowHideDirective;
 }(ShowHideDirective));
@@ -855,7 +855,7 @@ var StyleDirective = /** @class */ (function (_super) {
         this.ngStyleInstance.ngDoCheck();
     };
     StyleDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     StyleDirective.ctorParameters = function () { return [
@@ -892,7 +892,7 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultStyleDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
     ];
     return DefaultStyleDirective;
 }(StyleDirective));
@@ -950,7 +950,7 @@ var ExtendedModule = /** @class */ (function () {
                     imports: [core$1.CoreModule],
                     declarations: __spreadArrays(ALL_DIRECTIVES),
                     exports: __spreadArrays(ALL_DIRECTIVES)
-                },] },
+                },] }
     ];
     return ExtendedModule;
 }());

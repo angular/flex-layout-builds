@@ -28,10 +28,10 @@ let GridAlignStyleBuilder = /** @class */ (() => {
             return buildCss(input || ROW_DEFAULT);
         }
     }
-    GridAlignStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAlignStyleBuilder_Factory() { return new GridAlignStyleBuilder(); }, token: GridAlignStyleBuilder, providedIn: "root" });
+    GridAlignStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridAlignStyleBuilder;
 })();
 let GridAlignDirective = /** @class */ (() => {
@@ -50,7 +50,7 @@ let GridAlignDirective = /** @class */ (() => {
         }
     }
     GridAlignDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridAlignDirective.ctorParameters = () => [
@@ -101,7 +101,7 @@ let DefaultGridAlignDirective = /** @class */ (() => {
         }
     }
     DefaultGridAlignDirective.decorators = [
-        { type: Directive, args: [{ selector, inputs },] },
+        { type: Directive, args: [{ selector, inputs },] }
     ];
     return DefaultGridAlignDirective;
 })();
@@ -172,10 +172,10 @@ let GridAlignColumnsStyleBuilder = /** @class */ (() => {
             return buildCss$1(input || `${DEFAULT_MAIN} ${DEFAULT_CROSS}`, parent.inline);
         }
     }
-    GridAlignColumnsStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridAlignColumnsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAlignColumnsStyleBuilder_Factory() { return new GridAlignColumnsStyleBuilder(); }, token: GridAlignColumnsStyleBuilder, providedIn: "root" });
+    GridAlignColumnsStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridAlignColumnsStyleBuilder;
 })();
 let GridAlignColumnsDirective = /** @class */ (() => {
@@ -215,7 +215,7 @@ let GridAlignColumnsDirective = /** @class */ (() => {
         }
     }
     GridAlignColumnsDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridAlignColumnsDirective.ctorParameters = () => [
@@ -271,7 +271,7 @@ let DefaultGridAlignColumnsDirective = /** @class */ (() => {
         }
     }
     DefaultGridAlignColumnsDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
     ];
     return DefaultGridAlignColumnsDirective;
 })();
@@ -353,10 +353,10 @@ let GridAlignRowsStyleBuilder = /** @class */ (() => {
             return buildCss$2(input || `${DEFAULT_MAIN$1} ${DEFAULT_CROSS$1}`, parent.inline);
         }
     }
-    GridAlignRowsStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridAlignRowsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAlignRowsStyleBuilder_Factory() { return new GridAlignRowsStyleBuilder(); }, token: GridAlignRowsStyleBuilder, providedIn: "root" });
+    GridAlignRowsStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridAlignRowsStyleBuilder;
 })();
 let GridAlignRowsDirective = /** @class */ (() => {
@@ -396,7 +396,7 @@ let GridAlignRowsDirective = /** @class */ (() => {
         }
     }
     GridAlignRowsDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridAlignRowsDirective.ctorParameters = () => [
@@ -452,7 +452,7 @@ let DefaultGridAlignRowsDirective = /** @class */ (() => {
         }
     }
     DefaultGridAlignRowsDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$2, inputs: inputs$2 },] },
+        { type: Directive, args: [{ selector: selector$2, inputs: inputs$2 },] }
     ];
     return DefaultGridAlignRowsDirective;
 })();
@@ -513,10 +513,10 @@ let GridAreaStyleBuilder = /** @class */ (() => {
             return { 'grid-area': input || DEFAULT_VALUE };
         }
     }
-    GridAreaStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridAreaStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAreaStyleBuilder_Factory() { return new GridAreaStyleBuilder(); }, token: GridAreaStyleBuilder, providedIn: "root" });
+    GridAreaStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridAreaStyleBuilder;
 })();
 let GridAreaDirective = /** @class */ (() => {
@@ -535,7 +535,7 @@ let GridAreaDirective = /** @class */ (() => {
         }
     }
     GridAreaDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridAreaDirective.ctorParameters = () => [
@@ -580,7 +580,7 @@ let DefaultGridAreaDirective = /** @class */ (() => {
         }
     }
     DefaultGridAreaDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
     ];
     return DefaultGridAreaDirective;
 })();
@@ -614,10 +614,10 @@ let GridAreasStyleBuiler = /** @class */ (() => {
             };
         }
     }
-    GridAreasStyleBuiler.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridAreasStyleBuiler.ɵprov = ɵɵdefineInjectable({ factory: function GridAreasStyleBuiler_Factory() { return new GridAreasStyleBuiler(); }, token: GridAreasStyleBuiler, providedIn: "root" });
+    GridAreasStyleBuiler.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridAreasStyleBuiler;
 })();
 let GridAreasDirective = /** @class */ (() => {
@@ -657,7 +657,7 @@ let GridAreasDirective = /** @class */ (() => {
         }
     }
     GridAreasDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridAreasDirective.ctorParameters = () => [
@@ -707,7 +707,7 @@ let DefaultGridAreasDirective = /** @class */ (() => {
         }
     }
     DefaultGridAreasDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$4, inputs: inputs$4 },] },
+        { type: Directive, args: [{ selector: selector$4, inputs: inputs$4 },] }
     ];
     return DefaultGridAreasDirective;
 })();
@@ -738,10 +738,10 @@ let GridAutoStyleBuilder = /** @class */ (() => {
             };
         }
     }
-    GridAutoStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridAutoStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridAutoStyleBuilder_Factory() { return new GridAutoStyleBuilder(); }, token: GridAutoStyleBuilder, providedIn: "root" });
+    GridAutoStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridAutoStyleBuilder;
 })();
 let GridAutoDirective = /** @class */ (() => {
@@ -781,7 +781,7 @@ let GridAutoDirective = /** @class */ (() => {
         }
     }
     GridAutoDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridAutoDirective.ctorParameters = () => [
@@ -831,7 +831,7 @@ let DefaultGridAutoDirective = /** @class */ (() => {
         }
     }
     DefaultGridAutoDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$5, inputs: inputs$5 },] },
+        { type: Directive, args: [{ selector: selector$5, inputs: inputs$5 },] }
     ];
     return DefaultGridAutoDirective;
 })();
@@ -853,10 +853,10 @@ let GridColumnStyleBuilder = /** @class */ (() => {
             return { 'grid-column': input || DEFAULT_VALUE$3 };
         }
     }
-    GridColumnStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridColumnStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridColumnStyleBuilder_Factory() { return new GridColumnStyleBuilder(); }, token: GridColumnStyleBuilder, providedIn: "root" });
+    GridColumnStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridColumnStyleBuilder;
 })();
 let GridColumnDirective = /** @class */ (() => {
@@ -875,7 +875,7 @@ let GridColumnDirective = /** @class */ (() => {
         }
     }
     GridColumnDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridColumnDirective.ctorParameters = () => [
@@ -920,7 +920,7 @@ let DefaultGridColumnDirective = /** @class */ (() => {
         }
     }
     DefaultGridColumnDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$6, inputs: inputs$6 },] },
+        { type: Directive, args: [{ selector: selector$6, inputs: inputs$6 },] }
     ];
     return DefaultGridColumnDirective;
 })();
@@ -961,10 +961,10 @@ let GridColumnsStyleBuilder = /** @class */ (() => {
             return css;
         }
     }
-    GridColumnsStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridColumnsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridColumnsStyleBuilder_Factory() { return new GridColumnsStyleBuilder(); }, token: GridColumnsStyleBuilder, providedIn: "root" });
+    GridColumnsStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridColumnsStyleBuilder;
 })();
 let GridColumnsDirective = /** @class */ (() => {
@@ -1004,7 +1004,7 @@ let GridColumnsDirective = /** @class */ (() => {
         }
     }
     GridColumnsDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridColumnsDirective.ctorParameters = () => [
@@ -1056,7 +1056,7 @@ let DefaultGridColumnsDirective = /** @class */ (() => {
         }
     }
     DefaultGridColumnsDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$7, inputs: inputs$7 },] },
+        { type: Directive, args: [{ selector: selector$7, inputs: inputs$7 },] }
     ];
     return DefaultGridColumnsDirective;
 })();
@@ -1082,10 +1082,10 @@ let GridGapStyleBuilder = /** @class */ (() => {
             };
         }
     }
-    GridGapStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridGapStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridGapStyleBuilder_Factory() { return new GridGapStyleBuilder(); }, token: GridGapStyleBuilder, providedIn: "root" });
+    GridGapStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridGapStyleBuilder;
 })();
 let GridGapDirective = /** @class */ (() => {
@@ -1125,7 +1125,7 @@ let GridGapDirective = /** @class */ (() => {
         }
     }
     GridGapDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridGapDirective.ctorParameters = () => [
@@ -1177,7 +1177,7 @@ let DefaultGridGapDirective = /** @class */ (() => {
         }
     }
     DefaultGridGapDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$8, inputs: inputs$8 },] },
+        { type: Directive, args: [{ selector: selector$8, inputs: inputs$8 },] }
     ];
     return DefaultGridGapDirective;
 })();
@@ -1199,10 +1199,10 @@ let GridRowStyleBuilder = /** @class */ (() => {
             return { 'grid-row': input || DEFAULT_VALUE$6 };
         }
     }
-    GridRowStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridRowStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridRowStyleBuilder_Factory() { return new GridRowStyleBuilder(); }, token: GridRowStyleBuilder, providedIn: "root" });
+    GridRowStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridRowStyleBuilder;
 })();
 let GridRowDirective = /** @class */ (() => {
@@ -1221,7 +1221,7 @@ let GridRowDirective = /** @class */ (() => {
         }
     }
     GridRowDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridRowDirective.ctorParameters = () => [
@@ -1266,7 +1266,7 @@ let DefaultGridRowDirective = /** @class */ (() => {
         }
     }
     DefaultGridRowDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$9, inputs: inputs$9 },] },
+        { type: Directive, args: [{ selector: selector$9, inputs: inputs$9 },] }
     ];
     return DefaultGridRowDirective;
 })();
@@ -1307,10 +1307,10 @@ let GridRowsStyleBuilder = /** @class */ (() => {
             return css;
         }
     }
-    GridRowsStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ GridRowsStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function GridRowsStyleBuilder_Factory() { return new GridRowsStyleBuilder(); }, token: GridRowsStyleBuilder, providedIn: "root" });
+    GridRowsStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return GridRowsStyleBuilder;
 })();
 let GridRowsDirective = /** @class */ (() => {
@@ -1350,7 +1350,7 @@ let GridRowsDirective = /** @class */ (() => {
         }
     }
     GridRowsDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     GridRowsDirective.ctorParameters = () => [
@@ -1402,7 +1402,7 @@ let DefaultGridRowsDirective = /** @class */ (() => {
         }
     }
     DefaultGridRowsDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$10, inputs: inputs$10 },] },
+        { type: Directive, args: [{ selector: selector$10, inputs: inputs$10 },] }
     ];
     return DefaultGridRowsDirective;
 })();
@@ -1444,7 +1444,7 @@ let GridModule = /** @class */ (() => {
                     imports: [CoreModule],
                     declarations: [...ALL_DIRECTIVES],
                     exports: [...ALL_DIRECTIVES]
-                },] },
+                },] }
     ];
     return GridModule;
 })();

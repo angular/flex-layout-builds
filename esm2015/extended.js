@@ -27,10 +27,10 @@ let ImgSrcStyleBuilder = /** @class */ (() => {
             return { 'content': url ? `url(${url})` : '' };
         }
     }
-    ImgSrcStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ ImgSrcStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
+    ImgSrcStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return ImgSrcStyleBuilder;
 })();
 let ImgSrcDirective = /** @class */ (() => {
@@ -87,7 +87,7 @@ let ImgSrcDirective = /** @class */ (() => {
         }
     }
     ImgSrcDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     ImgSrcDirective.ctorParameters = () => [
@@ -143,7 +143,7 @@ let DefaultImgSrcDirective = /** @class */ (() => {
         }
     }
     DefaultImgSrcDirective.decorators = [
-        { type: Directive, args: [{ selector, inputs },] },
+        { type: Directive, args: [{ selector, inputs },] }
     ];
     return DefaultImgSrcDirective;
 })();
@@ -207,7 +207,7 @@ let ClassDirective = /** @class */ (() => {
         }
     }
     ClassDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     ClassDirective.ctorParameters = () => [
@@ -254,7 +254,7 @@ let DefaultClassDirective = /** @class */ (() => {
         }
     }
     DefaultClassDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
     ];
     return DefaultClassDirective;
 })();
@@ -277,10 +277,10 @@ let ShowHideStyleBuilder = /** @class */ (() => {
             return { 'display': shouldShow ? parent.display || (parent.isServer ? 'initial' : '') : 'none' };
         }
     }
-    ShowHideStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ ShowHideStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
+    ShowHideStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return ShowHideStyleBuilder;
 })();
 let ShowHideDirective = /** @class */ (() => {
@@ -424,7 +424,7 @@ let ShowHideDirective = /** @class */ (() => {
         }
     }
     ShowHideDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     ShowHideDirective.ctorParameters = () => [
@@ -476,7 +476,7 @@ let DefaultShowHideDirective = /** @class */ (() => {
         }
     }
     DefaultShowHideDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$2, inputs: inputs$2 },] },
+        { type: Directive, args: [{ selector: selector$2, inputs: inputs$2 },] }
     ];
     return DefaultShowHideDirective;
 })();
@@ -713,7 +713,7 @@ let StyleDirective = /** @class */ (() => {
         }
     }
     StyleDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     StyleDirective.ctorParameters = () => [
@@ -759,7 +759,7 @@ let DefaultStyleDirective = /** @class */ (() => {
         }
     }
     DefaultStyleDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
     ];
     return DefaultStyleDirective;
 })();
@@ -822,7 +822,7 @@ let ExtendedModule = /** @class */ (() => {
                     imports: [CoreModule],
                     declarations: [...ALL_DIRECTIVES],
                     exports: [...ALL_DIRECTIVES]
-                },] },
+                },] }
     ];
     return ExtendedModule;
 })();

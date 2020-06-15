@@ -46,7 +46,7 @@ var __assign = function() {
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new core.Version('9.0.0-beta.31-8624cbb');
+var VERSION = new core.Version('9.0.0-beta.31-9d73393');
 
 /**
  * @fileoverview added by tsickle
@@ -104,7 +104,7 @@ var FlexLayoutModule = /** @class */ (function () {
         { type: core.NgModule, args: [{
                     imports: [flex.FlexModule, extended.ExtendedModule, grid.GridModule],
                     exports: [flex.FlexModule, extended.ExtendedModule, grid.GridModule]
-                },] },
+                },] }
     ];
     /** @nocollapse */
     FlexLayoutModule.ctorParameters = function () { return [

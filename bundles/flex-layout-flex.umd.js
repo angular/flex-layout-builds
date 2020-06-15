@@ -188,10 +188,10 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     function (input) {
         return buildLayoutCSS(input);
     };
-    LayoutStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ LayoutStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+    LayoutStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return LayoutStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -220,7 +220,7 @@ var LayoutDirective = /** @class */ (function (_super) {
         return _this;
     }
     LayoutDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     LayoutDirective.ctorParameters = function () { return [
@@ -239,7 +239,7 @@ var DefaultLayoutDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] },
+        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] }
     ];
     return DefaultLayoutDirective;
 }(LayoutDirective));
@@ -319,14 +319,14 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
             this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
         }
     };
+    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.ɵɵinject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     LayoutGapStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: core$1.StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.ɵɵinject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -602,7 +602,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         }));
     };
     LayoutGapDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     LayoutGapDirective.ctorParameters = function () { return [
@@ -623,7 +623,7 @@ var DefaultLayoutGapDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutGapDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
     ];
     return DefaultLayoutGapDirective;
 }(LayoutGapDirective));
@@ -925,14 +925,14 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
         }
         return (/** @type {?} */ (extendObject(css, { 'box-sizing': 'border-box' })));
     };
+    /** @nocollapse */ FlexStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.ɵɵinject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     FlexStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.ɵɵinject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1106,7 +1106,7 @@ var FlexDirective = /** @class */ (function (_super) {
         }
     };
     FlexDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexDirective.ctorParameters = function () { return [
@@ -1130,7 +1130,7 @@ var DefaultFlexDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexDirective.decorators = [
-        { type: core.Directive, args: [{ inputs: inputs$2, selector: selector$2 },] },
+        { type: core.Directive, args: [{ inputs: inputs$2, selector: selector$2 },] }
     ];
     return DefaultFlexDirective;
 }(FlexDirective));
@@ -1164,10 +1164,10 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     function (value) {
         return { order: (value && parseInt(value, 10)) || '' };
     };
-    FlexOrderStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexOrderStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+    FlexOrderStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexOrderStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1194,7 +1194,7 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         return _this;
     }
     FlexOrderDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [
@@ -1215,7 +1215,7 @@ var DefaultFlexOrderDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexOrderDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
     ];
     return DefaultFlexOrderDirective;
 }(FlexOrderDirective));
@@ -1258,10 +1258,10 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
         var styles = isFlowHorizontal(parent.layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) : { 'margin-top': "" + offset };
         return styles;
     };
-    FlexOffsetStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexOffsetStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+    FlexOffsetStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexOffsetStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1346,7 +1346,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         this.addStyles(value + '', { layout: layout, isRtl: isRtl });
     };
     FlexOffsetDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [
@@ -1366,7 +1366,7 @@ var DefaultFlexOffsetDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexOffsetDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$4, inputs: inputs$4 },] },
+        { type: core.Directive, args: [{ selector: selector$4, inputs: inputs$4 },] }
     ];
     return DefaultFlexOffsetDirective;
 }(FlexOffsetDirective));
@@ -1415,10 +1415,10 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
         }
         return styles;
     };
-    FlexAlignStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexAlignStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+    FlexAlignStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexAlignStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1445,7 +1445,7 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     FlexAlignDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexAlignDirective.ctorParameters = function () { return [
@@ -1466,7 +1466,7 @@ var DefaultFlexAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexAlignDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$5, inputs: inputs$5 },] },
+        { type: core.Directive, args: [{ selector: selector$5, inputs: inputs$5 },] }
     ];
     return DefaultFlexAlignDirective;
 }(FlexAlignDirective));
@@ -1500,10 +1500,10 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     function (_input) {
         return FLEX_FILL_CSS;
     };
-    FlexFillStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexFillStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+    FlexFillStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexFillStyleBuilder;
 }(core$1.StyleBuilder));
 /**
@@ -1521,7 +1521,7 @@ var FlexFillDirective = /** @class */ (function (_super) {
         return _this;
     }
     FlexFillDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "[fxFill], [fxFlexFill]" },] },
+        { type: core.Directive, args: [{ selector: "[fxFill], [fxFlexFill]" },] }
     ];
     /** @nocollapse */
     FlexFillDirective.ctorParameters = function () { return [
@@ -1623,10 +1623,10 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 isFlowHorizontal(parent.layout) ? '100%' : null : null,
         })));
     };
-    LayoutAlignStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ LayoutAlignStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+    LayoutAlignStyleBuilder.decorators = [
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return LayoutAlignStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1748,7 +1748,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         this.triggerUpdate();
     };
     LayoutAlignDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     LayoutAlignDirective.ctorParameters = function () { return [
@@ -1767,7 +1767,7 @@ var DefaultLayoutAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutAlignDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$6, inputs: inputs$6 },] },
+        { type: core.Directive, args: [{ selector: selector$6, inputs: inputs$6 },] }
     ];
     return DefaultLayoutAlignDirective;
 }(LayoutAlignDirective));
@@ -1817,7 +1817,7 @@ var FlexModule = /** @class */ (function () {
                     imports: [core$1.CoreModule, bidi.BidiModule],
                     declarations: __spreadArrays(ALL_DIRECTIVES),
                     exports: __spreadArrays(ALL_DIRECTIVES)
-                },] },
+                },] }
     ];
     return FlexModule;
 }());
