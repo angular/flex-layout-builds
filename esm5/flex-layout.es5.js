@@ -26,7 +26,7 @@ export { ɵgrid_privatef, ɵgrid_privatee, ɵgrid_privated, ɵgrid_privatei, ɵg
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new Version('9.0.0-beta.31-8624cbb');
+var VERSION = new Version('9.0.0-beta.31-cbeee28');
 
 /**
  * @fileoverview added by tsickle
@@ -84,7 +84,7 @@ var FlexLayoutModule = /** @class */ (function () {
         { type: NgModule, args: [{
                     imports: [FlexModule, ExtendedModule, GridModule],
                     exports: [FlexModule, ExtendedModule, GridModule]
-                },] },
+                },] }
     ];
     /** @nocollapse */
     FlexLayoutModule.ctorParameters = function () { return [

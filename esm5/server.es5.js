@@ -304,7 +304,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
         return new ServerMediaQueryList(query, isActive);
     };
     ServerMatchMedia.decorators = [
-        { type: Injectable },
+        { type: Injectable }
     ];
     /** @nocollapse */
     ServerMatchMedia.ctorParameters = function () { return [
@@ -516,7 +516,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
     FlexLayoutServerModule.decorators = [
         { type: NgModule, args: [{
                     providers: [SERVER_PROVIDERS]
-                },] },
+                },] }
     ];
     return FlexLayoutServerModule;
 }());

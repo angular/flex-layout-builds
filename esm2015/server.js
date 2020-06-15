@@ -233,7 +233,7 @@ let ServerMatchMedia = /** @class */ (() => {
         }
     }
     ServerMatchMedia.decorators = [
-        { type: Injectable },
+        { type: Injectable }
     ];
     /** @nocollapse */
     ServerMatchMedia.ctorParameters = () => [
@@ -440,7 +440,7 @@ let FlexLayoutServerModule = /** @class */ (() => {
     FlexLayoutServerModule.decorators = [
         { type: NgModule, args: [{
                     providers: [SERVER_PROVIDERS]
-                },] },
+                },] }
     ];
     return FlexLayoutServerModule;
 })();

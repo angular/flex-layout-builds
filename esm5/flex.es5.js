@@ -141,10 +141,10 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     function (input) {
         return buildLayoutCSS(input);
     };
-    LayoutStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ LayoutStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
+    LayoutStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return LayoutStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -173,7 +173,7 @@ var LayoutDirective = /** @class */ (function (_super) {
         return _this;
     }
     LayoutDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     LayoutDirective.ctorParameters = function () { return [
@@ -192,7 +192,7 @@ var DefaultLayoutDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutDirective.decorators = [
-        { type: Directive, args: [{ selector: selector, inputs: inputs },] },
+        { type: Directive, args: [{ selector: selector, inputs: inputs },] }
     ];
     return DefaultLayoutDirective;
 }(LayoutDirective));
@@ -272,14 +272,14 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
             this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
         }
     };
+    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     LayoutGapStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -555,7 +555,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         }));
     };
     LayoutGapDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     LayoutGapDirective.ctorParameters = function () { return [
@@ -576,7 +576,7 @@ var DefaultLayoutGapDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutGapDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
     ];
     return DefaultLayoutGapDirective;
 }(LayoutGapDirective));
@@ -878,14 +878,14 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
         }
         return (/** @type {?} */ (extendObject(css, { 'box-sizing': 'border-box' })));
     };
+    /** @nocollapse */ FlexStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     FlexStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1059,7 +1059,7 @@ var FlexDirective = /** @class */ (function (_super) {
         }
     };
     FlexDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     FlexDirective.ctorParameters = function () { return [
@@ -1083,7 +1083,7 @@ var DefaultFlexDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexDirective.decorators = [
-        { type: Directive, args: [{ inputs: inputs$2, selector: selector$2 },] },
+        { type: Directive, args: [{ inputs: inputs$2, selector: selector$2 },] }
     ];
     return DefaultFlexDirective;
 }(FlexDirective));
@@ -1117,10 +1117,10 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     function (value) {
         return { order: (value && parseInt(value, 10)) || '' };
     };
-    FlexOrderStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexOrderStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
+    FlexOrderStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexOrderStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1147,7 +1147,7 @@ var FlexOrderDirective = /** @class */ (function (_super) {
         return _this;
     }
     FlexOrderDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [
@@ -1168,7 +1168,7 @@ var DefaultFlexOrderDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexOrderDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
     ];
     return DefaultFlexOrderDirective;
 }(FlexOrderDirective));
@@ -1211,10 +1211,10 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
         var styles = isFlowHorizontal(parent.layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) : { 'margin-top': "" + offset };
         return styles;
     };
-    FlexOffsetStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexOffsetStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
+    FlexOffsetStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexOffsetStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1299,7 +1299,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         this.addStyles(value + '', { layout: layout, isRtl: isRtl });
     };
     FlexOffsetDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [
@@ -1319,7 +1319,7 @@ var DefaultFlexOffsetDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexOffsetDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$4, inputs: inputs$4 },] },
+        { type: Directive, args: [{ selector: selector$4, inputs: inputs$4 },] }
     ];
     return DefaultFlexOffsetDirective;
 }(FlexOffsetDirective));
@@ -1368,10 +1368,10 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
         }
         return styles;
     };
-    FlexAlignStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
+    FlexAlignStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1398,7 +1398,7 @@ var FlexAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     FlexAlignDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     FlexAlignDirective.ctorParameters = function () { return [
@@ -1419,7 +1419,7 @@ var DefaultFlexAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexAlignDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$5, inputs: inputs$5 },] },
+        { type: Directive, args: [{ selector: selector$5, inputs: inputs$5 },] }
     ];
     return DefaultFlexAlignDirective;
 }(FlexAlignDirective));
@@ -1453,10 +1453,10 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     function (_input) {
         return FLEX_FILL_CSS;
     };
-    FlexFillStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ FlexFillStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
+    FlexFillStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return FlexFillStyleBuilder;
 }(StyleBuilder));
 /**
@@ -1474,7 +1474,7 @@ var FlexFillDirective = /** @class */ (function (_super) {
         return _this;
     }
     FlexFillDirective.decorators = [
-        { type: Directive, args: [{ selector: "[fxFill], [fxFlexFill]" },] },
+        { type: Directive, args: [{ selector: "[fxFill], [fxFlexFill]" },] }
     ];
     /** @nocollapse */
     FlexFillDirective.ctorParameters = function () { return [
@@ -1576,10 +1576,10 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 isFlowHorizontal(parent.layout) ? '100%' : null : null,
         })));
     };
-    LayoutAlignStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
-    ];
     /** @nocollapse */ LayoutAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
+    LayoutAlignStyleBuilder.decorators = [
+        { type: Injectable, args: [{ providedIn: 'root' },] }
+    ];
     return LayoutAlignStyleBuilder;
 }(StyleBuilder));
 /** @type {?} */
@@ -1701,7 +1701,7 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         this.triggerUpdate();
     };
     LayoutAlignDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     LayoutAlignDirective.ctorParameters = function () { return [
@@ -1720,7 +1720,7 @@ var DefaultLayoutAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutAlignDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$6, inputs: inputs$6 },] },
+        { type: Directive, args: [{ selector: selector$6, inputs: inputs$6 },] }
     ];
     return DefaultLayoutAlignDirective;
 }(LayoutAlignDirective));
@@ -1770,7 +1770,7 @@ var FlexModule = /** @class */ (function () {
                     imports: [CoreModule, BidiModule],
                     declarations: __spreadArrays(ALL_DIRECTIVES),
                     exports: __spreadArrays(ALL_DIRECTIVES)
-                },] },
+                },] }
     ];
     return FlexModule;
 }());
