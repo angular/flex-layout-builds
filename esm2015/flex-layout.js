@@ -19,18 +19,18 @@ export { ɵgrid_privatef, ɵgrid_privatee, ɵgrid_privated, ɵgrid_privatei, ɵg
 /**
  * @fileoverview added by tsickle
  * Generated from: version.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-const VERSION = new Version('10.0.0-beta.32-0621f58');
+const VERSION = new Version('10.0.0-beta.32-4a61736');
 
 /**
  * @fileoverview added by tsickle
  * Generated from: module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -38,71 +38,62 @@ const VERSION = new Version('10.0.0-beta.32-0621f58');
  * * Can be configured using the static withConfig method, options viewable on the Wiki's
  *   Configuration page
  */
-let FlexLayoutModule = /** @class */ (() => {
+class FlexLayoutModule {
     /**
-     * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
-     * * Will automatically provide Flex, Grid, and Extended modules for use in the application
-     * * Can be configured using the static withConfig method, options viewable on the Wiki's
-     *   Configuration page
+     * @param {?} serverModuleLoaded
+     * @param {?} platformId
      */
-    class FlexLayoutModule {
-        /**
-         * @param {?} serverModuleLoaded
-         * @param {?} platformId
-         */
-        constructor(serverModuleLoaded, platformId) {
-            if (isPlatformServer(platformId) && !serverModuleLoaded) {
-                console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
-            }
-        }
-        /**
-         * Initialize the FlexLayoutModule with a set of config options,
-         * which sets the corresponding tokens accordingly
-         * @param {?} configOptions
-         * @param {?=} breakpoints
-         * @return {?}
-         */
-        static withConfig(configOptions, 
-        // tslint:disable-next-line:max-line-length
-        breakpoints = []) {
-            return {
-                ngModule: FlexLayoutModule,
-                providers: configOptions.serverLoaded ?
-                    [
-                        { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
-                        { provide: BREAKPOINT, useValue: breakpoints, multi: true },
-                        { provide: SERVER_TOKEN, useValue: true },
-                    ] : [
-                    { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
-                    { provide: BREAKPOINT, useValue: breakpoints, multi: true },
-                ]
-            };
+    constructor(serverModuleLoaded, platformId) {
+        if (isPlatformServer(platformId) && !serverModuleLoaded) {
+            console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
         }
     }
-    FlexLayoutModule.decorators = [
-        { type: NgModule, args: [{
-                    imports: [FlexModule, ExtendedModule, GridModule],
-                    exports: [FlexModule, ExtendedModule, GridModule]
-                },] }
-    ];
-    /** @nocollapse */
-    FlexLayoutModule.ctorParameters = () => [
-        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
-        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
-    ];
-    return FlexLayoutModule;
-})();
+    /**
+     * Initialize the FlexLayoutModule with a set of config options,
+     * which sets the corresponding tokens accordingly
+     * @param {?} configOptions
+     * @param {?=} breakpoints
+     * @return {?}
+     */
+    static withConfig(configOptions, 
+    // tslint:disable-next-line:max-line-length
+    breakpoints = []) {
+        return {
+            ngModule: FlexLayoutModule,
+            providers: configOptions.serverLoaded ?
+                [
+                    { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
+                    { provide: BREAKPOINT, useValue: breakpoints, multi: true },
+                    { provide: SERVER_TOKEN, useValue: true },
+                ] : [
+                { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
+                { provide: BREAKPOINT, useValue: breakpoints, multi: true },
+            ]
+        };
+    }
+}
+FlexLayoutModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [FlexModule, ExtendedModule, GridModule],
+                exports: [FlexModule, ExtendedModule, GridModule]
+            },] }
+];
+/** @nocollapse */
+FlexLayoutModule.ctorParameters = () => [
+    { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
+];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { VERSION, FlexLayoutModule };
