@@ -40,18 +40,18 @@ var __assign = function() {
 /**
  * @fileoverview added by tsickle
  * Generated from: version.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new core.Version('10.0.0-beta.32-0621f58');
+var VERSION = new core.Version('10.0.0-beta.32-6000558');
 
 /**
  * @fileoverview added by tsickle
  * Generated from: module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library

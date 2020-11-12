@@ -13,7 +13,7 @@ import { filter, debounceTime, map, switchMap, takeUntil, take, tap } from 'rxjs
 /**
  * @fileoverview added by tsickle
  * Generated from: core/browser-provider.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Find all of the server-generated stylings, if any, and remove them
@@ -64,33 +64,25 @@ const CLASS_NAME = 'flex-layout-';
 /**
  * @fileoverview added by tsickle
  * Generated from: core/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * *****************************************************************
  * Define module for common Angular Layout utilities
  * *****************************************************************
  */
-let CoreModule = /** @class */ (() => {
-    /**
-     * *****************************************************************
-     * Define module for common Angular Layout utilities
-     * *****************************************************************
-     */
-    class CoreModule {
-    }
-    CoreModule.decorators = [
-        { type: NgModule, args: [{
-                    providers: [BROWSER_PROVIDER]
-                },] }
-    ];
-    return CoreModule;
-})();
+class CoreModule {
+}
+CoreModule.decorators = [
+    { type: NgModule, args: [{
+                providers: [BROWSER_PROVIDER]
+            },] }
+];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-change.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class instances emitted [to observers] for each mql notification
@@ -123,7 +115,7 @@ class MediaChange {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/stylesheet-map/stylesheet-map.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Utility to emulate a CSS stylesheet
@@ -131,79 +123,70 @@ class MediaChange {
  * This utility class stores all of the styles for a given HTML element
  * as a readonly `stylesheet` map.
  */
-let StylesheetMap = /** @class */ (() => {
+class StylesheetMap {
+    constructor() {
+        this.stylesheet = new Map();
+    }
     /**
-     * Utility to emulate a CSS stylesheet
-     *
-     * This utility class stores all of the styles for a given HTML element
-     * as a readonly `stylesheet` map.
+     * Add an individual style to an HTML element
+     * @param {?} element
+     * @param {?} style
+     * @param {?} value
+     * @return {?}
      */
-    class StylesheetMap {
-        constructor() {
-            this.stylesheet = new Map();
+    addStyleToElement(element, style, value) {
+        /** @type {?} */
+        const stylesheet = this.stylesheet.get(element);
+        if (stylesheet) {
+            stylesheet.set(style, value);
         }
-        /**
-         * Add an individual style to an HTML element
-         * @param {?} element
-         * @param {?} style
-         * @param {?} value
-         * @return {?}
-         */
-        addStyleToElement(element, style, value) {
-            /** @type {?} */
-            const stylesheet = this.stylesheet.get(element);
-            if (stylesheet) {
-                stylesheet.set(style, value);
-            }
-            else {
-                this.stylesheet.set(element, new Map([[style, value]]));
-            }
-        }
-        /**
-         * Clear the virtual stylesheet
-         * @return {?}
-         */
-        clearStyles() {
-            this.stylesheet.clear();
-        }
-        /**
-         * Retrieve a given style for an HTML element
-         * @param {?} el
-         * @param {?} styleName
-         * @return {?}
-         */
-        getStyleForElement(el, styleName) {
-            /** @type {?} */
-            const styles = this.stylesheet.get(el);
-            /** @type {?} */
-            let value = '';
-            if (styles) {
-                /** @type {?} */
-                const style = styles.get(styleName);
-                if (typeof style === 'number' || typeof style === 'string') {
-                    value = style + '';
-                }
-            }
-            return value;
+        else {
+            this.stylesheet.set(element, new Map([[style, value]]));
         }
     }
-    /** @nocollapse */ StylesheetMap.ɵprov = ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
-    StylesheetMap.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    return StylesheetMap;
-})();
+    /**
+     * Clear the virtual stylesheet
+     * @return {?}
+     */
+    clearStyles() {
+        this.stylesheet.clear();
+    }
+    /**
+     * Retrieve a given style for an HTML element
+     * @param {?} el
+     * @param {?} styleName
+     * @return {?}
+     */
+    getStyleForElement(el, styleName) {
+        /** @type {?} */
+        const styles = this.stylesheet.get(el);
+        /** @type {?} */
+        let value = '';
+        if (styles) {
+            /** @type {?} */
+            const style = styles.get(styleName);
+            if (typeof style === 'number' || typeof style === 'string') {
+                value = style + '';
+            }
+        }
+        return value;
+    }
+}
+/** @nocollapse */ StylesheetMap.ɵprov = ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
+StylesheetMap.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/stylesheet-map/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/library-config.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const DEFAULT_CONFIG = {
@@ -229,7 +212,7 @@ const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/server-token.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Token that is provided to tell whether the FlexLayoutServerModule
@@ -249,7 +232,7 @@ const SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded', {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/breakpoint-token.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
@@ -263,13 +246,13 @@ const BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoint
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/add-alias.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * For the specified MediaChange, make sure it contains the breakpoint alias
@@ -292,7 +275,7 @@ function mergeAlias(dest, source) {
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/layout-validator.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @license
@@ -388,7 +371,7 @@ function buildCSS(direction, wrap = null, inline = false) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/base/base2.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -601,13 +584,13 @@ class BaseDirective2 {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/base/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/data/break-points.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * NOTE: Smaller ranges have HIGHER priority since the match is more specific
@@ -691,7 +674,7 @@ const DEFAULT_BREAKPOINTS = [
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/data/orientation-break-points.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /* tslint:disable */
@@ -738,13 +721,13 @@ const ORIENTATION_BREAKPOINTS = [
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/break-point.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/object-extend.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -774,7 +757,7 @@ function extendObject(dest, ...sources) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/breakpoint-tools.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const ALIAS_DELIMITERS = /(\.|-|_)/g;
@@ -861,7 +844,7 @@ function mergeByAlias(defaults, custom = []) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/break-points-token.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  *  Injection token unique to the flex-layout library.
@@ -895,7 +878,7 @@ const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints
 /**
  * @fileoverview added by tsickle
  * Generated from: core/utils/sort.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * HOF to sort the breakpoints by descending priority
@@ -929,127 +912,119 @@ function sortAscendingPriority(a, b) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/break-point-registry.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overridden from custom, application-specific ranges
  *
  */
-let BreakPointRegistry = /** @class */ (() => {
+class BreakPointRegistry {
     /**
-     * Registry of 1..n MediaQuery breakpoint ranges
-     * This is published as a provider and may be overridden from custom, application-specific ranges
-     *
+     * @param {?} list
      */
-    class BreakPointRegistry {
+    constructor(list) {
         /**
-         * @param {?} list
+         * Memoized BreakPoint Lookups
          */
-        constructor(list) {
-            /**
-             * Memoized BreakPoint Lookups
-             */
-            this.findByMap = new Map();
-            this.items = [...list].sort(sortAscendingPriority);
-        }
-        /**
-         * Search breakpoints by alias (e.g. gt-xs)
-         * @param {?} alias
-         * @return {?}
-         */
-        findByAlias(alias) {
-            return !alias ? null : this.findWithPredicate(alias, (/**
-             * @param {?} bp
-             * @return {?}
-             */
-            (bp) => bp.alias == alias));
-        }
-        /**
-         * @param {?} query
-         * @return {?}
-         */
-        findByQuery(query) {
-            return this.findWithPredicate(query, (/**
-             * @param {?} bp
-             * @return {?}
-             */
-            (bp) => bp.mediaQuery == query));
-        }
-        /**
-         * Get all the breakpoints whose ranges could overlapping `normal` ranges;
-         * e.g. gt-sm overlaps md, lg, and xl
-         * @return {?}
-         */
-        get overlappings() {
-            return this.items.filter((/**
-             * @param {?} it
-             * @return {?}
-             */
-            it => it.overlapping == true));
-        }
-        /**
-         * Get list of all registered (non-empty) breakpoint aliases
-         * @return {?}
-         */
-        get aliases() {
-            return this.items.map((/**
-             * @param {?} it
-             * @return {?}
-             */
-            it => it.alias));
-        }
-        /**
-         * Aliases are mapped to properties using suffixes
-         * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
-         * for property layoutGtSM.
-         * @return {?}
-         */
-        get suffixes() {
-            return this.items.map((/**
-             * @param {?} it
-             * @return {?}
-             */
-            it => !!it.suffix ? it.suffix : ''));
-        }
-        /**
-         * Memoized lookup using custom predicate function
-         * @private
-         * @param {?} key
-         * @param {?} searchFn
-         * @return {?}
-         */
-        findWithPredicate(key, searchFn) {
-            /** @type {?} */
-            let response = this.findByMap.get(key);
-            if (!response) {
-                response = this.items.find(searchFn) || null;
-                this.findByMap.set(key, response);
-            }
-            return response || null;
-        }
+        this.findByMap = new Map();
+        this.items = [...list].sort(sortAscendingPriority);
     }
-    /** @nocollapse */ BreakPointRegistry.ɵprov = ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
-    BreakPointRegistry.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    /** @nocollapse */
-    BreakPointRegistry.ctorParameters = () => [
-        { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
-    ];
-    return BreakPointRegistry;
-})();
+    /**
+     * Search breakpoints by alias (e.g. gt-xs)
+     * @param {?} alias
+     * @return {?}
+     */
+    findByAlias(alias) {
+        return !alias ? null : this.findWithPredicate(alias, (/**
+         * @param {?} bp
+         * @return {?}
+         */
+        (bp) => bp.alias == alias));
+    }
+    /**
+     * @param {?} query
+     * @return {?}
+     */
+    findByQuery(query) {
+        return this.findWithPredicate(query, (/**
+         * @param {?} bp
+         * @return {?}
+         */
+        (bp) => bp.mediaQuery == query));
+    }
+    /**
+     * Get all the breakpoints whose ranges could overlapping `normal` ranges;
+     * e.g. gt-sm overlaps md, lg, and xl
+     * @return {?}
+     */
+    get overlappings() {
+        return this.items.filter((/**
+         * @param {?} it
+         * @return {?}
+         */
+        it => it.overlapping == true));
+    }
+    /**
+     * Get list of all registered (non-empty) breakpoint aliases
+     * @return {?}
+     */
+    get aliases() {
+        return this.items.map((/**
+         * @param {?} it
+         * @return {?}
+         */
+        it => it.alias));
+    }
+    /**
+     * Aliases are mapped to properties using suffixes
+     * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
+     * for property layoutGtSM.
+     * @return {?}
+     */
+    get suffixes() {
+        return this.items.map((/**
+         * @param {?} it
+         * @return {?}
+         */
+        it => !!it.suffix ? it.suffix : ''));
+    }
+    /**
+     * Memoized lookup using custom predicate function
+     * @private
+     * @param {?} key
+     * @param {?} searchFn
+     * @return {?}
+     */
+    findWithPredicate(key, searchFn) {
+        /** @type {?} */
+        let response = this.findByMap.get(key);
+        if (!response) {
+            response = this.items.find(searchFn) || null;
+            this.findByMap.set(key, response);
+        }
+        return response || null;
+    }
+}
+/** @nocollapse */ BreakPointRegistry.ɵprov = ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
+BreakPointRegistry.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
+/** @nocollapse */
+BreakPointRegistry.ctorParameters = () => [
+    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
+];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/match-media/match-media.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -1058,190 +1033,180 @@ let BreakPointRegistry = /** @class */ (() => {
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
-let MatchMedia = /** @class */ (() => {
+class MatchMedia {
     /**
-     * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
-     * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
-     * performed within the ng Zone to trigger change detections and component updates.
-     *
-     * NOTE: both mediaQuery activations and de-activations are announced in notifications
+     * @param {?} _zone
+     * @param {?} _platformId
+     * @param {?} _document
      */
-    class MatchMedia {
+    constructor(_zone, _platformId, _document) {
+        this._zone = _zone;
+        this._platformId = _platformId;
+        this._document = _document;
         /**
-         * @param {?} _zone
-         * @param {?} _platformId
-         * @param {?} _document
+         * Initialize source with 'all' so all non-responsive APIs trigger style updates
          */
-        constructor(_zone, _platformId, _document) {
-            this._zone = _zone;
-            this._platformId = _platformId;
-            this._document = _document;
-            /**
-             * Initialize source with 'all' so all non-responsive APIs trigger style updates
-             */
-            this.source = new BehaviorSubject(new MediaChange(true));
-            this.registry = new Map();
-            this.pendingRemoveListenerFns = [];
-            this._observable$ = this.source.asObservable();
-        }
-        /**
-         * Publish list of all current activations
+        this.source = new BehaviorSubject(new MediaChange(true));
+        this.registry = new Map();
+        this.pendingRemoveListenerFns = [];
+        this._observable$ = this.source.asObservable();
+    }
+    /**
+     * Publish list of all current activations
+     * @return {?}
+     */
+    get activations() {
+        /** @type {?} */
+        const results = [];
+        this.registry.forEach((/**
+         * @param {?} mql
+         * @param {?} key
          * @return {?}
          */
-        get activations() {
+        (mql, key) => {
+            if (mql.matches) {
+                results.push(key);
+            }
+        }));
+        return results;
+    }
+    /**
+     * For the specified mediaQuery?
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    isActive(mediaQuery) {
+        /** @type {?} */
+        const mql = this.registry.get(mediaQuery);
+        return !!mql ? mql.matches : this.registerQuery(mediaQuery).some((/**
+         * @param {?} m
+         * @return {?}
+         */
+        m => m.matches));
+    }
+    /**
+     * External observers can watch for all (or a specific) mql changes.
+     * Typically used by the MediaQueryAdaptor; optionally available to components
+     * who wish to use the MediaMonitor as mediaMonitor$ observable service.
+     *
+     * Use deferred registration process to register breakpoints only on subscription
+     * This logic also enforces logic to register all mediaQueries BEFORE notify
+     * subscribers of notifications.
+     * @param {?=} mqList
+     * @param {?=} filterOthers
+     * @return {?}
+     */
+    observe(mqList, filterOthers = false) {
+        if (mqList && mqList.length) {
             /** @type {?} */
-            const results = [];
-            this.registry.forEach((/**
-             * @param {?} mql
-             * @param {?} key
+            const matchMedia$ = this._observable$.pipe(filter((/**
+             * @param {?} change
              * @return {?}
              */
-            (mql, key) => {
-                if (mql.matches) {
-                    results.push(key);
-                }
-            }));
-            return results;
-        }
-        /**
-         * For the specified mediaQuery?
-         * @param {?} mediaQuery
-         * @return {?}
-         */
-        isActive(mediaQuery) {
+            (change) => !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1))));
             /** @type {?} */
-            const mql = this.registry.get(mediaQuery);
-            return !!mql ? mql.matches : this.registerQuery(mediaQuery).some((/**
-             * @param {?} m
+            const registration$ = new Observable((/**
+             * @param {?} observer
              * @return {?}
              */
-            m => m.matches));
-        }
-        /**
-         * External observers can watch for all (or a specific) mql changes.
-         * Typically used by the MediaQueryAdaptor; optionally available to components
-         * who wish to use the MediaMonitor as mediaMonitor$ observable service.
-         *
-         * Use deferred registration process to register breakpoints only on subscription
-         * This logic also enforces logic to register all mediaQueries BEFORE notify
-         * subscribers of notifications.
-         * @param {?=} mqList
-         * @param {?=} filterOthers
-         * @return {?}
-         */
-        observe(mqList, filterOthers = false) {
-            if (mqList && mqList.length) {
+            (observer) => {
+                // tslint:disable-line:max-line-length
                 /** @type {?} */
-                const matchMedia$ = this._observable$.pipe(filter((/**
-                 * @param {?} change
-                 * @return {?}
-                 */
-                (change) => !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1))));
-                /** @type {?} */
-                const registration$ = new Observable((/**
-                 * @param {?} observer
-                 * @return {?}
-                 */
-                (observer) => {
-                    // tslint:disable-line:max-line-length
+                const matches = this.registerQuery(mqList);
+                if (matches.length) {
                     /** @type {?} */
-                    const matches = this.registerQuery(mqList);
-                    if (matches.length) {
-                        /** @type {?} */
-                        const lastChange = (/** @type {?} */ (matches.pop()));
-                        matches.forEach((/**
-                         * @param {?} e
-                         * @return {?}
-                         */
-                        (e) => {
-                            observer.next(e);
-                        }));
-                        this.source.next(lastChange); // last match is cached
-                    }
-                    observer.complete();
-                }));
-                return merge(registration$, matchMedia$);
-            }
-            return this._observable$;
-        }
-        /**
-         * Based on the BreakPointRegistry provider, register internal listeners for each unique
-         * mediaQuery. Each listener emits specific MediaChange data to observers
-         * @param {?} mediaQuery
-         * @return {?}
-         */
-        registerQuery(mediaQuery) {
-            /** @type {?} */
-            const list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
-            /** @type {?} */
-            const matches = [];
-            buildQueryCss(list, this._document);
-            list.forEach((/**
-             * @param {?} query
-             * @return {?}
-             */
-            (query) => {
-                /** @type {?} */
-                const onMQLEvent = (/**
-                 * @param {?} e
-                 * @return {?}
-                 */
-                (e) => {
-                    this._zone.run((/**
+                    const lastChange = (/** @type {?} */ (matches.pop()));
+                    matches.forEach((/**
+                     * @param {?} e
                      * @return {?}
                      */
-                    () => this.source.next(new MediaChange(e.matches, query))));
-                });
-                /** @type {?} */
-                let mql = this.registry.get(query);
-                if (!mql) {
-                    mql = this.buildMQL(query);
-                    mql.addListener(onMQLEvent);
-                    this.pendingRemoveListenerFns.push((/**
-                     * @return {?}
-                     */
-                    () => (/** @type {?} */ (mql)).removeListener(onMQLEvent)));
-                    this.registry.set(query, mql);
+                    (e) => {
+                        observer.next(e);
+                    }));
+                    this.source.next(lastChange); // last match is cached
                 }
-                if (mql.matches) {
-                    matches.push(new MediaChange(true, query));
-                }
+                observer.complete();
             }));
-            return matches;
+            return merge(registration$, matchMedia$);
         }
-        /**
-         * @return {?}
-         */
-        ngOnDestroy() {
-            /** @type {?} */
-            let fn;
-            while (fn = this.pendingRemoveListenerFns.pop()) {
-                fn();
-            }
-        }
-        /**
-         * Call window.matchMedia() to build a MediaQueryList; which
-         * supports 0..n listeners for activation/deactivation
-         * @protected
+        return this._observable$;
+    }
+    /**
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    registerQuery(mediaQuery) {
+        /** @type {?} */
+        const list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
+        /** @type {?} */
+        const matches = [];
+        buildQueryCss(list, this._document);
+        list.forEach((/**
          * @param {?} query
          * @return {?}
          */
-        buildMQL(query) {
-            return constructMql(query, isPlatformBrowser(this._platformId));
+        (query) => {
+            /** @type {?} */
+            const onMQLEvent = (/**
+             * @param {?} e
+             * @return {?}
+             */
+            (e) => {
+                this._zone.run((/**
+                 * @return {?}
+                 */
+                () => this.source.next(new MediaChange(e.matches, query))));
+            });
+            /** @type {?} */
+            let mql = this.registry.get(query);
+            if (!mql) {
+                mql = this.buildMQL(query);
+                mql.addListener(onMQLEvent);
+                this.pendingRemoveListenerFns.push((/**
+                 * @return {?}
+                 */
+                () => (/** @type {?} */ (mql)).removeListener(onMQLEvent)));
+                this.registry.set(query, mql);
+            }
+            if (mql.matches) {
+                matches.push(new MediaChange(true, query));
+            }
+        }));
+        return matches;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        /** @type {?} */
+        let fn;
+        while (fn = this.pendingRemoveListenerFns.pop()) {
+            fn();
         }
     }
-    /** @nocollapse */ MatchMedia.ɵprov = ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(ɵɵinject(NgZone), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
-    MatchMedia.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    /** @nocollapse */
-    MatchMedia.ctorParameters = () => [
-        { type: NgZone },
-        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-    ];
-    return MatchMedia;
-})();
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @protected
+     * @param {?} query
+     * @return {?}
+     */
+    buildMQL(query) {
+        return constructMql(query, isPlatformBrowser(this._platformId));
+    }
+}
+/** @nocollapse */ MatchMedia.ɵprov = ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(ɵɵinject(NgZone), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
+MatchMedia.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
+/** @nocollapse */
+MatchMedia.ctorParameters = () => [
+    { type: NgZone },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
 /**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
@@ -1338,217 +1303,209 @@ function constructMql(query, isBrowser) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/match-media/mock/mock-match-media.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
  * MockMediaQueryListener. Methods are available to simulate an activation of a mediaQuery
  * range and to clearAll mediaQuery listeners.
  */
-let MockMatchMedia = /** @class */ (() => {
+class MockMatchMedia extends MatchMedia {
+    // Allow fallback to overlapping mediaQueries
     /**
-     * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
-     * MockMediaQueryListener. Methods are available to simulate an activation of a mediaQuery
-     * range and to clearAll mediaQuery listeners.
+     * @param {?} _zone
+     * @param {?} _platformId
+     * @param {?} _document
+     * @param {?} _breakpoints
      */
-    class MockMatchMedia extends MatchMedia {
-        // Allow fallback to overlapping mediaQueries
-        /**
-         * @param {?} _zone
-         * @param {?} _platformId
-         * @param {?} _document
-         * @param {?} _breakpoints
-         */
-        constructor(_zone, _platformId, _document, _breakpoints) {
-            super(_zone, _platformId, _document);
-            this._breakpoints = _breakpoints;
-            this.autoRegisterQueries = true; // Used for testing BreakPoint registrations
-            // Used for testing BreakPoint registrations
-            this.useOverlaps = false; // Allow fallback to overlapping mediaQueries
-        }
-        /**
-         * Easy method to clear all listeners for all mediaQueries
+    constructor(_zone, _platformId, _document, _breakpoints) {
+        super(_zone, _platformId, _document);
+        this._breakpoints = _breakpoints;
+        this.autoRegisterQueries = true; // Used for testing BreakPoint registrations
+        // Used for testing BreakPoint registrations
+        this.useOverlaps = false; // Allow fallback to overlapping mediaQueries
+    }
+    /**
+     * Easy method to clear all listeners for all mediaQueries
+     * @return {?}
+     */
+    clearAll() {
+        this.registry.forEach((/**
+         * @param {?} mql
          * @return {?}
          */
-        clearAll() {
-            this.registry.forEach((/**
-             * @param {?} mql
-             * @return {?}
-             */
-            (mql) => {
-                ((/** @type {?} */ (mql))).destroy();
-            }));
-            this.registry.clear();
-            this.useOverlaps = false;
+        (mql) => {
+            ((/** @type {?} */ (mql))).destroy();
+        }));
+        this.registry.clear();
+        this.useOverlaps = false;
+    }
+    /**
+     * Feature to support manual, simulated activation of a mediaQuery.
+     * @param {?} mediaQuery
+     * @param {?=} useOverlaps
+     * @return {?}
+     */
+    activate(mediaQuery, useOverlaps = false) {
+        useOverlaps = useOverlaps || this.useOverlaps;
+        mediaQuery = this._validateQuery(mediaQuery);
+        if (useOverlaps || !this.isActive(mediaQuery)) {
+            this._deactivateAll();
+            this._registerMediaQuery(mediaQuery);
+            this._activateWithOverlaps(mediaQuery, useOverlaps);
         }
-        /**
-         * Feature to support manual, simulated activation of a mediaQuery.
-         * @param {?} mediaQuery
-         * @param {?=} useOverlaps
-         * @return {?}
-         */
-        activate(mediaQuery, useOverlaps = false) {
-            useOverlaps = useOverlaps || this.useOverlaps;
-            mediaQuery = this._validateQuery(mediaQuery);
-            if (useOverlaps || !this.isActive(mediaQuery)) {
-                this._deactivateAll();
-                this._registerMediaQuery(mediaQuery);
-                this._activateWithOverlaps(mediaQuery, useOverlaps);
-            }
-            return this.hasActivated;
-        }
-        /**
-         * Converts an optional mediaQuery alias to a specific, valid mediaQuery
-         * @param {?} queryOrAlias
-         * @return {?}
-         */
-        _validateQuery(queryOrAlias) {
+        return this.hasActivated;
+    }
+    /**
+     * Converts an optional mediaQuery alias to a specific, valid mediaQuery
+     * @param {?} queryOrAlias
+     * @return {?}
+     */
+    _validateQuery(queryOrAlias) {
+        /** @type {?} */
+        const bp = this._breakpoints.findByAlias(queryOrAlias);
+        return (bp && bp.mediaQuery) || queryOrAlias;
+    }
+    /**
+     * Manually onMediaChange any overlapping mediaQueries to simulate
+     * similar functionality in the window.matchMedia()
+     * @private
+     * @param {?} mediaQuery
+     * @param {?} useOverlaps
+     * @return {?}
+     */
+    _activateWithOverlaps(mediaQuery, useOverlaps) {
+        if (useOverlaps) {
             /** @type {?} */
-            const bp = this._breakpoints.findByAlias(queryOrAlias);
-            return (bp && bp.mediaQuery) || queryOrAlias;
-        }
-        /**
-         * Manually onMediaChange any overlapping mediaQueries to simulate
-         * similar functionality in the window.matchMedia()
-         * @private
-         * @param {?} mediaQuery
-         * @param {?} useOverlaps
-         * @return {?}
-         */
-        _activateWithOverlaps(mediaQuery, useOverlaps) {
-            if (useOverlaps) {
-                /** @type {?} */
-                const bp = this._breakpoints.findByQuery(mediaQuery);
-                /** @type {?} */
-                const alias = bp ? bp.alias : 'unknown';
-                // Simulate activation of overlapping lt-<XXX> ranges
-                switch (alias) {
-                    case 'lg':
-                        this._activateByAlias(['lt-xl']);
-                        break;
-                    case 'md':
-                        this._activateByAlias(['lt-xl', 'lt-lg']);
-                        break;
-                    case 'sm':
-                        this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md']);
-                        break;
-                    case 'xs':
-                        this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md', 'lt-sm']);
-                        break;
-                }
-                // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
-                switch (alias) {
-                    case 'xl':
-                        this._activateByAlias(['gt-lg', 'gt-md', 'gt-sm', 'gt-xs']);
-                        break;
-                    case 'lg':
-                        this._activateByAlias(['gt-md', 'gt-sm', 'gt-xs']);
-                        break;
-                    case 'md':
-                        this._activateByAlias(['gt-sm', 'gt-xs']);
-                        break;
-                    case 'sm':
-                        this._activateByAlias(['gt-xs']);
-                        break;
-                }
-            }
-            // Activate last since the responsiveActivation is watching *this* mediaQuery
-            return this._activateByQuery(mediaQuery);
-        }
-        /**
-         *
-         * @private
-         * @param {?} aliases
-         * @return {?}
-         */
-        _activateByAlias(aliases) {
+            const bp = this._breakpoints.findByQuery(mediaQuery);
             /** @type {?} */
-            const activate = (/**
-             * @param {?} alias
-             * @return {?}
-             */
-            (alias) => {
-                /** @type {?} */
-                const bp = this._breakpoints.findByAlias(alias);
-                this._activateByQuery(bp ? bp.mediaQuery : alias);
-            });
-            aliases.forEach(activate);
+            const alias = bp ? bp.alias : 'unknown';
+            // Simulate activation of overlapping lt-<XXX> ranges
+            switch (alias) {
+                case 'lg':
+                    this._activateByAlias(['lt-xl']);
+                    break;
+                case 'md':
+                    this._activateByAlias(['lt-xl', 'lt-lg']);
+                    break;
+                case 'sm':
+                    this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md']);
+                    break;
+                case 'xs':
+                    this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md', 'lt-sm']);
+                    break;
+            }
+            // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
+            switch (alias) {
+                case 'xl':
+                    this._activateByAlias(['gt-lg', 'gt-md', 'gt-sm', 'gt-xs']);
+                    break;
+                case 'lg':
+                    this._activateByAlias(['gt-md', 'gt-sm', 'gt-xs']);
+                    break;
+                case 'md':
+                    this._activateByAlias(['gt-sm', 'gt-xs']);
+                    break;
+                case 'sm':
+                    this._activateByAlias(['gt-xs']);
+                    break;
+            }
         }
-        /**
-         *
-         * @private
-         * @param {?} mediaQuery
+        // Activate last since the responsiveActivation is watching *this* mediaQuery
+        return this._activateByQuery(mediaQuery);
+    }
+    /**
+     *
+     * @private
+     * @param {?} aliases
+     * @return {?}
+     */
+    _activateByAlias(aliases) {
+        /** @type {?} */
+        const activate = (/**
+         * @param {?} alias
          * @return {?}
          */
-        _activateByQuery(mediaQuery) {
-            if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
-                this._registerMediaQuery(mediaQuery);
-            }
+        (alias) => {
             /** @type {?} */
-            const mql = (/** @type {?} */ (this.registry.get(mediaQuery)));
-            if (mql && !this.isActive(mediaQuery)) {
-                this.registry.set(mediaQuery, mql.activate());
-            }
-            return this.hasActivated;
+            const bp = this._breakpoints.findByAlias(alias);
+            this._activateByQuery(bp ? bp.mediaQuery : alias);
+        });
+        aliases.forEach(activate);
+    }
+    /**
+     *
+     * @private
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    _activateByQuery(mediaQuery) {
+        if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
+            this._registerMediaQuery(mediaQuery);
         }
-        /**
-         * Deactivate all current MQLs and reset the buffer
-         * @private
-         * @template THIS
-         * @this {THIS}
-         * @return {THIS}
-         */
-        _deactivateAll() {
-            (/** @type {?} */ (this)).registry.forEach((/**
-             * @param {?} it
-             * @return {?}
-             */
-            (it) => {
-                ((/** @type {?} */ (it))).deactivate();
-            }));
-            return (/** @type {?} */ (this));
+        /** @type {?} */
+        const mql = (/** @type {?} */ (this.registry.get(mediaQuery)));
+        if (mql && !this.isActive(mediaQuery)) {
+            this.registry.set(mediaQuery, mql.activate());
         }
-        /**
-         * Insure the mediaQuery is registered with MatchMedia
-         * @private
-         * @param {?} mediaQuery
+        return this.hasActivated;
+    }
+    /**
+     * Deactivate all current MQLs and reset the buffer
+     * @private
+     * @template THIS
+     * @this {THIS}
+     * @return {THIS}
+     */
+    _deactivateAll() {
+        (/** @type {?} */ (this)).registry.forEach((/**
+         * @param {?} it
          * @return {?}
          */
-        _registerMediaQuery(mediaQuery) {
-            if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
-                this.registerQuery(mediaQuery);
-            }
-        }
-        /**
-         * Call window.matchMedia() to build a MediaQueryList; which
-         * supports 0..n listeners for activation/deactivation
-         * @protected
-         * @param {?} query
-         * @return {?}
-         */
-        buildMQL(query) {
-            return new MockMediaQueryList(query);
-        }
-        /**
-         * @protected
-         * @return {?}
-         */
-        get hasActivated() {
-            return this.activations.length > 0;
+        (it) => {
+            ((/** @type {?} */ (it))).deactivate();
+        }));
+        return (/** @type {?} */ (this));
+    }
+    /**
+     * Insure the mediaQuery is registered with MatchMedia
+     * @private
+     * @param {?} mediaQuery
+     * @return {?}
+     */
+    _registerMediaQuery(mediaQuery) {
+        if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
+            this.registerQuery(mediaQuery);
         }
     }
-    MockMatchMedia.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    MockMatchMedia.ctorParameters = () => [
-        { type: NgZone },
-        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
-        { type: BreakPointRegistry }
-    ];
-    return MockMatchMedia;
-})();
+    /**
+     * Call window.matchMedia() to build a MediaQueryList; which
+     * supports 0..n listeners for activation/deactivation
+     * @protected
+     * @param {?} query
+     * @return {?}
+     */
+    buildMQL(query) {
+        return new MockMediaQueryList(query);
+    }
+    /**
+     * @protected
+     * @return {?}
+     */
+    get hasActivated() {
+        return this.activations.length > 0;
+    }
+}
+MockMatchMedia.decorators = [
+    { type: Injectable }
+];
+/** @nocollapse */
+MockMatchMedia.ctorParameters = () => [
+    { type: NgZone },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
+    { type: BreakPointRegistry }
+];
 /**
  * Special internal class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
@@ -1682,13 +1639,13 @@ const MockMatchMediaProvider = {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/match-media/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-marshaller/print-hook.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const PRINT = 'print';
@@ -1704,286 +1661,277 @@ const BREAKPOINT_PRINT = {
  *
  * Used in MediaMarshaller and MediaObserver
  */
-let PrintHook = /** @class */ (() => {
+class PrintHook {
     /**
-     * PrintHook - Use to intercept print MediaQuery activations and force
-     *             layouts to render with the specified print alias/breakpoint
-     *
-     * Used in MediaMarshaller and MediaObserver
+     * @param {?} breakpoints
+     * @param {?} layoutConfig
+     * @param {?} _document
      */
-    class PrintHook {
+    constructor(breakpoints, layoutConfig, _document) {
+        this.breakpoints = breakpoints;
+        this.layoutConfig = layoutConfig;
+        this._document = _document;
+        // registeredBeforeAfterPrintHooks tracks if we registered the `beforeprint`
+        //  and `afterprint` event listeners.
+        this.registeredBeforeAfterPrintHooks = false;
+        // isPrintingBeforeAfterEvent is used to track if we are printing from within
+        // a `beforeprint` event handler. This prevents the typicall `stopPrinting`
+        // form `interceptEvents` so that printing is not stopped while the dialog
+        // is still open. This is an extension of the `isPrinting` property on
+        // browsers which support `beforeprint` and `afterprint` events.
+        this.isPrintingBeforeAfterEvent = false;
+        this.beforePrintEventListeners = [];
+        this.afterPrintEventListeners = [];
         /**
-         * @param {?} breakpoints
-         * @param {?} layoutConfig
-         * @param {?} _document
+         * Is this service currently in Print-mode ?
          */
-        constructor(breakpoints, layoutConfig, _document) {
-            this.breakpoints = breakpoints;
-            this.layoutConfig = layoutConfig;
-            this._document = _document;
-            // registeredBeforeAfterPrintHooks tracks if we registered the `beforeprint`
-            //  and `afterprint` event listeners.
-            this.registeredBeforeAfterPrintHooks = false;
-            // isPrintingBeforeAfterEvent is used to track if we are printing from within
-            // a `beforeprint` event handler. This prevents the typicall `stopPrinting`
-            // form `interceptEvents` so that printing is not stopped while the dialog
-            // is still open. This is an extension of the `isPrinting` property on
-            // browsers which support `beforeprint` and `afterprint` events.
+        this.isPrinting = false;
+        this.queue = new PrintQueue();
+        this.deactivations = [];
+    }
+    /**
+     * Add 'print' mediaQuery: to listen for matchMedia activations
+     * @param {?} queries
+     * @return {?}
+     */
+    withPrintQuery(queries) {
+        return [...queries, PRINT];
+    }
+    /**
+     * Is the MediaChange event for any 'print' \@media
+     * @param {?} e
+     * @return {?}
+     */
+    isPrintEvent(e) {
+        return e.mediaQuery.startsWith(PRINT);
+    }
+    /**
+     * What is the desired mqAlias to use while printing?
+     * @return {?}
+     */
+    get printAlias() {
+        return this.layoutConfig.printWithBreakpoints || [];
+    }
+    /**
+     * Lookup breakpoints associated with print aliases.
+     * @return {?}
+     */
+    get printBreakPoints() {
+        return (/** @type {?} */ (this.printAlias
+            .map((/**
+         * @param {?} alias
+         * @return {?}
+         */
+        alias => this.breakpoints.findByAlias(alias)))
+            .filter((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        bp => bp !== null))));
+    }
+    /**
+     * Lookup breakpoint associated with mediaQuery
+     * @param {?} __0
+     * @return {?}
+     */
+    getEventBreakpoints({ mediaQuery }) {
+        /** @type {?} */
+        const bp = this.breakpoints.findByQuery(mediaQuery);
+        /** @type {?} */
+        const list = bp ? [...this.printBreakPoints, bp] : this.printBreakPoints;
+        return list.sort(sortDescendingPriority);
+    }
+    /**
+     * Update event with printAlias mediaQuery information
+     * @param {?} event
+     * @return {?}
+     */
+    updateEvent(event) {
+        /** @type {?} */
+        let bp = this.breakpoints.findByQuery(event.mediaQuery);
+        if (this.isPrintEvent(event)) {
+            // Reset from 'print' to first (highest priority) print breakpoint
+            bp = this.getEventBreakpoints(event)[0];
+            event.mediaQuery = bp ? bp.mediaQuery : '';
+        }
+        return mergeAlias(event, bp);
+    }
+    // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+    // trigger print styles synchronously and apply proper layout styles.
+    // It is a noop if the hooks have already been registered or if the document's
+    // `defaultView` is not available.
+    /**
+     * @private
+     * @param {?} target
+     * @return {?}
+     */
+    registerBeforeAfterPrintHooks(target) {
+        // `defaultView` may be null when rendering on the server or in other contexts.
+        if (!this._document.defaultView || this.registeredBeforeAfterPrintHooks) {
+            return;
+        }
+        this.registeredBeforeAfterPrintHooks = true;
+        /** @type {?} */
+        const beforePrintListener = (/**
+         * @return {?}
+         */
+        () => {
+            // If we aren't already printing, start printing and update the styles as
+            // if there was a regular print `MediaChange`(from matchMedia).
+            if (!this.isPrinting) {
+                this.isPrintingBeforeAfterEvent = true;
+                this.startPrinting(target, this.getEventBreakpoints(new MediaChange(true, PRINT)));
+                target.updateStyles();
+            }
+        });
+        /** @type {?} */
+        const afterPrintListener = (/**
+         * @return {?}
+         */
+        () => {
+            // If we aren't already printing, start printing and update the styles as
+            // if there was a regular print `MediaChange`(from matchMedia).
             this.isPrintingBeforeAfterEvent = false;
-            this.beforePrintEventListeners = [];
-            this.afterPrintEventListeners = [];
-            /**
-             * Is this service currently in Print-mode ?
-             */
-            this.isPrinting = false;
-            this.queue = new PrintQueue();
-            this.deactivations = [];
-        }
-        /**
-         * Add 'print' mediaQuery: to listen for matchMedia activations
-         * @param {?} queries
-         * @return {?}
-         */
-        withPrintQuery(queries) {
-            return [...queries, PRINT];
-        }
-        /**
-         * Is the MediaChange event for any 'print' \@media
-         * @param {?} e
-         * @return {?}
-         */
-        isPrintEvent(e) {
-            return e.mediaQuery.startsWith(PRINT);
-        }
-        /**
-         * What is the desired mqAlias to use while printing?
-         * @return {?}
-         */
-        get printAlias() {
-            return this.layoutConfig.printWithBreakpoints || [];
-        }
-        /**
-         * Lookup breakpoints associated with print aliases.
-         * @return {?}
-         */
-        get printBreakPoints() {
-            return (/** @type {?} */ (this.printAlias
-                .map((/**
-             * @param {?} alias
-             * @return {?}
-             */
-            alias => this.breakpoints.findByAlias(alias)))
-                .filter((/**
-             * @param {?} bp
-             * @return {?}
-             */
-            bp => bp !== null))));
-        }
-        /**
-         * Lookup breakpoint associated with mediaQuery
-         * @param {?} __0
-         * @return {?}
-         */
-        getEventBreakpoints({ mediaQuery }) {
-            /** @type {?} */
-            const bp = this.breakpoints.findByQuery(mediaQuery);
-            /** @type {?} */
-            const list = bp ? [...this.printBreakPoints, bp] : this.printBreakPoints;
-            return list.sort(sortDescendingPriority);
-        }
-        /**
-         * Update event with printAlias mediaQuery information
+            if (this.isPrinting) {
+                this.stopPrinting(target);
+                target.updateStyles();
+            }
+        });
+        // Could we have teardown logic to remove if there are no print listeners being used?
+        this._document.defaultView.addEventListener('beforeprint', beforePrintListener);
+        this._document.defaultView.addEventListener('afterprint', afterPrintListener);
+        this.beforePrintEventListeners.push(beforePrintListener);
+        this.afterPrintEventListeners.push(afterPrintListener);
+    }
+    /**
+     * Prepare RxJS filter operator with partial application
+     * @param {?} target
+     * @return {?} pipeable filter predicate
+     */
+    interceptEvents(target) {
+        this.registerBeforeAfterPrintHooks(target);
+        return (/**
          * @param {?} event
          * @return {?}
          */
-        updateEvent(event) {
-            /** @type {?} */
-            let bp = this.breakpoints.findByQuery(event.mediaQuery);
+        (event) => {
             if (this.isPrintEvent(event)) {
-                // Reset from 'print' to first (highest priority) print breakpoint
-                bp = this.getEventBreakpoints(event)[0];
-                event.mediaQuery = bp ? bp.mediaQuery : '';
-            }
-            return mergeAlias(event, bp);
-        }
-        // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
-        // trigger print styles synchronously and apply proper layout styles.
-        // It is a noop if the hooks have already been registered or if the document's
-        // `defaultView` is not available.
-        /**
-         * @private
-         * @param {?} target
-         * @return {?}
-         */
-        registerBeforeAfterPrintHooks(target) {
-            // `defaultView` may be null when rendering on the server or in other contexts.
-            if (!this._document.defaultView || this.registeredBeforeAfterPrintHooks) {
-                return;
-            }
-            this.registeredBeforeAfterPrintHooks = true;
-            /** @type {?} */
-            const beforePrintListener = (/**
-             * @return {?}
-             */
-            () => {
-                // If we aren't already printing, start printing and update the styles as
-                // if there was a regular print `MediaChange`(from matchMedia).
-                if (!this.isPrinting) {
-                    this.isPrintingBeforeAfterEvent = true;
-                    this.startPrinting(target, this.getEventBreakpoints(new MediaChange(true, PRINT)));
+                if (event.matches && !this.isPrinting) {
+                    this.startPrinting(target, this.getEventBreakpoints(event));
                     target.updateStyles();
                 }
-            });
-            /** @type {?} */
-            const afterPrintListener = (/**
-             * @return {?}
-             */
-            () => {
-                // If we aren't already printing, start printing and update the styles as
-                // if there was a regular print `MediaChange`(from matchMedia).
-                this.isPrintingBeforeAfterEvent = false;
-                if (this.isPrinting) {
+                else if (!event.matches && this.isPrinting && !this.isPrintingBeforeAfterEvent) {
                     this.stopPrinting(target);
                     target.updateStyles();
                 }
-            });
-            // Could we have teardown logic to remove if there are no print listeners being used?
-            this._document.defaultView.addEventListener('beforeprint', beforePrintListener);
-            this._document.defaultView.addEventListener('afterprint', afterPrintListener);
-            this.beforePrintEventListeners.push(beforePrintListener);
-            this.afterPrintEventListeners.push(afterPrintListener);
-        }
-        /**
-         * Prepare RxJS filter operator with partial application
-         * @param {?} target
-         * @return {?} pipeable filter predicate
-         */
-        interceptEvents(target) {
-            this.registerBeforeAfterPrintHooks(target);
-            return (/**
-             * @param {?} event
-             * @return {?}
-             */
-            (event) => {
-                if (this.isPrintEvent(event)) {
-                    if (event.matches && !this.isPrinting) {
-                        this.startPrinting(target, this.getEventBreakpoints(event));
-                        target.updateStyles();
-                    }
-                    else if (!event.matches && this.isPrinting && !this.isPrintingBeforeAfterEvent) {
-                        this.stopPrinting(target);
-                        target.updateStyles();
-                    }
-                }
-                else {
-                    this.collectActivations(event);
-                }
-            });
-        }
-        /**
-         * Stop mediaChange event propagation in event streams
-         * @return {?}
-         */
-        blockPropagation() {
-            return (/**
-             * @param {?} event
-             * @return {?}
-             */
-            (event) => {
-                return !(this.isPrinting || this.isPrintEvent(event));
-            });
-        }
-        /**
-         * Save current activateBreakpoints (for later restore)
-         * and substitute only the printAlias breakpoint
-         * @protected
-         * @param {?} target
-         * @param {?} bpList
-         * @return {?}
-         */
-        startPrinting(target, bpList) {
-            this.isPrinting = true;
-            target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
-        }
-        /**
-         * For any print de-activations, reset the entire print queue
-         * @protected
-         * @param {?} target
-         * @return {?}
-         */
-        stopPrinting(target) {
-            target.activatedBreakpoints = this.deactivations;
-            this.deactivations = [];
-            this.queue.clear();
-            this.isPrinting = false;
-        }
-        /**
-         * To restore pre-Print Activations, we must capture the proper
-         * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-         * is supported; so 'print' mediaQuery activations are used as a fallback
-         * in browsers without `beforeprint` support.
-         *
-         * >  But activated breakpoints are deactivated BEFORE 'print' activation.
-         *
-         * Let's capture all de-activations using the following logic:
-         *
-         *  When not printing:
-         *    - clear cache when activating non-print breakpoint
-         *    - update cache (and sort) when deactivating
-         *
-         *  When printing:
-         *    - sort and save when starting print
-         *    - restore as activatedTargets and clear when stop printing
+            }
+            else {
+                this.collectActivations(event);
+            }
+        });
+    }
+    /**
+     * Stop mediaChange event propagation in event streams
+     * @return {?}
+     */
+    blockPropagation() {
+        return (/**
          * @param {?} event
          * @return {?}
          */
-        collectActivations(event) {
-            if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
-                if (!event.matches) {
-                    /** @type {?} */
-                    const bp = this.breakpoints.findByQuery(event.mediaQuery);
-                    if (bp) { // Deactivating a breakpoint
-                        this.deactivations.push(bp);
-                        this.deactivations.sort(sortDescendingPriority);
-                    }
-                }
-                else if (!this.isPrintingBeforeAfterEvent) {
-                    // Only clear deactivations if we aren't printing from a `beforeprint` event.
-                    // Otherwise this will clear before `stopPrinting()` is called to restore
-                    // the pre-Print Activations.
-                    this.deactivations = [];
+        (event) => {
+            return !(this.isPrinting || this.isPrintEvent(event));
+        });
+    }
+    /**
+     * Save current activateBreakpoints (for later restore)
+     * and substitute only the printAlias breakpoint
+     * @protected
+     * @param {?} target
+     * @param {?} bpList
+     * @return {?}
+     */
+    startPrinting(target, bpList) {
+        this.isPrinting = true;
+        target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
+    }
+    /**
+     * For any print de-activations, reset the entire print queue
+     * @protected
+     * @param {?} target
+     * @return {?}
+     */
+    stopPrinting(target) {
+        target.activatedBreakpoints = this.deactivations;
+        this.deactivations = [];
+        this.queue.clear();
+        this.isPrinting = false;
+    }
+    /**
+     * To restore pre-Print Activations, we must capture the proper
+     * list of breakpoint activations BEFORE print starts. OnBeforePrint()
+     * is supported; so 'print' mediaQuery activations are used as a fallback
+     * in browsers without `beforeprint` support.
+     *
+     * >  But activated breakpoints are deactivated BEFORE 'print' activation.
+     *
+     * Let's capture all de-activations using the following logic:
+     *
+     *  When not printing:
+     *    - clear cache when activating non-print breakpoint
+     *    - update cache (and sort) when deactivating
+     *
+     *  When printing:
+     *    - sort and save when starting print
+     *    - restore as activatedTargets and clear when stop printing
+     * @param {?} event
+     * @return {?}
+     */
+    collectActivations(event) {
+        if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
+            if (!event.matches) {
+                /** @type {?} */
+                const bp = this.breakpoints.findByQuery(event.mediaQuery);
+                if (bp) { // Deactivating a breakpoint
+                    this.deactivations.push(bp);
+                    this.deactivations.sort(sortDescendingPriority);
                 }
             }
-        }
-        /**
-         * Teardown logic for the service.
-         * @return {?}
-         */
-        ngOnDestroy() {
-            this.beforePrintEventListeners.forEach((/**
-             * @param {?} l
-             * @return {?}
-             */
-            l => this._document.defaultView.removeEventListener('beforeprint', l)));
-            this.afterPrintEventListeners.forEach((/**
-             * @param {?} l
-             * @return {?}
-             */
-            l => this._document.defaultView.removeEventListener('afterprint', l)));
+            else if (!this.isPrintingBeforeAfterEvent) {
+                // Only clear deactivations if we aren't printing from a `beforeprint` event.
+                // Otherwise this will clear before `stopPrinting()` is called to restore
+                // the pre-Print Activations.
+                this.deactivations = [];
+            }
         }
     }
-    /** @nocollapse */ PrintHook.ɵprov = ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(ɵɵinject(BreakPointRegistry), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(DOCUMENT)); }, token: PrintHook, providedIn: "root" });
-    PrintHook.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    /** @nocollapse */
-    PrintHook.ctorParameters = () => [
-        { type: BreakPointRegistry },
-        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-    ];
-    return PrintHook;
-})();
+    /**
+     * Teardown logic for the service.
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.beforePrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        l => this._document.defaultView.removeEventListener('beforeprint', l)));
+        this.afterPrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        l => this._document.defaultView.removeEventListener('afterprint', l)));
+    }
+}
+/** @nocollapse */ PrintHook.ɵprov = ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(ɵɵinject(BreakPointRegistry), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(DOCUMENT)); }, token: PrintHook, providedIn: "root" });
+PrintHook.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
+/** @nocollapse */
+PrintHook.ctorParameters = () => [
+    { type: BreakPointRegistry },
+    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
 // ************************************************************************
 // Internal Utility class 'PrintQueue'
 // ************************************************************************
@@ -2056,7 +2004,7 @@ function isPrintBreakPoint(bp) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/utils/array.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -2072,7 +2020,7 @@ function coerceArray(value) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-observer/media-observer.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
@@ -2115,242 +2063,198 @@ function coerceArray(value) {
  *    }
  *  }
  */
-let MediaObserver = /** @class */ (() => {
+class MediaObserver {
     /**
-     * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
-     * if a mediaQuery is currently activated.
-     *
-     * Since a breakpoint change will first deactivate 1...n mediaQueries and then possibly activate
-     * 1..n mediaQueries, the MediaObserver will debounce notifications and report ALL *activations*
-     * in 1 event notification. The reported activations will be sorted in descending priority order.
-     *
-     * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
-     * notification. For custom mediaQuery notifications, alias information will not be injected and
-     * those fields will be ''.
-     *
-     * Note: Developers should note that only mediaChange activations (not de-activations)
-     *       are announced by the MediaObserver.
-     *
-     * \@usage
-     *
-     *  // RxJS
-     *  import { filter } from 'rxjs/operators';
-     *  import { MediaObserver } from '\@angular/flex-layout';
-     *
-     * \@Component({ ... })
-     *  export class AppComponent {
-     *    status: string = '';
-     *
-     *    constructor(mediaObserver: MediaObserver) {
-     *      const media$ = mediaObserver.asObservable().pipe(
-     *        filter((changes: MediaChange[]) => true)   // silly noop filter
-     *      );
-     *
-     *      media$.subscribe((changes: MediaChange[]) => {
-     *        let status = '';
-     *        changes.forEach( change => {
-     *          status += `'${change.mqAlias}' = (${change.mediaQuery}) <br/>` ;
-     *        });
-     *        this.status = status;
-     *     });
-     *
-     *    }
-     *  }
+     * @param {?} breakpoints
+     * @param {?} matchMedia
+     * @param {?} hook
      */
-    class MediaObserver {
+    constructor(breakpoints, matchMedia, hook) {
+        this.breakpoints = breakpoints;
+        this.matchMedia = matchMedia;
+        this.hook = hook;
         /**
-         * @param {?} breakpoints
-         * @param {?} matchMedia
-         * @param {?} hook
+         * Filter MediaChange notifications for overlapping breakpoints
          */
-        constructor(breakpoints, matchMedia, hook) {
-            this.breakpoints = breakpoints;
-            this.matchMedia = matchMedia;
-            this.hook = hook;
-            /**
-             * Filter MediaChange notifications for overlapping breakpoints
-             */
-            this.filterOverlaps = false;
-            this.destroyed$ = new Subject();
-            this._media$ = this.watchActivations();
-            this.media$ = this._media$.pipe(filter((/**
-             * @param {?} changes
-             * @return {?}
-             */
-            (changes) => changes.length > 0)), map((/**
-             * @param {?} changes
-             * @return {?}
-             */
-            (changes) => changes[0])));
-        }
-        /**
-         * Completes the active subject, signalling to all complete for all
-         * MediaObserver subscribers
+        this.filterOverlaps = false;
+        this.destroyed$ = new Subject();
+        this._media$ = this.watchActivations();
+        this.media$ = this._media$.pipe(filter((/**
+         * @param {?} changes
          * @return {?}
          */
-        ngOnDestroy() {
-            this.destroyed$.next();
-            this.destroyed$.complete();
-        }
-        // ************************************************
-        // Public Methods
-        // ************************************************
-        /**
-         * Observe changes to current activation 'list'
+        (changes) => changes.length > 0)), map((/**
+         * @param {?} changes
          * @return {?}
          */
-        asObservable() {
-            return this._media$;
-        }
-        /**
-         * Allow programmatic query to determine if one or more media query/alias match
-         * the current viewport size.
-         * @param {?} value One or more media queries (or aliases) to check.
-         * @return {?} Whether any of the media queries match.
-         */
-        isActive(value) {
-            /** @type {?} */
-            const aliases = splitQueries(coerceArray(value));
-            return aliases.some((/**
-             * @param {?} alias
-             * @return {?}
-             */
-            alias => {
-                /** @type {?} */
-                const query = toMediaQuery(alias, this.breakpoints);
-                return query !== null && this.matchMedia.isActive(query);
-            }));
-        }
-        // ************************************************
-        // Internal Methods
-        // ************************************************
-        /**
-         * Register all the mediaQueries registered in the BreakPointRegistry
-         * This is needed so subscribers can be auto-notified of all standard, registered
-         * mediaQuery activations
-         * @private
-         * @return {?}
-         */
-        watchActivations() {
-            /** @type {?} */
-            const queries = this.breakpoints.items.map((/**
-             * @param {?} bp
-             * @return {?}
-             */
-            bp => bp.mediaQuery));
-            return this.buildObservable(queries);
-        }
-        /**
-         * Only pass/announce activations (not de-activations)
-         *
-         * Since multiple-mediaQueries can be activation in a cycle,
-         * gather all current activations into a single list of changes to observers
-         *
-         * Inject associated (if any) alias information into the MediaChange event
-         * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
-         * - Exclude print activations that do not have an associated mediaQuery
-         *
-         * NOTE: the raw MediaChange events [from MatchMedia] do not
-         *       contain important alias information; as such this info
-         *       must be injected into the MediaChange
-         * @private
-         * @param {?} mqList
-         * @return {?}
-         */
-        buildObservable(mqList) {
-            /** @type {?} */
-            const hasChanges = (/**
-             * @param {?} changes
-             * @return {?}
-             */
-            (changes) => {
-                /** @type {?} */
-                const isValidQuery = (/**
-                 * @param {?} change
-                 * @return {?}
-                 */
-                (change) => (change.mediaQuery.length > 0));
-                return (changes.filter(isValidQuery).length > 0);
-            });
-            /** @type {?} */
-            const excludeOverlaps = (/**
-             * @param {?} changes
-             * @return {?}
-             */
-            (changes) => {
-                return !this.filterOverlaps ? changes : changes.filter((/**
-                 * @param {?} change
-                 * @return {?}
-                 */
-                change => {
-                    /** @type {?} */
-                    const bp = this.breakpoints.findByQuery(change.mediaQuery);
-                    return !bp ? true : !bp.overlapping;
-                }));
-            });
-            /**
-             */
-            return this.matchMedia
-                .observe(this.hook.withPrintQuery(mqList))
-                .pipe(filter((/**
-             * @param {?} change
-             * @return {?}
-             */
-            (change) => change.matches)), debounceTime(0, asapScheduler), switchMap((/**
-             * @param {?} _
-             * @return {?}
-             */
-            _ => of(this.findAllActivations()))), map(excludeOverlaps), filter(hasChanges), takeUntil(this.destroyed$));
-        }
-        /**
-         * Find all current activations and prepare single list of activations
-         * sorted by descending priority.
-         * @private
-         * @return {?}
-         */
-        findAllActivations() {
-            /** @type {?} */
-            const mergeMQAlias = (/**
-             * @param {?} change
-             * @return {?}
-             */
-            (change) => {
-                /** @type {?} */
-                let bp = this.breakpoints.findByQuery(change.mediaQuery);
-                return mergeAlias(change, bp);
-            });
-            /** @type {?} */
-            const replaceWithPrintAlias = (/**
-             * @param {?} change
-             * @return {?}
-             */
-            (change) => {
-                return this.hook.isPrintEvent(change) ? this.hook.updateEvent(change) : change;
-            });
-            return this.matchMedia
-                .activations
-                .map((/**
-             * @param {?} query
-             * @return {?}
-             */
-            query => new MediaChange(true, query)))
-                .map(replaceWithPrintAlias)
-                .map(mergeMQAlias)
-                .sort(sortDescendingPriority);
-        }
+        (changes) => changes[0])));
     }
-    /** @nocollapse */ MediaObserver.ɵprov = ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
-    MediaObserver.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    /** @nocollapse */
-    MediaObserver.ctorParameters = () => [
-        { type: BreakPointRegistry },
-        { type: MatchMedia },
-        { type: PrintHook }
-    ];
-    return MediaObserver;
-})();
+    /**
+     * Completes the active subject, signalling to all complete for all
+     * MediaObserver subscribers
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.destroyed$.next();
+        this.destroyed$.complete();
+    }
+    // ************************************************
+    // Public Methods
+    // ************************************************
+    /**
+     * Observe changes to current activation 'list'
+     * @return {?}
+     */
+    asObservable() {
+        return this._media$;
+    }
+    /**
+     * Allow programmatic query to determine if one or more media query/alias match
+     * the current viewport size.
+     * @param {?} value One or more media queries (or aliases) to check.
+     * @return {?} Whether any of the media queries match.
+     */
+    isActive(value) {
+        /** @type {?} */
+        const aliases = splitQueries(coerceArray(value));
+        return aliases.some((/**
+         * @param {?} alias
+         * @return {?}
+         */
+        alias => {
+            /** @type {?} */
+            const query = toMediaQuery(alias, this.breakpoints);
+            return query !== null && this.matchMedia.isActive(query);
+        }));
+    }
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
+     * Register all the mediaQueries registered in the BreakPointRegistry
+     * This is needed so subscribers can be auto-notified of all standard, registered
+     * mediaQuery activations
+     * @private
+     * @return {?}
+     */
+    watchActivations() {
+        /** @type {?} */
+        const queries = this.breakpoints.items.map((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        bp => bp.mediaQuery));
+        return this.buildObservable(queries);
+    }
+    /**
+     * Only pass/announce activations (not de-activations)
+     *
+     * Since multiple-mediaQueries can be activation in a cycle,
+     * gather all current activations into a single list of changes to observers
+     *
+     * Inject associated (if any) alias information into the MediaChange event
+     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude print activations that do not have an associated mediaQuery
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
+     * @private
+     * @param {?} mqList
+     * @return {?}
+     */
+    buildObservable(mqList) {
+        /** @type {?} */
+        const hasChanges = (/**
+         * @param {?} changes
+         * @return {?}
+         */
+        (changes) => {
+            /** @type {?} */
+            const isValidQuery = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            (change) => (change.mediaQuery.length > 0));
+            return (changes.filter(isValidQuery).length > 0);
+        });
+        /** @type {?} */
+        const excludeOverlaps = (/**
+         * @param {?} changes
+         * @return {?}
+         */
+        (changes) => {
+            return !this.filterOverlaps ? changes : changes.filter((/**
+             * @param {?} change
+             * @return {?}
+             */
+            change => {
+                /** @type {?} */
+                const bp = this.breakpoints.findByQuery(change.mediaQuery);
+                return !bp ? true : !bp.overlapping;
+            }));
+        });
+        /**
+         */
+        return this.matchMedia
+            .observe(this.hook.withPrintQuery(mqList))
+            .pipe(filter((/**
+         * @param {?} change
+         * @return {?}
+         */
+        (change) => change.matches)), debounceTime(0, asapScheduler), switchMap((/**
+         * @param {?} _
+         * @return {?}
+         */
+        _ => of(this.findAllActivations()))), map(excludeOverlaps), filter(hasChanges), takeUntil(this.destroyed$));
+    }
+    /**
+     * Find all current activations and prepare single list of activations
+     * sorted by descending priority.
+     * @private
+     * @return {?}
+     */
+    findAllActivations() {
+        /** @type {?} */
+        const mergeMQAlias = (/**
+         * @param {?} change
+         * @return {?}
+         */
+        (change) => {
+            /** @type {?} */
+            let bp = this.breakpoints.findByQuery(change.mediaQuery);
+            return mergeAlias(change, bp);
+        });
+        /** @type {?} */
+        const replaceWithPrintAlias = (/**
+         * @param {?} change
+         * @return {?}
+         */
+        (change) => {
+            return this.hook.isPrintEvent(change) ? this.hook.updateEvent(change) : change;
+        });
+        return this.matchMedia
+            .activations
+            .map((/**
+         * @param {?} query
+         * @return {?}
+         */
+        query => new MediaChange(true, query)))
+            .map(replaceWithPrintAlias)
+            .map(mergeMQAlias)
+            .sort(sortDescendingPriority);
+    }
+}
+/** @nocollapse */ MediaObserver.ɵprov = ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
+MediaObserver.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
+/** @nocollapse */
+MediaObserver.ctorParameters = () => [
+    { type: BreakPointRegistry },
+    { type: MatchMedia },
+    { type: PrintHook }
+];
 /**
  * Find associated breakpoint (if any)
  * @param {?} query
@@ -2390,295 +2294,289 @@ function splitQueries(queries) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-observer/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-trigger/media-trigger.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class
  */
-let MediaTrigger = /** @class */ (() => {
+class MediaTrigger {
     /**
-     * Class
+     * @param {?} breakpoints
+     * @param {?} matchMedia
+     * @param {?} layoutConfig
+     * @param {?} _platformId
+     * @param {?} _document
      */
-    class MediaTrigger {
-        /**
-         * @param {?} breakpoints
-         * @param {?} matchMedia
-         * @param {?} layoutConfig
-         * @param {?} _platformId
-         * @param {?} _document
-         */
-        constructor(breakpoints, matchMedia, layoutConfig, _platformId, _document) {
-            this.breakpoints = breakpoints;
-            this.matchMedia = matchMedia;
-            this.layoutConfig = layoutConfig;
-            this._platformId = _platformId;
-            this._document = _document;
-            this.hasCachedRegistryMatches = false;
-            this.originalActivations = [];
-            this.originalRegistry = new Map();
-        }
-        /**
-         * Manually activate range of breakpoints
-         * @param {?} list array of mediaQuery or alias strings
+    constructor(breakpoints, matchMedia, layoutConfig, _platformId, _document) {
+        this.breakpoints = breakpoints;
+        this.matchMedia = matchMedia;
+        this.layoutConfig = layoutConfig;
+        this._platformId = _platformId;
+        this._document = _document;
+        this.hasCachedRegistryMatches = false;
+        this.originalActivations = [];
+        this.originalRegistry = new Map();
+    }
+    /**
+     * Manually activate range of breakpoints
+     * @param {?} list array of mediaQuery or alias strings
+     * @return {?}
+     */
+    activate(list) {
+        list = list.map((/**
+         * @param {?} it
          * @return {?}
          */
-        activate(list) {
-            list = list.map((/**
-             * @param {?} it
+        it => it.trim())); // trim queries
+        this.saveActivations();
+        this.deactivateAll();
+        this.setActivations(list);
+        this.prepareAutoRestore();
+    }
+    /**
+     * Restore original, 'real' breakpoints and emit events
+     * to trigger stream notification
+     * @return {?}
+     */
+    restore() {
+        if (this.hasCachedRegistryMatches) {
+            /** @type {?} */
+            const extractQuery = (/**
+             * @param {?} change
              * @return {?}
              */
-            it => it.trim())); // trim queries
-            this.saveActivations();
-            this.deactivateAll();
-            this.setActivations(list);
-            this.prepareAutoRestore();
-        }
-        /**
-         * Restore original, 'real' breakpoints and emit events
-         * to trigger stream notification
-         * @return {?}
-         */
-        restore() {
-            if (this.hasCachedRegistryMatches) {
-                /** @type {?} */
-                const extractQuery = (/**
-                 * @param {?} change
-                 * @return {?}
-                 */
-                (change) => change.mediaQuery);
-                /** @type {?} */
-                const list = this.originalActivations.map(extractQuery);
-                try {
-                    this.deactivateAll();
-                    this.restoreRegistryMatches();
-                    this.setActivations(list);
-                }
-                finally {
-                    this.originalActivations = [];
-                    if (this.resizeSubscription) {
-                        this.resizeSubscription.unsubscribe();
-                    }
+            (change) => change.mediaQuery);
+            /** @type {?} */
+            const list = this.originalActivations.map(extractQuery);
+            try {
+                this.deactivateAll();
+                this.restoreRegistryMatches();
+                this.setActivations(list);
+            }
+            finally {
+                this.originalActivations = [];
+                if (this.resizeSubscription) {
+                    this.resizeSubscription.unsubscribe();
                 }
             }
         }
-        // ************************************************
-        // Internal Methods
-        // ************************************************
-        /**
-         * Whenever window resizes, immediately auto-restore original
-         * activations (if we are simulating activations)
-         * @private
-         * @return {?}
-         */
-        prepareAutoRestore() {
+    }
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
+     * Whenever window resizes, immediately auto-restore original
+     * activations (if we are simulating activations)
+     * @private
+     * @return {?}
+     */
+    prepareAutoRestore() {
+        /** @type {?} */
+        const isBrowser = isPlatformBrowser(this._platformId) && this._document;
+        /** @type {?} */
+        const enableAutoRestore = isBrowser && this.layoutConfig.mediaTriggerAutoRestore;
+        if (enableAutoRestore) {
             /** @type {?} */
-            const isBrowser = isPlatformBrowser(this._platformId) && this._document;
+            const resize$ = fromEvent(window, 'resize').pipe(take(1));
+            this.resizeSubscription = resize$.subscribe(this.restore.bind(this));
+        }
+    }
+    /**
+     * Notify all matchMedia subscribers of de-activations
+     *
+     * Note: we must force 'matches' updates for
+     *       future matchMedia::activation lookups
+     * @private
+     * @return {?}
+     */
+    deactivateAll() {
+        /** @type {?} */
+        const list = this.currentActivations;
+        this.forceRegistryMatches(list, false);
+        this.simulateMediaChanges(list, false);
+    }
+    /**
+     * Cache current activations as sorted, prioritized list of MediaChanges
+     * @private
+     * @return {?}
+     */
+    saveActivations() {
+        if (!this.hasCachedRegistryMatches) {
             /** @type {?} */
-            const enableAutoRestore = isBrowser && this.layoutConfig.mediaTriggerAutoRestore;
-            if (enableAutoRestore) {
-                /** @type {?} */
-                const resize$ = fromEvent(window, 'resize').pipe(take(1));
-                this.resizeSubscription = resize$.subscribe(this.restore.bind(this));
-            }
-        }
-        /**
-         * Notify all matchMedia subscribers of de-activations
-         *
-         * Note: we must force 'matches' updates for
-         *       future matchMedia::activation lookups
-         * @private
-         * @return {?}
-         */
-        deactivateAll() {
-            /** @type {?} */
-            const list = this.currentActivations;
-            this.forceRegistryMatches(list, false);
-            this.simulateMediaChanges(list, false);
-        }
-        /**
-         * Cache current activations as sorted, prioritized list of MediaChanges
-         * @private
-         * @return {?}
-         */
-        saveActivations() {
-            if (!this.hasCachedRegistryMatches) {
-                /** @type {?} */
-                const toMediaChange = (/**
-                 * @param {?} query
-                 * @return {?}
-                 */
-                (query) => new MediaChange(true, query));
-                /** @type {?} */
-                const mergeMQAlias = (/**
-                 * @param {?} change
-                 * @return {?}
-                 */
-                (change) => {
-                    /** @type {?} */
-                    const bp = this.breakpoints.findByQuery(change.mediaQuery);
-                    return mergeAlias(change, bp);
-                });
-                this.originalActivations = this.currentActivations
-                    .map(toMediaChange)
-                    .map(mergeMQAlias)
-                    .sort(sortDescendingPriority);
-                this.cacheRegistryMatches();
-            }
-        }
-        /**
-         * Force set manual activations for specified mediaQuery list
-         * @private
-         * @param {?} list
-         * @return {?}
-         */
-        setActivations(list) {
-            if (!!this.originalRegistry) {
-                this.forceRegistryMatches(list, true);
-            }
-            this.simulateMediaChanges(list);
-        }
-        /**
-         * For specified mediaQuery list manually simulate activations or deactivations
-         * @private
-         * @param {?} queries
-         * @param {?=} matches
-         * @return {?}
-         */
-        simulateMediaChanges(queries, matches = true) {
-            /** @type {?} */
-            const toMediaQuery = (/**
+            const toMediaChange = (/**
              * @param {?} query
              * @return {?}
              */
-            (query) => {
+            (query) => new MediaChange(true, query));
+            /** @type {?} */
+            const mergeMQAlias = (/**
+             * @param {?} change
+             * @return {?}
+             */
+            (change) => {
                 /** @type {?} */
-                const locator = this.breakpoints;
-                /** @type {?} */
-                const bp = locator.findByAlias(query) || locator.findByQuery(query);
-                return bp ? bp.mediaQuery : query;
+                const bp = this.breakpoints.findByQuery(change.mediaQuery);
+                return mergeAlias(change, bp);
             });
-            /** @type {?} */
-            const emitChangeEvent = (/**
-             * @param {?} query
-             * @return {?}
-             */
-            (query) => this.emitChangeEvent(matches, query));
-            queries.map(toMediaQuery).forEach(emitChangeEvent);
+            this.originalActivations = this.currentActivations
+                .map(toMediaChange)
+                .map(mergeMQAlias)
+                .sort(sortDescendingPriority);
+            this.cacheRegistryMatches();
         }
-        /**
-         * Replace current registry with simulated registry...
-         * Note: this is required since MediaQueryList::matches is 'readOnly'
-         * @private
-         * @param {?} queries
-         * @param {?} matches
-         * @return {?}
-         */
-        forceRegistryMatches(queries, matches) {
-            /** @type {?} */
-            const registry = new Map();
-            queries.forEach((/**
-             * @param {?} query
-             * @return {?}
-             */
-            query => {
-                registry.set(query, (/** @type {?} */ ({ matches })));
-            }));
-            this.matchMedia.registry = registry;
+    }
+    /**
+     * Force set manual activations for specified mediaQuery list
+     * @private
+     * @param {?} list
+     * @return {?}
+     */
+    setActivations(list) {
+        if (!!this.originalRegistry) {
+            this.forceRegistryMatches(list, true);
         }
-        /**
-         * Save current MatchMedia::registry items.
-         * @private
-         * @return {?}
-         */
-        cacheRegistryMatches() {
-            /** @type {?} */
-            const target = this.originalRegistry;
-            target.clear();
-            this.matchMedia.registry.forEach((/**
-             * @param {?} value
-             * @param {?} key
-             * @return {?}
-             */
-            (value, key) => {
-                target.set(key, value);
-            }));
-            this.hasCachedRegistryMatches = true;
-        }
-        /**
-         * Restore original, 'true' registry
-         * @private
-         * @return {?}
-         */
-        restoreRegistryMatches() {
-            /** @type {?} */
-            const target = this.matchMedia.registry;
-            target.clear();
-            this.originalRegistry.forEach((/**
-             * @param {?} value
-             * @param {?} key
-             * @return {?}
-             */
-            (value, key) => {
-                target.set(key, value);
-            }));
-            this.originalRegistry.clear();
-            this.hasCachedRegistryMatches = false;
-        }
-        /**
-         * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
-         * @private
-         * @param {?} matches
+        this.simulateMediaChanges(list);
+    }
+    /**
+     * For specified mediaQuery list manually simulate activations or deactivations
+     * @private
+     * @param {?} queries
+     * @param {?=} matches
+     * @return {?}
+     */
+    simulateMediaChanges(queries, matches = true) {
+        /** @type {?} */
+        const toMediaQuery = (/**
          * @param {?} query
          * @return {?}
          */
-        emitChangeEvent(matches, query) {
-            this.matchMedia.source.next(new MediaChange(matches, query));
-        }
-        /**
-         * @private
+        (query) => {
+            /** @type {?} */
+            const locator = this.breakpoints;
+            /** @type {?} */
+            const bp = locator.findByAlias(query) || locator.findByQuery(query);
+            return bp ? bp.mediaQuery : query;
+        });
+        /** @type {?} */
+        const emitChangeEvent = (/**
+         * @param {?} query
          * @return {?}
          */
-        get currentActivations() {
-            return this.matchMedia.activations;
-        }
+        (query) => this.emitChangeEvent(matches, query));
+        queries.map(toMediaQuery).forEach(emitChangeEvent);
     }
-    /** @nocollapse */ MediaTrigger.ɵprov = ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
-    MediaTrigger.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    /** @nocollapse */
-    MediaTrigger.ctorParameters = () => [
-        { type: BreakPointRegistry },
-        { type: MatchMedia },
-        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
-        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-    ];
-    return MediaTrigger;
-})();
+    /**
+     * Replace current registry with simulated registry...
+     * Note: this is required since MediaQueryList::matches is 'readOnly'
+     * @private
+     * @param {?} queries
+     * @param {?} matches
+     * @return {?}
+     */
+    forceRegistryMatches(queries, matches) {
+        /** @type {?} */
+        const registry = new Map();
+        queries.forEach((/**
+         * @param {?} query
+         * @return {?}
+         */
+        query => {
+            registry.set(query, (/** @type {?} */ ({ matches })));
+        }));
+        this.matchMedia.registry = registry;
+    }
+    /**
+     * Save current MatchMedia::registry items.
+     * @private
+     * @return {?}
+     */
+    cacheRegistryMatches() {
+        /** @type {?} */
+        const target = this.originalRegistry;
+        target.clear();
+        this.matchMedia.registry.forEach((/**
+         * @param {?} value
+         * @param {?} key
+         * @return {?}
+         */
+        (value, key) => {
+            target.set(key, value);
+        }));
+        this.hasCachedRegistryMatches = true;
+    }
+    /**
+     * Restore original, 'true' registry
+     * @private
+     * @return {?}
+     */
+    restoreRegistryMatches() {
+        /** @type {?} */
+        const target = this.matchMedia.registry;
+        target.clear();
+        this.originalRegistry.forEach((/**
+         * @param {?} value
+         * @param {?} key
+         * @return {?}
+         */
+        (value, key) => {
+            target.set(key, value);
+        }));
+        this.originalRegistry.clear();
+        this.hasCachedRegistryMatches = false;
+    }
+    /**
+     * Manually emit a MediaChange event via the MatchMedia to MediaMarshaller and MediaObserver
+     * @private
+     * @param {?} matches
+     * @param {?} query
+     * @return {?}
+     */
+    emitChangeEvent(matches, query) {
+        this.matchMedia.source.next(new MediaChange(matches, query));
+    }
+    /**
+     * @private
+     * @return {?}
+     */
+    get currentActivations() {
+        return this.matchMedia.activations;
+    }
+}
+/** @nocollapse */ MediaTrigger.ɵprov = ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
+MediaTrigger.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
+/** @nocollapse */
+MediaTrigger.ctorParameters = () => [
+    { type: BreakPointRegistry },
+    { type: MatchMedia },
+    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-trigger/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/utils/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/auto-prefixer.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -2745,256 +2643,253 @@ function applyCssPrefixes(target) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/style-utils/style-utils.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-let StyleUtils = /** @class */ (() => {
-    class StyleUtils {
-        /**
-         * @param {?} _serverStylesheet
-         * @param {?} _serverModuleLoaded
-         * @param {?} _platformId
-         * @param {?} layoutConfig
-         */
-        constructor(_serverStylesheet, _serverModuleLoaded, _platformId, layoutConfig) {
-            this._serverStylesheet = _serverStylesheet;
-            this._serverModuleLoaded = _serverModuleLoaded;
-            this._platformId = _platformId;
-            this.layoutConfig = layoutConfig;
-        }
-        /**
-         * Applies styles given via string pair or object map to the directive element
-         * @param {?} element
-         * @param {?} style
-         * @param {?=} value
-         * @return {?}
-         */
-        applyStyleToElement(element, style, value = null) {
-            /** @type {?} */
-            let styles = {};
-            if (typeof style === 'string') {
-                styles[style] = value;
-                style = styles;
-            }
-            styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
-            this._applyMultiValueStyleToElement(styles, element);
-        }
-        /**
-         * Applies styles given via string pair or object map to the directive's element
-         * @param {?} style
-         * @param {?=} elements
-         * @return {?}
-         */
-        applyStyleToElements(style, elements = []) {
-            /** @type {?} */
-            const styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
-            elements.forEach((/**
-             * @param {?} el
-             * @return {?}
-             */
-            el => {
-                this._applyMultiValueStyleToElement(styles, el);
-            }));
-        }
-        /**
-         * Determine the DOM element's Flexbox flow (flex-direction)
-         *
-         * Check inline style first then check computed (stylesheet) style
-         * @param {?} target
-         * @return {?}
-         */
-        getFlowDirection(target) {
-            /** @type {?} */
-            const query = 'flex-direction';
-            /** @type {?} */
-            let value = this.lookupStyle(target, query);
-            /** @type {?} */
-            const hasInlineValue = this.lookupInlineStyle(target, query) ||
-                (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
-            return [value || 'row', hasInlineValue];
-        }
-        /**
-         * @param {?} target
-         * @return {?}
-         */
-        hasWrap(target) {
-            /** @type {?} */
-            const query = 'flex-wrap';
-            return this.lookupStyle(target, query) === 'wrap';
-        }
-        /**
-         * Find the DOM element's raw attribute value (if any)
-         * @param {?} element
-         * @param {?} attribute
-         * @return {?}
-         */
-        lookupAttributeValue(element, attribute) {
-            return element.getAttribute(attribute) || '';
-        }
-        /**
-         * Find the DOM element's inline style value (if any)
-         * @param {?} element
-         * @param {?} styleName
-         * @return {?}
-         */
-        lookupInlineStyle(element, styleName) {
-            return isPlatformBrowser(this._platformId) ?
-                element.style.getPropertyValue(styleName) : this._getServerStyle(element, styleName);
-        }
-        /**
-         * Determine the inline or inherited CSS style
-         * NOTE: platform-server has no implementation for getComputedStyle
-         * @param {?} element
-         * @param {?} styleName
-         * @param {?=} inlineOnly
-         * @return {?}
-         */
-        lookupStyle(element, styleName, inlineOnly = false) {
-            /** @type {?} */
-            let value = '';
-            if (element) {
-                /** @type {?} */
-                let immediateValue = value = this.lookupInlineStyle(element, styleName);
-                if (!immediateValue) {
-                    if (isPlatformBrowser(this._platformId)) {
-                        if (!inlineOnly) {
-                            value = getComputedStyle(element).getPropertyValue(styleName);
-                        }
-                    }
-                    else {
-                        if (this._serverModuleLoaded) {
-                            value = this._serverStylesheet.getStyleForElement(element, styleName);
-                        }
-                    }
-                }
-            }
-            // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
-            //       in which case getComputedStyle() should determine a valid value.
-            return value ? value.trim() : '';
-        }
-        /**
-         * Applies the styles to the element. The styles object map may contain an array of values
-         * Each value will be added as element style
-         * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
-         * @private
-         * @param {?} styles
-         * @param {?} element
-         * @return {?}
-         */
-        _applyMultiValueStyleToElement(styles, element) {
-            Object.keys(styles).sort().forEach((/**
-             * @param {?} key
-             * @return {?}
-             */
-            key => {
-                /** @type {?} */
-                const el = styles[key];
-                /** @type {?} */
-                const values = Array.isArray(el) ? el : [el];
-                values.sort();
-                for (let value of values) {
-                    value = value ? value + '' : '';
-                    if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
-                        isPlatformBrowser(this._platformId) ?
-                            element.style.setProperty(key, value) : this._setServerStyle(element, key, value);
-                    }
-                    else {
-                        this._serverStylesheet.addStyleToElement(element, key, value);
-                    }
-                }
-            }));
-        }
-        /**
-         * @private
-         * @param {?} element
-         * @param {?} styleName
-         * @param {?=} styleValue
-         * @return {?}
-         */
-        _setServerStyle(element, styleName, styleValue) {
-            styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-            /** @type {?} */
-            const styleMap = this._readStyleAttribute(element);
-            styleMap[styleName] = styleValue || '';
-            this._writeStyleAttribute(element, styleMap);
-        }
-        /**
-         * @private
-         * @param {?} element
-         * @param {?} styleName
-         * @return {?}
-         */
-        _getServerStyle(element, styleName) {
-            /** @type {?} */
-            const styleMap = this._readStyleAttribute(element);
-            return styleMap[styleName] || '';
-        }
-        /**
-         * @private
-         * @param {?} element
-         * @return {?}
-         */
-        _readStyleAttribute(element) {
-            /** @type {?} */
-            const styleMap = {};
-            /** @type {?} */
-            const styleAttribute = element.getAttribute('style');
-            if (styleAttribute) {
-                /** @type {?} */
-                const styleList = styleAttribute.split(/;+/g);
-                for (let i = 0; i < styleList.length; i++) {
-                    /** @type {?} */
-                    const style = styleList[i].trim();
-                    if (style.length > 0) {
-                        /** @type {?} */
-                        const colonIndex = style.indexOf(':');
-                        if (colonIndex === -1) {
-                            throw new Error(`Invalid CSS style: ${style}`);
-                        }
-                        /** @type {?} */
-                        const name = style.substr(0, colonIndex).trim();
-                        styleMap[name] = style.substr(colonIndex + 1).trim();
-                    }
-                }
-            }
-            return styleMap;
-        }
-        /**
-         * @private
-         * @param {?} element
-         * @param {?} styleMap
-         * @return {?}
-         */
-        _writeStyleAttribute(element, styleMap) {
-            /** @type {?} */
-            let styleAttrValue = '';
-            for (const key in styleMap) {
-                /** @type {?} */
-                const newValue = styleMap[key];
-                if (newValue) {
-                    styleAttrValue += key + ':' + styleMap[key] + ';';
-                }
-            }
-            element.setAttribute('style', styleAttrValue);
-        }
+class StyleUtils {
+    /**
+     * @param {?} _serverStylesheet
+     * @param {?} _serverModuleLoaded
+     * @param {?} _platformId
+     * @param {?} layoutConfig
+     */
+    constructor(_serverStylesheet, _serverModuleLoaded, _platformId, layoutConfig) {
+        this._serverStylesheet = _serverStylesheet;
+        this._serverModuleLoaded = _serverModuleLoaded;
+        this._platformId = _platformId;
+        this.layoutConfig = layoutConfig;
     }
-    /** @nocollapse */ StyleUtils.ɵprov = ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(ɵɵinject(StylesheetMap), ɵɵinject(SERVER_TOKEN), ɵɵinject(PLATFORM_ID), ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
-    StyleUtils.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    /** @nocollapse */
-    StyleUtils.ctorParameters = () => [
-        { type: StylesheetMap },
-        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
-        { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
-    ];
-    return StyleUtils;
-})();
+    /**
+     * Applies styles given via string pair or object map to the directive element
+     * @param {?} element
+     * @param {?} style
+     * @param {?=} value
+     * @return {?}
+     */
+    applyStyleToElement(element, style, value = null) {
+        /** @type {?} */
+        let styles = {};
+        if (typeof style === 'string') {
+            styles[style] = value;
+            style = styles;
+        }
+        styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
+        this._applyMultiValueStyleToElement(styles, element);
+    }
+    /**
+     * Applies styles given via string pair or object map to the directive's element
+     * @param {?} style
+     * @param {?=} elements
+     * @return {?}
+     */
+    applyStyleToElements(style, elements = []) {
+        /** @type {?} */
+        const styles = this.layoutConfig.disableVendorPrefixes ? style : applyCssPrefixes(style);
+        elements.forEach((/**
+         * @param {?} el
+         * @return {?}
+         */
+        el => {
+            this._applyMultiValueStyleToElement(styles, el);
+        }));
+    }
+    /**
+     * Determine the DOM element's Flexbox flow (flex-direction)
+     *
+     * Check inline style first then check computed (stylesheet) style
+     * @param {?} target
+     * @return {?}
+     */
+    getFlowDirection(target) {
+        /** @type {?} */
+        const query = 'flex-direction';
+        /** @type {?} */
+        let value = this.lookupStyle(target, query);
+        /** @type {?} */
+        const hasInlineValue = this.lookupInlineStyle(target, query) ||
+            (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
+        return [value || 'row', hasInlineValue];
+    }
+    /**
+     * @param {?} target
+     * @return {?}
+     */
+    hasWrap(target) {
+        /** @type {?} */
+        const query = 'flex-wrap';
+        return this.lookupStyle(target, query) === 'wrap';
+    }
+    /**
+     * Find the DOM element's raw attribute value (if any)
+     * @param {?} element
+     * @param {?} attribute
+     * @return {?}
+     */
+    lookupAttributeValue(element, attribute) {
+        return element.getAttribute(attribute) || '';
+    }
+    /**
+     * Find the DOM element's inline style value (if any)
+     * @param {?} element
+     * @param {?} styleName
+     * @return {?}
+     */
+    lookupInlineStyle(element, styleName) {
+        return isPlatformBrowser(this._platformId) ?
+            element.style.getPropertyValue(styleName) : this._getServerStyle(element, styleName);
+    }
+    /**
+     * Determine the inline or inherited CSS style
+     * NOTE: platform-server has no implementation for getComputedStyle
+     * @param {?} element
+     * @param {?} styleName
+     * @param {?=} inlineOnly
+     * @return {?}
+     */
+    lookupStyle(element, styleName, inlineOnly = false) {
+        /** @type {?} */
+        let value = '';
+        if (element) {
+            /** @type {?} */
+            let immediateValue = value = this.lookupInlineStyle(element, styleName);
+            if (!immediateValue) {
+                if (isPlatformBrowser(this._platformId)) {
+                    if (!inlineOnly) {
+                        value = getComputedStyle(element).getPropertyValue(styleName);
+                    }
+                }
+                else {
+                    if (this._serverModuleLoaded) {
+                        value = this._serverStylesheet.getStyleForElement(element, styleName);
+                    }
+                }
+            }
+        }
+        // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
+        //       in which case getComputedStyle() should determine a valid value.
+        return value ? value.trim() : '';
+    }
+    /**
+     * Applies the styles to the element. The styles object map may contain an array of values
+     * Each value will be added as element style
+     * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
+     * @private
+     * @param {?} styles
+     * @param {?} element
+     * @return {?}
+     */
+    _applyMultiValueStyleToElement(styles, element) {
+        Object.keys(styles).sort().forEach((/**
+         * @param {?} key
+         * @return {?}
+         */
+        key => {
+            /** @type {?} */
+            const el = styles[key];
+            /** @type {?} */
+            const values = Array.isArray(el) ? el : [el];
+            values.sort();
+            for (let value of values) {
+                value = value ? value + '' : '';
+                if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
+                    isPlatformBrowser(this._platformId) ?
+                        element.style.setProperty(key, value) : this._setServerStyle(element, key, value);
+                }
+                else {
+                    this._serverStylesheet.addStyleToElement(element, key, value);
+                }
+            }
+        }));
+    }
+    /**
+     * @private
+     * @param {?} element
+     * @param {?} styleName
+     * @param {?=} styleValue
+     * @return {?}
+     */
+    _setServerStyle(element, styleName, styleValue) {
+        styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        /** @type {?} */
+        const styleMap = this._readStyleAttribute(element);
+        styleMap[styleName] = styleValue || '';
+        this._writeStyleAttribute(element, styleMap);
+    }
+    /**
+     * @private
+     * @param {?} element
+     * @param {?} styleName
+     * @return {?}
+     */
+    _getServerStyle(element, styleName) {
+        /** @type {?} */
+        const styleMap = this._readStyleAttribute(element);
+        return styleMap[styleName] || '';
+    }
+    /**
+     * @private
+     * @param {?} element
+     * @return {?}
+     */
+    _readStyleAttribute(element) {
+        /** @type {?} */
+        const styleMap = {};
+        /** @type {?} */
+        const styleAttribute = element.getAttribute('style');
+        if (styleAttribute) {
+            /** @type {?} */
+            const styleList = styleAttribute.split(/;+/g);
+            for (let i = 0; i < styleList.length; i++) {
+                /** @type {?} */
+                const style = styleList[i].trim();
+                if (style.length > 0) {
+                    /** @type {?} */
+                    const colonIndex = style.indexOf(':');
+                    if (colonIndex === -1) {
+                        throw new Error(`Invalid CSS style: ${style}`);
+                    }
+                    /** @type {?} */
+                    const name = style.substr(0, colonIndex).trim();
+                    styleMap[name] = style.substr(colonIndex + 1).trim();
+                }
+            }
+        }
+        return styleMap;
+    }
+    /**
+     * @private
+     * @param {?} element
+     * @param {?} styleMap
+     * @return {?}
+     */
+    _writeStyleAttribute(element, styleMap) {
+        /** @type {?} */
+        let styleAttrValue = '';
+        for (const key in styleMap) {
+            /** @type {?} */
+            const newValue = styleMap[key];
+            if (newValue) {
+                styleAttrValue += key + ':' + styleMap[key] + ';';
+            }
+        }
+        element.setAttribute('style', styleAttrValue);
+    }
+}
+/** @nocollapse */ StyleUtils.ɵprov = ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(ɵɵinject(StylesheetMap), ɵɵinject(SERVER_TOKEN), ɵɵinject(PLATFORM_ID), ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
+StyleUtils.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
+/** @nocollapse */
+StyleUtils.ctorParameters = () => [
+    { type: StylesheetMap },
+    { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
+    { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
+];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/style-builder/style-builder.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * A class that encapsulates CSS style generation for common directives
@@ -3023,7 +2918,7 @@ class StyleBuilder {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/basis-validator/basis-validator.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -3080,412 +2975,405 @@ function _validateCalcValue(calc) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-marshaller/media-marshaller.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMarshaller - register responsive values from directives and
  *                   trigger them based on media query events
  */
-let MediaMarshaller = /** @class */ (() => {
+class MediaMarshaller {
     /**
-     * MediaMarshaller - register responsive values from directives and
-     *                   trigger them based on media query events
+     * @param {?} matchMedia
+     * @param {?} breakpoints
+     * @param {?} hook
      */
-    class MediaMarshaller {
-        /**
-         * @param {?} matchMedia
-         * @param {?} breakpoints
-         * @param {?} hook
-         */
-        constructor(matchMedia, breakpoints, hook) {
-            this.matchMedia = matchMedia;
-            this.breakpoints = breakpoints;
-            this.hook = hook;
-            this.activatedBreakpoints = [];
-            this.elementMap = new Map();
-            this.elementKeyMap = new WeakMap();
-            this.watcherMap = new WeakMap(); // special triggers to update elements
-            // special triggers to update elements
-            this.updateMap = new WeakMap(); // callback functions to update styles
-            // callback functions to update styles
-            this.clearMap = new WeakMap(); // callback functions to clear styles
-            // callback functions to clear styles
-            this.subject = new Subject();
-            this.observeActivations();
+    constructor(matchMedia, breakpoints, hook) {
+        this.matchMedia = matchMedia;
+        this.breakpoints = breakpoints;
+        this.hook = hook;
+        this.activatedBreakpoints = [];
+        this.elementMap = new Map();
+        this.elementKeyMap = new WeakMap();
+        this.watcherMap = new WeakMap(); // special triggers to update elements
+        // special triggers to update elements
+        this.updateMap = new WeakMap(); // callback functions to update styles
+        // callback functions to update styles
+        this.clearMap = new WeakMap(); // callback functions to clear styles
+        // callback functions to clear styles
+        this.subject = new Subject();
+        this.observeActivations();
+    }
+    /**
+     * @return {?}
+     */
+    get activatedAlias() {
+        return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
+    }
+    /**
+     * Update styles on breakpoint activates or deactivates
+     * @param {?} mc
+     * @return {?}
+     */
+    onMediaChange(mc) {
+        /** @type {?} */
+        const bp = this.findByQuery(mc.mediaQuery);
+        if (bp) {
+            mc = mergeAlias(mc, bp);
+            if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
+                this.activatedBreakpoints.push(bp);
+                this.activatedBreakpoints.sort(sortDescendingPriority);
+                this.updateStyles();
+            }
+            else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
+                // Remove the breakpoint when it's deactivated
+                this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+                this.activatedBreakpoints.sort(sortDescendingPriority);
+                this.updateStyles();
+            }
         }
-        /**
-         * @return {?}
-         */
-        get activatedAlias() {
-            return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
-        }
-        /**
-         * Update styles on breakpoint activates or deactivates
-         * @param {?} mc
-         * @return {?}
-         */
-        onMediaChange(mc) {
+    }
+    /**
+     * initialize the marshaller with necessary elements for delegation on an element
+     * @param {?} element
+     * @param {?} key
+     * @param {?=} updateFn optional callback so that custom bp directives don't have to re-provide this
+     * @param {?=} clearFn optional callback so that custom bp directives don't have to re-provide this
+     * @param {?=} extraTriggers other triggers to force style updates (e.g. layout, directionality, etc)
+     * @return {?}
+     */
+    init(element, key, updateFn, clearFn, extraTriggers = []) {
+        initBuilderMap(this.updateMap, element, key, updateFn);
+        initBuilderMap(this.clearMap, element, key, clearFn);
+        this.buildElementKeyMap(element, key);
+        this.watchExtraTriggers(element, key, extraTriggers);
+    }
+    /**
+     * get the value for an element and key and optionally a given breakpoint
+     * @param {?} element
+     * @param {?} key
+     * @param {?=} bp
+     * @return {?}
+     */
+    getValue(element, key, bp) {
+        /** @type {?} */
+        const bpMap = this.elementMap.get(element);
+        if (bpMap) {
             /** @type {?} */
-            const bp = this.findByQuery(mc.mediaQuery);
-            if (bp) {
-                mc = mergeAlias(mc, bp);
-                if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
-                    this.activatedBreakpoints.push(bp);
-                    this.activatedBreakpoints.sort(sortDescendingPriority);
-                    this.updateStyles();
-                }
-                else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
-                    // Remove the breakpoint when it's deactivated
-                    this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
-                    this.activatedBreakpoints.sort(sortDescendingPriority);
-                    this.updateStyles();
-                }
+            const values = bp !== undefined ? bpMap.get(bp) : this.getActivatedValues(bpMap, key);
+            if (values) {
+                return values.get(key);
             }
         }
-        /**
-         * initialize the marshaller with necessary elements for delegation on an element
-         * @param {?} element
-         * @param {?} key
-         * @param {?=} updateFn optional callback so that custom bp directives don't have to re-provide this
-         * @param {?=} clearFn optional callback so that custom bp directives don't have to re-provide this
-         * @param {?=} extraTriggers other triggers to force style updates (e.g. layout, directionality, etc)
-         * @return {?}
-         */
-        init(element, key, updateFn, clearFn, extraTriggers = []) {
-            initBuilderMap(this.updateMap, element, key, updateFn);
-            initBuilderMap(this.clearMap, element, key, clearFn);
-            this.buildElementKeyMap(element, key);
-            this.watchExtraTriggers(element, key, extraTriggers);
-        }
-        /**
-         * get the value for an element and key and optionally a given breakpoint
-         * @param {?} element
-         * @param {?} key
-         * @param {?=} bp
-         * @return {?}
-         */
-        getValue(element, key, bp) {
+        return undefined;
+    }
+    /**
+     * whether the element has values for a given key
+     * @param {?} element
+     * @param {?} key
+     * @return {?}
+     */
+    hasValue(element, key) {
+        /** @type {?} */
+        const bpMap = this.elementMap.get(element);
+        if (bpMap) {
             /** @type {?} */
-            const bpMap = this.elementMap.get(element);
-            if (bpMap) {
-                /** @type {?} */
-                const values = bp !== undefined ? bpMap.get(bp) : this.getActivatedValues(bpMap, key);
-                if (values) {
-                    return values.get(key);
-                }
-            }
-            return undefined;
-        }
-        /**
-         * whether the element has values for a given key
-         * @param {?} element
-         * @param {?} key
-         * @return {?}
-         */
-        hasValue(element, key) {
-            /** @type {?} */
-            const bpMap = this.elementMap.get(element);
-            if (bpMap) {
-                /** @type {?} */
-                const values = this.getActivatedValues(bpMap, key);
-                if (values) {
-                    return values.get(key) !== undefined || false;
-                }
-            }
-            return false;
-        }
-        /**
-         * Set the value for an input on a directive
-         * @param {?} element the element in question
-         * @param {?} key the type of the directive (e.g. flex, layout-gap, etc)
-         * @param {?} val the value for the breakpoint
-         * @param {?} bp the breakpoint suffix (empty string = default)
-         * @return {?}
-         */
-        setValue(element, key, val, bp) {
-            /** @type {?} */
-            let bpMap = this.elementMap.get(element);
-            if (!bpMap) {
-                bpMap = new Map().set(bp, new Map().set(key, val));
-                this.elementMap.set(element, bpMap);
-            }
-            else {
-                /** @type {?} */
-                const values = (bpMap.get(bp) || new Map()).set(key, val);
-                bpMap.set(bp, values);
-                this.elementMap.set(element, bpMap);
-            }
-            /** @type {?} */
-            const value = this.getValue(element, key);
-            if (value !== undefined) {
-                this.updateElement(element, key, value);
+            const values = this.getActivatedValues(bpMap, key);
+            if (values) {
+                return values.get(key) !== undefined || false;
             }
         }
-        /**
-         * Track element value changes for a specific key
-         * @param {?} element
-         * @param {?} key
+        return false;
+    }
+    /**
+     * Set the value for an input on a directive
+     * @param {?} element the element in question
+     * @param {?} key the type of the directive (e.g. flex, layout-gap, etc)
+     * @param {?} val the value for the breakpoint
+     * @param {?} bp the breakpoint suffix (empty string = default)
+     * @return {?}
+     */
+    setValue(element, key, val, bp) {
+        /** @type {?} */
+        let bpMap = this.elementMap.get(element);
+        if (!bpMap) {
+            bpMap = new Map().set(bp, new Map().set(key, val));
+            this.elementMap.set(element, bpMap);
+        }
+        else {
+            /** @type {?} */
+            const values = (bpMap.get(bp) || new Map()).set(key, val);
+            bpMap.set(bp, values);
+            this.elementMap.set(element, bpMap);
+        }
+        /** @type {?} */
+        const value = this.getValue(element, key);
+        if (value !== undefined) {
+            this.updateElement(element, key, value);
+        }
+    }
+    /**
+     * Track element value changes for a specific key
+     * @param {?} element
+     * @param {?} key
+     * @return {?}
+     */
+    trackValue(element, key) {
+        return this.subject
+            .asObservable()
+            .pipe(filter((/**
+         * @param {?} v
          * @return {?}
          */
-        trackValue(element, key) {
-            return this.subject
-                .asObservable()
-                .pipe(filter((/**
-             * @param {?} v
+        v => v.element === element && v.key === key)));
+    }
+    /**
+     * update all styles for all elements on the current breakpoint
+     * @return {?}
+     */
+    updateStyles() {
+        this.elementMap.forEach((/**
+         * @param {?} bpMap
+         * @param {?} el
+         * @return {?}
+         */
+        (bpMap, el) => {
+            /** @type {?} */
+            const keyMap = new Set((/** @type {?} */ (this.elementKeyMap.get(el))));
+            /** @type {?} */
+            let valueMap = this.getActivatedValues(bpMap);
+            if (valueMap) {
+                valueMap.forEach((/**
+                 * @param {?} v
+                 * @param {?} k
+                 * @return {?}
+                 */
+                (v, k) => {
+                    this.updateElement(el, k, v);
+                    keyMap.delete(k);
+                }));
+            }
+            keyMap.forEach((/**
+             * @param {?} k
              * @return {?}
              */
-            v => v.element === element && v.key === key)));
-        }
-        /**
-         * update all styles for all elements on the current breakpoint
-         * @return {?}
-         */
-        updateStyles() {
-            this.elementMap.forEach((/**
-             * @param {?} bpMap
-             * @param {?} el
-             * @return {?}
-             */
-            (bpMap, el) => {
-                /** @type {?} */
-                const keyMap = new Set((/** @type {?} */ (this.elementKeyMap.get(el))));
-                /** @type {?} */
-                let valueMap = this.getActivatedValues(bpMap);
+            k => {
+                valueMap = this.getActivatedValues(bpMap, k);
                 if (valueMap) {
+                    /** @type {?} */
+                    const value = valueMap.get(k);
+                    this.updateElement(el, k, value);
+                }
+                else {
+                    this.clearElement(el, k);
+                }
+            }));
+        }));
+    }
+    /**
+     * clear the styles for a given element
+     * @param {?} element
+     * @param {?} key
+     * @return {?}
+     */
+    clearElement(element, key) {
+        /** @type {?} */
+        const builders = this.clearMap.get(element);
+        if (builders) {
+            /** @type {?} */
+            const clearFn = (/** @type {?} */ (builders.get(key)));
+            if (!!clearFn) {
+                clearFn();
+                this.subject.next({ element, key, value: '' });
+            }
+        }
+    }
+    /**
+     * update a given element with the activated values for a given key
+     * @param {?} element
+     * @param {?} key
+     * @param {?} value
+     * @return {?}
+     */
+    updateElement(element, key, value) {
+        /** @type {?} */
+        const builders = this.updateMap.get(element);
+        if (builders) {
+            /** @type {?} */
+            const updateFn = (/** @type {?} */ (builders.get(key)));
+            if (!!updateFn) {
+                updateFn(value);
+                this.subject.next({ element, key, value });
+            }
+        }
+    }
+    /**
+     * release all references to a given element
+     * @param {?} element
+     * @return {?}
+     */
+    releaseElement(element) {
+        /** @type {?} */
+        const watcherMap = this.watcherMap.get(element);
+        if (watcherMap) {
+            watcherMap.forEach((/**
+             * @param {?} s
+             * @return {?}
+             */
+            s => s.unsubscribe()));
+            this.watcherMap.delete(element);
+        }
+        /** @type {?} */
+        const elementMap = this.elementMap.get(element);
+        if (elementMap) {
+            elementMap.forEach((/**
+             * @param {?} _
+             * @param {?} s
+             * @return {?}
+             */
+            (_, s) => elementMap.delete(s)));
+            this.elementMap.delete(element);
+        }
+    }
+    /**
+     * trigger an update for a given element and key (e.g. layout)
+     * @param {?} element
+     * @param {?=} key
+     * @return {?}
+     */
+    triggerUpdate(element, key) {
+        /** @type {?} */
+        const bpMap = this.elementMap.get(element);
+        if (bpMap) {
+            /** @type {?} */
+            const valueMap = this.getActivatedValues(bpMap, key);
+            if (valueMap) {
+                if (key) {
+                    this.updateElement(element, key, valueMap.get(key));
+                }
+                else {
                     valueMap.forEach((/**
                      * @param {?} v
                      * @param {?} k
                      * @return {?}
                      */
-                    (v, k) => {
-                        this.updateElement(el, k, v);
-                        keyMap.delete(k);
-                    }));
-                }
-                keyMap.forEach((/**
-                 * @param {?} k
-                 * @return {?}
-                 */
-                k => {
-                    valueMap = this.getActivatedValues(bpMap, k);
-                    if (valueMap) {
-                        /** @type {?} */
-                        const value = valueMap.get(k);
-                        this.updateElement(el, k, value);
-                    }
-                    else {
-                        this.clearElement(el, k);
-                    }
-                }));
-            }));
-        }
-        /**
-         * clear the styles for a given element
-         * @param {?} element
-         * @param {?} key
-         * @return {?}
-         */
-        clearElement(element, key) {
-            /** @type {?} */
-            const builders = this.clearMap.get(element);
-            if (builders) {
-                /** @type {?} */
-                const clearFn = (/** @type {?} */ (builders.get(key)));
-                if (!!clearFn) {
-                    clearFn();
-                    this.subject.next({ element, key, value: '' });
+                    (v, k) => this.updateElement(element, k, v)));
                 }
             }
-        }
-        /**
-         * update a given element with the activated values for a given key
-         * @param {?} element
-         * @param {?} key
-         * @param {?} value
-         * @return {?}
-         */
-        updateElement(element, key, value) {
-            /** @type {?} */
-            const builders = this.updateMap.get(element);
-            if (builders) {
-                /** @type {?} */
-                const updateFn = (/** @type {?} */ (builders.get(key)));
-                if (!!updateFn) {
-                    updateFn(value);
-                    this.subject.next({ element, key, value });
-                }
-            }
-        }
-        /**
-         * release all references to a given element
-         * @param {?} element
-         * @return {?}
-         */
-        releaseElement(element) {
-            /** @type {?} */
-            const watcherMap = this.watcherMap.get(element);
-            if (watcherMap) {
-                watcherMap.forEach((/**
-                 * @param {?} s
-                 * @return {?}
-                 */
-                s => s.unsubscribe()));
-                this.watcherMap.delete(element);
-            }
-            /** @type {?} */
-            const elementMap = this.elementMap.get(element);
-            if (elementMap) {
-                elementMap.forEach((/**
-                 * @param {?} _
-                 * @param {?} s
-                 * @return {?}
-                 */
-                (_, s) => elementMap.delete(s)));
-                this.elementMap.delete(element);
-            }
-        }
-        /**
-         * trigger an update for a given element and key (e.g. layout)
-         * @param {?} element
-         * @param {?=} key
-         * @return {?}
-         */
-        triggerUpdate(element, key) {
-            /** @type {?} */
-            const bpMap = this.elementMap.get(element);
-            if (bpMap) {
-                /** @type {?} */
-                const valueMap = this.getActivatedValues(bpMap, key);
-                if (valueMap) {
-                    if (key) {
-                        this.updateElement(element, key, valueMap.get(key));
-                    }
-                    else {
-                        valueMap.forEach((/**
-                         * @param {?} v
-                         * @param {?} k
-                         * @return {?}
-                         */
-                        (v, k) => this.updateElement(element, k, v)));
-                    }
-                }
-            }
-        }
-        /**
-         * Cross-reference for HTMLElement with directive key
-         * @private
-         * @param {?} element
-         * @param {?} key
-         * @return {?}
-         */
-        buildElementKeyMap(element, key) {
-            /** @type {?} */
-            let keyMap = this.elementKeyMap.get(element);
-            if (!keyMap) {
-                keyMap = new Set();
-                this.elementKeyMap.set(element, keyMap);
-            }
-            keyMap.add(key);
-        }
-        /**
-         * Other triggers that should force style updates:
-         * - directionality
-         * - layout changes
-         * - mutationobserver updates
-         * @private
-         * @param {?} element
-         * @param {?} key
-         * @param {?} triggers
-         * @return {?}
-         */
-        watchExtraTriggers(element, key, triggers) {
-            if (triggers && triggers.length) {
-                /** @type {?} */
-                let watchers = this.watcherMap.get(element);
-                if (!watchers) {
-                    watchers = new Map();
-                    this.watcherMap.set(element, watchers);
-                }
-                /** @type {?} */
-                const subscription = watchers.get(key);
-                if (!subscription) {
-                    /** @type {?} */
-                    const newSubscription = merge(...triggers).subscribe((/**
-                     * @return {?}
-                     */
-                    () => {
-                        /** @type {?} */
-                        const currentValue = this.getValue(element, key);
-                        this.updateElement(element, key, currentValue);
-                    }));
-                    watchers.set(key, newSubscription);
-                }
-            }
-        }
-        /**
-         * Breakpoint locator by mediaQuery
-         * @private
-         * @param {?} query
-         * @return {?}
-         */
-        findByQuery(query) {
-            return this.breakpoints.findByQuery(query);
-        }
-        /**
-         * get the fallback breakpoint for a given element, starting with the current breakpoint
-         * @private
-         * @param {?} bpMap
-         * @param {?=} key
-         * @return {?}
-         */
-        getActivatedValues(bpMap, key) {
-            for (let i = 0; i < this.activatedBreakpoints.length; i++) {
-                /** @type {?} */
-                const activatedBp = this.activatedBreakpoints[i];
-                /** @type {?} */
-                const valueMap = bpMap.get(activatedBp.alias);
-                if (valueMap) {
-                    if (key === undefined || (valueMap.has(key) && valueMap.get(key) != null)) {
-                        return valueMap;
-                    }
-                }
-            }
-            /** @type {?} */
-            const lastHope = bpMap.get('');
-            return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
-        }
-        /**
-         * Watch for mediaQuery breakpoint activations
-         * @private
-         * @return {?}
-         */
-        observeActivations() {
-            /** @type {?} */
-            const target = (/** @type {?} */ ((/** @type {?} */ (this))));
-            /** @type {?} */
-            const queries = this.breakpoints.items.map((/**
-             * @param {?} bp
-             * @return {?}
-             */
-            bp => bp.mediaQuery));
-            this.matchMedia
-                .observe(this.hook.withPrintQuery(queries))
-                .pipe(tap(this.hook.interceptEvents(target)), filter(this.hook.blockPropagation()))
-                .subscribe(this.onMediaChange.bind(this));
         }
     }
-    /** @nocollapse */ MediaMarshaller.ɵprov = ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(ɵɵinject(MatchMedia), ɵɵinject(BreakPointRegistry), ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
-    MediaMarshaller.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] }
-    ];
-    /** @nocollapse */
-    MediaMarshaller.ctorParameters = () => [
-        { type: MatchMedia },
-        { type: BreakPointRegistry },
-        { type: PrintHook }
-    ];
-    return MediaMarshaller;
-})();
+    /**
+     * Cross-reference for HTMLElement with directive key
+     * @private
+     * @param {?} element
+     * @param {?} key
+     * @return {?}
+     */
+    buildElementKeyMap(element, key) {
+        /** @type {?} */
+        let keyMap = this.elementKeyMap.get(element);
+        if (!keyMap) {
+            keyMap = new Set();
+            this.elementKeyMap.set(element, keyMap);
+        }
+        keyMap.add(key);
+    }
+    /**
+     * Other triggers that should force style updates:
+     * - directionality
+     * - layout changes
+     * - mutationobserver updates
+     * @private
+     * @param {?} element
+     * @param {?} key
+     * @param {?} triggers
+     * @return {?}
+     */
+    watchExtraTriggers(element, key, triggers) {
+        if (triggers && triggers.length) {
+            /** @type {?} */
+            let watchers = this.watcherMap.get(element);
+            if (!watchers) {
+                watchers = new Map();
+                this.watcherMap.set(element, watchers);
+            }
+            /** @type {?} */
+            const subscription = watchers.get(key);
+            if (!subscription) {
+                /** @type {?} */
+                const newSubscription = merge(...triggers).subscribe((/**
+                 * @return {?}
+                 */
+                () => {
+                    /** @type {?} */
+                    const currentValue = this.getValue(element, key);
+                    this.updateElement(element, key, currentValue);
+                }));
+                watchers.set(key, newSubscription);
+            }
+        }
+    }
+    /**
+     * Breakpoint locator by mediaQuery
+     * @private
+     * @param {?} query
+     * @return {?}
+     */
+    findByQuery(query) {
+        return this.breakpoints.findByQuery(query);
+    }
+    /**
+     * get the fallback breakpoint for a given element, starting with the current breakpoint
+     * @private
+     * @param {?} bpMap
+     * @param {?=} key
+     * @return {?}
+     */
+    getActivatedValues(bpMap, key) {
+        for (let i = 0; i < this.activatedBreakpoints.length; i++) {
+            /** @type {?} */
+            const activatedBp = this.activatedBreakpoints[i];
+            /** @type {?} */
+            const valueMap = bpMap.get(activatedBp.alias);
+            if (valueMap) {
+                if (key === undefined || (valueMap.has(key) && valueMap.get(key) != null)) {
+                    return valueMap;
+                }
+            }
+        }
+        /** @type {?} */
+        const lastHope = bpMap.get('');
+        return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
+    }
+    /**
+     * Watch for mediaQuery breakpoint activations
+     * @private
+     * @return {?}
+     */
+    observeActivations() {
+        /** @type {?} */
+        const target = (/** @type {?} */ ((/** @type {?} */ (this))));
+        /** @type {?} */
+        const queries = this.breakpoints.items.map((/**
+         * @param {?} bp
+         * @return {?}
+         */
+        bp => bp.mediaQuery));
+        this.matchMedia
+            .observe(this.hook.withPrintQuery(queries))
+            .pipe(tap(this.hook.interceptEvents(target)), filter(this.hook.blockPropagation()))
+            .subscribe(this.onMediaChange.bind(this));
+    }
+}
+/** @nocollapse */ MediaMarshaller.ɵprov = ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(ɵɵinject(MatchMedia), ɵɵinject(BreakPointRegistry), ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
+MediaMarshaller.decorators = [
+    { type: Injectable, args: [{ providedIn: 'root' },] }
+];
+/** @nocollapse */
+MediaMarshaller.ctorParameters = () => [
+    { type: MatchMedia },
+    { type: BreakPointRegistry },
+    { type: PrintHook }
+];
 /**
  * @param {?} map
  * @param {?} element
@@ -3508,13 +3396,13 @@ function initBuilderMap(map$$1, element, key, input) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider, CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MediaObserver, MediaTrigger, sortDescendingPriority, sortAscendingPriority, coerceArray, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };

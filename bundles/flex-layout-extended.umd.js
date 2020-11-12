@@ -62,7 +62,7 @@ function __spreadArrays() {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/img-src/img-src.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     __extends(ImgSrcStyleBuilder, _super);
@@ -206,7 +206,7 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/class/class.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
@@ -326,7 +326,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/show-hide/show-hide.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ShowHideStyleBuilder = /** @class */ (function (_super) {
     __extends(ShowHideStyleBuilder, _super);
@@ -593,7 +593,7 @@ var DefaultShowHideDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/style/style-transforms.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -729,7 +729,7 @@ function keyValuesToMap(map, entry) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/style/style.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
@@ -928,7 +928,7 @@ function buildMapFromList$1(styles, sanitize) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
