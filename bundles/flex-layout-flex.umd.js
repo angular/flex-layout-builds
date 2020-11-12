@@ -12,18 +12,18 @@
 }(this, (function (exports,core,core$1,bidi,rxjs,operators) { 'use strict';
 
 /*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) Microsoft Corporation.
 
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
@@ -62,7 +62,7 @@ function __spreadArrays() {
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/layout-validator.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @license
@@ -170,7 +170,7 @@ function buildCSS(direction, wrap, inline) {
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/layout/layout.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var LayoutStyleBuilder = /** @class */ (function (_super) {
     __extends(LayoutStyleBuilder, _super);
@@ -188,10 +188,10 @@ var LayoutStyleBuilder = /** @class */ (function (_super) {
     function (input) {
         return buildLayoutCSS(input);
     };
+    /** @nocollapse */ LayoutStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     LayoutStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ LayoutStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
     return LayoutStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -214,23 +214,19 @@ var LayoutDirective = /** @class */ (function (_super) {
     __extends(LayoutDirective, _super);
     function LayoutDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout';
         _this.styleCache = layoutCache;
         _this.init();
         return _this;
     }
     LayoutDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     LayoutDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: LayoutStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return LayoutDirective;
@@ -243,7 +239,7 @@ var DefaultLayoutDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] },
+        { type: core.Directive, args: [{ selector: selector, inputs: inputs },] }
     ];
     return DefaultLayoutDirective;
 }(LayoutDirective));
@@ -253,7 +249,7 @@ var layoutCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/layout-gap/layout-gap.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var CLEAR_MARGIN_CSS = {
@@ -323,14 +319,14 @@ var LayoutGapStyleBuilder = /** @class */ (function (_super) {
             this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
         }
     };
+    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.ɵɵinject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     LayoutGapStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     LayoutGapStyleBuilder.ctorParameters = function () { return [
         { type: core$1.StyleUtils }
     ]; };
-    /** @nocollapse */ LayoutGapStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(core.ɵɵinject(core$1.StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
     return LayoutGapStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -350,12 +346,9 @@ var LayoutGapDirective = /** @class */ (function (_super) {
     __extends(LayoutGapDirective, _super);
     function LayoutGapDirective(elRef, zone, directionality, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
         _this.zone = zone;
         _this.directionality = directionality;
         _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.layout = 'row'; // default flex-direction
         // default flex-direction
         _this.DIRECTIVE_KEY = 'layout-gap';
@@ -387,7 +380,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
             }
             return buffer;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     // *********************************************
@@ -609,7 +602,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         }));
     };
     LayoutGapDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     LayoutGapDirective.ctorParameters = function () { return [
@@ -617,7 +610,7 @@ var LayoutGapDirective = /** @class */ (function (_super) {
         { type: core.NgZone },
         { type: bidi.Directionality },
         { type: core$1.StyleUtils },
-        { type: LayoutGapStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutGapStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return LayoutGapDirective;
@@ -630,7 +623,7 @@ var DefaultLayoutGapDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutGapDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+        { type: core.Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
     ];
     return DefaultLayoutGapDirective;
 }(LayoutGapDirective));
@@ -650,21 +643,22 @@ var GRID_SPECIFIER = ' grid';
  * @return {?}
  */
 function buildGridPadding(value, directionality) {
+    var _a = value.split(' '), between = _a[0], below = _a[1];
     /** @type {?} */
-    var paddingTop = '0px';
+    var bottom = below || between;
     /** @type {?} */
     var paddingRight = '0px';
     /** @type {?} */
-    var paddingBottom = value;
+    var paddingBottom = bottom;
     /** @type {?} */
     var paddingLeft = '0px';
     if (directionality === 'rtl') {
-        paddingLeft = value;
+        paddingLeft = between;
     }
     else {
-        paddingRight = value;
+        paddingRight = between;
     }
-    return { 'padding': paddingTop + " " + paddingRight + " " + paddingBottom + " " + paddingLeft };
+    return { 'padding': "0px " + paddingRight + " " + paddingBottom + " " + paddingLeft };
 }
 /**
  * @param {?} value
@@ -672,21 +666,28 @@ function buildGridPadding(value, directionality) {
  * @return {?}
  */
 function buildGridMargin(value, directionality) {
+    var _a = value.split(' '), between = _a[0], below = _a[1];
     /** @type {?} */
-    var marginTop = '0px';
+    var bottom = below || between;
+    /** @type {?} */
+    var minus = (/**
+     * @param {?} str
+     * @return {?}
+     */
+    function (str) { return "-" + str; });
     /** @type {?} */
     var marginRight = '0px';
     /** @type {?} */
-    var marginBottom = '-' + value;
+    var marginBottom = minus(bottom);
     /** @type {?} */
     var marginLeft = '0px';
     if (directionality === 'rtl') {
-        marginLeft = '-' + value;
+        marginLeft = minus(between);
     }
     else {
-        marginRight = '-' + value;
+        marginRight = minus(between);
     }
-    return { 'margin': marginTop + " " + marginRight + " " + marginBottom + " " + marginLeft };
+    return { 'margin': "0px " + marginRight + " " + marginBottom + " " + marginLeft };
 }
 /**
  * @param {?} directionality
@@ -724,7 +725,7 @@ function buildGapCSS(gapValue, parent) {
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/object-extend.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -759,7 +760,7 @@ function extendObject(dest) {
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex/flex.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexStyleBuilder, _super);
@@ -924,14 +925,14 @@ var FlexStyleBuilder = /** @class */ (function (_super) {
         }
         return (/** @type {?} */ (extendObject(css, { 'box-sizing': 'border-box' })));
     };
+    /** @nocollapse */ FlexStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.ɵɵinject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     FlexStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     FlexStyleBuilder.ctorParameters = function () { return [
         { type: undefined, decorators: [{ type: core.Inject, args: [core$1.LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ FlexStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(core.ɵɵinject(core$1.LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
     return FlexStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -953,25 +954,14 @@ var FlexDirective = /** @class */ (function (_super) {
     __extends(FlexDirective, _super);
     function FlexDirective(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
         _this.layoutConfig = layoutConfig;
-        _this.styleBuilder = styleBuilder;
         _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex';
-        _this.direction = '';
-        _this.wrap = false;
+        _this.direction = undefined;
+        _this.wrap = undefined;
         _this.flexGrow = '1';
         _this.flexShrink = '1';
         _this.init();
-        if (_this.parentElement) {
-            _this.marshal.trackValue(_this.parentElement, 'layout')
-                .pipe(operators.takeUntil(_this.destroySubject))
-                .subscribe(_this.onLayoutChange.bind(_this));
-            _this.marshal.trackValue(_this.nativeElement, 'layout-align')
-                .pipe(operators.takeUntil(_this.destroySubject))
-                .subscribe(_this.triggerReflow.bind(_this));
-        }
         return _this;
     }
     Object.defineProperty(FlexDirective.prototype, "shrink", {
@@ -987,7 +977,7 @@ var FlexDirective = /** @class */ (function (_super) {
             this.flexShrink = value || '1';
             this.triggerReflow();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "grow", {
@@ -1003,9 +993,25 @@ var FlexDirective = /** @class */ (function (_super) {
             this.flexGrow = value || '1';
             this.triggerReflow();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
+    /**
+     * @return {?}
+     */
+    FlexDirective.prototype.ngOnInit = /**
+     * @return {?}
+     */
+    function () {
+        if (this.parentElement) {
+            this.marshal.trackValue(this.parentElement, 'layout')
+                .pipe(operators.takeUntil(this.destroySubject))
+                .subscribe(this.onLayoutChange.bind(this));
+            this.marshal.trackValue(this.nativeElement, 'layout-align')
+                .pipe(operators.takeUntil(this.destroySubject))
+                .subscribe(this.triggerReflow.bind(this));
+        }
+    };
     /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
@@ -1049,8 +1055,11 @@ var FlexDirective = /** @class */ (function (_super) {
     function (value) {
         /** @type {?} */
         var addFlexToParent = this.layoutConfig.addFlexToParent !== false;
-        if (!this.direction) {
+        if (this.direction === undefined) {
             this.direction = this.getFlexFlowDirection((/** @type {?} */ (this.parentElement)), addFlexToParent);
+        }
+        if (this.wrap === undefined) {
+            this.wrap = this.hasWrap((/** @type {?} */ (this.parentElement)));
         }
         /** @type {?} */
         var direction = this.direction;
@@ -1097,7 +1106,7 @@ var FlexDirective = /** @class */ (function (_super) {
         }
     };
     FlexDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexDirective.ctorParameters = function () { return [
@@ -1121,7 +1130,7 @@ var DefaultFlexDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexDirective.decorators = [
-        { type: core.Directive, args: [{ inputs: inputs$2, selector: selector$2 },] },
+        { type: core.Directive, args: [{ inputs: inputs$2, selector: selector$2 },] }
     ];
     return DefaultFlexDirective;
 }(FlexDirective));
@@ -1137,7 +1146,7 @@ var flexColumnWrapCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-order/flex-order.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexOrderStyleBuilder, _super);
@@ -1155,10 +1164,10 @@ var FlexOrderStyleBuilder = /** @class */ (function (_super) {
     function (value) {
         return { order: (value && parseInt(value, 10)) || '' };
     };
+    /** @nocollapse */ FlexOrderStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     FlexOrderStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ FlexOrderStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
     return FlexOrderStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1179,23 +1188,19 @@ var FlexOrderDirective = /** @class */ (function (_super) {
     __extends(FlexOrderDirective, _super);
     function FlexOrderDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-order';
         _this.styleCache = flexOrderCache;
         _this.init();
         return _this;
     }
     FlexOrderDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: FlexOrderStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexOrderStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return FlexOrderDirective;
@@ -1210,7 +1215,7 @@ var DefaultFlexOrderDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexOrderDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+        { type: core.Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
     ];
     return DefaultFlexOrderDirective;
 }(FlexOrderDirective));
@@ -1218,7 +1223,7 @@ var DefaultFlexOrderDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-offset/flex-offset.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexOffsetStyleBuilder, _super);
@@ -1253,10 +1258,10 @@ var FlexOffsetStyleBuilder = /** @class */ (function (_super) {
         var styles = isFlowHorizontal(parent.layout) ? (_a = {}, _a[horizontalLayoutKey] = "" + offset, _a) : { 'margin-top': "" + offset };
         return styles;
     };
+    /** @nocollapse */ FlexOffsetStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     FlexOffsetStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ FlexOffsetStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
     return FlexOffsetStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1276,11 +1281,7 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
     __extends(FlexOffsetDirective, _super);
     function FlexOffsetDirective(elRef, directionality, styleBuilder, marshal, styler) {
         var _this = _super.call(this, elRef, styleBuilder, styler, marshal) || this;
-        _this.elRef = elRef;
         _this.directionality = directionality;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
-        _this.styler = styler;
         _this.DIRECTIVE_KEY = 'flex-offset';
         _this.init([_this.directionality.change]);
         // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
@@ -1345,13 +1346,13 @@ var FlexOffsetDirective = /** @class */ (function (_super) {
         this.addStyles(value + '', { layout: layout, isRtl: isRtl });
     };
     FlexOffsetDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: bidi.Directionality },
-        { type: FlexOffsetStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexOffsetStyleBuilder },
         { type: core$1.MediaMarshaller },
         { type: core$1.StyleUtils }
     ]; };
@@ -1365,7 +1366,7 @@ var DefaultFlexOffsetDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexOffsetDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$4, inputs: inputs$4 },] },
+        { type: core.Directive, args: [{ selector: selector$4, inputs: inputs$4 },] }
     ];
     return DefaultFlexOffsetDirective;
 }(FlexOffsetDirective));
@@ -1381,7 +1382,7 @@ var flexOffsetCacheColumnLtr = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-align/flex-align.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexAlignStyleBuilder = /** @class */ (function (_super) {
     __extends(FlexAlignStyleBuilder, _super);
@@ -1414,10 +1415,10 @@ var FlexAlignStyleBuilder = /** @class */ (function (_super) {
         }
         return styles;
     };
+    /** @nocollapse */ FlexAlignStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     FlexAlignStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ FlexAlignStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
     return FlexAlignStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1438,23 +1439,19 @@ var FlexAlignDirective = /** @class */ (function (_super) {
     __extends(FlexAlignDirective, _super);
     function FlexAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'flex-align';
         _this.styleCache = flexAlignCache;
         _this.init();
         return _this;
     }
     FlexAlignDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     FlexAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: FlexAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: FlexAlignStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return FlexAlignDirective;
@@ -1469,7 +1466,7 @@ var DefaultFlexAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultFlexAlignDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$5, inputs: inputs$5 },] },
+        { type: core.Directive, args: [{ selector: selector$5, inputs: inputs$5 },] }
     ];
     return DefaultFlexAlignDirective;
 }(FlexAlignDirective));
@@ -1477,7 +1474,7 @@ var DefaultFlexAlignDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-fill/flex-fill.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var FLEX_FILL_CSS = {
@@ -1503,10 +1500,10 @@ var FlexFillStyleBuilder = /** @class */ (function (_super) {
     function (_input) {
         return FLEX_FILL_CSS;
     };
+    /** @nocollapse */ FlexFillStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     FlexFillStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ FlexFillStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
     return FlexFillStyleBuilder;
 }(core$1.StyleBuilder));
 /**
@@ -1519,16 +1516,12 @@ var FlexFillDirective = /** @class */ (function (_super) {
     __extends(FlexFillDirective, _super);
     function FlexFillDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.styleCache = flexFillCache;
         _this.addStyles('');
         return _this;
     }
     FlexFillDirective.decorators = [
-        { type: core.Directive, args: [{ selector: "[fxFill], [fxFlexFill]" },] },
+        { type: core.Directive, args: [{ selector: "[fxFill], [fxFlexFill]" },] }
     ];
     /** @nocollapse */
     FlexFillDirective.ctorParameters = function () { return [
@@ -1545,7 +1538,7 @@ var flexFillCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/layout-align/layout-align.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
     __extends(LayoutAlignStyleBuilder, _super);
@@ -1630,10 +1623,10 @@ var LayoutAlignStyleBuilder = /** @class */ (function (_super) {
                 isFlowHorizontal(parent.layout) ? '100%' : null : null,
         })));
     };
+    /** @nocollapse */ LayoutAlignStyleBuilder.ɵprov = core.ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     LayoutAlignStyleBuilder.decorators = [
-        { type: core.Injectable, args: [{ providedIn: 'root' },] },
+        { type: core.Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ LayoutAlignStyleBuilder.ɵprov3 = core.ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
     return LayoutAlignStyleBuilder;
 }(core$1.StyleBuilder));
 /** @type {?} */
@@ -1658,10 +1651,6 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
     __extends(LayoutAlignDirective, _super);
     function LayoutAlignDirective(elRef, styleUtils, styleBuilder, marshal) {
         var _this = _super.call(this, elRef, styleBuilder, styleUtils, marshal) || this;
-        _this.elRef = elRef;
-        _this.styleUtils = styleUtils;
-        _this.styleBuilder = styleBuilder;
-        _this.marshal = marshal;
         _this.DIRECTIVE_KEY = 'layout-align';
         _this.layout = 'row'; // default flex-direction
         // default flex-direction
@@ -1759,13 +1748,13 @@ var LayoutAlignDirective = /** @class */ (function (_super) {
         this.triggerUpdate();
     };
     LayoutAlignDirective.decorators = [
-        { type: core.Directive },
+        { type: core.Directive }
     ];
     /** @nocollapse */
     LayoutAlignDirective.ctorParameters = function () { return [
         { type: core.ElementRef },
         { type: core$1.StyleUtils },
-        { type: LayoutAlignStyleBuilder, decorators: [{ type: core.Optional }] },
+        { type: LayoutAlignStyleBuilder },
         { type: core$1.MediaMarshaller }
     ]; };
     return LayoutAlignDirective;
@@ -1778,7 +1767,7 @@ var DefaultLayoutAlignDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultLayoutAlignDirective.decorators = [
-        { type: core.Directive, args: [{ selector: selector$6, inputs: inputs$6 },] },
+        { type: core.Directive, args: [{ selector: selector$6, inputs: inputs$6 },] }
     ];
     return DefaultLayoutAlignDirective;
 }(LayoutAlignDirective));
@@ -1802,7 +1791,7 @@ var layoutAlignVerticalRevInlineCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
@@ -1828,7 +1817,7 @@ var FlexModule = /** @class */ (function () {
                     imports: [core$1.CoreModule, bidi.BidiModule],
                     declarations: __spreadArrays(ALL_DIRECTIVES),
                     exports: __spreadArrays(ALL_DIRECTIVES)
-                },] },
+                },] }
     ];
     return FlexModule;
 }());

@@ -12,18 +12,18 @@
 }(this, (function (exports,common,core,core$1,platformServer) { 'use strict';
 
 /*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) Microsoft Corporation.
 
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 /* global Reflect, Promise */
 
@@ -51,7 +51,7 @@ function __spreadArrays() {
 /**
  * @fileoverview added by tsickle
  * Generated from: server/server-match-media.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Special server-only class to simulate a MediaQueryList and
@@ -78,7 +78,7 @@ ServerMediaQueryList = /** @class */ (function () {
         function () {
             return this._isActive;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServerMediaQueryList.prototype, "media", {
@@ -88,7 +88,7 @@ ServerMediaQueryList = /** @class */ (function () {
         function () {
             return this._mediaQuery;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -129,7 +129,7 @@ ServerMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -154,7 +154,7 @@ ServerMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -177,7 +177,7 @@ ServerMediaQueryList = /** @class */ (function () {
         if (this._isActive) {
             /** @type {?} */
             var cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     };
     /** Don't need to remove listeners in the server environment */
@@ -341,7 +341,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
         return new ServerMediaQueryList(query, isActive);
     };
     ServerMatchMedia.decorators = [
-        { type: core.Injectable },
+        { type: core.Injectable }
     ];
     /** @nocollapse */
     ServerMatchMedia.ctorParameters = function () { return [
@@ -357,7 +357,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: server/server-provider.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Activate all of the registered breakpoints in sequence, and then
@@ -545,7 +545,7 @@ function getClassName(element, classMap) {
 /**
  * @fileoverview added by tsickle
  * Generated from: server/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexLayoutServerModule = /** @class */ (function () {
     function FlexLayoutServerModule() {
@@ -553,7 +553,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
     FlexLayoutServerModule.decorators = [
         { type: core.NgModule, args: [{
                     providers: [SERVER_PROVIDERS]
-                },] },
+                },] }
     ];
     return FlexLayoutServerModule;
 }());
@@ -562,7 +562,7 @@ exports.FlexLayoutServerModule = FlexLayoutServerModule;
 exports.generateStaticFlexLayoutStyles = generateStaticFlexLayoutStyles;
 exports.FLEX_SSR_SERIALIZER_FACTORY = FLEX_SSR_SERIALIZER_FACTORY;
 exports.SERVER_PROVIDERS = SERVER_PROVIDERS;
-exports.ɵa1 = ServerMatchMedia;
+exports.ɵserver_privatea = ServerMatchMedia;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

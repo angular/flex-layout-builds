@@ -9,8 +9,8 @@ export declare class ServerMediaQueryList implements MediaQueryList {
     private _mediaQuery;
     private _isActive;
     private _listeners;
-    readonly matches: boolean;
-    readonly media: string;
+    get matches(): boolean;
+    get media(): string;
     constructor(_mediaQuery: string, _isActive?: boolean);
     /**
      * Destroy the current list by deactivating the

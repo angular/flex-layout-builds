@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Injectable, Optional, NgModule, NgZone, Inject, Input, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
+import { Directive, ElementRef, Injectable, NgModule, NgZone, Inject, Input, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleUtils, MediaMarshaller, CoreModule, LAYOUT_CONFIG, validateBasis } from '@angular/flex-layout/core';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
 import { Subject } from 'rxjs';
@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/layout-validator.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @license
@@ -120,7 +120,7 @@ function buildCSS(direction, wrap = null, inline = false) {
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/layout/layout.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LayoutStyleBuilder extends StyleBuilder {
     /**
@@ -131,10 +131,10 @@ class LayoutStyleBuilder extends StyleBuilder {
         return buildLayoutCSS(input);
     }
 }
+/** @nocollapse */ LayoutStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
 LayoutStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ LayoutStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutStyleBuilder_Factory() { return new LayoutStyleBuilder(); }, token: LayoutStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs = [
     'fxLayout', 'fxLayout.xs', 'fxLayout.sm', 'fxLayout.md',
@@ -165,23 +165,19 @@ class LayoutDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'layout';
         this.styleCache = layoutCache;
         this.init();
     }
 }
 LayoutDirective.decorators = [
-    { type: Directive },
+    { type: Directive }
 ];
 /** @nocollapse */
 LayoutDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: LayoutStyleBuilder, decorators: [{ type: Optional }] },
+    { type: LayoutStyleBuilder },
     { type: MediaMarshaller }
 ];
 class DefaultLayoutDirective extends LayoutDirective {
@@ -191,7 +187,7 @@ class DefaultLayoutDirective extends LayoutDirective {
     }
 }
 DefaultLayoutDirective.decorators = [
-    { type: Directive, args: [{ selector, inputs },] },
+    { type: Directive, args: [{ selector, inputs },] }
 ];
 /** @type {?} */
 const layoutCache = new Map();
@@ -199,7 +195,7 @@ const layoutCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/layout-gap/layout-gap.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const CLEAR_MARGIN_CSS = {
@@ -260,14 +256,14 @@ class LayoutGapStyleBuilder extends StyleBuilder {
         }
     }
 }
+/** @nocollapse */ LayoutGapStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
 LayoutGapStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
 /** @nocollapse */
 LayoutGapStyleBuilder.ctorParameters = () => [
     { type: StyleUtils }
 ];
-/** @nocollapse */ LayoutGapStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutGapStyleBuilder_Factory() { return new LayoutGapStyleBuilder(ɵɵinject(StyleUtils)); }, token: LayoutGapStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$1 = [
     'fxLayoutGap', 'fxLayoutGap.xs', 'fxLayoutGap.sm', 'fxLayoutGap.md',
@@ -297,12 +293,9 @@ class LayoutGapDirective extends BaseDirective2 {
      */
     constructor(elRef, zone, directionality, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
         this.zone = zone;
         this.directionality = directionality;
         this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.layout = 'row'; // default flex-direction
         // default flex-direction
         this.DIRECTIVE_KEY = 'layout-gap';
@@ -492,7 +485,7 @@ class LayoutGapDirective extends BaseDirective2 {
     }
 }
 LayoutGapDirective.decorators = [
-    { type: Directive },
+    { type: Directive }
 ];
 /** @nocollapse */
 LayoutGapDirective.ctorParameters = () => [
@@ -500,7 +493,7 @@ LayoutGapDirective.ctorParameters = () => [
     { type: NgZone },
     { type: Directionality },
     { type: StyleUtils },
-    { type: LayoutGapStyleBuilder, decorators: [{ type: Optional }] },
+    { type: LayoutGapStyleBuilder },
     { type: MediaMarshaller }
 ];
 class DefaultLayoutGapDirective extends LayoutGapDirective {
@@ -510,7 +503,7 @@ class DefaultLayoutGapDirective extends LayoutGapDirective {
     }
 }
 DefaultLayoutGapDirective.decorators = [
-    { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] },
+    { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
 ];
 /** @type {?} */
 const layoutGapCacheRowRtl = new Map();
@@ -528,21 +521,22 @@ const GRID_SPECIFIER = ' grid';
  * @return {?}
  */
 function buildGridPadding(value, directionality) {
+    const [between, below] = value.split(' ');
     /** @type {?} */
-    let paddingTop = '0px';
+    const bottom = below || between;
     /** @type {?} */
     let paddingRight = '0px';
     /** @type {?} */
-    let paddingBottom = value;
+    let paddingBottom = bottom;
     /** @type {?} */
     let paddingLeft = '0px';
     if (directionality === 'rtl') {
-        paddingLeft = value;
+        paddingLeft = between;
     }
     else {
-        paddingRight = value;
+        paddingRight = between;
     }
-    return { 'padding': `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}` };
+    return { 'padding': `0px ${paddingRight} ${paddingBottom} ${paddingLeft}` };
 }
 /**
  * @param {?} value
@@ -550,21 +544,28 @@ function buildGridPadding(value, directionality) {
  * @return {?}
  */
 function buildGridMargin(value, directionality) {
+    const [between, below] = value.split(' ');
     /** @type {?} */
-    let marginTop = '0px';
+    const bottom = below || between;
+    /** @type {?} */
+    const minus = (/**
+     * @param {?} str
+     * @return {?}
+     */
+    (str) => `-${str}`);
     /** @type {?} */
     let marginRight = '0px';
     /** @type {?} */
-    let marginBottom = '-' + value;
+    let marginBottom = minus(bottom);
     /** @type {?} */
     let marginLeft = '0px';
     if (directionality === 'rtl') {
-        marginLeft = '-' + value;
+        marginLeft = minus(between);
     }
     else {
-        marginRight = '-' + value;
+        marginRight = minus(between);
     }
-    return { 'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}` };
+    return { 'margin': `0px ${marginRight} ${marginBottom} ${marginLeft}` };
 }
 /**
  * @param {?} directionality
@@ -602,7 +603,7 @@ function buildGapCSS(gapValue, parent) {
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/object-extend.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -632,7 +633,7 @@ function extendObject(dest, ...sources) {
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex/flex.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexStyleBuilder extends StyleBuilder {
     /**
@@ -794,14 +795,14 @@ class FlexStyleBuilder extends StyleBuilder {
         return (/** @type {?} */ (extendObject(css, { 'box-sizing': 'border-box' })));
     }
 }
+/** @nocollapse */ FlexStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
 FlexStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
 /** @nocollapse */
 FlexStyleBuilder.ctorParameters = () => [
     { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
 ];
-/** @nocollapse */ FlexStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexStyleBuilder_Factory() { return new FlexStyleBuilder(ɵɵinject(LAYOUT_CONFIG)); }, token: FlexStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$2 = [
     'fxFlex', 'fxFlex.xs', 'fxFlex.sm', 'fxFlex.md',
@@ -832,25 +833,14 @@ class FlexDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, layoutConfig, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
         this.layoutConfig = layoutConfig;
-        this.styleBuilder = styleBuilder;
         this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex';
-        this.direction = '';
-        this.wrap = false;
+        this.direction = undefined;
+        this.wrap = undefined;
         this.flexGrow = '1';
         this.flexShrink = '1';
         this.init();
-        if (this.parentElement) {
-            this.marshal.trackValue(this.parentElement, 'layout')
-                .pipe(takeUntil(this.destroySubject))
-                .subscribe(this.onLayoutChange.bind(this));
-            this.marshal.trackValue(this.nativeElement, 'layout-align')
-                .pipe(takeUntil(this.destroySubject))
-                .subscribe(this.triggerReflow.bind(this));
-        }
     }
     /**
      * @return {?}
@@ -877,6 +867,19 @@ class FlexDirective extends BaseDirective2 {
         this.triggerReflow();
     }
     /**
+     * @return {?}
+     */
+    ngOnInit() {
+        if (this.parentElement) {
+            this.marshal.trackValue(this.parentElement, 'layout')
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.onLayoutChange.bind(this));
+            this.marshal.trackValue(this.nativeElement, 'layout-align')
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.triggerReflow.bind(this));
+        }
+    }
+    /**
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      * @protected
@@ -901,8 +904,11 @@ class FlexDirective extends BaseDirective2 {
     updateWithValue(value) {
         /** @type {?} */
         const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
-        if (!this.direction) {
+        if (this.direction === undefined) {
             this.direction = this.getFlexFlowDirection((/** @type {?} */ (this.parentElement)), addFlexToParent);
+        }
+        if (this.wrap === undefined) {
+            this.wrap = this.hasWrap((/** @type {?} */ (this.parentElement)));
         }
         /** @type {?} */
         const direction = this.direction;
@@ -944,7 +950,7 @@ class FlexDirective extends BaseDirective2 {
     }
 }
 FlexDirective.decorators = [
-    { type: Directive },
+    { type: Directive }
 ];
 /** @nocollapse */
 FlexDirective.ctorParameters = () => [
@@ -965,7 +971,7 @@ class DefaultFlexDirective extends FlexDirective {
     }
 }
 DefaultFlexDirective.decorators = [
-    { type: Directive, args: [{ inputs: inputs$2, selector: selector$2 },] },
+    { type: Directive, args: [{ inputs: inputs$2, selector: selector$2 },] }
 ];
 /** @type {?} */
 const flexRowCache = new Map();
@@ -979,7 +985,7 @@ const flexColumnWrapCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-order/flex-order.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexOrderStyleBuilder extends StyleBuilder {
     /**
@@ -990,10 +996,10 @@ class FlexOrderStyleBuilder extends StyleBuilder {
         return { order: (value && parseInt(value, 10)) || '' };
     }
 }
+/** @nocollapse */ FlexOrderStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
 FlexOrderStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ FlexOrderStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexOrderStyleBuilder_Factory() { return new FlexOrderStyleBuilder(); }, token: FlexOrderStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$3 = [
     'fxFlexOrder', 'fxFlexOrder.xs', 'fxFlexOrder.sm', 'fxFlexOrder.md',
@@ -1022,23 +1028,19 @@ class FlexOrderDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex-order';
         this.styleCache = flexOrderCache;
         this.init();
     }
 }
 FlexOrderDirective.decorators = [
-    { type: Directive },
+    { type: Directive }
 ];
 /** @nocollapse */
 FlexOrderDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: FlexOrderStyleBuilder, decorators: [{ type: Optional }] },
+    { type: FlexOrderStyleBuilder },
     { type: MediaMarshaller }
 ];
 /** @type {?} */
@@ -1050,13 +1052,13 @@ class DefaultFlexOrderDirective extends FlexOrderDirective {
     }
 }
 DefaultFlexOrderDirective.decorators = [
-    { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] },
+    { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
 ];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-offset/flex-offset.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexOffsetStyleBuilder extends StyleBuilder {
     /**
@@ -1083,10 +1085,10 @@ class FlexOffsetStyleBuilder extends StyleBuilder {
         return styles;
     }
 }
+/** @nocollapse */ FlexOffsetStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
 FlexOffsetStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ FlexOffsetStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexOffsetStyleBuilder_Factory() { return new FlexOffsetStyleBuilder(); }, token: FlexOffsetStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$4 = [
     'fxFlexOffset', 'fxFlexOffset.xs', 'fxFlexOffset.sm', 'fxFlexOffset.md',
@@ -1115,11 +1117,7 @@ class FlexOffsetDirective extends BaseDirective2 {
      */
     constructor(elRef, directionality, styleBuilder, marshal, styler) {
         super(elRef, styleBuilder, styler, marshal);
-        this.elRef = elRef;
         this.directionality = directionality;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
-        this.styler = styler;
         this.DIRECTIVE_KEY = 'flex-offset';
         this.init([this.directionality.change]);
         // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
@@ -1163,13 +1161,13 @@ class FlexOffsetDirective extends BaseDirective2 {
     }
 }
 FlexOffsetDirective.decorators = [
-    { type: Directive },
+    { type: Directive }
 ];
 /** @nocollapse */
 FlexOffsetDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: Directionality },
-    { type: FlexOffsetStyleBuilder, decorators: [{ type: Optional }] },
+    { type: FlexOffsetStyleBuilder },
     { type: MediaMarshaller },
     { type: StyleUtils }
 ];
@@ -1180,7 +1178,7 @@ class DefaultFlexOffsetDirective extends FlexOffsetDirective {
     }
 }
 DefaultFlexOffsetDirective.decorators = [
-    { type: Directive, args: [{ selector: selector$4, inputs: inputs$4 },] },
+    { type: Directive, args: [{ selector: selector$4, inputs: inputs$4 },] }
 ];
 /** @type {?} */
 const flexOffsetCacheRowRtl = new Map();
@@ -1194,7 +1192,7 @@ const flexOffsetCacheColumnLtr = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-align/flex-align.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexAlignStyleBuilder extends StyleBuilder {
     /**
@@ -1220,10 +1218,10 @@ class FlexAlignStyleBuilder extends StyleBuilder {
         return styles;
     }
 }
+/** @nocollapse */ FlexAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
 FlexAlignStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ FlexAlignStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexAlignStyleBuilder_Factory() { return new FlexAlignStyleBuilder(); }, token: FlexAlignStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$5 = [
     'fxFlexAlign', 'fxFlexAlign.xs', 'fxFlexAlign.sm', 'fxFlexAlign.md',
@@ -1252,23 +1250,19 @@ class FlexAlignDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'flex-align';
         this.styleCache = flexAlignCache;
         this.init();
     }
 }
 FlexAlignDirective.decorators = [
-    { type: Directive },
+    { type: Directive }
 ];
 /** @nocollapse */
 FlexAlignDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: FlexAlignStyleBuilder, decorators: [{ type: Optional }] },
+    { type: FlexAlignStyleBuilder },
     { type: MediaMarshaller }
 ];
 /** @type {?} */
@@ -1280,13 +1274,13 @@ class DefaultFlexAlignDirective extends FlexAlignDirective {
     }
 }
 DefaultFlexAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: selector$5, inputs: inputs$5 },] },
+    { type: Directive, args: [{ selector: selector$5, inputs: inputs$5 },] }
 ];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/flex-fill/flex-fill.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const FLEX_FILL_CSS = {
@@ -1305,10 +1299,10 @@ class FlexFillStyleBuilder extends StyleBuilder {
         return FLEX_FILL_CSS;
     }
 }
+/** @nocollapse */ FlexFillStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
 FlexFillStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ FlexFillStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function FlexFillStyleBuilder_Factory() { return new FlexFillStyleBuilder(); }, token: FlexFillStyleBuilder, providedIn: "root" });
 /**
  * 'fxFill' flexbox styling directive
  *  Maximizes width and height of element in a layout container
@@ -1324,16 +1318,12 @@ class FlexFillDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.styleCache = flexFillCache;
         this.addStyles('');
     }
 }
 FlexFillDirective.decorators = [
-    { type: Directive, args: [{ selector: `[fxFill], [fxFlexFill]` },] },
+    { type: Directive, args: [{ selector: `[fxFill], [fxFlexFill]` },] }
 ];
 /** @nocollapse */
 FlexFillDirective.ctorParameters = () => [
@@ -1348,7 +1338,7 @@ const flexFillCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/layout-align/layout-align.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LayoutAlignStyleBuilder extends StyleBuilder {
     /**
@@ -1425,10 +1415,10 @@ class LayoutAlignStyleBuilder extends StyleBuilder {
         })));
     }
 }
+/** @nocollapse */ LayoutAlignStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
 LayoutAlignStyleBuilder.decorators = [
-    { type: Injectable, args: [{ providedIn: 'root' },] },
+    { type: Injectable, args: [{ providedIn: 'root' },] }
 ];
-/** @nocollapse */ LayoutAlignStyleBuilder.ɵprov3 = ɵɵdefineInjectable({ factory: function LayoutAlignStyleBuilder_Factory() { return new LayoutAlignStyleBuilder(); }, token: LayoutAlignStyleBuilder, providedIn: "root" });
 /** @type {?} */
 const inputs$6 = [
     'fxLayoutAlign', 'fxLayoutAlign.xs', 'fxLayoutAlign.sm', 'fxLayoutAlign.md',
@@ -1462,10 +1452,6 @@ class LayoutAlignDirective extends BaseDirective2 {
      */
     constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this.elRef = elRef;
-        this.styleUtils = styleUtils;
-        this.styleBuilder = styleBuilder;
-        this.marshal = marshal;
         this.DIRECTIVE_KEY = 'layout-align';
         this.layout = 'row'; // default flex-direction
         // default flex-direction
@@ -1537,13 +1523,13 @@ class LayoutAlignDirective extends BaseDirective2 {
     }
 }
 LayoutAlignDirective.decorators = [
-    { type: Directive },
+    { type: Directive }
 ];
 /** @nocollapse */
 LayoutAlignDirective.ctorParameters = () => [
     { type: ElementRef },
     { type: StyleUtils },
-    { type: LayoutAlignStyleBuilder, decorators: [{ type: Optional }] },
+    { type: LayoutAlignStyleBuilder },
     { type: MediaMarshaller }
 ];
 class DefaultLayoutAlignDirective extends LayoutAlignDirective {
@@ -1553,7 +1539,7 @@ class DefaultLayoutAlignDirective extends LayoutAlignDirective {
     }
 }
 DefaultLayoutAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: selector$6, inputs: inputs$6 },] },
+    { type: Directive, args: [{ selector: selector$6, inputs: inputs$6 },] }
 ];
 /** @type {?} */
 const layoutAlignHorizontalCache = new Map();
@@ -1575,7 +1561,7 @@ const layoutAlignVerticalRevInlineCache = new Map();
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 const ALL_DIRECTIVES = [
@@ -1600,19 +1586,19 @@ FlexModule.decorators = [
                 imports: [CoreModule, BidiModule],
                 declarations: [...ALL_DIRECTIVES],
                 exports: [...ALL_DIRECTIVES]
-            },] },
+            },] }
 ];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: flex/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { FlexModule, FlexStyleBuilder, FlexDirective, DefaultFlexDirective, FlexAlignStyleBuilder, FlexAlignDirective, DefaultFlexAlignDirective, FlexFillStyleBuilder, FlexFillDirective, FlexOffsetStyleBuilder, FlexOffsetDirective, DefaultFlexOffsetDirective, FlexOrderStyleBuilder, FlexOrderDirective, DefaultFlexOrderDirective, LayoutStyleBuilder, LayoutDirective, DefaultLayoutDirective, LayoutAlignStyleBuilder, LayoutAlignDirective, DefaultLayoutAlignDirective, LayoutGapStyleBuilder, LayoutGapDirective, DefaultLayoutGapDirective };

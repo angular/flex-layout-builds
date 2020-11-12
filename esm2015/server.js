@@ -13,7 +13,7 @@ import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
 /**
  * @fileoverview added by tsickle
  * Generated from: server/server-match-media.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Special server-only class to simulate a MediaQueryList and
@@ -66,7 +66,7 @@ class ServerMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -85,7 +85,7 @@ class ServerMediaQueryList {
             (callback) => {
                 /** @type {?} */
                 const cb = (/** @type {?} */ (callback));
-                cb.call(null, this);
+                cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
             }));
         }
         return this;
@@ -102,7 +102,7 @@ class ServerMediaQueryList {
         if (this._isActive) {
             /** @type {?} */
             const cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     }
     /**
@@ -226,7 +226,7 @@ class ServerMatchMedia extends ɵMatchMedia {
     }
 }
 ServerMatchMedia.decorators = [
-    { type: Injectable },
+    { type: Injectable }
 ];
 /** @nocollapse */
 ServerMatchMedia.ctorParameters = () => [
@@ -240,7 +240,7 @@ ServerMatchMedia.ctorParameters = () => [
 /**
  * @fileoverview added by tsickle
  * Generated from: server/server-provider.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Activate all of the registered breakpoints in sequence, and then
@@ -423,27 +423,27 @@ function getClassName(element, classMap) {
 /**
  * @fileoverview added by tsickle
  * Generated from: server/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class FlexLayoutServerModule {
 }
 FlexLayoutServerModule.decorators = [
     { type: NgModule, args: [{
                 providers: [SERVER_PROVIDERS]
-            },] },
+            },] }
 ];
 
 /**
  * @fileoverview added by tsickle
  * Generated from: server/public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: server/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵa1 };
+export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵserver_privatea };
 //# sourceMappingURL=server.js.map

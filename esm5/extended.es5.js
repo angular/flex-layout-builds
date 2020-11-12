@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { __extends, __assign, __spreadArrays } from 'tslib';
-import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, Optional, Self, SecurityContext, ɵɵdefineInjectable } from '@angular/core';
-import { isPlatformServer, NgClass, ɵNgClassImpl, ɵNgClassR2Impl, NgStyle, ɵNgStyleImpl, ɵNgStyleR2Impl } from '@angular/common';
+import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, IterableDiffers, KeyValueDiffers, Optional, Renderer2, Self, SecurityContext, ɵɵdefineInjectable } from '@angular/core';
+import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
 import { MediaMarshaller, BaseDirective2, SERVER_TOKEN, StyleBuilder, StyleUtils, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { takeUntil } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/img-src/img-src.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     __extends(ImgSrcStyleBuilder, _super);
@@ -34,20 +34,16 @@ var ImgSrcStyleBuilder = /** @class */ (function (_super) {
     function (url) {
         return { 'content': url ? "url(" + url + ")" : '' };
     };
+    /** @nocollapse */ ImgSrcStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
     ImgSrcStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ ImgSrcStyleBuilder.ɵprov4 = ɵɵdefineInjectable({ factory: function ImgSrcStyleBuilder_Factory() { return new ImgSrcStyleBuilder(); }, token: ImgSrcStyleBuilder, providedIn: "root" });
     return ImgSrcStyleBuilder;
 }(StyleBuilder));
 var ImgSrcDirective = /** @class */ (function (_super) {
     __extends(ImgSrcDirective, _super);
     function ImgSrcDirective(elementRef, styleBuilder, styler, marshal, platformId, serverModuleLoaded) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
         _this.DIRECTIVE_KEY = 'img-src';
@@ -69,7 +65,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
             this.defaultSrc = val;
             this.setValue(this.defaultSrc, '');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -113,7 +109,7 @@ var ImgSrcDirective = /** @class */ (function (_super) {
         }
     };
     ImgSrcDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     ImgSrcDirective.ctorParameters = function () { return [
@@ -156,7 +152,7 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultImgSrcDirective.decorators = [
-        { type: Directive, args: [{ selector: selector, inputs: inputs },] },
+        { type: Directive, args: [{ selector: selector, inputs: inputs },] }
     ];
     return DefaultImgSrcDirective;
 }(ImgSrcDirective));
@@ -164,22 +160,18 @@ var DefaultImgSrcDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/class/class.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ClassDirective = /** @class */ (function (_super) {
     __extends(ClassDirective, _super);
-    function ClassDirective(elementRef, styler, marshal, delegate, ngClassInstance) {
+    function ClassDirective(elementRef, styler, marshal, iterableDiffers, keyValueDiffers, renderer2, ngClassInstance) {
         var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styler = styler;
-        _this.marshal = marshal;
-        _this.delegate = delegate;
         _this.ngClassInstance = ngClassInstance;
         _this.DIRECTIVE_KEY = 'ngClass';
         if (!_this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            _this.ngClassInstance = new NgClass(_this.delegate);
+            _this.ngClassInstance = new NgClass(iterableDiffers, keyValueDiffers, elementRef, renderer2);
         }
         _this.init();
         _this.setValue('', '');
@@ -200,7 +192,7 @@ var ClassDirective = /** @class */ (function (_super) {
             this.ngClassInstance.klass = val;
             this.setValue(val, '');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -242,14 +234,16 @@ var ClassDirective = /** @class */ (function (_super) {
         this.ngClassInstance.ngDoCheck();
     };
     ClassDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     ClassDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: ɵNgClassImpl },
+        { type: IterableDiffers },
+        { type: KeyValueDiffers },
+        { type: Renderer2 },
         { type: NgClass, decorators: [{ type: Optional }, { type: Self }] }
     ]; };
     ClassDirective.propDecorators = {
@@ -265,12 +259,6 @@ var inputs$1 = [
 ];
 /** @type {?} */
 var selector$1 = "\n  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n";
-// tslint:disable-next-line:variable-name
-/** @type {?} */
-var LayoutNgClassImplProvider = {
-    provide: ɵNgClassImpl,
-    useClass: ɵNgClassR2Impl
-};
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
@@ -284,7 +272,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultClassDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1, providers: [LayoutNgClassImplProvider] },] },
+        { type: Directive, args: [{ selector: selector$1, inputs: inputs$1 },] }
     ];
     return DefaultClassDirective;
 }(ClassDirective));
@@ -292,7 +280,7 @@ var DefaultClassDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/show-hide/show-hide.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var ShowHideStyleBuilder = /** @class */ (function (_super) {
     __extends(ShowHideStyleBuilder, _super);
@@ -312,28 +300,24 @@ var ShowHideStyleBuilder = /** @class */ (function (_super) {
     function (show, parent) {
         /** @type {?} */
         var shouldShow = show === 'true';
-        return { 'display': shouldShow ? parent.display : 'none' };
+        return { 'display': shouldShow ? parent.display || (parent.isServer ? 'initial' : '') : 'none' };
     };
+    /** @nocollapse */ ShowHideStyleBuilder.ɵprov = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
     ShowHideStyleBuilder.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ ShowHideStyleBuilder.ɵprov4 = ɵɵdefineInjectable({ factory: function ShowHideStyleBuilder_Factory() { return new ShowHideStyleBuilder(); }, token: ShowHideStyleBuilder, providedIn: "root" });
     return ShowHideStyleBuilder;
 }(StyleBuilder));
 var ShowHideDirective = /** @class */ (function (_super) {
     __extends(ShowHideDirective, _super);
     function ShowHideDirective(elementRef, styleBuilder, styler, marshal, layoutConfig, platformId, serverModuleLoaded) {
         var _this = _super.call(this, elementRef, styleBuilder, styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styleBuilder = styleBuilder;
-        _this.styler = styler;
-        _this.marshal = marshal;
         _this.layoutConfig = layoutConfig;
         _this.platformId = platformId;
         _this.serverModuleLoaded = serverModuleLoaded;
         _this.DIRECTIVE_KEY = 'show-hide';
         /**
-         * Original dom Elements CSS display style
+         * Original DOM Element CSS display style
          */
         _this.display = '';
         _this.hasLayout = false;
@@ -506,14 +490,16 @@ var ShowHideDirective = /** @class */ (function (_super) {
         if (value === '') {
             return;
         }
-        this.addStyles(value ? 'true' : 'false', { display: this.display });
-        if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+        /** @type {?} */
+        var isServer = isPlatformServer(this.platformId);
+        this.addStyles(value ? 'true' : 'false', { display: this.display, isServer: isServer });
+        if (isServer && this.serverModuleLoaded) {
             this.nativeElement.style.setProperty('display', '');
         }
         this.marshal.triggerUpdate((/** @type {?} */ (this.parentElement)), 'layout-gap');
     };
     ShowHideDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     ShowHideDirective.ctorParameters = function () { return [
@@ -523,7 +509,7 @@ var ShowHideDirective = /** @class */ (function (_super) {
         { type: MediaMarshaller },
         { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
-        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] }
+        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] }
     ]; };
     return ShowHideDirective;
 }(BaseDirective2));
@@ -553,7 +539,7 @@ var DefaultShowHideDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultShowHideDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$2, inputs: inputs$2 },] },
+        { type: Directive, args: [{ selector: selector$2, inputs: inputs$2 },] }
     ];
     return DefaultShowHideDirective;
 }(ShowHideDirective));
@@ -561,7 +547,7 @@ var DefaultShowHideDirective = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/style/style-transforms.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -697,23 +683,19 @@ function keyValuesToMap(map, entry) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/style/style.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleDirective = /** @class */ (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(elementRef, styler, marshal, delegate, sanitizer, ngStyleInstance, serverLoaded, platformId) {
+    function StyleDirective(elementRef, styler, marshal, sanitizer, differs, renderer2, ngStyleInstance, serverLoaded, platformId) {
         var _this = _super.call(this, elementRef, (/** @type {?} */ (null)), styler, marshal) || this;
-        _this.elementRef = elementRef;
-        _this.styler = styler;
-        _this.marshal = marshal;
-        _this.delegate = delegate;
         _this.sanitizer = sanitizer;
         _this.ngStyleInstance = ngStyleInstance;
         _this.DIRECTIVE_KEY = 'ngStyle';
         if (!_this.ngStyleInstance) {
             // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
             // defined on the same host element; since the responsive variations may be defined...
-            _this.ngStyleInstance = new NgStyle(_this.delegate);
+            _this.ngStyleInstance = new NgStyle(elementRef, differs, renderer2);
         }
         _this.init();
         /** @type {?} */
@@ -827,17 +809,18 @@ var StyleDirective = /** @class */ (function (_super) {
         this.ngStyleInstance.ngDoCheck();
     };
     StyleDirective.decorators = [
-        { type: Directive },
+        { type: Directive }
     ];
     /** @nocollapse */
     StyleDirective.ctorParameters = function () { return [
         { type: ElementRef },
         { type: StyleUtils },
         { type: MediaMarshaller },
-        { type: ɵNgStyleImpl },
         { type: DomSanitizer },
+        { type: KeyValueDiffers },
+        { type: Renderer2 },
         { type: NgStyle, decorators: [{ type: Optional }, { type: Self }] },
-        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] }
     ]; };
     return StyleDirective;
@@ -851,12 +834,6 @@ var inputs$3 = [
 ];
 /** @type {?} */
 var selector$3 = "\n  [ngStyle],\n  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n";
-// tslint:disable-next-line:variable-name
-/** @type {?} */
-var LayoutNgStyleImplProvider = {
-    provide: ɵNgStyleImpl,
-    useClass: ɵNgStyleR2Impl
-};
 /**
  * Directive to add responsive support for ngStyle.
  *
@@ -869,7 +846,7 @@ var DefaultStyleDirective = /** @class */ (function (_super) {
         return _this;
     }
     DefaultStyleDirective.decorators = [
-        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3, providers: [LayoutNgStyleImplProvider] },] },
+        { type: Directive, args: [{ selector: selector$3, inputs: inputs$3 },] }
     ];
     return DefaultStyleDirective;
 }(StyleDirective));
@@ -905,7 +882,7 @@ function buildMapFromList$1(styles, sanitize) {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALL_DIRECTIVES = [
@@ -927,7 +904,7 @@ var ExtendedModule = /** @class */ (function () {
                     imports: [CoreModule],
                     declarations: __spreadArrays(ALL_DIRECTIVES),
                     exports: __spreadArrays(ALL_DIRECTIVES)
-                },] },
+                },] }
     ];
     return ExtendedModule;
 }());
@@ -935,14 +912,14 @@ var ExtendedModule = /** @class */ (function () {
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: extended/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { ExtendedModule, ClassDirective, LayoutNgClassImplProvider, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, LayoutNgStyleImplProvider, DefaultStyleDirective };
+export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuilder, ImgSrcDirective, DefaultImgSrcDirective, ShowHideStyleBuilder, ShowHideDirective, DefaultShowHideDirective, StyleDirective, DefaultStyleDirective };
 //# sourceMappingURL=extended.es5.js.map

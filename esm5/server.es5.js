@@ -14,7 +14,7 @@ import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
 /**
  * @fileoverview added by tsickle
  * Generated from: server/server-match-media.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Special server-only class to simulate a MediaQueryList and
@@ -41,7 +41,7 @@ ServerMediaQueryList = /** @class */ (function () {
         function () {
             return this._isActive;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServerMediaQueryList.prototype, "media", {
@@ -51,7 +51,7 @@ ServerMediaQueryList = /** @class */ (function () {
         function () {
             return this._mediaQuery;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -92,7 +92,7 @@ ServerMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -117,7 +117,7 @@ ServerMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -140,7 +140,7 @@ ServerMediaQueryList = /** @class */ (function () {
         if (this._isActive) {
             /** @type {?} */
             var cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     };
     /** Don't need to remove listeners in the server environment */
@@ -304,7 +304,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
         return new ServerMediaQueryList(query, isActive);
     };
     ServerMatchMedia.decorators = [
-        { type: Injectable },
+        { type: Injectable }
     ];
     /** @nocollapse */
     ServerMatchMedia.ctorParameters = function () { return [
@@ -320,7 +320,7 @@ var ServerMatchMedia = /** @class */ (function (_super) {
 /**
  * @fileoverview added by tsickle
  * Generated from: server/server-provider.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Activate all of the registered breakpoints in sequence, and then
@@ -508,7 +508,7 @@ function getClassName(element, classMap) {
 /**
  * @fileoverview added by tsickle
  * Generated from: server/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var FlexLayoutServerModule = /** @class */ (function () {
     function FlexLayoutServerModule() {
@@ -516,7 +516,7 @@ var FlexLayoutServerModule = /** @class */ (function () {
     FlexLayoutServerModule.decorators = [
         { type: NgModule, args: [{
                     providers: [SERVER_PROVIDERS]
-                },] },
+                },] }
     ];
     return FlexLayoutServerModule;
 }());
@@ -524,14 +524,14 @@ var FlexLayoutServerModule = /** @class */ (function () {
 /**
  * @fileoverview added by tsickle
  * Generated from: server/public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: server/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵa1 };
+export { FlexLayoutServerModule, generateStaticFlexLayoutStyles, FLEX_SSR_SERIALIZER_FACTORY, SERVER_PROVIDERS, ServerMatchMedia as ɵserver_privatea };
 //# sourceMappingURL=server.es5.js.map

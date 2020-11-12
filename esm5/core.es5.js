@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, Optional, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
+import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { __assign, __spreadArrays, __extends } from 'tslib';
 import { Subject, BehaviorSubject, Observable, merge, asapScheduler, of, fromEvent } from 'rxjs';
@@ -14,7 +14,7 @@ import { filter, debounceTime, map, switchMap, takeUntil, take, tap } from 'rxjs
 /**
  * @fileoverview added by tsickle
  * Generated from: core/browser-provider.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Find all of the server-generated stylings, if any, and remove them
@@ -65,7 +65,7 @@ var CLASS_NAME = 'flex-layout-';
 /**
  * @fileoverview added by tsickle
  * Generated from: core/module.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * *****************************************************************
@@ -78,7 +78,7 @@ var CoreModule = /** @class */ (function () {
     CoreModule.decorators = [
         { type: NgModule, args: [{
                     providers: [BROWSER_PROVIDER]
-                },] },
+                },] }
     ];
     return CoreModule;
 }());
@@ -86,7 +86,7 @@ var CoreModule = /** @class */ (function () {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-change.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class instances emitted [to observers] for each mql notification
@@ -133,7 +133,7 @@ MediaChange = /** @class */ (function () {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/stylesheet-map/stylesheet-map.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Utility to emulate a CSS stylesheet
@@ -215,23 +215,23 @@ var StylesheetMap = /** @class */ (function () {
         }
         return value;
     };
+    /** @nocollapse */ StylesheetMap.ɵprov = ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     StylesheetMap.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
-    /** @nocollapse */ StylesheetMap.ɵprov0 = ɵɵdefineInjectable({ factory: function StylesheetMap_Factory() { return new StylesheetMap(); }, token: StylesheetMap, providedIn: "root" });
     return StylesheetMap;
 }());
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/stylesheet-map/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/library-config.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var DEFAULT_CONFIG = {
@@ -257,7 +257,7 @@ var LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for th
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/server-token.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Token that is provided to tell whether the FlexLayoutServerModule
@@ -277,7 +277,7 @@ var SERVER_TOKEN = new InjectionToken('FlexLayoutServerLoaded', {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/breakpoint-token.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints into one provider', {
@@ -291,13 +291,13 @@ var BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoints 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/tokens/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/add-alias.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * For the specified MediaChange, make sure it contains the breakpoint alias
@@ -320,7 +320,7 @@ function mergeAlias(dest, source) {
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/layout-validator.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @license
@@ -418,7 +418,7 @@ function buildCSS(direction, wrap, inline) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/base/base2.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * @abstract
@@ -454,7 +454,7 @@ BaseDirective2 = /** @class */ (function () {
         function () {
             return this.elementRef.nativeElement.parentElement;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseDirective2.prototype, "nativeElement", {
@@ -467,7 +467,7 @@ BaseDirective2 = /** @class */ (function () {
         function () {
             return this.elementRef.nativeElement;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BaseDirective2.prototype, "activatedValue", {
@@ -486,7 +486,7 @@ BaseDirective2 = /** @class */ (function () {
         function (value) {
             this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value, this.marshal.activatedAlias);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /** For @Input changes */
@@ -654,6 +654,19 @@ BaseDirective2 = /** @class */ (function () {
         }
         return 'row';
     };
+    /**
+     * @protected
+     * @param {?} target
+     * @return {?}
+     */
+    BaseDirective2.prototype.hasWrap = /**
+     * @protected
+     * @param {?} target
+     * @return {?}
+     */
+    function (target) {
+        return this.styler.hasWrap(target);
+    };
     /** Applies styles given via string pair or object map to the directive element */
     /**
      * Applies styles given via string pair or object map to the directive element
@@ -701,7 +714,10 @@ BaseDirective2 = /** @class */ (function () {
      * @return {?}
      */
     function (input) {
-        this.addStyles(input);
+        if (this.currentValue !== input) {
+            this.addStyles(input);
+            this.currentValue = input;
+        }
     };
     return BaseDirective2;
 }());
@@ -709,13 +725,13 @@ BaseDirective2 = /** @class */ (function () {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/base/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/data/break-points.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * NOTE: Smaller ranges have HIGHER priority since the match is more specific
@@ -799,7 +815,7 @@ var DEFAULT_BREAKPOINTS = [
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/data/orientation-break-points.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /* tslint:disable */
@@ -823,7 +839,7 @@ var ScreenTypes = {
     'HANDSET_PORTRAIT': "" + HANDSET_PORTRAIT,
     'TABLET_PORTRAIT': TABLET_PORTRAIT + " ",
     'WEB_PORTRAIT': "" + WEB_PORTRAIT,
-    'HANDSET_LANDSCAPE': HANDSET_LANDSCAPE + "]",
+    'HANDSET_LANDSCAPE': "" + HANDSET_LANDSCAPE,
     'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
     'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
 };
@@ -836,7 +852,7 @@ var ORIENTATION_BREAKPOINTS = [
     { 'alias': 'handset.landscape', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
     { 'alias': 'handset.portrait', priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
     { 'alias': 'tablet', priority: 2100, 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', priority: 2100, 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', priority: 2100, 'mediaQuery': ScreenTypes.TABLET_LANDSCAPE },
     { 'alias': 'tablet.portrait', priority: 2100, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
     { 'alias': 'web', priority: 2200, 'mediaQuery': ScreenTypes.WEB, overlapping: true },
     { 'alias': 'web.landscape', priority: 2200, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
@@ -846,13 +862,13 @@ var ORIENTATION_BREAKPOINTS = [
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/break-point.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/object-extend.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -887,7 +903,7 @@ function extendObject(dest) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/breakpoint-tools.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var ALIAS_DELIMITERS = /(\.|-|_)/g;
@@ -975,7 +991,7 @@ function mergeByAlias(defaults, custom) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/break-points-token.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  *  Injection token unique to the flex-layout library.
@@ -1009,7 +1025,7 @@ var BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints',
 /**
  * @fileoverview added by tsickle
  * Generated from: core/utils/sort.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * HOF to sort the breakpoints by descending priority
@@ -1043,7 +1059,7 @@ function sortAscendingPriority(a, b) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/break-point-registry.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
@@ -1110,7 +1126,7 @@ var BreakPointRegistry = /** @class */ (function () {
              */
             function (it) { return it.overlapping == true; }));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BreakPointRegistry.prototype, "aliases", {
@@ -1128,7 +1144,7 @@ var BreakPointRegistry = /** @class */ (function () {
              */
             function (it) { return it.alias; }));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(BreakPointRegistry.prototype, "suffixes", {
@@ -1150,7 +1166,7 @@ var BreakPointRegistry = /** @class */ (function () {
              */
             function (it) { return !!it.suffix ? it.suffix : ''; }));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1179,27 +1195,27 @@ var BreakPointRegistry = /** @class */ (function () {
         }
         return response || null;
     };
+    /** @nocollapse */ BreakPointRegistry.ɵprov = ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     BreakPointRegistry.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] }] }
     ]; };
-    /** @nocollapse */ BreakPointRegistry.ɵprov0 = ɵɵdefineInjectable({ factory: function BreakPointRegistry_Factory() { return new BreakPointRegistry(ɵɵinject(BREAKPOINTS)); }, token: BreakPointRegistry, providedIn: "root" });
     return BreakPointRegistry;
 }());
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/breakpoints/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/match-media/match-media.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -1218,6 +1234,7 @@ var MatchMedia = /** @class */ (function () {
          */
         this.source = new BehaviorSubject(new MediaChange(true));
         this.registry = new Map();
+        this.pendingRemoveListenerFns = [];
         this._observable$ = this.source.asObservable();
     }
     Object.defineProperty(MatchMedia.prototype, "activations", {
@@ -1243,7 +1260,7 @@ var MatchMedia = /** @class */ (function () {
             }));
             return results;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1262,7 +1279,11 @@ var MatchMedia = /** @class */ (function () {
     function (mediaQuery) {
         /** @type {?} */
         var mql = this.registry.get(mediaQuery);
-        return !!mql ? mql.matches : false;
+        return !!mql ? mql.matches : this.registerQuery(mediaQuery).some((/**
+         * @param {?} m
+         * @return {?}
+         */
+        function (m) { return m.matches; }));
     };
     /**
      * External observers can watch for all (or a specific) mql changes.
@@ -1380,6 +1401,10 @@ var MatchMedia = /** @class */ (function () {
             if (!mql) {
                 mql = _this.buildMQL(query);
                 mql.addListener(onMQLEvent);
+                _this.pendingRemoveListenerFns.push((/**
+                 * @return {?}
+                 */
+                function () { return (/** @type {?} */ (mql)).removeListener(onMQLEvent); }));
                 _this.registry.set(query, mql);
             }
             if (mql.matches) {
@@ -1387,6 +1412,19 @@ var MatchMedia = /** @class */ (function () {
             }
         }));
         return matches;
+    };
+    /**
+     * @return {?}
+     */
+    MatchMedia.prototype.ngOnDestroy = /**
+     * @return {?}
+     */
+    function () {
+        /** @type {?} */
+        var fn;
+        while (fn = this.pendingRemoveListenerFns.pop()) {
+            fn();
+        }
     };
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
@@ -1409,8 +1447,9 @@ var MatchMedia = /** @class */ (function () {
     function (query) {
         return constructMql(query, isPlatformBrowser(this._platformId));
     };
+    /** @nocollapse */ MatchMedia.ɵprov = ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(ɵɵinject(NgZone), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     MatchMedia.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     MatchMedia.ctorParameters = function () { return [
@@ -1418,7 +1457,6 @@ var MatchMedia = /** @class */ (function () {
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MatchMedia.ɵprov0 = ɵɵdefineInjectable({ factory: function MatchMedia_Factory() { return new MatchMedia(ɵɵinject(NgZone), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MatchMedia, providedIn: "root" });
     return MatchMedia;
 }());
 /**
@@ -1475,7 +1513,7 @@ function buildQueryCss(mediaQueries, _document) {
 function constructMql(query, isBrowser) {
     /** @type {?} */
     var canListen = isBrowser && !!((/** @type {?} */ (window))).matchMedia('all').addListener;
-    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ((/** @type {?} */ ({
+    return canListen ? ((/** @type {?} */ (window))).matchMedia(query) : (/** @type {?} */ ({
         matches: query === 'all' || query === '',
         media: query,
         addListener: (/**
@@ -1487,14 +1525,31 @@ function constructMql(query, isBrowser) {
          * @return {?}
          */
         function () {
-        })
-    }))));
+        }),
+        onchange: null,
+        addEventListener: /**
+         * @return {?}
+         */
+        function () {
+        },
+        removeEventListener: /**
+         * @return {?}
+         */
+        function () {
+        },
+        dispatchEvent: /**
+         * @return {?}
+         */
+        function () {
+            return false;
+        }
+    }));
 }
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/match-media/mock/mock-match-media.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
@@ -1600,31 +1655,31 @@ var MockMatchMedia = /** @class */ (function (_super) {
             // Simulate activation of overlapping lt-<XXX> ranges
             switch (alias) {
                 case 'lg':
-                    this._activateByAlias('lt-xl');
+                    this._activateByAlias(['lt-xl']);
                     break;
                 case 'md':
-                    this._activateByAlias('lt-xl, lt-lg');
+                    this._activateByAlias(['lt-xl', 'lt-lg']);
                     break;
                 case 'sm':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md');
+                    this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md']);
                     break;
                 case 'xs':
-                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
+                    this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md', 'lt-sm']);
                     break;
             }
             // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
             switch (alias) {
                 case 'xl':
-                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
+                    this._activateByAlias(['gt-lg', 'gt-md', 'gt-sm', 'gt-xs']);
                     break;
                 case 'lg':
-                    this._activateByAlias('gt-md, gt-sm, gt-xs');
+                    this._activateByAlias(['gt-md', 'gt-sm', 'gt-xs']);
                     break;
                 case 'md':
-                    this._activateByAlias('gt-sm, gt-xs');
+                    this._activateByAlias(['gt-sm', 'gt-xs']);
                     break;
                 case 'sm':
-                    this._activateByAlias('gt-xs');
+                    this._activateByAlias(['gt-xs']);
                     break;
             }
         }
@@ -1658,11 +1713,7 @@ var MockMatchMedia = /** @class */ (function (_super) {
             var bp = _this._breakpoints.findByAlias(alias);
             _this._activateByQuery(bp ? bp.mediaQuery : alias);
         });
-        aliases.split(',').forEach((/**
-         * @param {?} alias
-         * @return {?}
-         */
-        function (alias) { return activate(alias.trim()); }));
+        aliases.forEach(activate);
     };
     /**
      *
@@ -1680,6 +1731,9 @@ var MockMatchMedia = /** @class */ (function (_super) {
      * @return {?}
      */
     function (mediaQuery) {
+        if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
+            this._registerMediaQuery(mediaQuery);
+        }
         /** @type {?} */
         var mql = (/** @type {?} */ (this.registry.get(mediaQuery)));
         if (mql && !this.isActive(mediaQuery)) {
@@ -1759,11 +1813,11 @@ var MockMatchMedia = /** @class */ (function (_super) {
         function () {
             return this.activations.length > 0;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     MockMatchMedia.decorators = [
-        { type: Injectable },
+        { type: Injectable }
     ];
     /** @nocollapse */
     MockMatchMedia.ctorParameters = function () { return [
@@ -1798,7 +1852,7 @@ MockMediaQueryList = /** @class */ (function () {
         function () {
             return this._isActive;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(MockMediaQueryList.prototype, "media", {
@@ -1808,7 +1862,7 @@ MockMediaQueryList = /** @class */ (function () {
         function () {
             return this._mediaQuery;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -1849,7 +1903,7 @@ MockMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -1874,7 +1928,7 @@ MockMediaQueryList = /** @class */ (function () {
             function (callback) {
                 /** @type {?} */
                 var cb = (/** @type {?} */ (callback));
-                cb.call(null, _this);
+                cb.call(_this, (/** @type {?} */ ({ matches: _this.matches, media: _this.media })));
             }));
         }
         return this;
@@ -1897,7 +1951,7 @@ MockMediaQueryList = /** @class */ (function () {
         if (this._isActive) {
             /** @type {?} */
             var cb = (/** @type {?} */ (listener));
-            cb.call(null, this);
+            cb.call(this, (/** @type {?} */ ({ matches: this.matches, media: this.media })));
         }
     };
     /** Don't need to remove listeners in the testing environment */
@@ -1967,13 +2021,13 @@ var MockMatchMediaProvider = {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/match-media/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-marshaller/print-hook.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 var PRINT = 'print';
@@ -2003,6 +2057,8 @@ var PrintHook = /** @class */ (function () {
         // is still open. This is an extension of the `isPrinting` property on
         // browsers which support `beforeprint` and `afterprint` events.
         this.isPrintingBeforeAfterEvent = false;
+        this.beforePrintEventListeners = [];
+        this.afterPrintEventListeners = [];
         /**
          * Is this service currently in Print-mode ?
          */
@@ -2047,7 +2103,7 @@ var PrintHook = /** @class */ (function () {
         function () {
             return this.layoutConfig.printWithBreakpoints || [];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PrintHook.prototype, "printBreakPoints", {
@@ -2070,7 +2126,7 @@ var PrintHook = /** @class */ (function () {
              */
             function (bp) { return bp !== null; }))));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /** Lookup breakpoint associated with mediaQuery */
@@ -2143,8 +2199,8 @@ var PrintHook = /** @class */ (function () {
             return;
         }
         this.registeredBeforeAfterPrintHooks = true;
-        // Could we have teardown logic to remove if there are no print listeners being used?
-        this._document.defaultView.addEventListener('beforeprint', (/**
+        /** @type {?} */
+        var beforePrintListener = (/**
          * @return {?}
          */
         function () {
@@ -2155,8 +2211,9 @@ var PrintHook = /** @class */ (function () {
                 _this.startPrinting(target, _this.getEventBreakpoints(new MediaChange(true, PRINT)));
                 target.updateStyles();
             }
-        }));
-        this._document.defaultView.addEventListener('afterprint', (/**
+        });
+        /** @type {?} */
+        var afterPrintListener = (/**
          * @return {?}
          */
         function () {
@@ -2167,19 +2224,24 @@ var PrintHook = /** @class */ (function () {
                 _this.stopPrinting(target);
                 target.updateStyles();
             }
-        }));
+        });
+        // Could we have teardown logic to remove if there are no print listeners being used?
+        this._document.defaultView.addEventListener('beforeprint', beforePrintListener);
+        this._document.defaultView.addEventListener('afterprint', afterPrintListener);
+        this.beforePrintEventListeners.push(beforePrintListener);
+        this.afterPrintEventListeners.push(afterPrintListener);
     };
     /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @return pipeable filter predicate
      */
     /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
      */
     PrintHook.prototype.interceptEvents = /**
-     * Prepare RxJs filter operator with partial application
+     * Prepare RxJS filter operator with partial application
      * @param {?} target
      * @return {?} pipeable filter predicate
      */
@@ -2344,8 +2406,31 @@ var PrintHook = /** @class */ (function () {
             }
         }
     };
+    /** Teardown logic for the service. */
+    /**
+     * Teardown logic for the service.
+     * @return {?}
+     */
+    PrintHook.prototype.ngOnDestroy = /**
+     * Teardown logic for the service.
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        this.beforePrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        function (l) { return _this._document.defaultView.removeEventListener('beforeprint', l); }));
+        this.afterPrintEventListeners.forEach((/**
+         * @param {?} l
+         * @return {?}
+         */
+        function (l) { return _this._document.defaultView.removeEventListener('afterprint', l); }));
+    };
+    /** @nocollapse */ PrintHook.ɵprov = ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(ɵɵinject(BreakPointRegistry), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(DOCUMENT)); }, token: PrintHook, providedIn: "root" });
     PrintHook.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     PrintHook.ctorParameters = function () { return [
@@ -2353,7 +2438,6 @@ var PrintHook = /** @class */ (function () {
         { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] },
         { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ PrintHook.ɵprov0 = ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(ɵɵinject(BreakPointRegistry), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(DOCUMENT)); }, token: PrintHook, providedIn: "root" });
     return PrintHook;
 }());
 // ************************************************************************
@@ -2452,7 +2536,7 @@ function isPrintBreakPoint(bp) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/utils/array.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -2468,7 +2552,7 @@ function coerceArray(value) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-observer/media-observer.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
@@ -2603,7 +2687,7 @@ var MediaObserver = /** @class */ (function () {
         function (alias) {
             /** @type {?} */
             var query = toMediaQuery(alias, _this.breakpoints);
-            return _this.matchMedia.isActive(query);
+            return query !== null && _this.matchMedia.isActive(query);
         }));
     };
     // ************************************************
@@ -2785,8 +2869,9 @@ var MediaObserver = /** @class */ (function () {
             .map(mergeMQAlias)
             .sort(sortDescendingPriority);
     };
+    /** @nocollapse */ MediaObserver.ɵprov = ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     MediaObserver.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     MediaObserver.ctorParameters = function () { return [
@@ -2794,7 +2879,6 @@ var MediaObserver = /** @class */ (function () {
         { type: MatchMedia },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaObserver.ɵprov0 = ɵɵdefineInjectable({ factory: function MediaObserver_Factory() { return new MediaObserver(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(PrintHook)); }, token: MediaObserver, providedIn: "root" });
     return MediaObserver;
 }());
 /**
@@ -2806,7 +2890,7 @@ var MediaObserver = /** @class */ (function () {
 function toMediaQuery(query, locator) {
     /** @type {?} */
     var bp = locator.findByAlias(query) || locator.findByQuery(query);
-    return bp ? bp.mediaQuery : query;
+    return bp ? bp.mediaQuery : null;
 }
 /**
  * Split each query string into separate query strings if two queries are provided as comma
@@ -2836,13 +2920,13 @@ function splitQueries(queries) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-observer/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-trigger/media-trigger.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Class
@@ -3200,11 +3284,12 @@ var MediaTrigger = /** @class */ (function () {
         function () {
             return this.matchMedia.activations;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
+    /** @nocollapse */ MediaTrigger.ɵprov = ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     MediaTrigger.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     MediaTrigger.ctorParameters = function () { return [
@@ -3214,26 +3299,25 @@ var MediaTrigger = /** @class */ (function () {
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
     ]; };
-    /** @nocollapse */ MediaTrigger.ɵprov0 = ɵɵdefineInjectable({ factory: function MediaTrigger_Factory() { return new MediaTrigger(ɵɵinject(BreakPointRegistry), ɵɵinject(MatchMedia), ɵɵinject(LAYOUT_CONFIG), ɵɵinject(PLATFORM_ID), ɵɵinject(DOCUMENT)); }, token: MediaTrigger, providedIn: "root" });
     return MediaTrigger;
 }());
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-trigger/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/utils/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: utils/auto-prefixer.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -3300,7 +3384,7 @@ function applyCssPrefixes(target) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/style-utils/style-utils.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var StyleUtils = /** @class */ (function () {
     function StyleUtils(_serverStylesheet, _serverModuleLoaded, _platformId, layoutConfig) {
@@ -3393,6 +3477,19 @@ var StyleUtils = /** @class */ (function () {
         var hasInlineValue = this.lookupInlineStyle(target, query) ||
             (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
         return [value || 'row', hasInlineValue];
+    };
+    /**
+     * @param {?} target
+     * @return {?}
+     */
+    StyleUtils.prototype.hasWrap = /**
+     * @param {?} target
+     * @return {?}
+     */
+    function (target) {
+        /** @type {?} */
+        var query = 'flex-wrap';
+        return this.lookupStyle(target, query) === 'wrap';
     };
     /**
      * Find the DOM element's raw attribute value (if any)
@@ -3620,24 +3717,24 @@ var StyleUtils = /** @class */ (function () {
         }
         element.setAttribute('style', styleAttrValue);
     };
+    /** @nocollapse */ StyleUtils.ɵprov = ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(ɵɵinject(StylesheetMap), ɵɵinject(SERVER_TOKEN), ɵɵinject(PLATFORM_ID), ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     StyleUtils.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     StyleUtils.ctorParameters = function () { return [
-        { type: StylesheetMap, decorators: [{ type: Optional }] },
-        { type: Boolean, decorators: [{ type: Optional }, { type: Inject, args: [SERVER_TOKEN,] }] },
+        { type: StylesheetMap },
+        { type: Boolean, decorators: [{ type: Inject, args: [SERVER_TOKEN,] }] },
         { type: Object, decorators: [{ type: Inject, args: [PLATFORM_ID,] }] },
         { type: undefined, decorators: [{ type: Inject, args: [LAYOUT_CONFIG,] }] }
     ]; };
-    /** @nocollapse */ StyleUtils.ɵprov0 = ɵɵdefineInjectable({ factory: function StyleUtils_Factory() { return new StyleUtils(ɵɵinject(StylesheetMap, 8), ɵɵinject(SERVER_TOKEN, 8), ɵɵinject(PLATFORM_ID), ɵɵinject(LAYOUT_CONFIG)); }, token: StyleUtils, providedIn: "root" });
     return StyleUtils;
 }());
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/style-builder/style-builder.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * A class that encapsulates CSS style generation for common directives
@@ -3685,7 +3782,7 @@ StyleBuilder = /** @class */ (function () {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/basis-validator/basis-validator.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
@@ -3744,7 +3841,7 @@ function _validateCalcValue(calc) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/media-marshaller/media-marshaller.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * MediaMarshaller - register responsive values from directives and
@@ -3774,7 +3871,7 @@ var MediaMarshaller = /** @class */ (function () {
         function () {
             return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -4272,7 +4369,7 @@ var MediaMarshaller = /** @class */ (function () {
             /** @type {?} */
             var valueMap = bpMap.get(activatedBp.alias);
             if (valueMap) {
-                if (key === undefined || valueMap.has(key)) {
+                if (key === undefined || (valueMap.has(key) && valueMap.get(key) != null)) {
                     return valueMap;
                 }
             }
@@ -4308,8 +4405,9 @@ var MediaMarshaller = /** @class */ (function () {
             .pipe(tap(this.hook.interceptEvents(target)), filter(this.hook.blockPropagation()))
             .subscribe(this.onMediaChange.bind(this));
     };
+    /** @nocollapse */ MediaMarshaller.ɵprov = ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(ɵɵinject(MatchMedia), ɵɵinject(BreakPointRegistry), ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     MediaMarshaller.decorators = [
-        { type: Injectable, args: [{ providedIn: 'root' },] },
+        { type: Injectable, args: [{ providedIn: 'root' },] }
     ];
     /** @nocollapse */
     MediaMarshaller.ctorParameters = function () { return [
@@ -4317,7 +4415,6 @@ var MediaMarshaller = /** @class */ (function () {
         { type: BreakPointRegistry },
         { type: PrintHook }
     ]; };
-    /** @nocollapse */ MediaMarshaller.ɵprov0 = ɵɵdefineInjectable({ factory: function MediaMarshaller_Factory() { return new MediaMarshaller(ɵɵinject(MatchMedia), ɵɵinject(BreakPointRegistry), ɵɵinject(PrintHook)); }, token: MediaMarshaller, providedIn: "root" });
     return MediaMarshaller;
 }());
 /**
@@ -4342,13 +4439,13 @@ function initBuilderMap(map$$1, element, key, input) {
 /**
  * @fileoverview added by tsickle
  * Generated from: core/public-api.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
  * Generated from: core/index.ts
- * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider, CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MediaObserver, MediaTrigger, sortDescendingPriority, sortAscendingPriority, coerceArray, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
