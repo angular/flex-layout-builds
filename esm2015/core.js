@@ -599,52 +599,52 @@ class BaseDirective2 {
 const DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
-        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.9px)',
+        mediaQuery: 'screen and (min-width: 0px) and (max-width: 599.98px)',
         priority: 1000,
     },
     {
         alias: 'sm',
-        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.9px)',
+        mediaQuery: 'screen and (min-width: 600px) and (max-width: 959.98px)',
         priority: 900,
     },
     {
         alias: 'md',
-        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.9px)',
+        mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279.98px)',
         priority: 800,
     },
     {
         alias: 'lg',
-        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.9px)',
+        mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919.98px)',
         priority: 700,
     },
     {
         alias: 'xl',
-        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.9px)',
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 4999.98px)',
         priority: 600,
     },
     {
         alias: 'lt-sm',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 599.9px)',
+        mediaQuery: 'screen and (max-width: 599.98px)',
         priority: 950,
     },
     {
         alias: 'lt-md',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 959.9px)',
+        mediaQuery: 'screen and (max-width: 959.98px)',
         priority: 850,
     },
     {
         alias: 'lt-lg',
         overlapping: true,
-        mediaQuery: 'screen and (max-width: 1279.9px)',
+        mediaQuery: 'screen and (max-width: 1279.98px)',
         priority: 750,
     },
     {
         alias: 'lt-xl',
         overlapping: true,
         priority: 650,
-        mediaQuery: 'screen and (max-width: 1919.9px)',
+        mediaQuery: 'screen and (max-width: 1919.98px)',
     },
     {
         alias: 'gt-xs',
@@ -679,13 +679,13 @@ const DEFAULT_BREAKPOINTS = [
 
 /* tslint:disable */
 /** @type {?} */
-const HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599.9px)';
+const HANDSET_PORTRAIT = '(orientation: portrait) and (max-width: 599.98px)';
 /** @type {?} */
-const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.9px)';
+const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.98px)';
 /** @type {?} */
-const TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.9px)';
+const TABLET_PORTRAIT = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.98px)';
 /** @type {?} */
-const TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.9px)';
+const TABLET_LANDSCAPE = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.98px)';
 /** @type {?} */
 const WEB_PORTRAIT = '(orientation: portrait) and (min-width: 840px)';
 /** @type {?} */
