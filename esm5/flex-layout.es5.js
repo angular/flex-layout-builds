@@ -26,7 +26,7 @@ export { ɵgrid_privatef, ɵgrid_privatee, ɵgrid_privated, ɵgrid_privatei, ɵg
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new Version('11.0.0-beta.33-2e430c0');
+var VERSION = new Version('11.0.0-beta.33-2f83034');
 
 /**
  * @fileoverview added by tsickle
