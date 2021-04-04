@@ -2465,16 +2465,18 @@ var PrintHook = /** @class */ (function () {
      */
     function () {
         var _this = this;
-        this.beforePrintEventListeners.forEach((/**
-         * @param {?} l
-         * @return {?}
-         */
-        function (l) { return _this._document.defaultView.removeEventListener('beforeprint', l); }));
-        this.afterPrintEventListeners.forEach((/**
-         * @param {?} l
-         * @return {?}
-         */
-        function (l) { return _this._document.defaultView.removeEventListener('afterprint', l); }));
+        if (this._document.defaultView) {
+            this.beforePrintEventListeners.forEach((/**
+             * @param {?} l
+             * @return {?}
+             */
+            function (l) { return _this._document.defaultView.removeEventListener('beforeprint', l); }));
+            this.afterPrintEventListeners.forEach((/**
+             * @param {?} l
+             * @return {?}
+             */
+            function (l) { return _this._document.defaultView.removeEventListener('afterprint', l); }));
+        }
     };
     /** @nocollapse */ PrintHook.ɵprov = core.ɵɵdefineInjectable({ factory: function PrintHook_Factory() { return new PrintHook(core.ɵɵinject(BreakPointRegistry), core.ɵɵinject(LAYOUT_CONFIG), core.ɵɵinject(common.DOCUMENT)); }, token: PrintHook, providedIn: "root" });
     PrintHook.decorators = [
