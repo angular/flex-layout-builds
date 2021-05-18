@@ -7,7 +7,7 @@
  */
 import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, NgZone, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { __assign, __spreadArrays, __extends } from 'tslib';
+import { __assign, __spreadArray, __extends } from 'tslib';
 import { Subject, BehaviorSubject, Observable, merge, asapScheduler, of, fromEvent } from 'rxjs';
 import { filter, debounceTime, map, switchMap, takeUntil, take, tap } from 'rxjs/operators';
 
@@ -1072,7 +1072,7 @@ var BreakPointRegistry = /** @class */ (function () {
          * Memoized BreakPoint Lookups
          */
         this.findByMap = new Map();
-        this.items = __spreadArrays(list).sort(sortAscendingPriority);
+        this.items = __spreadArray([], list).sort(sortAscendingPriority);
     }
     /**
      * Search breakpoints by alias (e.g. gt-xs)
@@ -2078,7 +2078,7 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (queries) {
-        return __spreadArrays(queries, [PRINT]);
+        return __spreadArray(__spreadArray([], queries), [PRINT]);
     };
     /** Is the MediaChange event for any 'print' @media */
     /**
@@ -2145,7 +2145,7 @@ var PrintHook = /** @class */ (function () {
         /** @type {?} */
         var bp = this.breakpoints.findByQuery(mediaQuery);
         /** @type {?} */
-        var list = bp ? __spreadArrays(this.printBreakPoints, [bp]) : this.printBreakPoints;
+        var list = bp ? __spreadArray(__spreadArray([], this.printBreakPoints), [bp]) : this.printBreakPoints;
         return list.sort(sortDescendingPriority);
     };
     /** Update event with printAlias mediaQuery information */
@@ -2505,7 +2505,7 @@ PrintQueue = /** @class */ (function () {
             if (bpInList === undefined) {
                 // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
                 // register as highest priority in the queue
-                this.printBreakpoints = isPrintBreakPoint(bp) ? __spreadArrays([bp], this.printBreakpoints) : __spreadArrays(this.printBreakpoints, [bp]);
+                this.printBreakpoints = isPrintBreakPoint(bp) ? __spreadArray([bp], this.printBreakpoints) : __spreadArray(__spreadArray([], this.printBreakpoints), [bp]);
             }
         }
     };

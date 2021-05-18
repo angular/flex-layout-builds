@@ -30,11 +30,13 @@ PERFORMANCE OF THIS SOFTWARE.
 var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
     return extendStatics(d, b);
 };
 
 function __extends(d, b) {
+    if (typeof b !== "function" && b !== null)
+        throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -51,12 +53,10 @@ var __assign = function() {
     return __assign.apply(this, arguments);
 };
 
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
+function __spreadArray(to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 }
 
 /**
@@ -1120,7 +1120,7 @@ var BreakPointRegistry = /** @class */ (function () {
          * Memoized BreakPoint Lookups
          */
         this.findByMap = new Map();
-        this.items = __spreadArrays(list).sort(sortAscendingPriority);
+        this.items = __spreadArray([], list).sort(sortAscendingPriority);
     }
     /**
      * Search breakpoints by alias (e.g. gt-xs)
@@ -2126,7 +2126,7 @@ var PrintHook = /** @class */ (function () {
      * @return {?}
      */
     function (queries) {
-        return __spreadArrays(queries, [PRINT]);
+        return __spreadArray(__spreadArray([], queries), [PRINT]);
     };
     /** Is the MediaChange event for any 'print' @media */
     /**
@@ -2193,7 +2193,7 @@ var PrintHook = /** @class */ (function () {
         /** @type {?} */
         var bp = this.breakpoints.findByQuery(mediaQuery);
         /** @type {?} */
-        var list = bp ? __spreadArrays(this.printBreakPoints, [bp]) : this.printBreakPoints;
+        var list = bp ? __spreadArray(__spreadArray([], this.printBreakPoints), [bp]) : this.printBreakPoints;
         return list.sort(sortDescendingPriority);
     };
     /** Update event with printAlias mediaQuery information */
@@ -2553,7 +2553,7 @@ PrintQueue = /** @class */ (function () {
             if (bpInList === undefined) {
                 // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
                 // register as highest priority in the queue
-                this.printBreakpoints = isPrintBreakPoint(bp) ? __spreadArrays([bp], this.printBreakpoints) : __spreadArrays(this.printBreakpoints, [bp]);
+                this.printBreakpoints = isPrintBreakPoint(bp) ? __spreadArray([bp], this.printBreakpoints) : __spreadArray(__spreadArray([], this.printBreakpoints), [bp]);
             }
         }
     };

@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { __extends, __assign, __spreadArrays } from 'tslib';
+import { __extends, __assign, __spreadArray } from 'tslib';
 import { Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input, NgModule, IterableDiffers, KeyValueDiffers, Optional, Renderer2, Self, SecurityContext, ɵɵdefineInjectable } from '@angular/core';
 import { isPlatformServer, NgClass, NgStyle } from '@angular/common';
 import { MediaMarshaller, BaseDirective2, SERVER_TOKEN, StyleBuilder, StyleUtils, LAYOUT_CONFIG, CoreModule } from '@angular/flex-layout/core';
@@ -902,8 +902,8 @@ var ExtendedModule = /** @class */ (function () {
     ExtendedModule.decorators = [
         { type: NgModule, args: [{
                     imports: [CoreModule],
-                    declarations: __spreadArrays(ALL_DIRECTIVES),
-                    exports: __spreadArrays(ALL_DIRECTIVES)
+                    declarations: __spreadArray([], ALL_DIRECTIVES),
+                    exports: __spreadArray([], ALL_DIRECTIVES)
                 },] }
     ];
     return ExtendedModule;

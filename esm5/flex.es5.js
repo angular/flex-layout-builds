@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { __extends, __assign, __spreadArrays } from 'tslib';
+import { __extends, __assign, __spreadArray } from 'tslib';
 import { Directive, ElementRef, Injectable, NgModule, NgZone, Inject, Input, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
 import { BaseDirective2, StyleBuilder, StyleUtils, MediaMarshaller, CoreModule, LAYOUT_CONFIG, validateBasis } from '@angular/flex-layout/core';
 import { Directionality, BidiModule } from '@angular/cdk/bidi';
@@ -1768,8 +1768,8 @@ var FlexModule = /** @class */ (function () {
     FlexModule.decorators = [
         { type: NgModule, args: [{
                     imports: [CoreModule, BidiModule],
-                    declarations: __spreadArrays(ALL_DIRECTIVES),
-                    exports: __spreadArrays(ALL_DIRECTIVES)
+                    declarations: __spreadArray([], ALL_DIRECTIVES),
+                    exports: __spreadArray([], ALL_DIRECTIVES)
                 },] }
     ];
     return FlexModule;

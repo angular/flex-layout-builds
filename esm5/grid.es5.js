@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { __extends, __spreadArrays } from 'tslib';
+import { __extends, __spreadArray } from 'tslib';
 import { Directive, ElementRef, Injectable, NgModule, Input, ɵɵdefineInjectable } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleUtils, CoreModule } from '@angular/flex-layout/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -1436,8 +1436,8 @@ var GridModule = /** @class */ (function () {
     GridModule.decorators = [
         { type: NgModule, args: [{
                     imports: [CoreModule],
-                    declarations: __spreadArrays(ALL_DIRECTIVES),
-                    exports: __spreadArrays(ALL_DIRECTIVES)
+                    declarations: __spreadArray([], ALL_DIRECTIVES),
+                    exports: __spreadArray([], ALL_DIRECTIVES)
                 },] }
     ];
     return GridModule;
