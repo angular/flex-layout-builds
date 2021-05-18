@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { __extends, __spreadArrays } from 'tslib';
+import { __extends, __spreadArray } from 'tslib';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, PLATFORM_ID, NgModule } from '@angular/core';
 import { ɵMatchMedia, BREAKPOINTS, LAYOUT_CONFIG, CLASS_NAME, SERVER_TOKEN, StylesheetMap, sortAscendingPriority } from '@angular/flex-layout/core';
@@ -346,7 +346,7 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
     nextId = 0;
     /** @type {?} */
     var styleText = generateCss(defaultStyles, 'all', classMap);
-    __spreadArrays(breakpoints).sort(sortAscendingPriority).forEach((/**
+    __spreadArray([], breakpoints).sort(sortAscendingPriority).forEach((/**
      * @param {?} bp
      * @param {?} i
      * @return {?}
