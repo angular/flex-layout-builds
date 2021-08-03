@@ -15,7 +15,7 @@ export { ExtendedModule, ClassDirective, DefaultClassDirective, ImgSrcStyleBuild
 import { FlexModule } from '@angular/flex-layout/flex';
 export { FlexModule, FlexStyleBuilder, FlexDirective, DefaultFlexDirective, FlexAlignStyleBuilder, FlexAlignDirective, DefaultFlexAlignDirective, FlexFillStyleBuilder, FlexFillDirective, FlexOffsetStyleBuilder, FlexOffsetDirective, DefaultFlexOffsetDirective, FlexOrderStyleBuilder, FlexOrderDirective, DefaultFlexOrderDirective, LayoutStyleBuilder, LayoutDirective, DefaultLayoutDirective, LayoutAlignStyleBuilder, LayoutAlignDirective, DefaultLayoutAlignDirective, LayoutGapStyleBuilder, LayoutGapDirective, DefaultLayoutGapDirective } from '@angular/flex-layout/flex';
 import { GridModule } from '@angular/flex-layout/grid';
-export { GridModule, GridAlignColumnsStyleBuilder, GridAlignColumnsDirective, DefaultGridAlignColumnsDirective, GridAlignRowsStyleBuilder, GridAlignRowsDirective, DefaultGridAlignRowsDirective, GridAreaStyleBuilder, GridAreaDirective, DefaultGridAreaDirective, GridAreasStyleBuiler, GridAreasDirective, DefaultGridAreasDirective, GridAutoStyleBuilder, GridAutoDirective, DefaultGridAutoDirective, GridColumnStyleBuilder, GridColumnDirective, DefaultGridColumnDirective, GridColumnsStyleBuilder, GridColumnsDirective, DefaultGridColumnsDirective, GridGapStyleBuilder, GridGapDirective, DefaultGridGapDirective, GridAlignStyleBuilder, GridAlignDirective, DefaultGridAlignDirective, GridRowStyleBuilder, GridRowDirective, DefaultGridRowDirective, GridRowsStyleBuilder, GridRowsDirective, DefaultGridRowsDirective } from '@angular/flex-layout/grid';
+export { ɵgrid_privatef, ɵgrid_privatee, ɵgrid_privated, ɵgrid_privatei, ɵgrid_privateh, ɵgrid_privateg, ɵgrid_privatel, ɵgrid_privatek, ɵgrid_privatej, ɵgrid_privateo, ɵgrid_privaten, ɵgrid_privatem, ɵgrid_privater, ɵgrid_privateq, ɵgrid_privatep, ɵgrid_privateu, ɵgrid_privatet, ɵgrid_privates, ɵgrid_privatex, ɵgrid_privatew, ɵgrid_privatev, ɵgrid_privateba, ɵgrid_privatez, ɵgrid_privatey, ɵgrid_privatec, ɵgrid_privateb, ɵgrid_privatea, ɵgrid_privatebd, ɵgrid_privatebc, ɵgrid_privatebb, ɵgrid_privatebg, ɵgrid_privatebf, ɵgrid_privatebe, GridModule } from '@angular/flex-layout/grid';
 
 /**
  * @fileoverview added by tsickle
@@ -26,7 +26,7 @@ export { GridModule, GridAlignColumnsStyleBuilder, GridAlignColumnsDirective, De
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new Version('12.0.0-beta.34-2c1b959');
+var VERSION = new Version('12.0.0-beta.34-4e5c189');
 
 /**
  * @fileoverview added by tsickle
