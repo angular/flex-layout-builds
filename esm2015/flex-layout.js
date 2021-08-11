@@ -25,7 +25,7 @@ export { GridModule, GridAlignColumnsStyleBuilder, GridAlignColumnsDirective, De
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-const VERSION = new Version('12.0.0-beta.34-4022c08');
+const VERSION = new Version('12.0.0-beta.34-f0607da');
 
 /**
  * @fileoverview added by tsickle
