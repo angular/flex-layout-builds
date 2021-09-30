@@ -46,7 +46,7 @@ var __assign = function() {
  * Current version of Angular Flex-Layout.
  * @type {?}
  */
-var VERSION = new core.Version('12.0.0-beta.35-d403588');
+var VERSION = new core.Version('12.0.0-beta.35-0d68bf5');
 
 /**
  * @fileoverview added by tsickle
