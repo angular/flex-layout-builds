@@ -8,6 +8,7 @@
 import { NgZone } from '@angular/core';
 import { MatchMedia } from '../match-media';
 import { BreakPointRegistry } from '../../breakpoints/break-point-registry';
+import * as i0 from "@angular/core";
 /**
  * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
  * MockMediaQueryListener. Methods are available to simulate an activation of a mediaQuery
@@ -47,6 +48,8 @@ export declare class MockMatchMedia extends MatchMedia {
      */
     protected buildMQL(query: string): MediaQueryList;
     protected get hasActivated(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockMatchMedia, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MockMatchMedia>;
 }
 /**
  * Special internal class to simulate a MediaQueryList and

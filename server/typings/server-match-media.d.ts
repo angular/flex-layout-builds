@@ -1,5 +1,6 @@
 import { NgZone } from '@angular/core';
 import { BreakPoint, ɵMatchMedia as MatchMedia, LayoutConfigOptions } from '@angular/flex-layout/core';
+import * as i0 from "@angular/core";
 /**
  * Special server-only class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
@@ -53,6 +54,8 @@ export declare class ServerMatchMedia extends MatchMedia {
      * supports 0..n listeners for activation/deactivation
      */
     protected buildMQL(query: string): ServerMediaQueryList;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ServerMatchMedia, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ServerMatchMedia>;
 }
 declare type MediaQueryListListener = ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null;
 export {};

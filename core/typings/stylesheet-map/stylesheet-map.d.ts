@@ -1,3 +1,4 @@
+import * as i0 from "@angular/core";
 /**
  * Utility to emulate a CSS stylesheet
  *
@@ -18,4 +19,6 @@ export declare class StylesheetMap {
      * Retrieve a given style for an HTML element
      */
     getStyleForElement(el: HTMLElement, styleName: string): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<StylesheetMap, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<StylesheetMap>;
 }

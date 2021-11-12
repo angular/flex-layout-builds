@@ -1,5 +1,6 @@
 import { StylesheetMap } from '../stylesheet-map/stylesheet-map';
 import { LayoutConfigOptions } from '../tokens/library-config';
+import * as i0 from "@angular/core";
 export declare class StyleUtils {
     private _serverStylesheet;
     private _serverModuleLoaded;
@@ -44,6 +45,8 @@ export declare class StyleUtils {
     private _getServerStyle;
     private _readStyleAttribute;
     private _writeStyleAttribute;
+    static ɵfac: i0.ɵɵFactoryDeclaration<StyleUtils, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<StyleUtils>;
 }
 /**
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object

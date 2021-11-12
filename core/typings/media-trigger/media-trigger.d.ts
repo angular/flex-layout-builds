@@ -1,6 +1,7 @@
 import { MatchMedia } from '../match-media/match-media';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { LayoutConfigOptions } from '../tokens/library-config';
+import * as i0 from "@angular/core";
 /**
  * Class
  */
@@ -67,4 +68,6 @@ export declare class MediaTrigger {
     private originalActivations;
     private originalRegistry;
     private resizeSubscription;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MediaTrigger, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MediaTrigger>;
 }

@@ -1,8 +1,10 @@
 {
   "name": "@angular/flex-layout/flex",
   "typings": "../flex.d.ts",
-  "main": "../bundles/flex-layout-flex.umd.js",
-  "module": "../esm5/flex.es5.js",
-  "es2015": "../esm2015/flex.js",
+  "module": "../fesm2015/flex.mjs",
+  "es2020": "../fesm2020/flex.mjs",
+  "esm2020": "../esm2020/flex/index.mjs",
+  "fesm2020": "../fesm2020/flex.mjs",
+  "fesm2015": "../fesm2015/flex.mjs",
   "sideEffects": false
 }

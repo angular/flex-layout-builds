@@ -11,6 +11,7 @@ import { MediaChange } from '../media-change';
 import { MatchMedia } from '../match-media/match-media';
 import { PrintHook } from '../media-marshaller/print-hook';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
+import * as i0 from "@angular/core";
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
  * if a mediaQuery is currently activated.
@@ -109,4 +110,6 @@ export declare class MediaObserver implements OnDestroy {
     private findAllActivations;
     private readonly _media$;
     private readonly destroyed$;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MediaObserver, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MediaObserver>;
 }

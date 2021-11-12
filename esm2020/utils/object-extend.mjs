@@ -1,0 +1,30 @@
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Extends an object with the *enumerable* and *own* properties of one or more source objects,
+ * similar to Object.assign.
+ *
+ * @param dest The object which will have properties copied to it.
+ * @param sources The source objects from which properties will be copied.
+ */
+export function extendObject(dest, ...sources) {
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (let source of sources) {
+        if (source != null) {
+            for (let key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
+        }
+    }
+    return dest;
+}
+//# sourceMappingURL=object-extend.js.map

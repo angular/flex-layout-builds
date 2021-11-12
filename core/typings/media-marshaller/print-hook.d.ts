@@ -10,6 +10,7 @@ import { MediaChange } from '../media-change';
 import { BreakPoint } from '../breakpoints/break-point';
 import { LayoutConfigOptions } from '../tokens/library-config';
 import { BreakPointRegistry, OptionalBreakPoint } from '../breakpoints/break-point-registry';
+import * as i0 from "@angular/core";
 /**
  * Interface to apply PrintHook to call anonymous `target.updateStyles()`
  */
@@ -89,4 +90,6 @@ export declare class PrintHook implements OnDestroy {
     private isPrinting;
     private queue;
     private deactivations;
+    static ɵfac: i0.ɵɵFactoryDeclaration<PrintHook, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<PrintHook>;
 }

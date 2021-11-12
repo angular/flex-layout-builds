@@ -10,6 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import { StyleDefinition, StyleUtils } from '../style-utils/style-utils';
 import { StyleBuilder } from '../style-builder/style-builder';
 import { MediaMarshaller } from '../media-marshaller/media-marshaller';
+import * as i0 from "@angular/core";
 export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     protected elementRef: ElementRef;
     protected styleBuilder: StyleBuilder;
@@ -54,4 +55,6 @@ export declare abstract class BaseDirective2 implements OnChanges, OnDestroy {
     protected applyStyleToElement(style: StyleDefinition, value?: string | number, element?: HTMLElement): void;
     protected setValue(val: any, bp: string): void;
     protected updateWithValue(input: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BaseDirective2, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseDirective2, never, never, {}, {}, never>;
 }

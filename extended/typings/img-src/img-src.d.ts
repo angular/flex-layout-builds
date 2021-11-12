@@ -7,10 +7,13 @@
  */
 import { ElementRef } from '@angular/core';
 import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+import * as i0 from "@angular/core";
 export declare class ImgSrcStyleBuilder extends StyleBuilder {
     buildStyles(url: string): {
         content: string;
     };
+    static ɵfac: i0.ɵɵFactoryDeclaration<ImgSrcStyleBuilder, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ImgSrcStyleBuilder>;
 }
 export declare class ImgSrcDirective extends BaseDirective2 {
     protected platformId: Object;
@@ -29,6 +32,8 @@ export declare class ImgSrcDirective extends BaseDirective2 {
      */
     protected updateWithValue(value?: string): void;
     protected styleCache: Map<string, StyleDefinition>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ImgSrcDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ImgSrcDirective, never, never, { "src": "src"; }, {}, never>;
 }
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
@@ -41,4 +46,6 @@ export declare class ImgSrcDirective extends BaseDirective2 {
  */
 export declare class DefaultImgSrcDirective extends ImgSrcDirective {
     protected inputs: string[];
+    static ɵfac: i0.ɵɵFactoryDeclaration<DefaultImgSrcDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DefaultImgSrcDirective, "  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]", never, { "src.xs": "src.xs"; "src.sm": "src.sm"; "src.md": "src.md"; "src.lg": "src.lg"; "src.xl": "src.xl"; "src.lt-sm": "src.lt-sm"; "src.lt-md": "src.lt-md"; "src.lt-lg": "src.lt-lg"; "src.lt-xl": "src.lt-xl"; "src.gt-xs": "src.gt-xs"; "src.gt-sm": "src.gt-sm"; "src.gt-md": "src.gt-md"; "src.gt-lg": "src.gt-lg"; }, {}, never>;
 }

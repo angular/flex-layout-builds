@@ -1,8 +1,10 @@
 {
   "name": "@angular/flex-layout/extended",
   "typings": "../extended.d.ts",
-  "main": "../bundles/flex-layout-extended.umd.js",
-  "module": "../esm5/extended.es5.js",
-  "es2015": "../esm2015/extended.js",
+  "module": "../fesm2015/extended.mjs",
+  "es2020": "../fesm2020/extended.mjs",
+  "esm2020": "../esm2020/extended/index.mjs",
+  "fesm2020": "../fesm2020/extended.mjs",
+  "fesm2015": "../fesm2015/extended.mjs",
   "sideEffects": false
 }

@@ -1,8 +1,10 @@
 {
   "name": "@angular/flex-layout/core",
   "typings": "../core.d.ts",
-  "main": "../bundles/flex-layout-core.umd.js",
-  "module": "../esm5/core.es5.js",
-  "es2015": "../esm2015/core.js",
+  "module": "../fesm2015/core.mjs",
+  "es2020": "../fesm2020/core.mjs",
+  "esm2020": "../esm2020/core/index.mjs",
+  "fesm2020": "../fesm2020/core.mjs",
+  "fesm2015": "../fesm2015/core.mjs",
   "sideEffects": false
 }

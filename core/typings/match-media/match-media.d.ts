@@ -8,6 +8,7 @@
 import { NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MediaChange } from '../media-change';
+import * as i0 from "@angular/core";
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
  * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
@@ -53,4 +54,6 @@ export declare class MatchMedia implements OnDestroy {
      */
     protected buildMQL(query: string): MediaQueryList;
     protected _observable$: Observable<MediaChange>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MatchMedia, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MatchMedia>;
 }

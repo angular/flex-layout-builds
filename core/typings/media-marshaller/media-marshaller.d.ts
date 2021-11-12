@@ -3,6 +3,7 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
 import { PrintHook } from './print-hook';
+import * as i0 from "@angular/core";
 declare type ClearCallback = () => void;
 declare type UpdateCallback = (val: any) => void;
 export interface ElementMatcher {
@@ -111,5 +112,7 @@ export declare class MediaMarshaller {
      * Watch for mediaQuery breakpoint activations
      */
     private observeActivations;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MediaMarshaller, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MediaMarshaller>;
 }
 export {};

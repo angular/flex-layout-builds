@@ -1,4 +1,5 @@
 import { BreakPoint } from './break-point';
+import * as i0 from "@angular/core";
 export declare type OptionalBreakPoint = BreakPoint | null;
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
@@ -36,4 +37,6 @@ export declare class BreakPointRegistry {
      * Memoized BreakPoint Lookups
      */
     private readonly findByMap;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BreakPointRegistry, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BreakPointRegistry>;
 }

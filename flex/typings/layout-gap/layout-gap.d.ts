@@ -9,6 +9,7 @@ import { ElementRef, OnDestroy, NgZone, AfterContentInit } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
 import { Subject } from 'rxjs';
+import * as i0 from "@angular/core";
 export interface LayoutGapParent {
     directionality: string;
     items: HTMLElement[];
@@ -19,6 +20,8 @@ export declare class LayoutGapStyleBuilder extends StyleBuilder {
     constructor(_styler: StyleUtils);
     buildStyles(gapValue: string, parent: LayoutGapParent): StyleDefinition;
     sideEffect(gapValue: string, _styles: StyleDefinition, parent: LayoutGapParent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<LayoutGapStyleBuilder, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<LayoutGapStyleBuilder>;
 }
 /**
  * 'layout-padding' styling directive
@@ -50,7 +53,11 @@ export declare class LayoutGapDirective extends BaseDirective2 implements AfterC
     protected willDisplay(source: HTMLElement): boolean;
     protected buildChildObservable(): void;
     protected observer?: MutationObserver;
+    static ɵfac: i0.ɵɵFactoryDeclaration<LayoutGapDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<LayoutGapDirective, never, never, {}, {}, never>;
 }
 export declare class DefaultLayoutGapDirective extends LayoutGapDirective {
     protected inputs: string[];
+    static ɵfac: i0.ɵɵFactoryDeclaration<DefaultLayoutGapDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DefaultLayoutGapDirective, "  [fxLayoutGap], [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md],  [fxLayoutGap.lg], [fxLayoutGap.xl], [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md],  [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl], [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm],  [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]", never, { "fxLayoutGap": "fxLayoutGap"; "fxLayoutGap.xs": "fxLayoutGap.xs"; "fxLayoutGap.sm": "fxLayoutGap.sm"; "fxLayoutGap.md": "fxLayoutGap.md"; "fxLayoutGap.lg": "fxLayoutGap.lg"; "fxLayoutGap.xl": "fxLayoutGap.xl"; "fxLayoutGap.lt-sm": "fxLayoutGap.lt-sm"; "fxLayoutGap.lt-md": "fxLayoutGap.lt-md"; "fxLayoutGap.lt-lg": "fxLayoutGap.lt-lg"; "fxLayoutGap.lt-xl": "fxLayoutGap.lt-xl"; "fxLayoutGap.gt-xs": "fxLayoutGap.gt-xs"; "fxLayoutGap.gt-sm": "fxLayoutGap.gt-sm"; "fxLayoutGap.gt-md": "fxLayoutGap.gt-md"; "fxLayoutGap.gt-lg": "fxLayoutGap.gt-lg"; }, {}, never>;
 }
