@@ -19,7 +19,7 @@ import { GridModule } from '@angular/flex-layout/grid';
 export * from '@angular/flex-layout/grid';
 
 /** Current version of Angular Flex-Layout. */
-const VERSION = new Version('12.0.0-beta.35-2506e51');
+const VERSION = new Version('12.0.0-beta.35-54850d4');
 
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library

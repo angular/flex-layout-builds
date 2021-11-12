@@ -7,5 +7,5 @@
  */
 import { Version } from '@angular/core';
 /** Current version of Angular Flex-Layout. */
-export const VERSION = new Version('12.0.0-beta.35-2506e51');
+export const VERSION = new Version('12.0.0-beta.35-54850d4');
 //# sourceMappingURL=version.js.map
