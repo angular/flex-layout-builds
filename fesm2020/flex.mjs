@@ -396,7 +396,7 @@ function getMarginType(directionality, layout) {
 }
 function buildGapCSS(gapValue, parent) {
     const key = getMarginType(parent.directionality, parent.layout);
-    const margins = Object.assign({}, CLEAR_MARGIN_CSS);
+    const margins = { ...CLEAR_MARGIN_CSS };
     margins[key] = gapValue;
     return margins;
 }

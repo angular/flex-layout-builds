@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "12.0.0-beta.35-54850d4",
+  "version": "12.0.0-beta.35-0097750",
   "description": "Angular Flex-Layout",
   "fesm2020": "./fesm2020/flex-layout.mjs",
   "fesm2015": "./fesm2015/flex-layout.mjs",

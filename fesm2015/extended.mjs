@@ -432,7 +432,7 @@ class StyleDirective extends BaseDirective2 {
     /** Add generated styles */
     updateWithValue(value) {
         const styles = this.buildStyleMap(value);
-        this.ngStyleInstance.ngStyle = { ...this.fallbackStyles, ...styles };
+        this.ngStyleInstance.ngStyle = Object.assign(Object.assign({}, this.fallbackStyles), styles);
         if (this.isServer) {
             this.applyStyleToElement(styles);
         }

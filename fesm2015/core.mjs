@@ -1526,7 +1526,7 @@ class BaseDirective2 {
                 this.styleCache.set(input, genStyles);
             }
         }
-        this.mru = { ...genStyles };
+        this.mru = Object.assign({}, genStyles);
         this.applyStyleToElement(genStyles);
         builder.sideEffect(input, genStyles, parent);
     }

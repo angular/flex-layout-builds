@@ -19,7 +19,7 @@ import { GridModule } from '@angular/flex-layout/grid';
 export * from '@angular/flex-layout/grid';
 
 /** Current version of Angular Flex-Layout. */
-const VERSION = new Version('12.0.0-beta.35-54850d4');
+const VERSION = new Version('12.0.0-beta.35-0097750');
 
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -44,11 +44,11 @@ class FlexLayoutModule {
             ngModule: FlexLayoutModule,
             providers: configOptions.serverLoaded ?
                 [
-                    { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
+                    { provide: LAYOUT_CONFIG, useValue: { ...DEFAULT_CONFIG, ...configOptions } },
                     { provide: BREAKPOINT, useValue: breakpoints, multi: true },
                     { provide: SERVER_TOKEN, useValue: true },
                 ] : [
-                { provide: LAYOUT_CONFIG, useValue: Object.assign(Object.assign({}, DEFAULT_CONFIG), configOptions) },
+                { provide: LAYOUT_CONFIG, useValue: { ...DEFAULT_CONFIG, ...configOptions } },
                 { provide: BREAKPOINT, useValue: breakpoints, multi: true },
             ]
         };
