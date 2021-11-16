@@ -6,11 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import * as i0 from '@angular/core';
-import { Directive, Injectable, NgModule, Inject, Input, ɵɵngDeclareFactory, ɵɵFactoryTarget, ɵɵngDeclareNgModule, ɵɵngDeclareInjector, ɵɵngDeclareClassMetadata, ɵɵngDeclareInjectable, ElementRef, ɵɵngDeclareDirective, NgZone } from '@angular/core';
-import { BaseDirective2, StyleBuilder, CoreModule, LAYOUT_CONFIG, validateBasis, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
+import { Injectable, Directive, Inject, Input, NgModule } from '@angular/core';
+import * as i2 from '@angular/cdk/bidi';
+import { BidiModule } from '@angular/cdk/bidi';
+import * as i1 from '@angular/flex-layout/core';
+import { StyleBuilder, BaseDirective2, LAYOUT_CONFIG, validateBasis, CoreModule } from '@angular/flex-layout/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BidiModule, Directionality } from '@angular/cdk/bidi';
 
 const INLINE = 'inline';
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -93,19 +95,19 @@ class LayoutStyleBuilder extends StyleBuilder {
         return buildLayoutCSS(input);
     }
 }
-LayoutStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutStyleBuilder, deps: null, target: ɵɵFactoryTarget.Injectable });
-LayoutStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutStyleBuilder, decorators: [{
+LayoutStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+LayoutStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
-const inputs = [
+const inputs$6 = [
     'fxLayout', 'fxLayout.xs', 'fxLayout.sm', 'fxLayout.md',
     'fxLayout.lg', 'fxLayout.xl', 'fxLayout.lt-sm', 'fxLayout.lt-md',
     'fxLayout.lt-lg', 'fxLayout.lt-xl', 'fxLayout.gt-xs', 'fxLayout.gt-sm',
     'fxLayout.gt-md', 'fxLayout.gt-lg'
 ];
-const selector = `
+const selector$6 = `
   [fxLayout], [fxLayout.xs], [fxLayout.sm], [fxLayout.md],
   [fxLayout.lg], [fxLayout.xl], [fxLayout.lt-sm], [fxLayout.lt-md],
   [fxLayout.lt-lg], [fxLayout.lt-xl], [fxLayout.gt-xs], [fxLayout.gt-sm],
@@ -126,22 +128,22 @@ class LayoutDirective extends BaseDirective2 {
         this.init();
     }
 }
-LayoutDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutDirective, deps: [{ token: ElementRef }, { token: StyleUtils }, { token: LayoutStyleBuilder }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-LayoutDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: LayoutDirective, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutDirective, decorators: [{
+LayoutDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: LayoutStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+LayoutDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: LayoutDirective, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: StyleUtils }, { type: LayoutStyleBuilder }, { type: MediaMarshaller }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: LayoutStyleBuilder }, { type: i1.MediaMarshaller }]; } });
 class DefaultLayoutDirective extends LayoutDirective {
     constructor() {
         super(...arguments);
-        this.inputs = inputs;
+        this.inputs = inputs$6;
     }
 }
-DefaultLayoutDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutDirective, deps: null, target: ɵɵFactoryTarget.Directive });
-DefaultLayoutDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultLayoutDirective, selector: "\n  [fxLayout], [fxLayout.xs], [fxLayout.sm], [fxLayout.md],\n  [fxLayout.lg], [fxLayout.xl], [fxLayout.lt-sm], [fxLayout.lt-md],\n  [fxLayout.lt-lg], [fxLayout.lt-xl], [fxLayout.gt-xs], [fxLayout.gt-sm],\n  [fxLayout.gt-md], [fxLayout.gt-lg]\n", inputs: { fxLayout: "fxLayout", "fxLayout.xs": "fxLayout.xs", "fxLayout.sm": "fxLayout.sm", "fxLayout.md": "fxLayout.md", "fxLayout.lg": "fxLayout.lg", "fxLayout.xl": "fxLayout.xl", "fxLayout.lt-sm": "fxLayout.lt-sm", "fxLayout.lt-md": "fxLayout.lt-md", "fxLayout.lt-lg": "fxLayout.lt-lg", "fxLayout.lt-xl": "fxLayout.lt-xl", "fxLayout.gt-xs": "fxLayout.gt-xs", "fxLayout.gt-sm": "fxLayout.gt-sm", "fxLayout.gt-md": "fxLayout.gt-md", "fxLayout.gt-lg": "fxLayout.gt-lg" }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutDirective, decorators: [{
+DefaultLayoutDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutDirective, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DefaultLayoutDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultLayoutDirective, selector: "\n  [fxLayout], [fxLayout.xs], [fxLayout.sm], [fxLayout.md],\n  [fxLayout.lg], [fxLayout.xl], [fxLayout.lt-sm], [fxLayout.lt-md],\n  [fxLayout.lt-lg], [fxLayout.lt-xl], [fxLayout.gt-xs], [fxLayout.gt-sm],\n  [fxLayout.gt-md], [fxLayout.gt-lg]\n", inputs: { fxLayout: "fxLayout", "fxLayout.xs": "fxLayout.xs", "fxLayout.sm": "fxLayout.sm", "fxLayout.md": "fxLayout.md", "fxLayout.lg": "fxLayout.lg", "fxLayout.xl": "fxLayout.xl", "fxLayout.lt-sm": "fxLayout.lt-sm", "fxLayout.lt-md": "fxLayout.lt-md", "fxLayout.lt-lg": "fxLayout.lt-lg", "fxLayout.lt-xl": "fxLayout.lt-xl", "fxLayout.gt-xs": "fxLayout.gt-xs", "fxLayout.gt-sm": "fxLayout.gt-sm", "fxLayout.gt-md": "fxLayout.gt-md", "fxLayout.gt-lg": "fxLayout.gt-lg" }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutDirective, decorators: [{
             type: Directive,
-            args: [{ selector, inputs }]
+            args: [{ selector: selector$6, inputs: inputs$6 }]
         }] });
 const layoutCache = new Map();
 
@@ -185,19 +187,19 @@ class LayoutGapStyleBuilder extends StyleBuilder {
         }
     }
 }
-LayoutGapStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapStyleBuilder, deps: [{ token: StyleUtils }], target: ɵɵFactoryTarget.Injectable });
-LayoutGapStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapStyleBuilder, decorators: [{
+LayoutGapStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapStyleBuilder, deps: [{ token: i1.StyleUtils }], target: i0.ɵɵFactoryTarget.Injectable });
+LayoutGapStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
-        }], ctorParameters: function () { return [{ type: StyleUtils }]; } });
-const inputs$1 = [
+        }], ctorParameters: function () { return [{ type: i1.StyleUtils }]; } });
+const inputs$5 = [
     'fxLayoutGap', 'fxLayoutGap.xs', 'fxLayoutGap.sm', 'fxLayoutGap.md',
     'fxLayoutGap.lg', 'fxLayoutGap.xl', 'fxLayoutGap.lt-sm', 'fxLayoutGap.lt-md',
     'fxLayoutGap.lt-lg', 'fxLayoutGap.lt-xl', 'fxLayoutGap.gt-xs', 'fxLayoutGap.gt-sm',
     'fxLayoutGap.gt-md', 'fxLayoutGap.gt-lg'
 ];
-const selector$1 = `
+const selector$5 = `
   [fxLayoutGap], [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md],
   [fxLayoutGap.lg], [fxLayoutGap.xl], [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md],
   [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl], [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm],
@@ -333,22 +335,22 @@ class LayoutGapDirective extends BaseDirective2 {
         });
     }
 }
-LayoutGapDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapDirective, deps: [{ token: ElementRef }, { token: NgZone }, { token: Directionality }, { token: StyleUtils }, { token: LayoutGapStyleBuilder }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-LayoutGapDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: LayoutGapDirective, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapDirective, decorators: [{
+LayoutGapDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapDirective, deps: [{ token: i0.ElementRef }, { token: i0.NgZone }, { token: i2.Directionality }, { token: i1.StyleUtils }, { token: LayoutGapStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+LayoutGapDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: LayoutGapDirective, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutGapDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: NgZone }, { type: Directionality }, { type: StyleUtils }, { type: LayoutGapStyleBuilder }, { type: MediaMarshaller }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i0.NgZone }, { type: i2.Directionality }, { type: i1.StyleUtils }, { type: LayoutGapStyleBuilder }, { type: i1.MediaMarshaller }]; } });
 class DefaultLayoutGapDirective extends LayoutGapDirective {
     constructor() {
         super(...arguments);
-        this.inputs = inputs$1;
+        this.inputs = inputs$5;
     }
 }
-DefaultLayoutGapDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutGapDirective, deps: null, target: ɵɵFactoryTarget.Directive });
-DefaultLayoutGapDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultLayoutGapDirective, selector: "\n  [fxLayoutGap], [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md],\n  [fxLayoutGap.lg], [fxLayoutGap.xl], [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md],\n  [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl], [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm],\n  [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n", inputs: { fxLayoutGap: "fxLayoutGap", "fxLayoutGap.xs": "fxLayoutGap.xs", "fxLayoutGap.sm": "fxLayoutGap.sm", "fxLayoutGap.md": "fxLayoutGap.md", "fxLayoutGap.lg": "fxLayoutGap.lg", "fxLayoutGap.xl": "fxLayoutGap.xl", "fxLayoutGap.lt-sm": "fxLayoutGap.lt-sm", "fxLayoutGap.lt-md": "fxLayoutGap.lt-md", "fxLayoutGap.lt-lg": "fxLayoutGap.lt-lg", "fxLayoutGap.lt-xl": "fxLayoutGap.lt-xl", "fxLayoutGap.gt-xs": "fxLayoutGap.gt-xs", "fxLayoutGap.gt-sm": "fxLayoutGap.gt-sm", "fxLayoutGap.gt-md": "fxLayoutGap.gt-md", "fxLayoutGap.gt-lg": "fxLayoutGap.gt-lg" }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutGapDirective, decorators: [{
+DefaultLayoutGapDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutGapDirective, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DefaultLayoutGapDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultLayoutGapDirective, selector: "\n  [fxLayoutGap], [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md],\n  [fxLayoutGap.lg], [fxLayoutGap.xl], [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md],\n  [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl], [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm],\n  [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n", inputs: { fxLayoutGap: "fxLayoutGap", "fxLayoutGap.xs": "fxLayoutGap.xs", "fxLayoutGap.sm": "fxLayoutGap.sm", "fxLayoutGap.md": "fxLayoutGap.md", "fxLayoutGap.lg": "fxLayoutGap.lg", "fxLayoutGap.xl": "fxLayoutGap.xl", "fxLayoutGap.lt-sm": "fxLayoutGap.lt-sm", "fxLayoutGap.lt-md": "fxLayoutGap.lt-md", "fxLayoutGap.lt-lg": "fxLayoutGap.lt-lg", "fxLayoutGap.lt-xl": "fxLayoutGap.lt-xl", "fxLayoutGap.gt-xs": "fxLayoutGap.gt-xs", "fxLayoutGap.gt-sm": "fxLayoutGap.gt-sm", "fxLayoutGap.gt-md": "fxLayoutGap.gt-md", "fxLayoutGap.gt-lg": "fxLayoutGap.gt-lg" }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutGapDirective, decorators: [{
             type: Directive,
-            args: [{ selector: selector$1, inputs: inputs$1 }]
+            args: [{ selector: selector$5, inputs: inputs$5 }]
         }] });
 const layoutGapCacheRowRtl = new Map();
 const layoutGapCacheColumnRtl = new Map();
@@ -563,22 +565,22 @@ class FlexStyleBuilder extends StyleBuilder {
         return extendObject(css, { 'box-sizing': 'border-box' });
     }
 }
-FlexStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexStyleBuilder, deps: [{ token: LAYOUT_CONFIG }], target: ɵɵFactoryTarget.Injectable });
-FlexStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexStyleBuilder, decorators: [{
+FlexStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexStyleBuilder, deps: [{ token: LAYOUT_CONFIG }], target: i0.ɵɵFactoryTarget.Injectable });
+FlexStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [LAYOUT_CONFIG]
                 }] }]; } });
-const inputs$2 = [
+const inputs$4 = [
     'fxFlex', 'fxFlex.xs', 'fxFlex.sm', 'fxFlex.md',
     'fxFlex.lg', 'fxFlex.xl', 'fxFlex.lt-sm', 'fxFlex.lt-md',
     'fxFlex.lt-lg', 'fxFlex.lt-xl', 'fxFlex.gt-xs', 'fxFlex.gt-sm',
     'fxFlex.gt-md', 'fxFlex.gt-lg'
 ];
-const selector$2 = `
+const selector$4 = `
   [fxFlex], [fxFlex.xs], [fxFlex.sm], [fxFlex.md],
   [fxFlex.lg], [fxFlex.xl], [fxFlex.lt-sm], [fxFlex.lt-md],
   [fxFlex.lt-lg], [fxFlex.lt-xl], [fxFlex.gt-xs], [fxFlex.gt-sm],
@@ -670,14 +672,14 @@ class FlexDirective extends BaseDirective2 {
         }
     }
 }
-FlexDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexDirective, deps: [{ token: ElementRef }, { token: StyleUtils }, { token: LAYOUT_CONFIG }, { token: FlexStyleBuilder }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-FlexDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexDirective, inputs: { shrink: ["fxShrink", "shrink"], grow: ["fxGrow", "grow"] }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexDirective, decorators: [{
+FlexDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: LAYOUT_CONFIG }, { token: FlexStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+FlexDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexDirective, inputs: { shrink: ["fxShrink", "shrink"], grow: ["fxGrow", "grow"] }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: StyleUtils }, { type: undefined, decorators: [{
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [LAYOUT_CONFIG]
-                }] }, { type: FlexStyleBuilder }, { type: MediaMarshaller }]; }, propDecorators: { shrink: [{
+                }] }, { type: FlexStyleBuilder }, { type: i1.MediaMarshaller }]; }, propDecorators: { shrink: [{
                 type: Input,
                 args: ['fxShrink']
             }], grow: [{
@@ -687,14 +689,14 @@ FlexDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "1
 class DefaultFlexDirective extends FlexDirective {
     constructor() {
         super(...arguments);
-        this.inputs = inputs$2;
+        this.inputs = inputs$4;
     }
 }
-DefaultFlexDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexDirective, deps: null, target: ɵɵFactoryTarget.Directive });
-DefaultFlexDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexDirective, selector: "\n  [fxFlex], [fxFlex.xs], [fxFlex.sm], [fxFlex.md],\n  [fxFlex.lg], [fxFlex.xl], [fxFlex.lt-sm], [fxFlex.lt-md],\n  [fxFlex.lt-lg], [fxFlex.lt-xl], [fxFlex.gt-xs], [fxFlex.gt-sm],\n  [fxFlex.gt-md], [fxFlex.gt-lg]\n", inputs: { fxFlex: "fxFlex", "fxFlex.xs": "fxFlex.xs", "fxFlex.sm": "fxFlex.sm", "fxFlex.md": "fxFlex.md", "fxFlex.lg": "fxFlex.lg", "fxFlex.xl": "fxFlex.xl", "fxFlex.lt-sm": "fxFlex.lt-sm", "fxFlex.lt-md": "fxFlex.lt-md", "fxFlex.lt-lg": "fxFlex.lt-lg", "fxFlex.lt-xl": "fxFlex.lt-xl", "fxFlex.gt-xs": "fxFlex.gt-xs", "fxFlex.gt-sm": "fxFlex.gt-sm", "fxFlex.gt-md": "fxFlex.gt-md", "fxFlex.gt-lg": "fxFlex.gt-lg" }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexDirective, decorators: [{
+DefaultFlexDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexDirective, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DefaultFlexDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexDirective, selector: "\n  [fxFlex], [fxFlex.xs], [fxFlex.sm], [fxFlex.md],\n  [fxFlex.lg], [fxFlex.xl], [fxFlex.lt-sm], [fxFlex.lt-md],\n  [fxFlex.lt-lg], [fxFlex.lt-xl], [fxFlex.gt-xs], [fxFlex.gt-sm],\n  [fxFlex.gt-md], [fxFlex.gt-lg]\n", inputs: { fxFlex: "fxFlex", "fxFlex.xs": "fxFlex.xs", "fxFlex.sm": "fxFlex.sm", "fxFlex.md": "fxFlex.md", "fxFlex.lg": "fxFlex.lg", "fxFlex.xl": "fxFlex.xl", "fxFlex.lt-sm": "fxFlex.lt-sm", "fxFlex.lt-md": "fxFlex.lt-md", "fxFlex.lt-lg": "fxFlex.lt-lg", "fxFlex.lt-xl": "fxFlex.lt-xl", "fxFlex.gt-xs": "fxFlex.gt-xs", "fxFlex.gt-sm": "fxFlex.gt-sm", "fxFlex.gt-md": "fxFlex.gt-md", "fxFlex.gt-lg": "fxFlex.gt-lg" }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexDirective, decorators: [{
             type: Directive,
-            args: [{ inputs: inputs$2, selector: selector$2 }]
+            args: [{ inputs: inputs$4, selector: selector$4 }]
         }] });
 const flexRowCache = new Map();
 const flexColumnCache = new Map();
@@ -706,9 +708,9 @@ class FlexOrderStyleBuilder extends StyleBuilder {
         return { order: (value && parseInt(value, 10)) || '' };
     }
 }
-FlexOrderStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderStyleBuilder, deps: null, target: ɵɵFactoryTarget.Injectable });
-FlexOrderStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderStyleBuilder, decorators: [{
+FlexOrderStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+FlexOrderStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
@@ -737,11 +739,11 @@ class FlexOrderDirective extends BaseDirective2 {
         this.init();
     }
 }
-FlexOrderDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderDirective, deps: [{ token: ElementRef }, { token: StyleUtils }, { token: FlexOrderStyleBuilder }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-FlexOrderDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexOrderDirective, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderDirective, decorators: [{
+FlexOrderDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: FlexOrderStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+FlexOrderDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexOrderDirective, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOrderDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: StyleUtils }, { type: FlexOrderStyleBuilder }, { type: MediaMarshaller }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: FlexOrderStyleBuilder }, { type: i1.MediaMarshaller }]; } });
 const flexOrderCache = new Map();
 class DefaultFlexOrderDirective extends FlexOrderDirective {
     constructor() {
@@ -749,9 +751,9 @@ class DefaultFlexOrderDirective extends FlexOrderDirective {
         this.inputs = inputs$3;
     }
 }
-DefaultFlexOrderDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOrderDirective, deps: null, target: ɵɵFactoryTarget.Directive });
-DefaultFlexOrderDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexOrderDirective, selector: "\n  [fxFlexOrder], [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md],\n  [fxFlexOrder.lg], [fxFlexOrder.xl], [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md],\n  [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl], [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm],\n  [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n", inputs: { fxFlexOrder: "fxFlexOrder", "fxFlexOrder.xs": "fxFlexOrder.xs", "fxFlexOrder.sm": "fxFlexOrder.sm", "fxFlexOrder.md": "fxFlexOrder.md", "fxFlexOrder.lg": "fxFlexOrder.lg", "fxFlexOrder.xl": "fxFlexOrder.xl", "fxFlexOrder.lt-sm": "fxFlexOrder.lt-sm", "fxFlexOrder.lt-md": "fxFlexOrder.lt-md", "fxFlexOrder.lt-lg": "fxFlexOrder.lt-lg", "fxFlexOrder.lt-xl": "fxFlexOrder.lt-xl", "fxFlexOrder.gt-xs": "fxFlexOrder.gt-xs", "fxFlexOrder.gt-sm": "fxFlexOrder.gt-sm", "fxFlexOrder.gt-md": "fxFlexOrder.gt-md", "fxFlexOrder.gt-lg": "fxFlexOrder.gt-lg" }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOrderDirective, decorators: [{
+DefaultFlexOrderDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOrderDirective, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DefaultFlexOrderDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexOrderDirective, selector: "\n  [fxFlexOrder], [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md],\n  [fxFlexOrder.lg], [fxFlexOrder.xl], [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md],\n  [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl], [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm],\n  [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n", inputs: { fxFlexOrder: "fxFlexOrder", "fxFlexOrder.xs": "fxFlexOrder.xs", "fxFlexOrder.sm": "fxFlexOrder.sm", "fxFlexOrder.md": "fxFlexOrder.md", "fxFlexOrder.lg": "fxFlexOrder.lg", "fxFlexOrder.xl": "fxFlexOrder.xl", "fxFlexOrder.lt-sm": "fxFlexOrder.lt-sm", "fxFlexOrder.lt-md": "fxFlexOrder.lt-md", "fxFlexOrder.lt-lg": "fxFlexOrder.lt-lg", "fxFlexOrder.lt-xl": "fxFlexOrder.lt-xl", "fxFlexOrder.gt-xs": "fxFlexOrder.gt-xs", "fxFlexOrder.gt-sm": "fxFlexOrder.gt-sm", "fxFlexOrder.gt-md": "fxFlexOrder.gt-md", "fxFlexOrder.gt-lg": "fxFlexOrder.gt-lg" }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOrderDirective, decorators: [{
             type: Directive,
             args: [{ selector: selector$3, inputs: inputs$3 }]
         }] });
@@ -772,19 +774,19 @@ class FlexOffsetStyleBuilder extends StyleBuilder {
         return styles;
     }
 }
-FlexOffsetStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetStyleBuilder, deps: null, target: ɵɵFactoryTarget.Injectable });
-FlexOffsetStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetStyleBuilder, decorators: [{
+FlexOffsetStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+FlexOffsetStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
-const inputs$4 = [
+const inputs$2 = [
     'fxFlexOffset', 'fxFlexOffset.xs', 'fxFlexOffset.sm', 'fxFlexOffset.md',
     'fxFlexOffset.lg', 'fxFlexOffset.xl', 'fxFlexOffset.lt-sm', 'fxFlexOffset.lt-md',
     'fxFlexOffset.lt-lg', 'fxFlexOffset.lt-xl', 'fxFlexOffset.gt-xs', 'fxFlexOffset.gt-sm',
     'fxFlexOffset.gt-md', 'fxFlexOffset.gt-lg'
 ];
-const selector$4 = `
+const selector$2 = `
   [fxFlexOffset], [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md],
   [fxFlexOffset.lg], [fxFlexOffset.xl], [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md],
   [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl], [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm],
@@ -835,22 +837,22 @@ class FlexOffsetDirective extends BaseDirective2 {
         this.addStyles(value + '', { layout, isRtl });
     }
 }
-FlexOffsetDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetDirective, deps: [{ token: ElementRef }, { token: Directionality }, { token: FlexOffsetStyleBuilder }, { token: MediaMarshaller }, { token: StyleUtils }], target: ɵɵFactoryTarget.Directive });
-FlexOffsetDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexOffsetDirective, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetDirective, decorators: [{
+FlexOffsetDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetDirective, deps: [{ token: i0.ElementRef }, { token: i2.Directionality }, { token: FlexOffsetStyleBuilder }, { token: i1.MediaMarshaller }, { token: i1.StyleUtils }], target: i0.ɵɵFactoryTarget.Directive });
+FlexOffsetDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexOffsetDirective, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexOffsetDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: Directionality }, { type: FlexOffsetStyleBuilder }, { type: MediaMarshaller }, { type: StyleUtils }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i2.Directionality }, { type: FlexOffsetStyleBuilder }, { type: i1.MediaMarshaller }, { type: i1.StyleUtils }]; } });
 class DefaultFlexOffsetDirective extends FlexOffsetDirective {
     constructor() {
         super(...arguments);
-        this.inputs = inputs$4;
+        this.inputs = inputs$2;
     }
 }
-DefaultFlexOffsetDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOffsetDirective, deps: null, target: ɵɵFactoryTarget.Directive });
-DefaultFlexOffsetDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexOffsetDirective, selector: "\n  [fxFlexOffset], [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md],\n  [fxFlexOffset.lg], [fxFlexOffset.xl], [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md],\n  [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl], [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm],\n  [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n", inputs: { fxFlexOffset: "fxFlexOffset", "fxFlexOffset.xs": "fxFlexOffset.xs", "fxFlexOffset.sm": "fxFlexOffset.sm", "fxFlexOffset.md": "fxFlexOffset.md", "fxFlexOffset.lg": "fxFlexOffset.lg", "fxFlexOffset.xl": "fxFlexOffset.xl", "fxFlexOffset.lt-sm": "fxFlexOffset.lt-sm", "fxFlexOffset.lt-md": "fxFlexOffset.lt-md", "fxFlexOffset.lt-lg": "fxFlexOffset.lt-lg", "fxFlexOffset.lt-xl": "fxFlexOffset.lt-xl", "fxFlexOffset.gt-xs": "fxFlexOffset.gt-xs", "fxFlexOffset.gt-sm": "fxFlexOffset.gt-sm", "fxFlexOffset.gt-md": "fxFlexOffset.gt-md", "fxFlexOffset.gt-lg": "fxFlexOffset.gt-lg" }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOffsetDirective, decorators: [{
+DefaultFlexOffsetDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOffsetDirective, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DefaultFlexOffsetDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexOffsetDirective, selector: "\n  [fxFlexOffset], [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md],\n  [fxFlexOffset.lg], [fxFlexOffset.xl], [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md],\n  [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl], [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm],\n  [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n", inputs: { fxFlexOffset: "fxFlexOffset", "fxFlexOffset.xs": "fxFlexOffset.xs", "fxFlexOffset.sm": "fxFlexOffset.sm", "fxFlexOffset.md": "fxFlexOffset.md", "fxFlexOffset.lg": "fxFlexOffset.lg", "fxFlexOffset.xl": "fxFlexOffset.xl", "fxFlexOffset.lt-sm": "fxFlexOffset.lt-sm", "fxFlexOffset.lt-md": "fxFlexOffset.lt-md", "fxFlexOffset.lt-lg": "fxFlexOffset.lt-lg", "fxFlexOffset.lt-xl": "fxFlexOffset.lt-xl", "fxFlexOffset.gt-xs": "fxFlexOffset.gt-xs", "fxFlexOffset.gt-sm": "fxFlexOffset.gt-sm", "fxFlexOffset.gt-md": "fxFlexOffset.gt-md", "fxFlexOffset.gt-lg": "fxFlexOffset.gt-lg" }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexOffsetDirective, decorators: [{
             type: Directive,
-            args: [{ selector: selector$4, inputs: inputs$4 }]
+            args: [{ selector: selector$2, inputs: inputs$2 }]
         }] });
 const flexOffsetCacheRowRtl = new Map();
 const flexOffsetCacheColumnRtl = new Map();
@@ -876,19 +878,19 @@ class FlexAlignStyleBuilder extends StyleBuilder {
         return styles;
     }
 }
-FlexAlignStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignStyleBuilder, deps: null, target: ɵɵFactoryTarget.Injectable });
-FlexAlignStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignStyleBuilder, decorators: [{
+FlexAlignStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+FlexAlignStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
-const inputs$5 = [
+const inputs$1 = [
     'fxFlexAlign', 'fxFlexAlign.xs', 'fxFlexAlign.sm', 'fxFlexAlign.md',
     'fxFlexAlign.lg', 'fxFlexAlign.xl', 'fxFlexAlign.lt-sm', 'fxFlexAlign.lt-md',
     'fxFlexAlign.lt-lg', 'fxFlexAlign.lt-xl', 'fxFlexAlign.gt-xs', 'fxFlexAlign.gt-sm',
     'fxFlexAlign.gt-md', 'fxFlexAlign.gt-lg'
 ];
-const selector$5 = `
+const selector$1 = `
   [fxFlexAlign], [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md],
   [fxFlexAlign.lg], [fxFlexAlign.xl], [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md],
   [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl], [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm],
@@ -907,23 +909,23 @@ class FlexAlignDirective extends BaseDirective2 {
         this.init();
     }
 }
-FlexAlignDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignDirective, deps: [{ token: ElementRef }, { token: StyleUtils }, { token: FlexAlignStyleBuilder }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-FlexAlignDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexAlignDirective, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignDirective, decorators: [{
+FlexAlignDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: FlexAlignStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+FlexAlignDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexAlignDirective, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexAlignDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: StyleUtils }, { type: FlexAlignStyleBuilder }, { type: MediaMarshaller }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: FlexAlignStyleBuilder }, { type: i1.MediaMarshaller }]; } });
 const flexAlignCache = new Map();
 class DefaultFlexAlignDirective extends FlexAlignDirective {
     constructor() {
         super(...arguments);
-        this.inputs = inputs$5;
+        this.inputs = inputs$1;
     }
 }
-DefaultFlexAlignDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexAlignDirective, deps: null, target: ɵɵFactoryTarget.Directive });
-DefaultFlexAlignDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexAlignDirective, selector: "\n  [fxFlexAlign], [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md],\n  [fxFlexAlign.lg], [fxFlexAlign.xl], [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md],\n  [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl], [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm],\n  [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n", inputs: { fxFlexAlign: "fxFlexAlign", "fxFlexAlign.xs": "fxFlexAlign.xs", "fxFlexAlign.sm": "fxFlexAlign.sm", "fxFlexAlign.md": "fxFlexAlign.md", "fxFlexAlign.lg": "fxFlexAlign.lg", "fxFlexAlign.xl": "fxFlexAlign.xl", "fxFlexAlign.lt-sm": "fxFlexAlign.lt-sm", "fxFlexAlign.lt-md": "fxFlexAlign.lt-md", "fxFlexAlign.lt-lg": "fxFlexAlign.lt-lg", "fxFlexAlign.lt-xl": "fxFlexAlign.lt-xl", "fxFlexAlign.gt-xs": "fxFlexAlign.gt-xs", "fxFlexAlign.gt-sm": "fxFlexAlign.gt-sm", "fxFlexAlign.gt-md": "fxFlexAlign.gt-md", "fxFlexAlign.gt-lg": "fxFlexAlign.gt-lg" }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexAlignDirective, decorators: [{
+DefaultFlexAlignDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexAlignDirective, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DefaultFlexAlignDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultFlexAlignDirective, selector: "\n  [fxFlexAlign], [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md],\n  [fxFlexAlign.lg], [fxFlexAlign.xl], [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md],\n  [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl], [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm],\n  [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n", inputs: { fxFlexAlign: "fxFlexAlign", "fxFlexAlign.xs": "fxFlexAlign.xs", "fxFlexAlign.sm": "fxFlexAlign.sm", "fxFlexAlign.md": "fxFlexAlign.md", "fxFlexAlign.lg": "fxFlexAlign.lg", "fxFlexAlign.xl": "fxFlexAlign.xl", "fxFlexAlign.lt-sm": "fxFlexAlign.lt-sm", "fxFlexAlign.lt-md": "fxFlexAlign.lt-md", "fxFlexAlign.lt-lg": "fxFlexAlign.lt-lg", "fxFlexAlign.lt-xl": "fxFlexAlign.lt-xl", "fxFlexAlign.gt-xs": "fxFlexAlign.gt-xs", "fxFlexAlign.gt-sm": "fxFlexAlign.gt-sm", "fxFlexAlign.gt-md": "fxFlexAlign.gt-md", "fxFlexAlign.gt-lg": "fxFlexAlign.gt-lg" }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultFlexAlignDirective, decorators: [{
             type: Directive,
-            args: [{ selector: selector$5, inputs: inputs$5 }]
+            args: [{ selector: selector$1, inputs: inputs$1 }]
         }] });
 
 const FLEX_FILL_CSS = {
@@ -938,9 +940,9 @@ class FlexFillStyleBuilder extends StyleBuilder {
         return FLEX_FILL_CSS;
     }
 }
-FlexFillStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillStyleBuilder, deps: null, target: ɵɵFactoryTarget.Injectable });
-FlexFillStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillStyleBuilder, decorators: [{
+FlexFillStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+FlexFillStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
@@ -957,12 +959,12 @@ class FlexFillDirective extends BaseDirective2 {
         this.addStyles('');
     }
 }
-FlexFillDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillDirective, deps: [{ token: ElementRef }, { token: StyleUtils }, { token: FlexFillStyleBuilder }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-FlexFillDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexFillDirective, selector: "[fxFill], [fxFlexFill]", usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillDirective, decorators: [{
+FlexFillDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: FlexFillStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+FlexFillDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: FlexFillDirective, selector: "[fxFill], [fxFlexFill]", usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexFillDirective, decorators: [{
             type: Directive,
             args: [{ selector: `[fxFill], [fxFlexFill]` }]
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: StyleUtils }, { type: FlexFillStyleBuilder }, { type: MediaMarshaller }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: FlexFillStyleBuilder }, { type: i1.MediaMarshaller }]; } });
 const flexFillCache = new Map();
 
 class LayoutAlignStyleBuilder extends StyleBuilder {
@@ -1033,19 +1035,19 @@ class LayoutAlignStyleBuilder extends StyleBuilder {
         });
     }
 }
-LayoutAlignStyleBuilder.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignStyleBuilder, deps: null, target: ɵɵFactoryTarget.Injectable });
-LayoutAlignStyleBuilder.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignStyleBuilder, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignStyleBuilder, decorators: [{
+LayoutAlignStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+LayoutAlignStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignStyleBuilder, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
-const inputs$6 = [
+const inputs = [
     'fxLayoutAlign', 'fxLayoutAlign.xs', 'fxLayoutAlign.sm', 'fxLayoutAlign.md',
     'fxLayoutAlign.lg', 'fxLayoutAlign.xl', 'fxLayoutAlign.lt-sm', 'fxLayoutAlign.lt-md',
     'fxLayoutAlign.lt-lg', 'fxLayoutAlign.lt-xl', 'fxLayoutAlign.gt-xs', 'fxLayoutAlign.gt-sm',
     'fxLayoutAlign.gt-md', 'fxLayoutAlign.gt-lg'
 ];
-const selector$6 = `
+const selector = `
   [fxLayoutAlign], [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md],
   [fxLayoutAlign.lg], [fxLayoutAlign.xl], [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md],
   [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl], [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm],
@@ -1119,22 +1121,22 @@ class LayoutAlignDirective extends BaseDirective2 {
         this.triggerUpdate();
     }
 }
-LayoutAlignDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignDirective, deps: [{ token: ElementRef }, { token: StyleUtils }, { token: LayoutAlignStyleBuilder }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-LayoutAlignDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: LayoutAlignDirective, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignDirective, decorators: [{
+LayoutAlignDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: LayoutAlignStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+LayoutAlignDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: LayoutAlignDirective, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: LayoutAlignDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: StyleUtils }, { type: LayoutAlignStyleBuilder }, { type: MediaMarshaller }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: LayoutAlignStyleBuilder }, { type: i1.MediaMarshaller }]; } });
 class DefaultLayoutAlignDirective extends LayoutAlignDirective {
     constructor() {
         super(...arguments);
-        this.inputs = inputs$6;
+        this.inputs = inputs;
     }
 }
-DefaultLayoutAlignDirective.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutAlignDirective, deps: null, target: ɵɵFactoryTarget.Directive });
-DefaultLayoutAlignDirective.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultLayoutAlignDirective, selector: "\n  [fxLayoutAlign], [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md],\n  [fxLayoutAlign.lg], [fxLayoutAlign.xl], [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md],\n  [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl], [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm],\n  [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n", inputs: { fxLayoutAlign: "fxLayoutAlign", "fxLayoutAlign.xs": "fxLayoutAlign.xs", "fxLayoutAlign.sm": "fxLayoutAlign.sm", "fxLayoutAlign.md": "fxLayoutAlign.md", "fxLayoutAlign.lg": "fxLayoutAlign.lg", "fxLayoutAlign.xl": "fxLayoutAlign.xl", "fxLayoutAlign.lt-sm": "fxLayoutAlign.lt-sm", "fxLayoutAlign.lt-md": "fxLayoutAlign.lt-md", "fxLayoutAlign.lt-lg": "fxLayoutAlign.lt-lg", "fxLayoutAlign.lt-xl": "fxLayoutAlign.lt-xl", "fxLayoutAlign.gt-xs": "fxLayoutAlign.gt-xs", "fxLayoutAlign.gt-sm": "fxLayoutAlign.gt-sm", "fxLayoutAlign.gt-md": "fxLayoutAlign.gt-md", "fxLayoutAlign.gt-lg": "fxLayoutAlign.gt-lg" }, usesInheritance: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutAlignDirective, decorators: [{
+DefaultLayoutAlignDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutAlignDirective, deps: null, target: i0.ɵɵFactoryTarget.Directive });
+DefaultLayoutAlignDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: DefaultLayoutAlignDirective, selector: "\n  [fxLayoutAlign], [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md],\n  [fxLayoutAlign.lg], [fxLayoutAlign.xl], [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md],\n  [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl], [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm],\n  [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n", inputs: { fxLayoutAlign: "fxLayoutAlign", "fxLayoutAlign.xs": "fxLayoutAlign.xs", "fxLayoutAlign.sm": "fxLayoutAlign.sm", "fxLayoutAlign.md": "fxLayoutAlign.md", "fxLayoutAlign.lg": "fxLayoutAlign.lg", "fxLayoutAlign.xl": "fxLayoutAlign.xl", "fxLayoutAlign.lt-sm": "fxLayoutAlign.lt-sm", "fxLayoutAlign.lt-md": "fxLayoutAlign.lt-md", "fxLayoutAlign.lt-lg": "fxLayoutAlign.lt-lg", "fxLayoutAlign.lt-xl": "fxLayoutAlign.lt-xl", "fxLayoutAlign.gt-xs": "fxLayoutAlign.gt-xs", "fxLayoutAlign.gt-sm": "fxLayoutAlign.gt-sm", "fxLayoutAlign.gt-md": "fxLayoutAlign.gt-md", "fxLayoutAlign.gt-lg": "fxLayoutAlign.gt-lg" }, usesInheritance: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: DefaultLayoutAlignDirective, decorators: [{
             type: Directive,
-            args: [{ selector: selector$6, inputs: inputs$6 }]
+            args: [{ selector, inputs }]
         }] });
 const layoutAlignHorizontalCache = new Map();
 const layoutAlignVerticalCache = new Map();
@@ -1162,8 +1164,8 @@ const ALL_DIRECTIVES = [
  */
 class FlexModule {
 }
-FlexModule.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, deps: [], target: ɵɵFactoryTarget.NgModule });
-FlexModule.ɵmod = ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, declarations: [DefaultLayoutDirective,
+FlexModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+FlexModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, declarations: [DefaultLayoutDirective,
         DefaultLayoutGapDirective,
         DefaultLayoutAlignDirective,
         DefaultFlexOrderDirective,
@@ -1178,8 +1180,8 @@ FlexModule.ɵmod = ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.
         FlexFillDirective,
         DefaultFlexAlignDirective,
         DefaultFlexDirective] });
-FlexModule.ɵinj = ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, imports: [[CoreModule, BidiModule]] });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, decorators: [{
+FlexModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, imports: [[CoreModule, BidiModule]] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CoreModule, BidiModule],
@@ -1188,9 +1190,5 @@ FlexModule.ɵinj = ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.
                 }]
         }] });
 
-/**
- * Generated bundle index. Do not edit.
- */
-
-export { FlexModule, FlexStyleBuilder, FlexDirective, DefaultFlexDirective, FlexAlignStyleBuilder, FlexAlignDirective, DefaultFlexAlignDirective, FlexFillStyleBuilder, FlexFillDirective, FlexOffsetStyleBuilder, FlexOffsetDirective, DefaultFlexOffsetDirective, FlexOrderStyleBuilder, FlexOrderDirective, DefaultFlexOrderDirective, LayoutStyleBuilder, LayoutDirective, DefaultLayoutDirective, LayoutAlignStyleBuilder, LayoutAlignDirective, DefaultLayoutAlignDirective, LayoutGapStyleBuilder, LayoutGapDirective, DefaultLayoutGapDirective };
+export { DefaultFlexAlignDirective, DefaultFlexDirective, DefaultFlexOffsetDirective, DefaultFlexOrderDirective, DefaultLayoutAlignDirective, DefaultLayoutDirective, DefaultLayoutGapDirective, FlexAlignDirective, FlexAlignStyleBuilder, FlexDirective, FlexFillDirective, FlexFillStyleBuilder, FlexModule, FlexOffsetDirective, FlexOffsetStyleBuilder, FlexOrderDirective, FlexOrderStyleBuilder, FlexStyleBuilder, LayoutAlignDirective, LayoutAlignStyleBuilder, LayoutDirective, LayoutGapDirective, LayoutGapStyleBuilder, LayoutStyleBuilder };
 //# sourceMappingURL=flex.mjs.map

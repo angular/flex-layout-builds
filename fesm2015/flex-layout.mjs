@@ -6,20 +6,19 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import * as i0 from '@angular/core';
-import { Version, Inject, NgModule, PLATFORM_ID, ɵɵngDeclareFactory, ɵɵFactoryTarget, ɵɵngDeclareNgModule, ɵɵngDeclareInjector, ɵɵngDeclareClassMetadata } from '@angular/core';
-import { isPlatformServer } from '@angular/common';
+import { Version, PLATFORM_ID, NgModule, Inject } from '@angular/core';
 import { SERVER_TOKEN, LAYOUT_CONFIG, DEFAULT_CONFIG, BREAKPOINT } from '@angular/flex-layout/core';
 export * from '@angular/flex-layout/core';
-export { FlexLayoutModule } from '@angular/flex-layout/core';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 export * from '@angular/flex-layout/extended';
 import { FlexModule } from '@angular/flex-layout/flex';
 export * from '@angular/flex-layout/flex';
 import { GridModule } from '@angular/flex-layout/grid';
 export * from '@angular/flex-layout/grid';
+import { isPlatformServer } from '@angular/common';
 
 /** Current version of Angular Flex-Layout. */
-const VERSION = new Version('12.0.0-beta.35-517de2a');
+const VERSION = new Version('12.0.0-beta.35-3b45958');
 
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
@@ -54,10 +53,10 @@ class FlexLayoutModule {
         };
     }
 }
-FlexLayoutModule.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, deps: [{ token: SERVER_TOKEN }, { token: PLATFORM_ID }], target: ɵɵFactoryTarget.NgModule });
-FlexLayoutModule.ɵmod = ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, imports: [FlexModule, ExtendedModule, GridModule], exports: [FlexModule, ExtendedModule, GridModule] });
-FlexLayoutModule.ɵinj = ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, imports: [[FlexModule, ExtendedModule, GridModule], FlexModule, ExtendedModule, GridModule] });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, decorators: [{
+FlexLayoutModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, deps: [{ token: SERVER_TOKEN }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.NgModule });
+FlexLayoutModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, imports: [FlexModule, ExtendedModule, GridModule], exports: [FlexModule, ExtendedModule, GridModule] });
+FlexLayoutModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, imports: [[FlexModule, ExtendedModule, GridModule], FlexModule, ExtendedModule, GridModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: FlexLayoutModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [FlexModule, ExtendedModule, GridModule],
@@ -71,9 +70,5 @@ FlexLayoutModule.ɵinj = ɵɵngDeclareInjector({ minVersion: "12.0.0", version: 
                     args: [PLATFORM_ID]
                 }] }]; } });
 
-/**
- * Generated bundle index. Do not edit.
- */
-
-export { VERSION };
+export { FlexLayoutModule, VERSION };
 //# sourceMappingURL=flex-layout.mjs.map

@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import * as i0 from '@angular/core';
-import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Directive, Inject, inject, ɵɵngDeclareFactory, ɵɵFactoryTarget, ɵɵngDeclareNgModule, ɵɵngDeclareInjector, ɵɵngDeclareClassMetadata, ɵɵngDeclareInjectable, ElementRef, ɵɵngDeclareDirective, NgZone } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, Directive } from '@angular/core';
+import { isPlatformBrowser, DOCUMENT, isPlatformServer } from '@angular/common';
 import { BehaviorSubject, Observable, merge, Subject, asapScheduler, of, fromEvent } from 'rxjs';
-import { filter, tap, debounceTime, map, switchMap, takeUntil, take } from 'rxjs/operators';
+import { filter, tap, map, debounceTime, switchMap, takeUntil, take } from 'rxjs/operators';
 
 /**
  * Find all of the server-generated stylings, if any, and remove them
@@ -50,10 +50,10 @@ const CLASS_NAME = 'flex-layout-';
  */
 class CoreModule {
 }
-CoreModule.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule, deps: [], target: ɵɵFactoryTarget.NgModule });
-CoreModule.ɵmod = ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule });
-CoreModule.ɵinj = ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule, providers: [BROWSER_PROVIDER] });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule, decorators: [{
+CoreModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+CoreModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule });
+CoreModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule, providers: [BROWSER_PROVIDER] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: CoreModule, decorators: [{
             type: NgModule,
             args: [{
                     providers: [BROWSER_PROVIDER]
@@ -128,9 +128,9 @@ class StylesheetMap {
         return value;
     }
 }
-StylesheetMap.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StylesheetMap, deps: [], target: ɵɵFactoryTarget.Injectable });
-StylesheetMap.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StylesheetMap, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StylesheetMap, decorators: [{
+StylesheetMap.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StylesheetMap, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+StylesheetMap.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StylesheetMap, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StylesheetMap, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }] });
@@ -467,9 +467,9 @@ class StyleUtils {
         element.setAttribute('style', styleAttrValue);
     }
 }
-StyleUtils.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StyleUtils, deps: [{ token: StylesheetMap }, { token: SERVER_TOKEN }, { token: PLATFORM_ID }, { token: LAYOUT_CONFIG }], target: ɵɵFactoryTarget.Injectable });
-StyleUtils.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StyleUtils, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StyleUtils, decorators: [{
+StyleUtils.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StyleUtils, deps: [{ token: StylesheetMap }, { token: SERVER_TOKEN }, { token: PLATFORM_ID }, { token: LAYOUT_CONFIG }], target: i0.ɵɵFactoryTarget.Injectable });
+StyleUtils.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StyleUtils, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: StyleUtils, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: StylesheetMap }, { type: undefined, decorators: [{
@@ -599,12 +599,12 @@ class MatchMedia {
         return constructMql(query, isPlatformBrowser(this._platformId));
     }
 }
-MatchMedia.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MatchMedia, deps: [{ token: NgZone }, { token: PLATFORM_ID }, { token: DOCUMENT }], target: ɵɵFactoryTarget.Injectable });
-MatchMedia.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MatchMedia, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MatchMedia, decorators: [{
+MatchMedia.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MatchMedia, deps: [{ token: i0.NgZone }, { token: PLATFORM_ID }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+MatchMedia.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MatchMedia, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MatchMedia, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
-        }], ctorParameters: function () { return [{ type: NgZone }, { type: Object, decorators: [{
+        }], ctorParameters: function () { return [{ type: i0.NgZone }, { type: Object, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
                 }] }, { type: undefined, decorators: [{
@@ -927,9 +927,9 @@ class BreakPointRegistry {
         return response || null;
     }
 }
-BreakPointRegistry.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BreakPointRegistry, deps: [{ token: BREAKPOINTS }], target: ɵɵFactoryTarget.Injectable });
-BreakPointRegistry.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BreakPointRegistry, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BreakPointRegistry, decorators: [{
+BreakPointRegistry.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BreakPointRegistry, deps: [{ token: BREAKPOINTS }], target: i0.ɵɵFactoryTarget.Injectable });
+BreakPointRegistry.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BreakPointRegistry, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BreakPointRegistry, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
@@ -1124,9 +1124,9 @@ class PrintHook {
         }
     }
 }
-PrintHook.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: PrintHook, deps: [{ token: BreakPointRegistry }, { token: LAYOUT_CONFIG }, { token: DOCUMENT }], target: ɵɵFactoryTarget.Injectable });
-PrintHook.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: PrintHook, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: PrintHook, decorators: [{
+PrintHook.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: PrintHook, deps: [{ token: BreakPointRegistry }, { token: LAYOUT_CONFIG }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+PrintHook.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: PrintHook, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: PrintHook, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: BreakPointRegistry }, { type: undefined, decorators: [{
@@ -1450,18 +1450,18 @@ class MediaMarshaller {
             .subscribe(this.onMediaChange.bind(this));
     }
 }
-MediaMarshaller.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaMarshaller, deps: [{ token: MatchMedia }, { token: BreakPointRegistry }, { token: PrintHook }], target: ɵɵFactoryTarget.Injectable });
-MediaMarshaller.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaMarshaller, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaMarshaller, decorators: [{
+MediaMarshaller.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaMarshaller, deps: [{ token: MatchMedia }, { token: BreakPointRegistry }, { token: PrintHook }], target: i0.ɵɵFactoryTarget.Injectable });
+MediaMarshaller.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaMarshaller, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaMarshaller, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: MatchMedia }, { type: BreakPointRegistry }, { type: PrintHook }]; } });
-function initBuilderMap(map$$1, element, key, input) {
+function initBuilderMap(map, element, key, input) {
     if (input !== undefined) {
-        let oldMap = map$$1.get(element);
+        let oldMap = map.get(element);
         if (!oldMap) {
             oldMap = new Map();
-            map$$1.set(element, oldMap);
+            map.set(element, oldMap);
         }
         oldMap.set(key, input);
     }
@@ -1577,11 +1577,11 @@ class BaseDirective2 {
         }
     }
 }
-BaseDirective2.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BaseDirective2, deps: [{ token: ElementRef }, { token: StyleBuilder }, { token: StyleUtils }, { token: MediaMarshaller }], target: ɵɵFactoryTarget.Directive });
-BaseDirective2.ɵdir = ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: BaseDirective2, usesOnChanges: true, ngImport: i0 });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BaseDirective2, decorators: [{
+BaseDirective2.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BaseDirective2, deps: [{ token: i0.ElementRef }, { token: StyleBuilder }, { token: StyleUtils }, { token: MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
+BaseDirective2.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.0", type: BaseDirective2, usesOnChanges: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: BaseDirective2, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: ElementRef }, { type: StyleBuilder }, { type: StyleUtils }, { type: MediaMarshaller }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: StyleBuilder }, { type: StyleUtils }, { type: MediaMarshaller }]; } });
 
 /**
  * MockMatchMedia mocks calls to the Window API matchMedia with a build of a simulated
@@ -1708,11 +1708,11 @@ class MockMatchMedia extends MatchMedia {
         return this.activations.length > 0;
     }
 }
-MockMatchMedia.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MockMatchMedia, deps: [{ token: NgZone }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: BreakPointRegistry }], target: ɵɵFactoryTarget.Injectable });
-MockMatchMedia.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MockMatchMedia });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MockMatchMedia, decorators: [{
+MockMatchMedia.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MockMatchMedia, deps: [{ token: i0.NgZone }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: BreakPointRegistry }], target: i0.ɵɵFactoryTarget.Injectable });
+MockMatchMedia.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MockMatchMedia });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MockMatchMedia, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: NgZone }, { type: Object, decorators: [{
+        }], ctorParameters: function () { return [{ type: i0.NgZone }, { type: Object, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
                 }] }, { type: undefined, decorators: [{
@@ -1946,9 +1946,9 @@ class MediaObserver {
             .sort(sortDescendingPriority);
     }
 }
-MediaObserver.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaObserver, deps: [{ token: BreakPointRegistry }, { token: MatchMedia }, { token: PrintHook }], target: ɵɵFactoryTarget.Injectable });
-MediaObserver.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaObserver, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaObserver, decorators: [{
+MediaObserver.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaObserver, deps: [{ token: BreakPointRegistry }, { token: MatchMedia }, { token: PrintHook }], target: i0.ɵɵFactoryTarget.Injectable });
+MediaObserver.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaObserver, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaObserver, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: BreakPointRegistry }, { type: MatchMedia }, { type: PrintHook }]; } });
@@ -2123,9 +2123,9 @@ class MediaTrigger {
         return this.matchMedia.activations;
     }
 }
-MediaTrigger.ɵfac = ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaTrigger, deps: [{ token: BreakPointRegistry }, { token: MatchMedia }, { token: LAYOUT_CONFIG }, { token: PLATFORM_ID }, { token: DOCUMENT }], target: ɵɵFactoryTarget.Injectable });
-MediaTrigger.ɵprov = ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaTrigger, providedIn: 'root' });
-ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaTrigger, decorators: [{
+MediaTrigger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaTrigger, deps: [{ token: BreakPointRegistry }, { token: MatchMedia }, { token: LAYOUT_CONFIG }, { token: PLATFORM_ID }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+MediaTrigger.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaTrigger, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.0", ngImport: i0, type: MediaTrigger, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
         }], ctorParameters: function () { return [{ type: BreakPointRegistry }, { type: MatchMedia }, { type: undefined, decorators: [{
@@ -2180,9 +2180,5 @@ function _validateCalcValue(calc) {
     return calc.replace(/[\s]/g, '').replace(/[\/\*\+\-]/g, ' $& ');
 }
 
-/**
- * Generated bundle index. Do not edit.
- */
-
-export { MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider, CoreModule, removeStyles, BROWSER_PROVIDER, CLASS_NAME, MediaChange, StylesheetMap, DEFAULT_CONFIG, LAYOUT_CONFIG, SERVER_TOKEN, BREAKPOINT, mergeAlias, BaseDirective2, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BreakPointRegistry, BREAKPOINTS, MediaObserver, MediaTrigger, sortDescendingPriority, sortAscendingPriority, coerceArray, StyleUtils, StyleBuilder, validateBasis, MediaMarshaller, BREAKPOINT_PRINT, PrintHook };
+export { BREAKPOINT, BREAKPOINTS, BREAKPOINT_PRINT, BROWSER_PROVIDER, BaseDirective2, BreakPointRegistry, CLASS_NAME, CoreModule, DEFAULT_BREAKPOINTS, DEFAULT_CONFIG, LAYOUT_CONFIG, MediaChange, MediaMarshaller, MediaObserver, MediaTrigger, ORIENTATION_BREAKPOINTS, PrintHook, SERVER_TOKEN, ScreenTypes, StyleBuilder, StyleUtils, StylesheetMap, coerceArray, mergeAlias, removeStyles, sortAscendingPriority, sortDescendingPriority, validateBasis, MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider };
 //# sourceMappingURL=core.mjs.map
