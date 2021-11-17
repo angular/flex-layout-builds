@@ -18,7 +18,7 @@ export * from '@angular/flex-layout/grid';
 import { isPlatformServer } from '@angular/common';
 
 /** Current version of Angular Flex-Layout. */
-const VERSION = new Version('12.0.0-beta.35-3b45958');
+const VERSION = new Version('12.0.0-beta.35-82fa5c4');
 
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
