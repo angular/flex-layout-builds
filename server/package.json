@@ -1,8 +1,10 @@
 {
-  "name": "@angular/flex-layout/server",
-  "typings": "../server.d.ts",
-  "main": "../bundles/flex-layout-server.umd.js",
-  "module": "../esm5/server.es5.js",
-  "es2015": "../esm2015/server.js",
-  "sideEffects": false
+  "module": "../fesm2015/angular-flex-layout-server.mjs",
+  "es2020": "../fesm2020/angular-flex-layout-server.mjs",
+  "esm2020": "../esm2020/server/angular-flex-layout-server.mjs",
+  "fesm2020": "../fesm2020/angular-flex-layout-server.mjs",
+  "fesm2015": "../fesm2015/angular-flex-layout-server.mjs",
+  "typings": "angular-flex-layout-server.d.ts",
+  "sideEffects": false,
+  "name": "@angular/flex-layout/server"
 }

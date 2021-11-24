@@ -1,8 +1,10 @@
 {
-  "name": "@angular/flex-layout/grid",
-  "typings": "../grid.d.ts",
-  "main": "../bundles/flex-layout-grid.umd.js",
-  "module": "../esm5/grid.es5.js",
-  "es2015": "../esm2015/grid.js",
-  "sideEffects": false
+  "module": "../fesm2015/angular-flex-layout-grid.mjs",
+  "es2020": "../fesm2020/angular-flex-layout-grid.mjs",
+  "esm2020": "../esm2020/grid/angular-flex-layout-grid.mjs",
+  "fesm2020": "../fesm2020/angular-flex-layout-grid.mjs",
+  "fesm2015": "../fesm2015/angular-flex-layout-grid.mjs",
+  "typings": "angular-flex-layout-grid.d.ts",
+  "sideEffects": false,
+  "name": "@angular/flex-layout/grid"
 }

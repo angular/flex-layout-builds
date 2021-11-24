@@ -1,8 +1,10 @@
 {
-  "name": "@angular/flex-layout/core",
-  "typings": "../core.d.ts",
-  "main": "../bundles/flex-layout-core.umd.js",
-  "module": "../esm5/core.es5.js",
-  "es2015": "../esm2015/core.js",
-  "sideEffects": false
+  "module": "../fesm2015/angular-flex-layout-core.mjs",
+  "es2020": "../fesm2020/angular-flex-layout-core.mjs",
+  "esm2020": "../esm2020/core/angular-flex-layout-core.mjs",
+  "fesm2020": "../fesm2020/angular-flex-layout-core.mjs",
+  "fesm2015": "../fesm2015/angular-flex-layout-core.mjs",
+  "typings": "angular-flex-layout-core.d.ts",
+  "sideEffects": false,
+  "name": "@angular/flex-layout/core"
 }
