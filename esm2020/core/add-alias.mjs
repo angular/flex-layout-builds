@@ -1,0 +1,23 @@
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { MediaChange } from './media-change';
+/**
+ * For the specified MediaChange, make sure it contains the breakpoint alias
+ * and suffix (if available).
+ */
+export function mergeAlias(dest, source) {
+    dest = dest ? dest.clone() : new MediaChange();
+    if (source) {
+        dest.mqAlias = source.alias;
+        dest.mediaQuery = source.mediaQuery;
+        dest.suffix = source.suffix;
+        dest.priority = source.priority;
+    }
+    return dest;
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYWRkLWFsaWFzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvbGlicy9mbGV4LWxheW91dC9jb3JlL2FkZC1hbGlhcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7O0dBTUc7QUFDSCxPQUFPLEVBQUMsV0FBVyxFQUFDLE1BQU0sZ0JBQWdCLENBQUM7QUFHM0M7OztHQUdHO0FBQ0gsTUFBTSxVQUFVLFVBQVUsQ0FBQyxJQUFpQixFQUFFLE1BQXlCO0lBQ3JFLElBQUksR0FBRyxJQUFJLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxLQUFLLEVBQUUsQ0FBQyxDQUFDLENBQUMsSUFBSSxXQUFXLEVBQUUsQ0FBQztJQUMvQyxJQUFJLE1BQU0sRUFBRTtRQUNWLElBQUksQ0FBQyxPQUFPLEdBQUcsTUFBTSxDQUFDLEtBQUssQ0FBQztRQUM1QixJQUFJLENBQUMsVUFBVSxHQUFHLE1BQU0sQ0FBQyxVQUFVLENBQUM7UUFDcEMsSUFBSSxDQUFDLE1BQU0sR0FBRyxNQUFNLENBQUMsTUFBZ0IsQ0FBQztRQUN0QyxJQUFJLENBQUMsUUFBUSxHQUFHLE1BQU0sQ0FBQyxRQUFrQixDQUFDO0tBQzNDO0lBQ0QsT0FBTyxJQUFJLENBQUM7QUFDZCxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBAbGljZW5zZVxuICogQ29weXJpZ2h0IEdvb2dsZSBMTEMgQWxsIFJpZ2h0cyBSZXNlcnZlZC5cbiAqXG4gKiBVc2Ugb2YgdGhpcyBzb3VyY2UgY29kZSBpcyBnb3Zlcm5lZCBieSBhbiBNSVQtc3R5bGUgbGljZW5zZSB0aGF0IGNhbiBiZVxuICogZm91bmQgaW4gdGhlIExJQ0VOU0UgZmlsZSBhdCBodHRwczovL2FuZ3VsYXIuaW8vbGljZW5zZVxuICovXG5pbXBvcnQge01lZGlhQ2hhbmdlfSBmcm9tICcuL21lZGlhLWNoYW5nZSc7XG5pbXBvcnQge0JyZWFrUG9pbnR9IGZyb20gJy4vYnJlYWtwb2ludHMvYnJlYWstcG9pbnQnO1xuXG4vKipcbiAqIEZvciB0aGUgc3BlY2lmaWVkIE1lZGlhQ2hhbmdlLCBtYWtlIHN1cmUgaXQgY29udGFpbnMgdGhlIGJyZWFrcG9pbnQgYWxpYXNcbiAqIGFuZCBzdWZmaXggKGlmIGF2YWlsYWJsZSkuXG4gKi9cbmV4cG9ydCBmdW5jdGlvbiBtZXJnZUFsaWFzKGRlc3Q6IE1lZGlhQ2hhbmdlLCBzb3VyY2U6IEJyZWFrUG9pbnQgfCBudWxsKTogTWVkaWFDaGFuZ2Uge1xuICBkZXN0ID0gZGVzdCA/IGRlc3QuY2xvbmUoKSA6IG5ldyBNZWRpYUNoYW5nZSgpO1xuICBpZiAoc291cmNlKSB7XG4gICAgZGVzdC5tcUFsaWFzID0gc291cmNlLmFsaWFzO1xuICAgIGRlc3QubWVkaWFRdWVyeSA9IHNvdXJjZS5tZWRpYVF1ZXJ5O1xuICAgIGRlc3Quc3VmZml4ID0gc291cmNlLnN1ZmZpeCBhcyBzdHJpbmc7XG4gICAgZGVzdC5wcmlvcml0eSA9IHNvdXJjZS5wcmlvcml0eSBhcyBudW1iZXI7XG4gIH1cbiAgcmV0dXJuIGRlc3Q7XG59XG4iXX0=
