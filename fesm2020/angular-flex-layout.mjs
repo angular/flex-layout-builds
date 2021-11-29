@@ -18,7 +18,7 @@ import { isPlatformServer } from '@angular/common';
  * found in the LICENSE file at https://angular.io/license
  */
 /** Current version of Angular Flex-Layout. */
-const VERSION = new Version('12.0.0-beta.35-1be539b');
+const VERSION = new Version('13.0.0-beta.36-4ea6714');
 
 /**
  * @license
