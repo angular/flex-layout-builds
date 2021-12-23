@@ -1227,7 +1227,7 @@ class MediaMarshaller {
         if (bpMap) {
             const values = this.getActivatedValues(bpMap, key);
             if (values) {
-                return values.get(key) !== undefined || false;
+                return values.get(key) !== undefined ?? false;
             }
         }
         return false;
@@ -1246,7 +1246,7 @@ class MediaMarshaller {
             this.elementMap.set(element, bpMap);
         }
         else {
-            const values = (bpMap.get(bp) || new Map()).set(key, val);
+            const values = (bpMap.get(bp) ?? new Map()).set(key, val);
             bpMap.set(bp, values);
             this.elementMap.set(element, bpMap);
         }
@@ -1510,6 +1510,7 @@ class BaseDirective2 {
         });
         this.applyStyleToElement(this.mru);
         this.mru = {};
+        this.currentValue = undefined;
     }
     /** Force trigger style updates on DOM element */
     triggerUpdate() {
