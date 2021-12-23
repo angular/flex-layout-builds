@@ -1231,11 +1231,12 @@ class MediaMarshaller {
      * @param key
      */
     hasValue(element, key) {
+        var _a;
         const bpMap = this.elementMap.get(element);
         if (bpMap) {
             const values = this.getActivatedValues(bpMap, key);
             if (values) {
-                return values.get(key) !== undefined || false;
+                return (_a = values.get(key) !== undefined) !== null && _a !== void 0 ? _a : false;
             }
         }
         return false;
@@ -1248,13 +1249,14 @@ class MediaMarshaller {
      * @param val the value for the breakpoint
      */
     setValue(element, key, val, bp) {
+        var _a;
         let bpMap = this.elementMap.get(element);
         if (!bpMap) {
             bpMap = new Map().set(bp, new Map().set(key, val));
             this.elementMap.set(element, bpMap);
         }
         else {
-            const values = (bpMap.get(bp) || new Map()).set(key, val);
+            const values = ((_a = bpMap.get(bp)) !== null && _a !== void 0 ? _a : new Map()).set(key, val);
             bpMap.set(bp, values);
             this.elementMap.set(element, bpMap);
         }
@@ -1518,6 +1520,7 @@ class BaseDirective2 {
         });
         this.applyStyleToElement(this.mru);
         this.mru = {};
+        this.currentValue = undefined;
     }
     /** Force trigger style updates on DOM element */
     triggerUpdate() {
