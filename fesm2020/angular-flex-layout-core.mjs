@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
 import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, Directive } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT, isPlatformServer } from '@angular/common';
-import { BehaviorSubject, Observable, merge, Subject, asapScheduler, of, fromEvent } from 'rxjs';
+import { BehaviorSubject, Observable, merge, Subject, asapScheduler, of, distinctUntilChanged, fromEvent } from 'rxjs';
 import { applyCssPrefixes, extendObject, buildLayoutCSS } from '@angular/flex-layout/_private-utils';
 import { filter, tap, map, debounceTime, switchMap, takeUntil, take } from 'rxjs/operators';
 
@@ -1227,7 +1227,7 @@ class MediaMarshaller {
         if (bpMap) {
             const values = this.getActivatedValues(bpMap, key);
             if (values) {
-                return values.get(key) !== undefined ?? false;
+                return values.get(key) !== undefined || false;
             }
         }
         return false;
@@ -1601,8 +1601,7 @@ class MockMatchMedia extends MatchMedia {
         this.useOverlaps = false;
     }
     /** Feature to support manual, simulated activation of a mediaQuery. */
-    activate(mediaQuery, useOverlaps = false) {
-        useOverlaps = useOverlaps || this.useOverlaps;
+    activate(mediaQuery, useOverlaps = this.useOverlaps) {
         mediaQuery = this._validateQuery(mediaQuery);
         if (useOverlaps || !this.isActive(mediaQuery)) {
             this._deactivateAll();
@@ -1614,7 +1613,7 @@ class MockMatchMedia extends MatchMedia {
     /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
     _validateQuery(queryOrAlias) {
         const bp = this._breakpoints.findByAlias(queryOrAlias);
-        return (bp && bp.mediaQuery) || queryOrAlias;
+        return bp?.mediaQuery ?? queryOrAlias;
     }
     /**
      * Manually onMediaChange any overlapping mediaQueries to simulate
@@ -1623,7 +1622,7 @@ class MockMatchMedia extends MatchMedia {
     _activateWithOverlaps(mediaQuery, useOverlaps) {
         if (useOverlaps) {
             const bp = this._breakpoints.findByQuery(mediaQuery);
-            const alias = bp ? bp.alias : 'unknown';
+            const alias = bp?.alias ?? 'unknown';
             // Simulate activation of overlapping lt-<XXX> ranges
             switch (alias) {
                 case 'lg':
@@ -1664,7 +1663,7 @@ class MockMatchMedia extends MatchMedia {
     _activateByAlias(aliases) {
         const activate = (alias) => {
             const bp = this._breakpoints.findByAlias(alias);
-            this._activateByQuery(bp ? bp.mediaQuery : alias);
+            this._activateByQuery(bp?.mediaQuery ?? alias);
         };
         aliases.forEach(activate);
     }
@@ -1936,14 +1935,23 @@ class MediaObserver {
         const excludeOverlaps = (changes) => {
             return !this.filterOverlaps ? changes : changes.filter(change => {
                 const bp = this.breakpoints.findByQuery(change.mediaQuery);
-                return !bp ? true : !bp.overlapping;
+                return bp?.overlapping ?? true;
             });
+        };
+        const ignoreDuplicates = (previous, current) => {
+            if (previous.length !== current.length) {
+                return false;
+            }
+            const previousMqs = previous.map(mc => mc.mediaQuery);
+            const currentMqs = new Set(current.map(mc => mc.mediaQuery));
+            const difference = new Set(previousMqs.filter(mq => !currentMqs.has(mq)));
+            return difference.size === 0;
         };
         /**
          */
         return this.matchMedia
             .observe(this.hook.withPrintQuery(mqList))
-            .pipe(filter((change) => change.matches), debounceTime(0, asapScheduler), switchMap(_ => of(this.findAllActivations())), map(excludeOverlaps), filter(hasChanges), takeUntil(this.destroyed$));
+            .pipe(filter((change) => change.matches), debounceTime(0, asapScheduler), switchMap(_ => of(this.findAllActivations())), map(excludeOverlaps), filter(hasChanges), distinctUntilChanged(ignoreDuplicates), takeUntil(this.destroyed$));
     }
     /**
      * Find all current activations and prepare single list of activations
@@ -1951,7 +1959,7 @@ class MediaObserver {
      */
     findAllActivations() {
         const mergeMQAlias = (change) => {
-            let bp = this.breakpoints.findByQuery(change.mediaQuery);
+            const bp = this.breakpoints.findByQuery(change.mediaQuery);
             return mergeAlias(change, bp);
         };
         const replaceWithPrintAlias = (change) => {
@@ -1975,8 +1983,8 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
  * Find associated breakpoint (if any)
  */
 function toMediaQuery(query, locator) {
-    const bp = locator.findByAlias(query) || locator.findByQuery(query);
-    return bp ? bp.mediaQuery : null;
+    const bp = locator.findByAlias(query) ?? locator.findByQuery(query);
+    return bp?.mediaQuery ?? null;
 }
 /**
  * Split each query string into separate query strings if two queries are provided as comma
