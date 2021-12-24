@@ -3,7 +3,7 @@ import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionTok
 import { isPlatformBrowser, DOCUMENT, isPlatformServer } from '@angular/common';
 import { BehaviorSubject, Observable, merge, Subject, asapScheduler, of, distinctUntilChanged, fromEvent } from 'rxjs';
 import { applyCssPrefixes, extendObject, buildLayoutCSS } from '@angular/flex-layout/_private-utils';
-import { filter, tap, map, debounceTime, switchMap, takeUntil, take } from 'rxjs/operators';
+import { filter, tap, debounceTime, switchMap, map, takeUntil, take } from 'rxjs/operators';
 
 /**
  * @license
@@ -231,7 +231,8 @@ const BREAKPOINT = new InjectionToken('Flex Layout token, collect all breakpoint
  * and suffix (if available).
  */
 function mergeAlias(dest, source) {
-    dest = dest ? dest.clone() : new MediaChange();
+    var _a;
+    dest = (_a = dest === null || dest === void 0 ? void 0 : dest.clone()) !== null && _a !== void 0 ? _a : new MediaChange();
     if (source) {
         dest.mqAlias = source.alias;
         dest.mediaQuery = source.mediaQuery;
@@ -1883,7 +1884,6 @@ class MediaObserver {
         this.filterOverlaps = false;
         this.destroyed$ = new Subject();
         this._media$ = this.watchActivations();
-        this.media$ = this._media$.pipe(filter((changes) => changes.length > 0), map((changes) => changes[0]));
     }
     /**
      * Completes the active subject, signalling to all complete for all
@@ -1977,9 +1977,7 @@ class MediaObserver {
             const bp = this.breakpoints.findByQuery(change.mediaQuery);
             return mergeAlias(change, bp);
         };
-        const replaceWithPrintAlias = (change) => {
-            return this.hook.isPrintEvent(change) ? this.hook.updateEvent(change) : change;
-        };
+        const replaceWithPrintAlias = (change) => this.hook.isPrintEvent(change) ? this.hook.updateEvent(change) : change;
         return this.matchMedia
             .activations
             .map(query => new MediaChange(true, query))
@@ -2007,8 +2005,7 @@ function toMediaQuery(query, locator) {
  * separated.
  */
 function splitQueries(queries) {
-    return queries.map((query) => query.split(','))
-        .reduce((a1, a2) => a1.concat(a2))
+    return queries.flatMap(query => query.split(','))
         .map(query => query.trim());
 }
 
