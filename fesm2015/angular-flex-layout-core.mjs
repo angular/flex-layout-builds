@@ -925,14 +925,14 @@ class PrintHook {
         //  and `afterprint` event listeners.
         this.registeredBeforeAfterPrintHooks = false;
         // isPrintingBeforeAfterEvent is used to track if we are printing from within
-        // a `beforeprint` event handler. This prevents the typicall `stopPrinting`
+        // a `beforeprint` event handler. This prevents the typical `stopPrinting`
         // form `interceptEvents` so that printing is not stopped while the dialog
         // is still open. This is an extension of the `isPrinting` property on
         // browsers which support `beforeprint` and `afterprint` events.
         this.isPrintingBeforeAfterEvent = false;
         this.beforePrintEventListeners = [];
         this.afterPrintEventListeners = [];
-        /** Is this service currently in Print-mode ? */
+        // Is this service currently in print mode
         this.isPrinting = false;
         this.queue = new PrintQueue();
         this.deactivations = [];
@@ -947,7 +947,8 @@ class PrintHook {
     }
     /** What is the desired mqAlias to use while printing? */
     get printAlias() {
-        return this.layoutConfig.printWithBreakpoints || [];
+        var _a;
+        return (_a = this.layoutConfig.printWithBreakpoints) !== null && _a !== void 0 ? _a : [];
     }
     /** Lookup breakpoints associated with print aliases. */
     get printBreakPoints() {
@@ -963,11 +964,12 @@ class PrintHook {
     }
     /** Update event with printAlias mediaQuery information */
     updateEvent(event) {
+        var _a;
         let bp = this.breakpoints.findByQuery(event.mediaQuery);
         if (this.isPrintEvent(event)) {
             // Reset from 'print' to first (highest priority) print breakpoint
             bp = this.getEventBreakpoints(event)[0];
-            event.mediaQuery = bp ? bp.mediaQuery : '';
+            event.mediaQuery = (_a = bp === null || bp === void 0 ? void 0 : bp.mediaQuery) !== null && _a !== void 0 ? _a : '';
         }
         return mergeAlias(event, bp);
     }
@@ -1006,8 +1008,8 @@ class PrintHook {
         this.afterPrintEventListeners.push(afterPrintListener);
     }
     /**
-     * Prepare RxJS filter operator with partial application
-     * @return pipeable filter predicate
+     * Prepare RxJS tap operator with partial application
+     * @return pipeable tap predicate
      */
     interceptEvents(target) {
         this.registerBeforeAfterPrintHooks(target);
@@ -1070,14 +1072,15 @@ class PrintHook {
         if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
             if (!event.matches) {
                 const bp = this.breakpoints.findByQuery(event.mediaQuery);
-                if (bp) { // Deactivating a breakpoint
+                // Deactivating a breakpoint
+                if (bp) {
                     this.deactivations.push(bp);
                     this.deactivations.sort(sortDescendingPriority);
                 }
             }
             else if (!this.isPrintingBeforeAfterEvent) {
                 // Only clear deactivations if we aren't printing from a `beforeprint` event.
-                // Otherwise this will clear before `stopPrinting()` is called to restore
+                // Otherwise, this will clear before `stopPrinting()` is called to restore
                 // the pre-Print Activations.
                 this.deactivations = [];
             }
@@ -1145,7 +1148,8 @@ class PrintQueue {
 // ************************************************************************
 /** Only support intercept queueing if the Breakpoint is a print @media query */
 function isPrintBreakPoint(bp) {
-    return bp ? bp.mediaQuery.startsWith(PRINT) : false;
+    var _a;
+    return (_a = bp === null || bp === void 0 ? void 0 : bp.mediaQuery.startsWith(PRINT)) !== null && _a !== void 0 ? _a : false;
 }
 
 /**
@@ -1165,7 +1169,7 @@ class MediaMarshaller {
         this.breakpoints = breakpoints;
         this.hook = hook;
         this._useFallbacks = true;
-        this.activatedBreakpoints = [];
+        this._activatedBreakpoints = [];
         this.elementMap = new Map();
         this.elementKeyMap = new WeakMap();
         this.watcherMap = new WeakMap(); // special triggers to update elements
@@ -1177,6 +1181,12 @@ class MediaMarshaller {
     get activatedAlias() {
         var _a, _b;
         return (_b = (_a = this.activatedBreakpoints[0]) === null || _a === void 0 ? void 0 : _a.alias) !== null && _b !== void 0 ? _b : '';
+    }
+    set activatedBreakpoints(bps) {
+        this._activatedBreakpoints = [...bps];
+    }
+    get activatedBreakpoints() {
+        return [...this._activatedBreakpoints];
     }
     set useFallbacks(value) {
         this._useFallbacks = value;
@@ -1191,14 +1201,14 @@ class MediaMarshaller {
             mc = mergeAlias(mc, bp);
             const bpIndex = this.activatedBreakpoints.indexOf(bp);
             if (mc.matches && bpIndex === -1) {
-                this.activatedBreakpoints.push(bp);
-                this.activatedBreakpoints.sort(sortDescendingPriority);
+                this._activatedBreakpoints.push(bp);
+                this._activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
             else if (!mc.matches && bpIndex !== -1) {
                 // Remove the breakpoint when it's deactivated
-                this.activatedBreakpoints.splice(bpIndex, 1);
-                this.activatedBreakpoints.sort(sortDescendingPriority);
+                this._activatedBreakpoints.splice(bpIndex, 1);
+                this._activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
         }
@@ -1430,11 +1440,10 @@ class MediaMarshaller {
      * Watch for mediaQuery breakpoint activations
      */
     observeActivations() {
-        const target = this;
         const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
-            .pipe(tap(this.hook.interceptEvents(target)), filter(this.hook.blockPropagation()))
+            .pipe(tap(this.hook.interceptEvents(this)), filter(this.hook.blockPropagation()))
             .subscribe(this.onMediaChange.bind(this));
     }
 }
