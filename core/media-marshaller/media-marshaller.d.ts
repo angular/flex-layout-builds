@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { BreakPoint } from '../breakpoints/break-point';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
 import { MatchMedia } from '../match-media/match-media';
 import { MediaChange } from '../media-change';
@@ -20,7 +21,7 @@ export declare class MediaMarshaller {
     protected breakpoints: BreakPointRegistry;
     protected hook: PrintHook;
     private _useFallbacks;
-    private activatedBreakpoints;
+    private _activatedBreakpoints;
     private elementMap;
     private elementKeyMap;
     private watcherMap;
@@ -28,6 +29,8 @@ export declare class MediaMarshaller {
     private clearMap;
     private subject;
     get activatedAlias(): string;
+    set activatedBreakpoints(bps: BreakPoint[]);
+    get activatedBreakpoints(): BreakPoint[];
     set useFallbacks(value: boolean);
     constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHook);
     /**

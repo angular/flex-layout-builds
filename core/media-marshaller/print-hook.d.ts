@@ -37,7 +37,7 @@ export declare class PrintHook implements OnDestroy {
     /** Add 'print' mediaQuery: to listen for matchMedia activations */
     withPrintQuery(queries: string[]): string[];
     /** Is the MediaChange event for any 'print' @media */
-    isPrintEvent(e: MediaChange): Boolean;
+    isPrintEvent(e: MediaChange): boolean;
     /** What is the desired mqAlias to use while printing? */
     get printAlias(): string[];
     /** Lookup breakpoints associated with print aliases. */
@@ -52,8 +52,8 @@ export declare class PrintHook implements OnDestroy {
     private afterPrintEventListeners;
     private registerBeforeAfterPrintHooks;
     /**
-     * Prepare RxJS filter operator with partial application
-     * @return pipeable filter predicate
+     * Prepare RxJS tap operator with partial application
+     * @return pipeable tap predicate
      */
     interceptEvents(target: HookTarget): (event: MediaChange) => void;
     /** Stop mediaChange event propagation in event streams */
@@ -86,7 +86,6 @@ export declare class PrintHook implements OnDestroy {
     collectActivations(event: MediaChange): void;
     /** Teardown logic for the service. */
     ngOnDestroy(): void;
-    /** Is this service currently in Print-mode ? */
     private isPrinting;
     private queue;
     private deactivations;
