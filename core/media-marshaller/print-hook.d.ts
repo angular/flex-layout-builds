@@ -50,7 +50,8 @@ export declare class PrintHook implements OnDestroy {
     private isPrintingBeforeAfterEvent;
     private beforePrintEventListeners;
     private afterPrintEventListeners;
-    private registerBeforeAfterPrintHooks;
+    private formerActivations;
+    registerBeforeAfterPrintHooks(target: HookTarget): void;
     /**
      * Prepare RxJS tap operator with partial application
      * @return pipeable tap predicate
@@ -83,7 +84,7 @@ export declare class PrintHook implements OnDestroy {
      *    - sort and save when starting print
      *    - restore as activatedTargets and clear when stop printing
      */
-    collectActivations(event: MediaChange): void;
+    collectActivations(target: HookTarget, event: MediaChange): void;
     /** Teardown logic for the service. */
     ngOnDestroy(): void;
     private isPrinting;

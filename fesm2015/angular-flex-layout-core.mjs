@@ -932,6 +932,7 @@ class PrintHook {
         this.isPrintingBeforeAfterEvent = false;
         this.beforePrintEventListeners = [];
         this.afterPrintEventListeners = [];
+        this.formerActivations = null;
         // Is this service currently in print mode
         this.isPrinting = false;
         this.queue = new PrintQueue();
@@ -948,7 +949,7 @@ class PrintHook {
     /** What is the desired mqAlias to use while printing? */
     get printAlias() {
         var _a;
-        return (_a = this.layoutConfig.printWithBreakpoints) !== null && _a !== void 0 ? _a : [];
+        return [...((_a = this.layoutConfig.printWithBreakpoints) !== null && _a !== void 0 ? _a : [])];
     }
     /** Lookup breakpoints associated with print aliases. */
     get printBreakPoints() {
@@ -1012,7 +1013,6 @@ class PrintHook {
      * @return pipeable tap predicate
      */
     interceptEvents(target) {
-        this.registerBeforeAfterPrintHooks(target);
         return (event) => {
             if (this.isPrintEvent(event)) {
                 if (event.matches && !this.isPrinting) {
@@ -1023,10 +1023,9 @@ class PrintHook {
                     this.stopPrinting(target);
                     target.updateStyles();
                 }
+                return;
             }
-            else {
-                this.collectActivations(event);
-            }
+            this.collectActivations(target, event);
         };
     }
     /** Stop mediaChange event propagation in event streams */
@@ -1041,12 +1040,14 @@ class PrintHook {
      */
     startPrinting(target, bpList) {
         this.isPrinting = true;
+        this.formerActivations = target.activatedBreakpoints;
         target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
     }
     /** For any print de-activations, reset the entire print queue */
     stopPrinting(target) {
         target.activatedBreakpoints = this.deactivations;
         this.deactivations = [];
+        this.formerActivations = null;
         this.queue.clear();
         this.isPrinting = false;
     }
@@ -1068,21 +1069,27 @@ class PrintHook {
      *    - sort and save when starting print
      *    - restore as activatedTargets and clear when stop printing
      */
-    collectActivations(event) {
+    collectActivations(target, event) {
         if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
-            if (!event.matches) {
-                const bp = this.breakpoints.findByQuery(event.mediaQuery);
-                // Deactivating a breakpoint
-                if (bp) {
-                    this.deactivations.push(bp);
-                    this.deactivations.sort(sortDescendingPriority);
-                }
-            }
-            else if (!this.isPrintingBeforeAfterEvent) {
+            if (!this.isPrintingBeforeAfterEvent) {
                 // Only clear deactivations if we aren't printing from a `beforeprint` event.
                 // Otherwise, this will clear before `stopPrinting()` is called to restore
                 // the pre-Print Activations.
                 this.deactivations = [];
+                return;
+            }
+            if (!event.matches) {
+                const bp = this.breakpoints.findByQuery(event.mediaQuery);
+                // Deactivating a breakpoint
+                if (bp) {
+                    const hasFormerBp = this.formerActivations && this.formerActivations.includes(bp);
+                    const wasActivated = !this.formerActivations && target.activatedBreakpoints.includes(bp);
+                    const shouldDeactivate = hasFormerBp || wasActivated;
+                    if (shouldDeactivate) {
+                        this.deactivations.push(bp);
+                        this.deactivations.sort(sortDescendingPriority);
+                    }
+                }
             }
         }
     }
@@ -1441,6 +1448,7 @@ class MediaMarshaller {
      */
     observeActivations() {
         const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
+        this.hook.registerBeforeAfterPrintHooks(this);
         this.matchMedia
             .observe(this.hook.withPrintQuery(queries))
             .pipe(tap(this.hook.interceptEvents(this)), filter(this.hook.blockPropagation()))
