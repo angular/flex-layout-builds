@@ -19,6 +19,7 @@ export declare class MediaMarshaller {
     protected matchMedia: MatchMedia;
     protected breakpoints: BreakPointRegistry;
     protected hook: PrintHook;
+    private _useFallbacks;
     private activatedBreakpoints;
     private elementMap;
     private elementKeyMap;
@@ -27,6 +28,7 @@ export declare class MediaMarshaller {
     private clearMap;
     private subject;
     get activatedAlias(): string;
+    set useFallbacks(value: boolean);
     constructor(matchMedia: MatchMedia, breakpoints: BreakPointRegistry, hook: PrintHook);
     /**
      * Update styles on breakpoint activates or deactivates
