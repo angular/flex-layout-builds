@@ -451,6 +451,7 @@ function keyValuesToMap(map, entry) {
  */
 class StyleDirective extends BaseDirective2 {
     constructor(elementRef, styler, marshal, sanitizer, differs, renderer2, ngStyleInstance, serverLoaded, platformId) {
+        var _a;
         super(elementRef, null, styler, marshal);
         this.sanitizer = sanitizer;
         this.ngStyleInstance = ngStyleInstance;
@@ -461,7 +462,7 @@ class StyleDirective extends BaseDirective2 {
             this.ngStyleInstance = new NgStyle(elementRef, differs, renderer2);
         }
         this.init();
-        const styles = this.nativeElement.getAttribute('style') || '';
+        const styles = (_a = this.nativeElement.getAttribute('style')) !== null && _a !== void 0 ? _a : '';
         this.fallbackStyles = this.buildStyleMap(styles);
         this.isServer = serverLoaded && isPlatformServer(platformId);
     }
@@ -487,7 +488,7 @@ class StyleDirective extends BaseDirective2 {
      */
     buildStyleMap(styles) {
         // Always safe-guard (aka sanitize) style property values
-        const sanitizer = (val) => this.sanitizer.sanitize(SecurityContext.STYLE, val) || '';
+        const sanitizer = (val) => { var _a; return (_a = this.sanitizer.sanitize(SecurityContext.STYLE, val)) !== null && _a !== void 0 ? _a : ''; };
         if (styles) {
             switch (getType(styles)) {
                 case 'string': return buildMapFromList(buildRawList(styles), sanitizer);

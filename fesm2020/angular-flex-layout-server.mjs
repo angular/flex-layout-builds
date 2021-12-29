@@ -2,7 +2,7 @@ import * as i0 from '@angular/core';
 import { PLATFORM_ID, Injectable, Inject, NgModule } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BEFORE_APP_SERIALIZED } from '@angular/platform-server';
-import { ɵMatchMedia, BREAKPOINTS, LAYOUT_CONFIG, sortAscendingPriority, CLASS_NAME, StylesheetMap, SERVER_TOKEN } from '@angular/flex-layout/core';
+import { ɵMatchMedia, BREAKPOINTS, LAYOUT_CONFIG, sortAscendingPriority, CLASS_NAME, StylesheetMap, MediaMarshaller, SERVER_TOKEN } from '@angular/flex-layout/core';
 
 /**
  * @license
@@ -70,11 +70,11 @@ class ServerMediaQueryList {
         }
     }
     /** Don't need to remove listeners in the server environment */
-    removeListener(_) {
+    removeListener() {
     }
-    addEventListener(_, __, ___) {
+    addEventListener() {
     }
-    removeEventListener(_, __, ___) {
+    removeEventListener() {
     }
     dispatchEvent(_) {
         return false;
@@ -152,34 +152,42 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
                 }] }]; } });
 
 /**
- * Activate all of the registered breakpoints in sequence, and then
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Activate all the registered breakpoints in sequence, and then
  * retrieve the associated stylings from the virtual stylesheet
  * @param serverSheet the virtual stylesheet that stores styles for each
  *        element
  * @param mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
- * @param layoutConfig the library config, and specifically the breakpoints to activate
+ * @param mediaMarshaller the MediaMarshaller service to disable fallback styles dynamically
  */
-function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints) {
+function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, mediaMarshaller) {
     // Store the custom classes in the following map, that way only
     // one class gets allocated per HTMLElement, and each class can
     // be referenced in the static media queries
     const classMap = new Map();
-    // Get the initial stylings for all of the directives,
-    // and initialize the fallback block of stylings
+    // Get the initial stylings for all the directives,
+    // and initialize the fallback block of stylings.
     const defaultStyles = new Map(serverSheet.stylesheet);
     // Reset the class counter, otherwise class numbers will
-    // increase with each server render
+    // increase with each server render.
     nextId = 0;
     let styleText = generateCss(defaultStyles, 'all', classMap);
-    [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
+    mediaMarshaller.useFallbacks = false;
+    [...breakpoints].sort(sortAscendingPriority).forEach((bp) => {
         serverSheet.clearStyles();
         mediaController.activateBreakpoint(bp);
         const stylesheet = new Map(serverSheet.stylesheet);
         if (stylesheet.size > 0) {
             styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
         }
-        mediaController.deactivateBreakpoint(breakpoints[i]);
+        mediaController.deactivateBreakpoint(bp);
     });
     return styleText;
 }
@@ -187,12 +195,12 @@ function generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoint
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  */
-function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints) {
+function FLEX_SSR_SERIALIZER_FACTORY(serverSheet, mediaController, _document, breakpoints, mediaMarshaller) {
     return () => {
         // This is the style tag that gets inserted into the head of the DOM,
         // populated with the manual media queries
         const styleTag = _document.createElement('style');
-        const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints);
+        const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints, mediaMarshaller);
         styleTag.classList.add(`${CLASS_NAME}ssr`);
         styleTag.textContent = styleText;
         _document.head.appendChild(styleTag);
@@ -209,9 +217,10 @@ const SERVER_PROVIDERS = [
             StylesheetMap,
             ɵMatchMedia,
             DOCUMENT,
-            BREAKPOINTS
+            BREAKPOINTS,
+            MediaMarshaller,
         ],
-        multi: true
+        multi: true,
     },
     {
         provide: SERVER_TOKEN,
@@ -241,8 +250,10 @@ function generateCss(stylesheet, mediaQuery, classMap) {
         styles.forEach((v, k) => {
             keyVals += v ? format(`${k}:${v};`) : '';
         });
-        // Build list of CSS styles; each with a className
-        css += format(`.${className} {`, keyVals, '}');
+        if (keyVals) {
+            // Build list of CSS styles; each with a className
+            css += format(`.${className} {`, keyVals, '}');
+        }
     });
     // Group 1 or more styles (each with className) in a specific mediaQuery
     return format(`@media ${mediaQuery} {`, css, '}');

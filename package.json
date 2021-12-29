@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "13.0.0-beta.36-51b6ebf",
+  "version": "13.0.0-beta.36-55960bb",
   "exports": {
     "./mq": {
       "sass": "./core/sass/_layout-bp.scss"

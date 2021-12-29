@@ -455,7 +455,7 @@ class StyleDirective extends BaseDirective2 {
             this.ngStyleInstance = new NgStyle(elementRef, differs, renderer2);
         }
         this.init();
-        const styles = this.nativeElement.getAttribute('style') || '';
+        const styles = this.nativeElement.getAttribute('style') ?? '';
         this.fallbackStyles = this.buildStyleMap(styles);
         this.isServer = serverLoaded && isPlatformServer(platformId);
     }
@@ -481,7 +481,7 @@ class StyleDirective extends BaseDirective2 {
      */
     buildStyleMap(styles) {
         // Always safe-guard (aka sanitize) style property values
-        const sanitizer = (val) => this.sanitizer.sanitize(SecurityContext.STYLE, val) || '';
+        const sanitizer = (val) => this.sanitizer.sanitize(SecurityContext.STYLE, val) ?? '';
         if (styles) {
             switch (getType(styles)) {
                 case 'string': return buildMapFromList(buildRawList(styles), sanitizer);

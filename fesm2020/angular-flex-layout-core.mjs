@@ -485,7 +485,7 @@ class MatchMedia {
      */
     isActive(mediaQuery) {
         const mql = this.registry.get(mediaQuery);
-        return !!mql ? mql.matches : this.registerQuery(mediaQuery).some(m => m.matches);
+        return mql?.matches ?? this.registerQuery(mediaQuery).some(m => m.matches);
     }
     /**
      * External observers can watch for all (or a specific) mql changes.
@@ -841,17 +841,17 @@ class BreakPointRegistry {
      * Search breakpoints by alias (e.g. gt-xs)
      */
     findByAlias(alias) {
-        return !alias ? null : this.findWithPredicate(alias, (bp) => bp.alias == alias);
+        return !alias ? null : this.findWithPredicate(alias, (bp) => bp.alias === alias);
     }
     findByQuery(query) {
-        return this.findWithPredicate(query, (bp) => bp.mediaQuery == query);
+        return this.findWithPredicate(query, (bp) => bp.mediaQuery === query);
     }
     /**
      * Get all the breakpoints whose ranges could overlapping `normal` ranges;
      * e.g. gt-sm overlaps md, lg, and xl
      */
     get overlappings() {
-        return this.items.filter(it => it.overlapping == true);
+        return this.items.filter(it => it.overlapping);
     }
     /**
      * Get list of all registered (non-empty) breakpoint aliases
@@ -865,7 +865,7 @@ class BreakPointRegistry {
      * for property layoutGtSM.
      */
     get suffixes() {
-        return this.items.map(it => !!it.suffix ? it.suffix : '');
+        return this.items.map(it => it?.suffix ?? '');
     }
     /**
      * Memoized lookup using custom predicate function
@@ -873,10 +873,10 @@ class BreakPointRegistry {
     findWithPredicate(key, searchFn) {
         let response = this.findByMap.get(key);
         if (!response) {
-            response = this.items.find(searchFn) || null;
+            response = this.items.find(searchFn) ?? null;
             this.findByMap.set(key, response);
         }
-        return response || null;
+        return response ?? null;
     }
 }
 BreakPointRegistry.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: BreakPointRegistry, deps: [{ token: BREAKPOINTS }], target: i0.ɵɵFactoryTarget.Injectable });
@@ -1154,6 +1154,7 @@ class MediaMarshaller {
         this.matchMedia = matchMedia;
         this.breakpoints = breakpoints;
         this.hook = hook;
+        this._useFallbacks = true;
         this.activatedBreakpoints = [];
         this.elementMap = new Map();
         this.elementKeyMap = new WeakMap();
@@ -1164,7 +1165,10 @@ class MediaMarshaller {
         this.observeActivations();
     }
     get activatedAlias() {
-        return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
+        return this.activatedBreakpoints[0]?.alias ?? '';
+    }
+    set useFallbacks(value) {
+        this._useFallbacks = value;
     }
     /**
      * Update styles on breakpoint activates or deactivates
@@ -1174,14 +1178,15 @@ class MediaMarshaller {
         const bp = this.findByQuery(mc.mediaQuery);
         if (bp) {
             mc = mergeAlias(mc, bp);
-            if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
+            const bpIndex = this.activatedBreakpoints.indexOf(bp);
+            if (mc.matches && bpIndex === -1) {
                 this.activatedBreakpoints.push(bp);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
-            else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
+            else if (!mc.matches && bpIndex !== -1) {
                 // Remove the breakpoint when it's deactivated
-                this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+                this.activatedBreakpoints.splice(bpIndex, 1);
                 this.activatedBreakpoints.sort(sortDescendingPriority);
                 this.updateStyles();
             }
@@ -1401,6 +1406,11 @@ class MediaMarshaller {
                 }
             }
         }
+        // On the server, we explicitly have an "all" section filled in to begin with.
+        // So we don't need to aggressively find a fallback if no explicit value exists.
+        if (!this._useFallbacks) {
+            return undefined;
+        }
         const lastHope = bpMap.get('');
         return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
     }
@@ -1424,12 +1434,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
         }], ctorParameters: function () { return [{ type: MatchMedia }, { type: BreakPointRegistry }, { type: PrintHook }]; } });
 function initBuilderMap(map, element, key, input) {
     if (input !== undefined) {
-        let oldMap = map.get(element);
-        if (!oldMap) {
-            oldMap = new Map();
-            map.set(element, oldMap);
-        }
+        const oldMap = map.get(element) ?? new Map();
         oldMap.set(key, input);
+        map.set(element, oldMap);
     }
 }
 
