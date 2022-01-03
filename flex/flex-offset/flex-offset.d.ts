@@ -7,13 +7,15 @@
  */
 import { ElementRef, OnChanges } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils } from '@angular/flex-layout/core';
+import { MediaMarshaller, BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, LayoutConfigOptions } from '@angular/flex-layout/core';
 import * as i0 from "@angular/core";
 export interface FlexOffsetParent {
     layout: string;
     isRtl: boolean;
 }
 export declare class FlexOffsetStyleBuilder extends StyleBuilder {
+    private _config;
+    constructor(_config: LayoutConfigOptions);
     buildStyles(offset: string, parent: FlexOffsetParent): StyleDefinition;
     static ɵfac: i0.ɵɵFactoryDeclaration<FlexOffsetStyleBuilder, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<FlexOffsetStyleBuilder>;

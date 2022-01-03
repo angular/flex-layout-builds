@@ -7,7 +7,7 @@
  */
 import { ElementRef, OnDestroy, NgZone, AfterContentInit } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
-import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, ElementMatcher } from '@angular/flex-layout/core';
+import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller, ElementMatcher, LayoutConfigOptions } from '@angular/flex-layout/core';
 import { Subject } from 'rxjs';
 import * as i0 from "@angular/core";
 export interface LayoutGapParent {
@@ -17,7 +17,8 @@ export interface LayoutGapParent {
 }
 export declare class LayoutGapStyleBuilder extends StyleBuilder {
     private _styler;
-    constructor(_styler: StyleUtils);
+    private _config;
+    constructor(_styler: StyleUtils, _config: LayoutConfigOptions);
     buildStyles(gapValue: string, parent: LayoutGapParent): StyleDefinition;
     sideEffect(gapValue: string, _styles: StyleDefinition, parent: LayoutGapParent): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<LayoutGapStyleBuilder, never>;
