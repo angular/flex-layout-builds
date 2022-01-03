@@ -19,6 +19,7 @@ export interface LayoutConfigOptions {
     mediaTriggerAutoRestore?: boolean;
     ssrObserveBreakpoints?: string[];
     multiplier?: Multiplier;
+    defaultUnit?: string;
 }
 export declare const DEFAULT_CONFIG: Required<LayoutConfigOptions>;
 export declare const LAYOUT_CONFIG: InjectionToken<LayoutConfigOptions>;

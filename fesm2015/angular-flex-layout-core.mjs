@@ -179,6 +179,7 @@ const DEFAULT_CONFIG = {
     // run for all users, regardless of whether they're using this feature.
     // Instead, we disable it by default, which requires this ugly cast.
     multiplier: undefined,
+    defaultUnit: 'px',
 };
 const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
     providedIn: 'root',

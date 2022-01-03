@@ -21,6 +21,7 @@ export declare class LayoutGapStyleBuilder extends StyleBuilder {
     constructor(_styler: StyleUtils, _config: LayoutConfigOptions);
     buildStyles(gapValue: string, parent: LayoutGapParent): StyleDefinition;
     sideEffect(gapValue: string, _styles: StyleDefinition, parent: LayoutGapParent): void;
+    private addFallbackUnit;
     static ɵfac: i0.ɵɵFactoryDeclaration<LayoutGapStyleBuilder, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<LayoutGapStyleBuilder>;
 }
