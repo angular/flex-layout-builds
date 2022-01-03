@@ -175,6 +175,10 @@ const DEFAULT_CONFIG = {
     printWithBreakpoints: [],
     mediaTriggerAutoRestore: true,
     ssrObserveBreakpoints: [],
+    // This is disabled by default because otherwise the multiplier would
+    // run for all users, regardless of whether they're using this feature.
+    // Instead, we disable it by default, which requires this ugly cast.
+    multiplier: undefined,
 };
 const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
     providedIn: 'root',
@@ -2291,6 +2295,22 @@ function _validateCalcValue(calc) {
     return calc.replace(/[\s]/g, '').replace(/[\/\*\+\-]/g, ' $& ');
 }
 
+const MULTIPLIER_SUFFIX = 'x';
+function multiply(value, multiplier) {
+    if (multiplier === undefined) {
+        return value;
+    }
+    const transformValue = (possibleValue) => {
+        const numberValue = +(possibleValue.slice(0, -MULTIPLIER_SUFFIX.length));
+        if (value.endsWith(MULTIPLIER_SUFFIX) && !isNaN(numberValue)) {
+            return `${numberValue * multiplier.value}${multiplier.unit}`;
+        }
+        return value;
+    };
+    return value.includes(' ') ?
+        value.split(' ').map(transformValue).join(' ') : transformValue(value);
+}
+
 /**
  * @license
  * Copyright Google LLC All Rights Reserved.
@@ -2303,5 +2323,5 @@ function _validateCalcValue(calc) {
  * Generated bundle index. Do not edit.
  */
 
-export { BREAKPOINT, BREAKPOINTS, BREAKPOINT_PRINT, BROWSER_PROVIDER, BaseDirective2, BreakPointRegistry, CLASS_NAME, CoreModule, DEFAULT_BREAKPOINTS, DEFAULT_CONFIG, LAYOUT_CONFIG, MediaChange, MediaMarshaller, MediaObserver, MediaTrigger, ORIENTATION_BREAKPOINTS, PrintHook, SERVER_TOKEN, ScreenTypes, StyleBuilder, StyleUtils, StylesheetMap, coerceArray, mergeAlias, removeStyles, sortAscendingPriority, sortDescendingPriority, validateBasis, MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider };
+export { BREAKPOINT, BREAKPOINTS, BREAKPOINT_PRINT, BROWSER_PROVIDER, BaseDirective2, BreakPointRegistry, CLASS_NAME, CoreModule, DEFAULT_BREAKPOINTS, DEFAULT_CONFIG, LAYOUT_CONFIG, MediaChange, MediaMarshaller, MediaObserver, MediaTrigger, ORIENTATION_BREAKPOINTS, PrintHook, SERVER_TOKEN, ScreenTypes, StyleBuilder, StyleUtils, StylesheetMap, coerceArray, mergeAlias, removeStyles, sortAscendingPriority, sortDescendingPriority, validateBasis, MatchMedia as ɵMatchMedia, MockMatchMedia as ɵMockMatchMedia, MockMatchMediaProvider as ɵMockMatchMediaProvider, multiply as ɵmultiply };
 //# sourceMappingURL=angular-flex-layout-core.mjs.map

@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { InjectionToken } from '@angular/core';
+import { Multiplier } from '../multiply/multiplier';
 /** a set of configuration options for FlexLayoutModule */
 export interface LayoutConfigOptions {
     addFlexToParent?: boolean;
@@ -17,6 +18,7 @@ export interface LayoutConfigOptions {
     printWithBreakpoints?: string[];
     mediaTriggerAutoRestore?: boolean;
     ssrObserveBreakpoints?: string[];
+    multiplier?: Multiplier;
 }
-export declare const DEFAULT_CONFIG: LayoutConfigOptions;
+export declare const DEFAULT_CONFIG: Required<LayoutConfigOptions>;
 export declare const LAYOUT_CONFIG: InjectionToken<LayoutConfigOptions>;

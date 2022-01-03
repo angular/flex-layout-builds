@@ -3,7 +3,7 @@ import { Injectable, Directive, Inject, Input, NgModule } from '@angular/core';
 import * as i2 from '@angular/cdk/bidi';
 import { BidiModule } from '@angular/cdk/bidi';
 import * as i1 from '@angular/flex-layout/core';
-import { StyleBuilder, BaseDirective2, LAYOUT_CONFIG, validateBasis, CoreModule } from '@angular/flex-layout/core';
+import { StyleBuilder, BaseDirective2, ɵmultiply, LAYOUT_CONFIG, validateBasis, CoreModule } from '@angular/flex-layout/core';
 import { buildLayoutCSS, LAYOUT_VALUES, isFlowHorizontal, extendObject } from '@angular/flex-layout/_private-utils';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -86,13 +86,15 @@ const CLEAR_MARGIN_CSS = {
     'margin-bottom': null
 };
 class LayoutGapStyleBuilder extends StyleBuilder {
-    constructor(_styler) {
+    constructor(_styler, _config) {
         super();
         this._styler = _styler;
+        this._config = _config;
     }
     buildStyles(gapValue, parent) {
         if (gapValue.endsWith(GRID_SPECIFIER)) {
             gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
+            gapValue = ɵmultiply(gapValue, this._config.multiplier);
             // Add the margin to the host element
             return buildGridMargin(gapValue, parent.directionality);
         }
@@ -104,11 +106,13 @@ class LayoutGapStyleBuilder extends StyleBuilder {
         const items = parent.items;
         if (gapValue.endsWith(GRID_SPECIFIER)) {
             gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
+            gapValue = ɵmultiply(gapValue, this._config.multiplier);
             // For each `element` children, set the padding
             const paddingStyles = buildGridPadding(gapValue, parent.directionality);
             this._styler.applyStyleToElements(paddingStyles, parent.items);
         }
         else {
+            gapValue = ɵmultiply(gapValue, this._config.multiplier);
             const lastItem = items.pop();
             // For each `element` children EXCEPT the last,
             // set the margin right/bottom styles...
@@ -119,12 +123,15 @@ class LayoutGapStyleBuilder extends StyleBuilder {
         }
     }
 }
-LayoutGapStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutGapStyleBuilder, deps: [{ token: i1.StyleUtils }], target: i0.ɵɵFactoryTarget.Injectable });
+LayoutGapStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutGapStyleBuilder, deps: [{ token: i1.StyleUtils }, { token: LAYOUT_CONFIG }], target: i0.ɵɵFactoryTarget.Injectable });
 LayoutGapStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutGapStyleBuilder, providedIn: 'root' });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutGapStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
-        }], ctorParameters: function () { return [{ type: i1.StyleUtils }]; } });
+        }], ctorParameters: function () { return [{ type: i1.StyleUtils }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [LAYOUT_CONFIG]
+                }] }]; } });
 const inputs$5 = [
     'fxLayoutGap', 'fxLayoutGap.xs', 'fxLayoutGap.sm', 'fxLayoutGap.md',
     'fxLayoutGap.lg', 'fxLayoutGap.xl', 'fxLayoutGap.lt-sm', 'fxLayoutGap.lt-md',
@@ -291,7 +298,7 @@ const layoutGapCacheColumnLtr = new Map();
 const GRID_SPECIFIER = ' grid';
 function buildGridPadding(value, directionality) {
     const [between, below] = value.split(' ');
-    const bottom = below || between;
+    const bottom = below ?? between;
     let paddingRight = '0px', paddingBottom = bottom, paddingLeft = '0px';
     if (directionality === 'rtl') {
         paddingLeft = between;
@@ -303,7 +310,7 @@ function buildGridPadding(value, directionality) {
 }
 function buildGridMargin(value, directionality) {
     const [between, below] = value.split(' ');
-    const bottom = below || between;
+    const bottom = below ?? between;
     const minus = (str) => `-${str}`;
     let marginRight = '0px', marginBottom = minus(bottom), marginLeft = '0px';
     if (directionality === 'rtl') {
@@ -689,27 +696,33 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
  * found in the LICENSE file at https://angular.io/license
  */
 class FlexOffsetStyleBuilder extends StyleBuilder {
+    constructor(_config) {
+        super();
+        this._config = _config;
+    }
     buildStyles(offset, parent) {
-        if (offset === '') {
-            offset = '0';
-        }
+        offset || (offset = '0');
+        offset = ɵmultiply(offset, this._config.multiplier);
         const isPercent = String(offset).indexOf('%') > -1;
         const isPx = String(offset).indexOf('px') > -1;
         if (!isPx && !isPercent && !isNaN(+offset)) {
-            offset = offset + '%';
+            offset = `${offset}%`;
         }
         const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
         const styles = isFlowHorizontal(parent.layout) ?
-            { [horizontalLayoutKey]: `${offset}` } : { 'margin-top': `${offset}` };
+            { [horizontalLayoutKey]: offset } : { 'margin-top': offset };
         return styles;
     }
 }
-FlexOffsetStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: FlexOffsetStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
+FlexOffsetStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: FlexOffsetStyleBuilder, deps: [{ token: LAYOUT_CONFIG }], target: i0.ɵɵFactoryTarget.Injectable });
 FlexOffsetStyleBuilder.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: FlexOffsetStyleBuilder, providedIn: 'root' });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: FlexOffsetStyleBuilder, decorators: [{
             type: Injectable,
             args: [{ providedIn: 'root' }]
-        }] });
+        }], ctorParameters: function () { return [{ type: undefined, decorators: [{
+                    type: Inject,
+                    args: [LAYOUT_CONFIG]
+                }] }]; } });
 const inputs$2 = [
     'fxFlexOffset', 'fxFlexOffset.xs', 'fxFlexOffset.sm', 'fxFlexOffset.md',
     'fxFlexOffset.lg', 'fxFlexOffset.xl', 'fxFlexOffset.lt-sm', 'fxFlexOffset.lt-md',
