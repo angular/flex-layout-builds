@@ -20,6 +20,7 @@ export interface LayoutConfigOptions {
     ssrObserveBreakpoints?: string[];
     multiplier?: Multiplier;
     defaultUnit?: string;
+    detectLayoutDisplay?: boolean;
 }
 export declare const DEFAULT_CONFIG: Required<LayoutConfigOptions>;
 export declare const LAYOUT_CONFIG: InjectionToken<LayoutConfigOptions>;

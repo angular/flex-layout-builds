@@ -6,10 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges } from '@angular/core';
-import { BaseDirective2, StyleBuilder, StyleDefinition, StyleUtils, MediaMarshaller } from '@angular/flex-layout/core';
+import { BaseDirective2, StyleBuilder, StyleUtils, MediaMarshaller, LayoutConfigOptions } from '@angular/flex-layout/core';
 import * as i0 from "@angular/core";
+export interface LayoutStyleDisplay {
+    readonly display: string;
+}
 export declare class LayoutStyleBuilder extends StyleBuilder {
-    buildStyles(input: string): {
+    buildStyles(input: string, { display }: LayoutStyleDisplay): {
         display: string;
         'box-sizing': string;
         'flex-direction': string;
@@ -26,9 +29,10 @@ export declare class LayoutStyleBuilder extends StyleBuilder {
  *
  */
 export declare class LayoutDirective extends BaseDirective2 implements OnChanges {
+    private _config;
     protected DIRECTIVE_KEY: string;
-    constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: LayoutStyleBuilder, marshal: MediaMarshaller);
-    protected styleCache: Map<string, StyleDefinition>;
+    constructor(elRef: ElementRef, styleUtils: StyleUtils, styleBuilder: LayoutStyleBuilder, marshal: MediaMarshaller, _config: LayoutConfigOptions);
+    protected updateWithValue(input: string): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<LayoutDirective, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<LayoutDirective, never, never, {}, {}, never>;
 }

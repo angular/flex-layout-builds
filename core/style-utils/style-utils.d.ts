@@ -41,10 +41,6 @@ export declare class StyleUtils {
      * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
      */
     private _applyMultiValueStyleToElement;
-    private _setServerStyle;
-    private _getServerStyle;
-    private _readStyleAttribute;
-    private _writeStyleAttribute;
     static ɵfac: i0.ɵɵFactoryDeclaration<StyleUtils, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<StyleUtils>;
 }
