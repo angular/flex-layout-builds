@@ -113,6 +113,7 @@ class LayoutGapStyleBuilder extends StyleBuilder {
         }
         else {
             gapValue = ɵmultiply(gapValue, this._config.multiplier);
+            gapValue = this.addFallbackUnit(gapValue);
             const lastItem = items.pop();
             // For each `element` children EXCEPT the last,
             // set the margin right/bottom styles...
@@ -121,6 +122,9 @@ class LayoutGapStyleBuilder extends StyleBuilder {
             // Clear all gaps for all visible elements
             this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
         }
+    }
+    addFallbackUnit(value) {
+        return !isNaN(+value) ? `${value}${this._config.defaultUnit}` : value;
     }
 }
 LayoutGapStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutGapStyleBuilder, deps: [{ token: i1.StyleUtils }, { token: LAYOUT_CONFIG }], target: i0.ɵɵFactoryTarget.Injectable });
