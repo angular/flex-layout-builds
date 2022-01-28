@@ -3,7 +3,7 @@ import { Injectable, Directive, Inject, Input, NgModule } from '@angular/core';
 import * as i2 from '@angular/cdk/bidi';
 import { BidiModule } from '@angular/cdk/bidi';
 import * as i1 from '@angular/flex-layout/core';
-import { StyleBuilder, BaseDirective2, LAYOUT_CONFIG, ɵmultiply, validateBasis, CoreModule } from '@angular/flex-layout/core';
+import { StyleBuilder, BaseDirective2, ɵmultiply, LAYOUT_CONFIG, validateBasis, CoreModule } from '@angular/flex-layout/core';
 import { buildLayoutCSS, LAYOUT_VALUES, isFlowHorizontal, extendObject } from '@angular/flex-layout/_private-utils';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,12 +16,8 @@ import { takeUntil } from 'rxjs/operators';
  * found in the LICENSE file at https://angular.io/license
  */
 class LayoutStyleBuilder extends StyleBuilder {
-    buildStyles(input, { display }) {
-        const css = buildLayoutCSS(input);
-        return {
-            ...css,
-            display: display === 'none' ? display : css.display,
-        };
+    buildStyles(input) {
+        return buildLayoutCSS(input);
     }
 }
 LayoutStyleBuilder.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutStyleBuilder, deps: null, target: i0.ɵɵFactoryTarget.Injectable });
@@ -50,31 +46,18 @@ const selector$6 = `
  *
  */
 class LayoutDirective extends BaseDirective2 {
-    constructor(elRef, styleUtils, styleBuilder, marshal, _config) {
+    constructor(elRef, styleUtils, styleBuilder, marshal) {
         super(elRef, styleBuilder, styleUtils, marshal);
-        this._config = _config;
         this.DIRECTIVE_KEY = 'layout';
+        this.styleCache = layoutCache;
         this.init();
     }
-    updateWithValue(input) {
-        const detectLayoutDisplay = this._config.detectLayoutDisplay;
-        const display = detectLayoutDisplay ? this.styler.lookupStyle(this.nativeElement, 'display') : '';
-        this.styleCache = cacheMap.get(display) ?? new Map();
-        cacheMap.set(display, this.styleCache);
-        if (this.currentValue !== input) {
-            this.addStyles(input, { display });
-            this.currentValue = input;
-        }
-    }
 }
-LayoutDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: LayoutStyleBuilder }, { token: i1.MediaMarshaller }, { token: LAYOUT_CONFIG }], target: i0.ɵɵFactoryTarget.Directive });
+LayoutDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutDirective, deps: [{ token: i0.ElementRef }, { token: i1.StyleUtils }, { token: LayoutStyleBuilder }, { token: i1.MediaMarshaller }], target: i0.ɵɵFactoryTarget.Directive });
 LayoutDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.2", type: LayoutDirective, usesInheritance: true, ngImport: i0 });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LayoutDirective, decorators: [{
             type: Directive
-        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: LayoutStyleBuilder }, { type: i1.MediaMarshaller }, { type: undefined, decorators: [{
-                    type: Inject,
-                    args: [LAYOUT_CONFIG]
-                }] }]; } });
+        }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: i1.StyleUtils }, { type: LayoutStyleBuilder }, { type: i1.MediaMarshaller }]; } });
 class DefaultLayoutDirective extends LayoutDirective {
     constructor() {
         super(...arguments);
@@ -87,7 +70,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
             type: Directive,
             args: [{ selector: selector$6, inputs: inputs$6 }]
         }] });
-const cacheMap = new Map();
+const layoutCache = new Map();
 
 /**
  * @license

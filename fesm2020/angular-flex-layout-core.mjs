@@ -180,7 +180,6 @@ const DEFAULT_CONFIG = {
     // Instead, we disable it by default, which requires this ugly cast.
     multiplier: undefined,
     defaultUnit: 'px',
-    detectLayoutDisplay: false,
 };
 const LAYOUT_CONFIG = new InjectionToken('Flex Layout token, config options for the library', {
     providedIn: 'root',
@@ -317,14 +316,14 @@ class StyleUtils {
      * Find the DOM element's raw attribute value (if any)
      */
     lookupAttributeValue(element, attribute) {
-        return element.getAttribute(attribute) ?? '';
+        return element.getAttribute(attribute) || '';
     }
     /**
      * Find the DOM element's inline style value (if any)
      */
     lookupInlineStyle(element, styleName) {
         return isPlatformBrowser(this._platformId) ?
-            element.style.getPropertyValue(styleName) : getServerStyle(element, styleName);
+            element.style.getPropertyValue(styleName) : this._getServerStyle(element, styleName);
     }
     /**
      * Determine the inline or inherited CSS style
@@ -365,13 +364,52 @@ class StyleUtils {
                 value = value ? value + '' : '';
                 if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
                     isPlatformBrowser(this._platformId) ?
-                        element.style.setProperty(key, value) : setServerStyle(element, key, value);
+                        element.style.setProperty(key, value) : this._setServerStyle(element, key, value);
                 }
                 else {
                     this._serverStylesheet.addStyleToElement(element, key, value);
                 }
             }
         });
+    }
+    _setServerStyle(element, styleName, styleValue) {
+        styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        const styleMap = this._readStyleAttribute(element);
+        styleMap[styleName] = styleValue || '';
+        this._writeStyleAttribute(element, styleMap);
+    }
+    _getServerStyle(element, styleName) {
+        const styleMap = this._readStyleAttribute(element);
+        return styleMap[styleName] || '';
+    }
+    _readStyleAttribute(element) {
+        const styleMap = {};
+        const styleAttribute = element.getAttribute('style');
+        if (styleAttribute) {
+            const styleList = styleAttribute.split(/;+/g);
+            for (let i = 0; i < styleList.length; i++) {
+                const style = styleList[i].trim();
+                if (style.length > 0) {
+                    const colonIndex = style.indexOf(':');
+                    if (colonIndex === -1) {
+                        throw new Error(`Invalid CSS style: ${style}`);
+                    }
+                    const name = style.substr(0, colonIndex).trim();
+                    styleMap[name] = style.substr(colonIndex + 1).trim();
+                }
+            }
+        }
+        return styleMap;
+    }
+    _writeStyleAttribute(element, styleMap) {
+        let styleAttrValue = '';
+        for (const key in styleMap) {
+            const newValue = styleMap[key];
+            if (newValue) {
+                styleAttrValue += key + ':' + styleMap[key] + ';';
+            }
+        }
+        element.setAttribute('style', styleAttrValue);
     }
 }
 StyleUtils.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: StyleUtils, deps: [{ token: StylesheetMap }, { token: SERVER_TOKEN }, { token: PLATFORM_ID }, { token: LAYOUT_CONFIG }], target: i0.ɵɵFactoryTarget.Injectable });
@@ -389,45 +427,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
                     type: Inject,
                     args: [LAYOUT_CONFIG]
                 }] }]; } });
-function getServerStyle(element, styleName) {
-    const styleMap = readStyleAttribute(element);
-    return styleMap[styleName] ?? '';
-}
-function setServerStyle(element, styleName, styleValue) {
-    styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-    const styleMap = readStyleAttribute(element);
-    styleMap[styleName] = styleValue ?? '';
-    writeStyleAttribute(element, styleMap);
-}
-function writeStyleAttribute(element, styleMap) {
-    let styleAttrValue = '';
-    for (const key in styleMap) {
-        const newValue = styleMap[key];
-        if (newValue) {
-            styleAttrValue += `${key}:${styleMap[key]};`;
-        }
-    }
-    element.setAttribute('style', styleAttrValue);
-}
-function readStyleAttribute(element) {
-    const styleMap = {};
-    const styleAttribute = element.getAttribute('style');
-    if (styleAttribute) {
-        const styleList = styleAttribute.split(/;+/g);
-        for (let i = 0; i < styleList.length; i++) {
-            const style = styleList[i].trim();
-            if (style.length > 0) {
-                const colonIndex = style.indexOf(':');
-                if (colonIndex === -1) {
-                    throw new Error(`Invalid CSS style: ${style}`);
-                }
-                const name = style.substr(0, colonIndex).trim();
-                styleMap[name] = style.substr(colonIndex + 1).trim();
-            }
-        }
-    }
-    return styleMap;
-}
 
 /**
  * @license

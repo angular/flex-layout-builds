@@ -84,7 +84,7 @@ function buildLayoutCSS(value) {
   * Use default fallback of 'row'
   */
 function validateValue(value) {
-    value = value?.toLowerCase() ?? '';
+    value = value ? value.toLowerCase() : '';
     let [direction, wrap, inline] = value.split(' ');
     // First value must be the `flex-direction`
     if (!LAYOUT_VALUES.find(x => x === direction)) {
@@ -139,10 +139,10 @@ function validateWrapValue(value) {
  */
 function buildCSS(direction, wrap = null, inline = false) {
     return {
-        display: inline ? 'inline-flex' : 'flex',
+        'display': inline ? 'inline-flex' : 'flex',
         'box-sizing': 'border-box',
         'flex-direction': direction,
-        'flex-wrap': wrap || null,
+        'flex-wrap': !!wrap ? wrap : null
     };
 }
 
