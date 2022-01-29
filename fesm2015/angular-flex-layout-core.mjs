@@ -1,9 +1,9 @@
 import * as i0 from '@angular/core';
 import { APP_BOOTSTRAP_LISTENER, PLATFORM_ID, NgModule, Injectable, InjectionToken, Inject, inject, Directive } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT, isPlatformServer } from '@angular/common';
-import { BehaviorSubject, Observable, merge, Subject, asapScheduler, of, distinctUntilChanged, fromEvent } from 'rxjs';
+import { BehaviorSubject, Observable, merge, Subject, asapScheduler, of, fromEvent } from 'rxjs';
 import { applyCssPrefixes, extendObject, buildLayoutCSS } from '@angular/flex-layout/_private-utils';
-import { filter, tap, map, debounceTime, switchMap, takeUntil, take } from 'rxjs/operators';
+import { filter, tap, map, debounceTime, switchMap, distinctUntilChanged, takeUntil, take } from 'rxjs/operators';
 
 /**
  * @license
