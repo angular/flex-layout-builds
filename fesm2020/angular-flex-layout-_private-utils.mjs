@@ -19,7 +19,7 @@
  */
 function applyCssPrefixes(target) {
     for (let key in target) {
-        let value = target[key] || '';
+        let value = target[key] ?? '';
         switch (key) {
             case 'display':
                 if (value === 'flex') {
@@ -51,7 +51,6 @@ function applyCssPrefixes(target) {
                 target['-webkit-' + key] = value;
                 break;
             case 'flex-direction':
-                value = value || 'row';
                 target['-webkit-flex-direction'] = value;
                 target['flex-direction'] = value;
                 break;
